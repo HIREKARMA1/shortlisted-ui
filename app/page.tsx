@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import WhoCanJoin from "@/components/home/WhoCanJoin"
+import WhatMakesDifferent from "@/components/home/WhatMakesDifferent"
 
 export default function HomePage() {
     return (
@@ -70,6 +71,7 @@ export default function HomePage() {
                 </div>
             </div>
             <WhoCanJoin />
+            <WhatMakesDifferent />
         </div>
     )
 }
