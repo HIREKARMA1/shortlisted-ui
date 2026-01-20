@@ -60,6 +60,9 @@ export function OptimizedImage({
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
 
+  // Check if the image is from S3 to use unoptimized (prevents server-side optimization timeouts)
+  const isS3Image = src.includes('s3.amazonaws.com') || src.includes('s3.') && src.includes('.amazonaws.com')
+
   const handleLoad = () => {
     setIsLoading(false)
     onLoad?.()
@@ -143,6 +146,7 @@ export function OptimizedImage({
         width={fill ? undefined : width}
         height={fill ? undefined : height}
         fill={fill}
+        unoptimized={isS3Image}
         className={cn(
           "transition-opacity duration-300",
           isLoading ? "opacity-0" : "opacity-100",

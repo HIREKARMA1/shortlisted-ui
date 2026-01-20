@@ -48,7 +48,8 @@ const Footer: React.FC = () => {
     const socialLinks = [
         { icon: Facebook, href: "#", label: "Facebook" },
         { icon: Github, href: "#", label: "GitHub" },
-        { icon: Twitter, href: "#", label: "Twitter" }
+        { icon: Twitter, href: "#", label: "Twitter" },
+        { icon: null, href: "#", label: "Google", isGoogle: true }
     ];
 
     return (
@@ -99,7 +100,7 @@ const Footer: React.FC = () => {
                                     ? 'text-gray-300'
                                     : 'text-gray-700'
                                     }`}>
-                                    Room No: 109, 1st Floor, Tower A, O-HUB, Bhubaneswar
+                                    Room No: 109, 1st Floor, <br /> Tower A, O-HUB, Bhubaneswar
                                 </p>
                             </div>
                             <div className="flex items-center gap-3">
@@ -204,7 +205,7 @@ const Footer: React.FC = () => {
 
                 {/* Bottom Section */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="text-center sm:text-left">
+                    <div className="text-center sm:text-left sm:ml-[10px]">
                         <p className={`text-sm transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-gray-400'
                             : 'text-gray-600'
@@ -226,20 +227,25 @@ const Footer: React.FC = () => {
                     </div>
 
                     {/* Social Media Links */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 sm:mr-[10px]">
                         {socialLinks.map((social, index) => {
                             const IconComponent = social.icon;
+                            const isGoogle = (social as any).isGoogle;
                             return (
                                 <a
                                     key={index}
                                     href={social.href}
                                     aria-label={social.label}
-                                    className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 hover:scale-110 ${mounted && resolvedTheme === 'dark'
-                                        ? 'border-gray-700 text-gray-400 hover:border-gray-600 hover:text-white'
-                                        : 'border-gray-300 text-gray-600 hover:border-gray-400 hover:text-gray-900'
+                                    className={`w-10 h-10 rounded-full border border-black bg-white flex items-center justify-center transition-all duration-300 hover:scale-110 ${mounted && resolvedTheme === 'dark'
+                                        ? 'border-white bg-gray-900'
+                                        : 'border-black bg-white'
                                         }`}
                                 >
-                                    <IconComponent className="w-5 h-5" />
+                                    {isGoogle ? (
+                                        <span className={`text-base font-bold ${mounted && resolvedTheme === 'dark' ? 'text-white' : 'text-black'}`}>G</span>
+                                    ) : IconComponent ? (
+                                        <IconComponent className={`w-5 h-5 ${mounted && resolvedTheme === 'dark' ? 'text-white' : 'text-black'}`} />
+                                    ) : null}
                                 </a>
                             );
                         })}
