@@ -20,14 +20,11 @@ const CTABanner: React.FC = () => {
     ];
 
     return (
-        <div className={`relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 font-sans transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-            ? 'bg-black'
-            : 'bg-[#00BAE8]'
-            }`}>
+        <div className="relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 font-sans bg-[#00BAE8]">
             <div className="w-full text-center">
                 {/* Main Heading */}
-                <div className="w-[95vw] mx-auto mb-4 sm:mb-6">
-                    <h2 className="font-semibold text-[64px] leading-[1.1] text-white font-poppins text-center">
+                <div className="w-[95vw] mx-auto mb-4 sm:mb-6 overflow-x-auto">
+                    <h2 className="font-semibold text-[55px]  text-white font-poppins text-center whitespace-nowrap">
                         This is not a course. This is placementexecution
                     </h2>
                 </div>

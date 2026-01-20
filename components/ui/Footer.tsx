@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { MapPin, Mail, Phone, Facebook, Github, Twitter } from 'lucide-react';
+import { MapPin, Mail, Phone, Facebook, Github, Twitter, Linkedin, InstagramIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -20,15 +20,15 @@ const Footer: React.FC = () => {
         : "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-lm.png";
 
     const productLinks = [
-        { name: "Disha", href: "#" },
-        { name: "Solviq AI", href: "#" }
+        { name: "Disha", href: "https://disha.hirekarma.in/auth/login" },
+        { name: "Solviq AI", href: "https://www.solviqai.in/" }
     ];
 
     const companyLinks = [
-        { name: "About Us", href: "#" },
-        { name: "Our Story", href: "#" },
-        { name: "Mission & Value", href: "#" },
-        { name: "People", href: "#" }
+        { name: "About Us", href: "https://www.hirekarma.in/" },
+        { name: "Our Story", href: "https://www.hirekarma.in/about-us/our-story" },
+        { name: "Mission & Value", href: "https://www.hirekarma.in/about-us/mission-value" },
+        { name: "People", href: "https://www.hirekarma.in/about-us/people" }
     ];
 
     const supportLinks = [
@@ -45,10 +45,10 @@ const Footer: React.FC = () => {
     ];
 
     const socialLinks = [
-        { icon: Facebook, href: "#", label: "Facebook" },
-        { icon: Github, href: "#", label: "GitHub" },
-        { icon: Twitter, href: "#", label: "Twitter" },
-        { icon: null, href: "#", label: "Google", isGoogle: true }
+        { icon: Facebook, href: "https://www.facebook.com/Hirekarma/", label: "Facebook" },
+        { icon: Linkedin, href: "https://www.linkedin.com/company/hirekarma-pvt-ltd", label: "Linkedin" },
+        { icon: Twitter, href: "https://x.com/hirekarma", label: "Twitter" },
+        { icon: InstagramIcon, href: "https://www.instagram.com/hirekarma/", label: "Instagram"}
     ];
 
     return (
@@ -208,7 +208,7 @@ const Footer: React.FC = () => {
                             ? 'text-gray-400'
                             : 'text-gray-600'
                             }`}>
-                            © 2025 Solviq AI. All rights reserved. Made with • in India
+                            © 2025 Shortlisted. All rights reserved.
                         </p>
                         <p className={`text-sm mt-1 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-gray-400'
