@@ -48,7 +48,7 @@ export function Navbar({ className }: NavbarProps) {
           className
         )}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center">
@@ -107,7 +107,7 @@ export function Navbar({ className }: NavbarProps) {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 dark:border-[#2a3441] bg-white dark:bg-[#1a1f2e]">
-            <div className="container mx-auto px-4 py-4 space-y-4">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px] py-4 space-y-4">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
