@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/home/hero-section"
 import { WhyShortlistedSection } from "@/components/home/why-shortlisted-section"
 import WhoCanJoin from "@/components/home/WhoCanJoin"
 import WhatMakesDifferent from "@/components/home/WhatMakesDifferent"
+import WhatYouWalkAwayWith from "@/components/home/WhatYouWalkAwayWith"
 
 export default function HomePage() {
     return (
@@ -10,6 +11,7 @@ export default function HomePage() {
             <WhyShortlistedSection />
             <WhoCanJoin />
             <WhatMakesDifferent />
+            <WhatYouWalkAwayWith />
         </main>
     )
 }
