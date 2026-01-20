@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useTheme } from "next-themes"
-import { OptimizedImage } from "./optimized-image"
 import { Button } from "./button"
 import { ThemeToggle } from "./theme-toggle"
 import { Menu, X } from "lucide-react"
@@ -29,11 +29,10 @@ export function Navbar({ className }: NavbarProps) {
     setMounted(true)
   }, [])
 
-  // Logo URLs based on theme
-  const logoUrl =
-    mounted && theme === "dark"
-      ? "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-dm.png"
-      : "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-lm.png"
+  // Logo URLs based on theme - always provide a default
+  const logoUrl = mounted && theme === "dark"
+    ? "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-dm.png"
+    : "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-lm.png"
 
   return (
     <>
@@ -42,24 +41,34 @@ export function Navbar({ className }: NavbarProps) {
 
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 w-full transition-colors",
+          "fixed top-0 left-0 right-0 z-[100] w-full transition-colors",
           "bg-white dark:bg-[#1a1f2e]",
           "shadow-[0_2px_8px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
           className
         )}
+        style={{ position: 'fixed', top: 0, left: 0, right: 0 }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <OptimizedImage
-                src={logoUrl}
-                alt="Shortlisted Logo"
-                width={140}
-                height={40}
-                priority
-                className="h-10 w-auto"
-              />
+            <Link href="/" className="flex items-center h-full">
+              {logoUrl ? (
+                <div className="relative h-10 w-auto flex items-center">
+                  <Image
+                    src={logoUrl}
+                    alt="Shortlisted Logo"
+                    width={140}
+                    height={40}
+                    priority
+                    className="h-10 w-auto object-contain"
+                    style={{ maxWidth: '200px', height: '100px' }}
+                  />
+                </div>
+              ) : (
+                <span className="text-xl font-bold text-gray-900 dark:text-white font-poppins">
+                  Shortlisted
+                </span>
+              )}
             </Link>
 
             {/* Desktop Navigation - Centered */}
