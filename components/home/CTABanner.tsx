@@ -27,17 +27,17 @@ const CTABanner: React.FC = () => {
             <div className="w-full text-center">
                 {/* Main Heading */}
                 <div className="w-[95vw] mx-auto mb-4 sm:mb-6">
-                    <h2 className={`font-bold transition-colors duration-500 text-white whitespace-nowrap text-center`} style={{ fontSize: 'clamp(1.25rem, 3.5vw, 4rem)' }}>
+                    <h2 className="font-semibold text-[64px] leading-[1.1] text-white font-poppins text-center">
                         This is not a course. This is placementexecution
                     </h2>
                 </div>
 
                 {/* Sub-headings */}
                 <div className="max-w-4xl mx-auto">
-                    <p className={`text-lg sm:text-xl md:text-2xl font-normal mb-2 transition-colors duration-500 text-white`}>
+                    <p className="font-normal text-2xl text-white font-poppins mb-2">
                         Not another course. Not more videos.
                     </p>
-                    <p className={`text-lg sm:text-xl md:text-2xl font-normal mb-8 sm:mb-10 transition-colors duration-500 text-white`}>
+                    <p className="font-normal text-2xl text-white font-poppins mb-8 sm:mb-10">
                         Only 12 seats per batch
                     </p>
 
