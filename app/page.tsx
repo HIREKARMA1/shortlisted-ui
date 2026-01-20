@@ -6,9 +6,6 @@ import { OptimizedImage } from "@/components/ui/optimized-image"
 export default function HomePage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-            <div className="absolute top-4 right-4">
-                <ThemeToggle />
-            </div>
             <div className="flex items-center justify-center min-h-screen px-4">
                 <div className="text-center max-w-2xl w-full">
                     <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4 gradient-text">
