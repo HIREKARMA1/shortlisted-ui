@@ -72,7 +72,7 @@ export function Navbar({ className }: NavbarProps) {
             </Link>
 
             {/* Desktop Navigation - Centered */}
-            <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
+            {/* <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
@@ -82,7 +82,7 @@ export function Navbar({ className }: NavbarProps) {
                   {item.label}
                 </Link>
               ))}
-            </div>
+            </div> */}
 
             {/* Right side - Theme Toggle & Register Button */}
             <div className="flex items-center space-x-3 ml-auto">

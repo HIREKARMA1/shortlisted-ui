@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { CheckCircle, Users } from 'lucide-react';
+import { CheckCircle,Check, Users } from 'lucide-react';
 
 const WhoCanJoin: React.FC = () => {
     const [mounted, setMounted] = useState(false);
@@ -24,19 +24,13 @@ const WhoCanJoin: React.FC = () => {
             ? 'bg-gray-900'
             : 'bg-white'
             }`}>
-            <div className="w-[90vw] max-w-[90vw] mx-auto">
+            <div className="w-[60vw] max-w-[60vw] mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
-                    <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-white'
-                        : 'text-gray-900'
-                        }`}>
+                    <h2 className="font-semibold text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
                         Who Can Join
                     </h2>
-                    <p className={`text-base sm:text-lg md:text-xl transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-gray-300'
-                        : 'text-gray-600'
-                        }`}>
+                    <p className="font-normal text-2xl text-gray-700 dark:text-gray-300 font-poppins">
                         This program is built for students ready to execute
                     </p>
                 </div>
@@ -63,7 +57,7 @@ const WhoCanJoin: React.FC = () => {
                                             ? 'bg-[#A800FF]'
                                             : 'bg-[#00BAE8]'
                                             }`}>
-                                            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
+                                            <Check className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                                         </div>
                                     </div>
                                     {/* Criterion Text */}
