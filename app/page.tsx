@@ -5,6 +5,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image"
 import WhoCanJoin from "@/components/home/WhoCanJoin"
 import WhatMakesDifferent from "@/components/home/WhatMakesDifferent"
 import WhatYouWalkAwayWith from "@/components/home/WhatYouWalkAwayWith"
+import CTABanner from "@/components/home/CTABanner"
 
 export default function HomePage() {
     return (
@@ -74,6 +75,7 @@ export default function HomePage() {
             <WhoCanJoin />
             <WhatMakesDifferent />
             <WhatYouWalkAwayWith />
+            <CTABanner />
         </div>
     )
 }
