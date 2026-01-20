@@ -73,7 +73,7 @@ const WhatYouWalkAwayWith: React.FC = () => {
 
                 {/* Bottom Banner */}
                 <div className={`rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                    ? 'bg-[#A800FF]'
+                    ? 'bg-[#00BAE8]'
                     : 'bg-[#00BAE8]'
                     }`}>
                     <div className="text-center">
