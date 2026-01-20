@@ -26,7 +26,7 @@ const CTABanner: React.FC = () => {
             }`}>
             <div className="w-full text-center">
                 {/* Main Heading */}
-                <div className="w-[90vw] mx-auto mb-4 sm:mb-6">
+                <div className="w-[95vw] mx-auto mb-4 sm:mb-6">
                     <h2 className={`font-bold transition-colors duration-500 text-white whitespace-nowrap text-center`} style={{ fontSize: 'clamp(1.25rem, 3.5vw, 4rem)' }}>
                         This is not a course. This is placementexecution
                     </h2>
