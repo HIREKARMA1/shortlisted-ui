@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import WhoCanJoin from "@/components/home/WhoCanJoin"
 import WhatMakesDifferent from "@/components/home/WhatMakesDifferent"
+import WhatYouWalkAwayWith from "@/components/home/WhatYouWalkAwayWith"
 
 export default function HomePage() {
     return (
@@ -72,6 +73,7 @@ export default function HomePage() {
             </div>
             <WhoCanJoin />
             <WhatMakesDifferent />
+            <WhatYouWalkAwayWith />
         </div>
     )
 }
