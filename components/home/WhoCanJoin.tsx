@@ -20,7 +20,7 @@ const WhoCanJoin: React.FC = () => {
     ];
 
     return (
-        <div className={`relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 ${mounted && resolvedTheme === 'dark'
+        <div className={`relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 font-sans ${mounted && resolvedTheme === 'dark'
             ? 'bg-gray-900'
             : 'bg-white'
             }`}>
@@ -59,7 +59,10 @@ const WhoCanJoin: React.FC = () => {
                                 >
                                     {/* Checkmark Icon */}
                                     <div className="flex-shrink-0">
-                                        <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-purple-500 flex items-center justify-center">
+                                        <div className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
+                                            ? 'bg-[#A800FF]'
+                                            : 'bg-[#00BAE8]'
+                                            }`}>
                                             <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                                         </div>
                                     </div>
