@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { CheckCircle, Users } from 'lucide-react';
+import { CheckCircle,Check, Users } from 'lucide-react';
 
 const WhoCanJoin: React.FC = () => {
     const [mounted, setMounted] = useState(false);
@@ -57,7 +57,7 @@ const WhoCanJoin: React.FC = () => {
                                             ? 'bg-[#A800FF]'
                                             : 'bg-[#00BAE8]'
                                             }`}>
-                                            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
+                                            <Check className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                                         </div>
                                     </div>
                                     {/* Criterion Text */}
