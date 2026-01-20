@@ -24,7 +24,7 @@ const WhoCanJoin: React.FC = () => {
             ? 'bg-gray-900'
             : 'bg-white'
             }`}>
-            <div className="w-[90vw] max-w-[90vw] mx-auto">
+            <div className="w-[60vw] max-w-[60vw] mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
                     <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'

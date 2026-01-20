@@ -4,21 +4,20 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { MapPin, Mail, Phone, Facebook, Github, Twitter } from 'lucide-react';
 import Link from 'next/link';
-import { OptimizedImage } from './optimized-image';
+import Image from 'next/image';
 
 const Footer: React.FC = () => {
     const [mounted, setMounted] = useState(false);
-    const { resolvedTheme, theme } = useTheme();
+    const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
     // Logo URLs based on theme
-    const logoUrl =
-        mounted && theme === "dark"
-            ? "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-dm.png"
-            : "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-lm.png";
+    const logoUrl = mounted && resolvedTheme === "dark"
+        ? "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-dm.png"
+        : "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-lm.png";
 
     const productLinks = [
         { name: "Disha", href: "#" },
@@ -63,29 +62,28 @@ const Footer: React.FC = () => {
                     <div className="col-span-1 lg:col-span-2">
                         <div className="mb-6">
                             <div className="flex items-center gap-3 mb-2">
-                                {/* <Link href="/" className="flex items-center">
-                                    <OptimizedImage
-                                        src={logoUrl}
-                                        alt="Shortlisted Logo"
-                                        width={140}
-                                        height={40}
-                                        className="h-10 w-auto"
-                                    />
-                                </Link> */}
-                                <div>
-                                    <h3 className={`text-xl font-bold transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                        ? 'text-white'
-                                        : 'text-gray-900'
-                                        }`}>
-                                        Shortlisted
-                                    </h3>
-                                    <p className={`text-sm transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                        ? 'text-gray-400'
-                                        : 'text-gray-600'
-                                        }`}>
-                                        Simplify Hiring
-                                    </p>
-                                </div>
+                                <Link href="/" className="flex items-center h-full">
+                                    {logoUrl ? (
+                                        <div className="relative h-10 w-auto flex items-center">
+                                            <Image
+                                                src={logoUrl}
+                                                alt="Shortlisted Logo"
+                                                width={140}
+                                                height={40}
+                                                priority
+                                                className="h-10 w-auto object-contain"
+                                                style={{ maxWidth: '200px', height: '100px' }}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <span className={`text-xl font-bold transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
+                                            ? 'text-white'
+                                            : 'text-gray-900'
+                                            } font-poppins`}>
+                                            Shortlisted
+                                        </span>
+                                    )}
+                                </Link>
                             </div>
                         </div>
 
