@@ -4,14 +4,21 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { MapPin, Mail, Phone, Facebook, Github, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import { OptimizedImage } from './optimized-image';
 
 const Footer: React.FC = () => {
     const [mounted, setMounted] = useState(false);
-    const { resolvedTheme } = useTheme();
+    const { resolvedTheme, theme } = useTheme();
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Logo URLs based on theme
+    const logoUrl =
+        mounted && theme === "dark"
+            ? "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-dm.png"
+            : "https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/shortlisted-logo-lm.png";
 
     const productLinks = [
         { name: "Disha", href: "#" },
@@ -45,25 +52,25 @@ const Footer: React.FC = () => {
     ];
 
     return (
-        <footer className={`relative font-sans transition-all duration-500 border-t ${mounted && resolvedTheme === 'dark'
-            ? 'bg-gray-900 border-gray-800'
-            : 'bg-white border-gray-200'
+        <footer className={`relative font-sans transition-all duration-500 ${mounted && resolvedTheme === 'dark'
+            ? 'bg-gray-900'
+            : 'bg-white'
             }`}>
-            {/* Top border line */}
-            <div className={`h-1 ${mounted && resolvedTheme === 'dark'
-                ? 'bg-gray-700'
-                : 'bg-[#00BAE8]'
-                }`}></div>
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div className="w-[95vw] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12">
                     {/* Brand & Contact Information */}
                     <div className="col-span-1 lg:col-span-2">
                         <div className="mb-6">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-10 h-10 rounded-full bg-[#00BAE8] flex items-center justify-center">
-                                    <span className="text-white font-bold text-lg">S</span>
-                                </div>
+                                {/* <Link href="/" className="flex items-center">
+                                    <OptimizedImage
+                                        src={logoUrl}
+                                        alt="Shortlisted Logo"
+                                        width={140}
+                                        height={40}
+                                        className="h-10 w-auto"
+                                    />
+                                </Link> */}
                                 <div>
                                     <h3 className={`text-xl font-bold transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                         ? 'text-white'
@@ -190,9 +197,9 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* Divider */}
-                <div className={`h-px my-8 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                    ? 'bg-gray-800'
-                    : 'bg-gray-200'
+                <div className={`h-[1px] my-8 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
+                    ? 'bg-white'
+                    : 'bg-gray-900'
                     }`}></div>
 
                 {/* Bottom Section */}
