@@ -1,11 +1,14 @@
-import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { HeroSection } from "@/components/home/hero-section"
+import { WhyShortlistedSection } from "@/components/home/why-shortlisted-section"
 import WhoCanJoin from "@/components/home/WhoCanJoin"
 import WhatMakesDifferent from "@/components/home/WhatMakesDifferent"
 import WhatYouWalkAwayWith from "@/components/home/WhatYouWalkAwayWith"
 
 export default function HomePage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <main className="bg-white dark:bg-[#1a1f2e] min-h-screen">
+            <HeroSection />
+            <WhyShortlistedSection />
             <WhoCanJoin />
             <WhatMakesDifferent />
             <WhatYouWalkAwayWith />
