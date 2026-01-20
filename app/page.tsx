@@ -2,6 +2,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { OptimizedImage } from "@/components/ui/optimized-image"
+import WhoCanJoin from "@/components/home/WhoCanJoin"
 
 export default function HomePage() {
     return (
@@ -68,6 +69,7 @@ export default function HomePage() {
                     </Card>
                 </div>
             </div>
+            <WhoCanJoin />
         </div>
     )
 }
