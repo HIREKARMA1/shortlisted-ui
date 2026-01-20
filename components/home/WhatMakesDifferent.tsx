@@ -65,9 +65,9 @@ const WhatMakesDifferent: React.FC = () => {
                         }`}>
                         What Makes SHORTLISTED Different
                     </h2>
-                    <p className={`text-base sm:text-lg md:text-xl transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-gray-300'
-                        : 'text-gray-600'
+                    <p className={`text-[24px] font-normal leading-[100%] text-[#494949] transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
+                        ? 'text-[#ffffff]'
+                        : 'text-[#494949]'
                         }`}>
                         Premium, focused, and outcome-driven
                     </p>
@@ -81,20 +81,14 @@ const WhatMakesDifferent: React.FC = () => {
                             <div
                                 key={index}
                                 className={`rounded-xl sm:rounded-2xl p-6 sm:p-8 border transition-all duration-500 hover:shadow-lg ${mounted && resolvedTheme === 'dark'
-                                    ? 'bg-white border-gray-200'
-                                    : 'bg-white border-gray-200'
+                                    ? 'bg-[#FFFFFF] border-[#D0D0D0]'
+                                    : 'bg-[#FFFFFF] border-[#D0D0D0]'
                                     }`}
                             >
                                 {/* Icon */}
                                 <div className="mb-4 sm:mb-6">
-                                    <div className={`inline-flex p-3 sm:p-4 rounded-lg ${mounted && resolvedTheme === 'dark'
-                                        ? 'bg-teal-500/10'
-                                        : 'bg-teal-50'
-                                        }`}>
-                                        <IconComponent className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${mounted && resolvedTheme === 'dark'
-                                            ? 'text-teal-400'
-                                            : 'text-teal-600'
-                                            }`} />
+                                    <div className="inline-flex p-3 sm:p-4 rounded-lg bg-[#00BAE8]">
+                                        <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                                     </div>
                                 </div>
 
