@@ -7,6 +7,7 @@ export default function HomePage() {
         <main className="bg-white dark:bg-[#1a1f2e] min-h-screen">
             <HeroSection />
             <WhyShortlistedSection />
+            <WhoCanJoin />
         </main>
     )
 }
