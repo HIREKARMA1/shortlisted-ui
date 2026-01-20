@@ -24,3 +24,5 @@ export { OptimizedImage } from "./optimized-image"
 
 export { ImageCard } from "./image-card"
 
+export { Navbar } from "./navbar"
+
