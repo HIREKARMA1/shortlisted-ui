@@ -37,7 +37,7 @@ export function Navbar({ className }: NavbarProps) {
   return (
     <>
       {/* Spacer to prevent content from going under fixed navbar */}
-      <div className="h-16" />
+      <div className="h-20" />
 
       <nav
         className={cn(
@@ -49,18 +49,18 @@ export function Navbar({ className }: NavbarProps) {
         style={{ position: 'fixed', top: 0, left: 0, right: 0 }}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
-          <div className="flex h-16 items-center justify-between">
+          <div className="flex h-20 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center h-full">
               {logoUrl ? (
-                <div className="relative h-10 w-auto flex items-center">
+                <div className="relative h-16 w-auto flex items-center">
                   <Image
                     src={logoUrl}
                     alt="Shortlisted Logo"
                     width={140}
                     height={40}
                     priority
-                    className="h-10 w-auto object-contain"
+                    className="h-16 w-auto object-contain"
                     style={{ maxWidth: '200px', height: '100px' }}
                   />
                 </div>
