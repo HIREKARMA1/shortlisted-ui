@@ -12,8 +12,8 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-    title: 'Shortlisted - Your Platform',
-    description: 'Modern platform built with Next.js, TypeScript, and Tailwind CSS',
+    title: 'Shortlisted - Get Shortlisted Faster. Get Placed Smarter.',
+    description: '60-day premium placement acceleration program for unplaced students.',
 }
 
 export const viewport: Viewport = {
