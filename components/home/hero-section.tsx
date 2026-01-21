@@ -24,7 +24,7 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative min-h-screen flex items-center bg-white dark:bg-[#1a1f2e] overflow-hidden">
+    <section className="relative min-h-screen md:min-h-0 md:py-8 lg:min-h-screen lg:py-0 pt-4 flex items-center md:items-start lg:items-center bg-white dark:bg-[#1a1f2e] overflow-hidden max-[375px]:pt-8">
       <style dangerouslySetInnerHTML={{
         __html: `
         @media (min-width: 1024px) {
@@ -75,9 +75,9 @@ export function HeroSection() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px] relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Section - Content */}
-          <div className="flex flex-col space-y-6 lg:space-y-8 z-10">
+          <div className="flex flex-col space-y-6 lg:space-y-8 z-10 px-2 sm:px-0">
             {/* Main Heading */}
-            <h1 className="font-semibold text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins">
+            <h1 className="font-semibold text-[36px] max-[375px]:text-[32px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins break-words">
               Get Shortlisted
               <br />
               Faster. Get Placed
@@ -86,7 +86,7 @@ export function HeroSection() {
             </h1>
 
             {/* Sub Heading */}
-            <p className="font-normal text-2xl text-gray-700 dark:text-gray-300 font-poppins">
+            <p className="font-normal text-base max-[375px]:text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-700 dark:text-gray-300 font-poppins">
               60-day premium placement acceleration program for unplaced students.
             </p>
 
@@ -113,7 +113,7 @@ export function HeroSection() {
                 className={cn(
                   "bg-[#00a2e5] hover:bg-[#0091cc] text-white rounded-lg",
                   "px-5 py-2 font-semibold text-[20px] font-poppins",
-                  "flex items-center justify-center gap-2 h-auto"
+                  "flex items-center justify-center gap-2 h-auto w-full sm:w-auto"
                 )}
               >
                 <Link href="https://forms.gle/oDq7HQkzx6zk3Nz76">Register Now</Link>
@@ -134,14 +134,14 @@ export function HeroSection() {
                   />
                 </svg>
               </Button>
-              <div className="relative group">
+              <div className="relative group w-full sm:w-auto">
                 <Button
                   variant="outline"
                   className={cn(
                     "border-2 border-gray-900 dark:border-white",
                     "text-gray-900 dark:text-white",
                     "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800",
-                    "rounded-lg px-5 py-2 font-semibold text-[20px] font-poppins h-auto"
+                    "rounded-lg px-5 py-2 font-semibold text-[20px] font-poppins h-auto w-full sm:w-auto"
                   )}
                 >
                   Check Eligibility
