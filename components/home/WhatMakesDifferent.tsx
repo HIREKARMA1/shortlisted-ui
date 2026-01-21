@@ -59,7 +59,7 @@ const WhatMakesDifferent: React.FC = () => {
             <div className="max-w-[90%] mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
-                    <h2 className="font-semibold text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
+                    <h2 className="font-semibold text-[64px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
                         What Makes SHORTLISTED Different
                     </h2>
                     <p className="font-normal text-2xl text-gray-700 dark:text-gray-300 font-poppins">
