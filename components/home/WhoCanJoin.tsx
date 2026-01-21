@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { CheckCircle,Check, Users } from 'lucide-react';
+import { Check, Users } from 'lucide-react';
 
 const WhoCanJoin: React.FC = () => {
     const [mounted, setMounted] = useState(false);
@@ -24,7 +24,7 @@ const WhoCanJoin: React.FC = () => {
             ? 'bg-gray-900'
             : 'bg-white'
             }`}>
-            <div className="w-[60vw] max-w-[60vw] mx-auto">
+            <div className="max-w-[1000px] mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
                     <h2 className="font-semibold text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
@@ -36,35 +36,23 @@ const WhoCanJoin: React.FC = () => {
                 </div>
 
                 {/* Eligibility Criteria Card */}
-                <div className={`rounded-xl sm:rounded-2xl shadow-lg border transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                    ? 'bg-gray-800 border-gray-700'
-                    : 'bg-white border-gray-200'
-                    }`}>
-                    <div className="p-6 sm:p-8 md:p-10">
+                <div className="bg-white border border-[#E6E7EB] rounded-2xl shadow-lg">
+                    <div className="py-5 px-[10px]">
                         {/* Eligibility List */}
-                        <div className="space-y-4 sm:space-y-5 mb-6 sm:mb-8">
+                        <div className="space-y-4 mb-6">
                             {eligibilityCriteria.map((criterion, index) => (
                                 <div
                                     key={index}
-                                    className={`flex items-center gap-4 p-4 sm:p-5 rounded-lg border transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                                        ? 'bg-gray-800/50 border-gray-700'
-                                        : 'bg-white border-gray-200'
-                                        }`}
+                                    className="flex items-center gap-3 h-[70px] p-[10px] bg-white border border-[#E6E7EB] rounded-2xl"
                                 >
                                     {/* Checkmark Icon */}
                                     <div className="flex-shrink-0">
-                                        <div className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                            ? 'bg-[#A800FF]'
-                                            : 'bg-[#00BAE8]'
-                                            }`}>
-                                            <Check className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
+                                        <div className="w-6 h-6 rounded-full bg-[#00BAE8] flex items-center justify-center">
+                                            <Check className="w-5 h-5 text-white stroke-[2.5]" />
                                         </div>
                                     </div>
                                     {/* Criterion Text */}
-                                    <p className={`text-sm sm:text-base md:text-lg font-medium transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                        ? 'text-gray-200'
-                                        : 'text-gray-800'
-                                        }`}>
+                                    <p className="text-base font-medium text-gray-800">
                                         {criterion}
                                     </p>
                                 </div>
@@ -72,35 +60,18 @@ const WhoCanJoin: React.FC = () => {
                         </div>
 
                         {/* Separator */}
-                        <div className={`h-px mb-6 sm:mb-8 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                            ? 'bg-gray-700'
-                            : 'bg-gray-200'
-                            }`} />
+                        <div className="h-px bg-[#E6E7EB] mb-6" />
 
                         {/* Limited Seats Call-out */}
-                        <div className={`rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 border-2 transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                            ? 'bg-orange-500/20 border-orange-500/50'
-                            : 'bg-orange-50 border-orange-200'
-                            }`}>
-                            <div className="flex items-center gap-3 sm:gap-4">
-                                {/* Users Icon */}
-                                <div className={`flex-shrink-0 p-2 sm:p-3 rounded-lg ${mounted && resolvedTheme === 'dark'
-                                    ? 'bg-orange-500/30'
-                                    : 'bg-orange-100'
-                                    }`}>
-                                    <Users className={`w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 ${mounted && resolvedTheme === 'dark'
-                                        ? 'text-orange-400'
-                                        : 'text-orange-600'
-                                        }`} />
-                                </div>
-                                {/* Limited Seats Text */}
-                                <p className={`text-sm sm:text-base md:text-lg font-semibold transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                    ? 'text-orange-300'
-                                    : 'text-orange-700'
-                                    }`}>
-                                    Limited Seats: Only 12 per Batch
-                                </p>
+                        <div className="bg-[#FFF8EC] border border-[#FFD4A1] rounded-2xl h-[70px] p-[10px] flex items-center gap-4">
+                            {/* Users Icon */}
+                            <div className="flex-shrink-0">
+                                <Users className="w-6 h-6 text-[#FFD4A1]" />
                             </div>
+                            {/* Limited Seats Text */}
+                            <p className="text-base font-semibold text-gray-800">
+                                Limited Seats: Only 12 per Batch
+                            </p>
                         </div>
                     </div>
                 </div>
