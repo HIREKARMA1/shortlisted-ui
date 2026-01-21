@@ -24,20 +24,17 @@ const Footer: React.FC = () => {
         { name: "Solviq AI", href: "https://www.solviqai.in/" }
     ];
 
-    const companyLinks = [
-        { name: "About Us", href: "https://www.hirekarma.in/" },
+    const aboutUsLinks = [
         { name: "Our Story", href: "https://www.hirekarma.in/about-us/our-story" },
         { name: "Mission & Value", href: "https://www.hirekarma.in/about-us/mission-value" },
         { name: "People", href: "https://www.hirekarma.in/about-us/people" }
     ];
 
-    const supportLinks = [
-        { name: "Contact Us", href: "#" },
-        { name: "Help Center", href: "#" },
-        { name: "FAQ", href: "#" }
+    const contactLinks = [
+        { name: "Contact Us", href: "#" }
     ];
 
-    const legalLinks = [
+    const privacyPolicyLinks = [
         { name: "Terms of Service", href: "#" },
         { name: "Cookie Policy", href: "#" },
         { name: "Refund Policy", href: "#" },
@@ -57,11 +54,11 @@ const Footer: React.FC = () => {
             : 'bg-white'
             }`}>
             <div className="w-[95vw] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 sm:gap-6 lg:gap-12 xl:gap-[103px]">
                     {/* Brand & Contact Information */}
-                    <div className="col-span-1 lg:col-span-2">
+                    <div className="col-span-1 lg:col-span-2 text-center sm:text-left">
                         <div className="mb-6">
-                            <div className="flex items-center gap-3 mb-2">
+                            <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
                                 <Link href="/" className="flex items-center h-full">
                                     {logoUrl ? (
                                         <div className="relative h-10 w-auto flex items-center">
@@ -89,7 +86,7 @@ const Footer: React.FC = () => {
 
                         {/* Contact Information */}
                         <div className="space-y-4">
-                            <div className="flex items-start gap-3">
+                            <div className="flex items-start justify-center sm:justify-start gap-3">
                                 <MapPin className={`w-5 h-5 mt-0.5 flex-shrink-0 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                     ? 'text-gray-400'
                                     : 'text-gray-600'
@@ -101,7 +98,7 @@ const Footer: React.FC = () => {
                                     Room No: 109, 1st Floor, <br /> Tower A, O-HUB, Bhubaneswar
                                 </p>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center sm:justify-start gap-3">
                                 <Mail className={`w-5 h-5 flex-shrink-0 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                     ? 'text-gray-400'
                                     : 'text-gray-600'
@@ -113,7 +110,7 @@ const Footer: React.FC = () => {
                                     info@hirekarma.in
                                 </a>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center sm:justify-start gap-3">
                                 <Phone className={`w-5 h-5 flex-shrink-0 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                     ? 'text-gray-400'
                                     : 'text-gray-600'
@@ -128,8 +125,30 @@ const Footer: React.FC = () => {
                         </div>
                     </div>
 
+                    {/* About Us */}
+                    <div className="text-center sm:text-left">
+                        <h4 className={`text-base font-bold mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
+                            ? 'text-white'
+                            : 'text-gray-900'
+                            }`}>
+                            About Us
+                        </h4>
+                        <ul className="space-y-3">
+                            {aboutUsLinks.map((link, index) => (
+                                <li key={index}>
+                                    <Link href={link.href} className={`text-sm hover:underline transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
+                                        ? 'text-gray-300 hover:text-white'
+                                        : 'text-gray-700 hover:text-gray-900'
+                                        }`}>
+                                        {link.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
                     {/* Products */}
-                    <div>
+                    <div className="text-center sm:text-left">
                         <h4 className={`text-base font-bold mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-white'
                             : 'text-gray-900'
@@ -150,16 +169,16 @@ const Footer: React.FC = () => {
                         </ul>
                     </div>
 
-                    {/* Company */}
-                    <div>
+                    {/* Contact */}
+                    <div className="text-center sm:text-left">
                         <h4 className={`text-base font-bold mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-white'
                             : 'text-gray-900'
                             }`}>
-                            Company
+                            Contact
                         </h4>
                         <ul className="space-y-3">
-                            {companyLinks.map((link, index) => (
+                            {contactLinks.map((link, index) => (
                                 <li key={index}>
                                     <Link href={link.href} className={`text-sm hover:underline transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                         ? 'text-gray-300 hover:text-white'
@@ -172,16 +191,16 @@ const Footer: React.FC = () => {
                         </ul>
                     </div>
 
-                    {/* Legal */}
-                    <div>
+                    {/* Privacy Policy */}
+                    <div className="text-center sm:text-left">
                         <h4 className={`text-base font-bold mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-white'
                             : 'text-gray-900'
                             }`}>
-                            Legal
+                            Privacy Policy
                         </h4>
                         <ul className="space-y-3">
-                            {legalLinks.map((link, index) => (
+                            {privacyPolicyLinks.map((link, index) => (
                                 <li key={index}>
                                     <Link href={link.href} className={`text-sm hover:underline transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                         ? 'text-gray-300 hover:text-white'
@@ -208,7 +227,7 @@ const Footer: React.FC = () => {
                             ? 'text-gray-400'
                             : 'text-gray-600'
                             }`}>
-                            © 2025 Shortlisted. All rights reserved.
+                            © 2025 Solviq AI. All rights reserved. Made with • in India
                         </p>
                         <p className={`text-sm mt-1 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-gray-400'
@@ -234,15 +253,12 @@ const Footer: React.FC = () => {
                                     key={index}
                                     href={social.href}
                                     aria-label={social.label}
-                                    className={`w-10 h-10 rounded-full border border-black bg-white flex items-center justify-center transition-all duration-300 hover:scale-110 ${mounted && resolvedTheme === 'dark'
-                                        ? 'border-white bg-gray-900'
-                                        : 'border-black bg-white'
-                                        }`}
+                                    className="w-10 h-10 rounded-full border border-black bg-white flex items-center justify-center transition-all duration-300 hover:scale-110"
                                 >
                                     {isGoogle ? (
-                                        <span className={`text-base font-bold ${mounted && resolvedTheme === 'dark' ? 'text-white' : 'text-black'}`}>G</span>
+                                        <span className="text-base font-bold text-black">G</span>
                                     ) : IconComponent ? (
-                                        <IconComponent className={`w-5 h-5 ${mounted && resolvedTheme === 'dark' ? 'text-white' : 'text-black'}`} />
+                                        <IconComponent className="w-5 h-5 text-black" />
                                     ) : null}
                                 </a>
                             );
