@@ -17,11 +17,11 @@ export function HowProgramWorksSection() {
         <section className="relative bg-[#F0F9F4] py-16 lg:py-24">
             <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
                 {/* Title and Subtitle */}
-                <div className="text-center mb-4">
-                    <h1 className="font-semibold text-[64px] leading-[1.1] text-gray-900 font-poppins mb-4">
+                <div className="text-center mb-4 px-2 sm:px-0">
+                    <h1 className="font-semibold text-[36px] max-[375px]:text-[32px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.1] text-gray-900 font-poppins mb-4 break-words">
                         How the Program Works
                     </h1>
-                    <p className="font-normal text-2xl text-gray-700 font-poppins">
+                    <p className="font-normal text-base max-[375px]:text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-700 font-poppins">
                         Two phases. One placement outcome. </p>
                 </div>
 

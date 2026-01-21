@@ -15,11 +15,12 @@ export function WhyShortlistedSection() {
     <section className="relative bg-white dark:bg-[#1a1f2e] py-16 lg:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
         {/* Title */}
-        <div className="text-center mb-12">
-          <h1 className="font-semibold text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
+        <div className="text-center mb-12 px-2 sm:px-0">
+          <h1 className="font-semibold text-[36px] max-[375px]:text-[32px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4 break-words">
             Why SHORTLISTED Exists
           </h1>
-          <p className="font-normal text-2xl text-gray-700 dark:text-gray-300 font-poppins">
+          
+          <p className="font-normal text-base max-[375px]:text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-700 dark:text-gray-300 font-poppins">
             You&apos;re stuck in a loop. We&apos;re here to break it.
           </p>
         </div>
