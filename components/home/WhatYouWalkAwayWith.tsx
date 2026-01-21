@@ -25,50 +25,35 @@ const WhatYouWalkAwayWith: React.FC = () => {
             ? 'bg-gray-900'
             : 'bg-white'
             }`}>
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-[1000px] mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
-                    <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-white'
-                        : 'text-gray-900'
-                        }`}>
+                    <h2 className="font-semibold text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
                         What You Walk Away With
                     </h2>
-                    <p className={`text-[24px] font-normal leading-[100%] text-[#494949] transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-gray-300'
-                        : 'text-[#494949]'
-                        }`}>
+                    <p className="font-normal text-2xl text-gray-700 dark:text-gray-300 font-poppins">
                         Tangible outcomes, not empty promises
                     </p>
                 </div>
 
                 {/* Outcomes Card */}
-                <div className={`rounded-xl sm:rounded-2xl shadow-lg border transition-all duration-500 mb-8 sm:mb-12 ${mounted && resolvedTheme === 'dark'
-                    ? 'bg-white border-gray-200'
-                    : 'bg-white border-gray-200'
-                    }`}>
-                    <div className="p-6 sm:p-8 md:p-10">
+                <div className="bg-white border border-[#E6E7EB] rounded-2xl shadow-lg mb-8 sm:mb-12">
+                    <div className="py-5 px-[10px]">
                         {/* Outcomes List */}
-                        <div className="space-y-4 sm:space-y-5">
+                        <div className="space-y-4">
                             {outcomes.map((outcome, index) => (
                                 <div
                                     key={index}
-                                    className={`flex items-center gap-4 p-4 sm:p-5 rounded-lg border transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                                        ? 'bg-[#E6F7ED] border-[#D0EDDD]'
-                                        : 'bg-[#E6F7ED] border-[#D0EDDD]'
-                                        }`}
+                                    className="flex items-center gap-3 h-[70px] p-[10px] bg-[#E6F7ED] border border-[#D0EDDD] rounded-2xl"
                                 >
                                     {/* Checkmark Icon */}
                                     <div className="flex-shrink-0">
-                                        <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-[#00AA28] flex items-center justify-center">
-                                            <Check className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white stroke-[3]" />
+                                        <div className="w-6 h-6 rounded-full bg-[#00AA28] flex items-center justify-center">
+                                            <Check className="w-5 h-5 text-white stroke-[2.5]" />
                                         </div>
                                     </div>
                                     {/* Outcome Text */}
-                                    <p className={`text-sm sm:text-base md:text-lg font-medium transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                        ? 'text-gray-800'
-                                        : 'text-gray-800'
-                                        }`}>
+                                    <p className="text-base font-medium text-gray-800">
                                         {outcome}
                                     </p>
                                 </div>
@@ -78,18 +63,13 @@ const WhatYouWalkAwayWith: React.FC = () => {
                 </div>
 
                 {/* Bottom Banner */}
-                <div className={`rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                    ? 'bg-[#A800FF]'
-                    : 'bg-[#00BAE8]'
-                    }`}>
-                    <div className="text-center">
-                        <p className={`text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 transition-colors duration-500 text-white`}>
-                            This is not a course. This is placementexecution
-                        </p>
-                        <p className={`text-base sm:text-lg md:text-xl font-normal transition-colors duration-500 text-white`}>
-                            60 days of focused action to get you placed
-                        </p>
-                    </div>
+                <div className="bg-[#00BAE8] rounded-lg py-[9px] px-6 max-w-[1000px] mx-auto text-center">
+                    <p className="text-3xl font-bold mb-2 text-white">
+                        This is not a course. This is placementexecution
+                    </p>
+                    <p className="text-xl font-normal text-white">
+                        60 days of focused action to get you placed
+                    </p>
                 </div>
             </div>
         </div>

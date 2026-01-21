@@ -56,55 +56,42 @@ const WhatMakesDifferent: React.FC = () => {
             ? 'bg-gray-900'
             : 'bg-white'
             }`}>
-            <div className="w-[90vw] max-w-[90vw] mx-auto">
+            <div className="max-w-[90%] mx-auto">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
-                    <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-white'
-                        : 'text-gray-900'
-                        }`}>
+                    <h2 className="font-semibold text-[64px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
                         What Makes SHORTLISTED Different
                     </h2>
-                    <p className={`text-[24px] font-normal leading-[100%] text-[#494949] transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'text-[#ffffff]'
-                        : 'text-[#494949]'
-                        }`}>
+                    <p className="font-normal text-2xl text-gray-700 dark:text-gray-300 font-poppins">
                         Premium, focused, and outcome-driven
                     </p>
                 </div>
 
                 {/* Features Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((feature, index) => {
                         const IconComponent = feature.icon;
+                        const isSolviqDisha = feature.title === "Solviq + DISHA";
                         return (
                             <div
                                 key={index}
-                                className={`rounded-xl sm:rounded-2xl p-6 sm:p-8 border transition-all duration-500 hover:shadow-lg ${mounted && resolvedTheme === 'dark'
-                                    ? 'bg-[#FFFFFF] border-[#D0D0D0]'
-                                    : 'bg-[#FFFFFF] border-[#D0D0D0]'
-                                    }`}
+                                className="bg-white border border-[#D0D0D0] rounded-2xl p-4 h-[185px] flex flex-col hover:shadow-lg transition-all duration-500"
                             >
                                 {/* Icon */}
-                                <div className="mb-4 sm:mb-6">
-                                    <div className="inline-flex p-3 sm:p-4 rounded-lg bg-[#00BAE8]">
-                                        <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                                <div className="mb-4 relative">
+                                    <div className="w-[45px] h-[45px] rounded-md bg-[#00BAE8] flex items-center justify-center">
+                                        <IconComponent className="w-7 h-7 text-white" />
                                     </div>
+                          
                                 </div>
 
                                 {/* Title */}
-                                <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                    ? 'text-gray-900'
-                                    : 'text-gray-900'
-                                    }`}>
+                                <h3 className="text-2xl font-medium text-black font-poppins mb-2 leading-[24px]">
                                     {feature.title}
                                 </h3>
 
                                 {/* Description */}
-                                <p className={`text-sm sm:text-base transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                                    ? 'text-gray-700'
-                                    : 'text-gray-600'
-                                    }`}>
+                                <p className="text-sm text-gray-600 font-poppins flex-grow">
                                     {feature.description}
                                 </p>
                             </div>
