@@ -15,7 +15,7 @@ export function Loader({ className, size = "md" }: LoaderProps) {
   return (
     <div
       className={cn(
-        "border-primary-500 border-t-transparent rounded-full animate-spin",
+        "border-[#00a2e5] border-t-transparent rounded-full animate-spin",
         sizeClasses[size],
         className
       )}

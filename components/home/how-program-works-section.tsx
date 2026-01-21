@@ -89,7 +89,7 @@ export function HowProgramWorksSection() {
                     <div className="relative p-4 lg:p-6  mt-4 lg:mt-8">
                         <div className="relative w-full h-full min-h-[250px] lg:min-h-[320px] rounded-lg overflow-hidden">
                             <OptimizedImage
-                                src="https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/homepage2.jpeg"
+                                src="https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/herosection3.jpeg"
                                 alt="Students in-person training"
                                 fill
                                 className="object-cover"
