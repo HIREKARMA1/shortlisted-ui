@@ -31,7 +31,7 @@ export default function PrivacyPolicyPage() {
                     </h2>
                     <ul className="space-y-3 font-normal text-base lg:text-lg text-gray-700 dark:text-gray-300 font-poppins leading-relaxed list-disc list-inside">
                         <li>
-                            <span className="font-semibold">Candidate Information:</span> Details such as your name, email address, contact number, and professional history shared during the "shortlisting" or application process.
+                            <span className="font-semibold">Candidate Information:</span> Details such as your name, email address, contact number, and professional history shared during the &quot;shortlisting&quot; or application process.
                         </li>
                         <li>
                             <span className="font-semibold">Performance Data:</span> Information generated through the Shortlisted platform, including assessment results, interview recordings, or skill evaluations.

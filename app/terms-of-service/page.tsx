@@ -17,7 +17,7 @@ export default function TermsOfServicePage() {
                 {/* Introduction */}
                 <div className="mb-8">
                     <p className="font-normal text-base lg:text-lg text-gray-700 dark:text-gray-300 font-poppins leading-relaxed">
-                        Welcome to Shortlisted. These Terms of Service ("Terms") govern your access to and use of the Shortlisted website and services, a specialized sub-brand owned and operated by HireKarma Private Limited. By using our platform, you agree to be bound by these Terms.
+                        Welcome to Shortlisted. These Terms of Service (&quot;Terms&quot;) govern your access to and use of the Shortlisted website and services, a specialized sub-brand owned and operated by HireKarma Private Limited. By using our platform, you agree to be bound by these Terms.
                     </p>
                 </div>
 

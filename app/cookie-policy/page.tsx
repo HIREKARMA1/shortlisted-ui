@@ -44,7 +44,7 @@ export default function CookiePolicyPage() {
                             <span className="font-semibold">Essential Cookies:</span> These are strictly necessary to provide you with services available through our platform and to use some of its features, such as accessing secure areas (e.g., candidate dashboards).
                         </li>
                         <li>
-                            <span className="font-semibold">Performance & Analytics:</span> These cookies help us understand how visitors interact with the platform by collecting and reporting information anonymously. This helps us improve the "shortlisting" algorithm and user flow.
+                            <span className="font-semibold">Performance & Analytics:</span> These cookies help us understand how visitors interact with the platform by collecting and reporting information anonymously. This helps us improve the &quot;shortlisting&quot; algorithm and user flow.
                         </li>
                         <li>
                             <span className="font-semibold">Functionality Cookies:</span> These allow the platform to remember choices you make (such as your username or language) and provide enhanced, more personal features.
@@ -86,7 +86,7 @@ export default function CookiePolicyPage() {
                                         Persistent Cookies
                                     </td>
                                     <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 font-normal text-base lg:text-lg text-gray-700 dark:text-gray-300 font-poppins">
-                                        Stay on your device for a set period. Used to remember your preferences (like "Remember Me").
+                                        Stay on your device for a set period. Used to remember your preferences (like &quot;Remember Me&quot;).
                                     </td>
                                 </tr>
                                 <tr>
