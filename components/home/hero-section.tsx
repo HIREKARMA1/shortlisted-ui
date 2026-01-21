@@ -24,7 +24,7 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative min-h-screen flex items-center bg-white dark:bg-[#1a1f2e] overflow-hidden max-[375px]:pt-8">
+    <section className="relative min-h-screen md:min-h-0 md:py-8 lg:min-h-screen lg:py-0 pt-4 flex items-center md:items-start lg:items-center bg-white dark:bg-[#1a1f2e] overflow-hidden max-[375px]:pt-8">
       <style dangerouslySetInnerHTML={{
         __html: `
         @media (min-width: 1024px) {
