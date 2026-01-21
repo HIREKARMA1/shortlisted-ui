@@ -6,7 +6,7 @@ import { Check } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-
+import Link from "next/link"
 export function HeroSection() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -116,7 +116,7 @@ export function HeroSection() {
                   "flex items-center justify-center gap-2 h-auto"
                 )}
               >
-                Register Now
+                <Link href="https://forms.gle/oDq7HQkzx6zk3Nz76">Register Now</Link>
                 <svg
                   width="24"
                   height="24"
