@@ -134,17 +134,27 @@ export function HeroSection() {
                   />
                 </svg>
               </Button>
-              <Button
-                variant="outline"
-                className={cn(
-                  "border-2 border-gray-900 dark:border-white",
-                  "text-gray-900 dark:text-white",
-                  "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800",
-                  "rounded-lg px-5 py-2 font-semibold text-[20px] font-poppins h-auto"
-                )}
-              >
-                Check Eligibility
-              </Button>
+              <div className="relative group">
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "border-2 border-gray-900 dark:border-white",
+                    "text-gray-900 dark:text-white",
+                    "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800",
+                    "rounded-lg px-5 py-2 font-semibold text-[20px] font-poppins h-auto"
+                  )}
+                >
+                  Check Eligibility
+                </Button>
+                {/* Tooltip */}
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 dark:bg-gray-700 text-white text-sm font-poppins rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                  For 2025 & 2026 Graduates
+                  {/* Tooltip arrow */}
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                    <div className="border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
