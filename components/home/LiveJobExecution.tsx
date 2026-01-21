@@ -15,12 +15,12 @@ const LiveJobExecution: React.FC = () => {
 
     // HireKarma Logo URLs based on theme
     const hirekarmaLogoUrl = mounted && resolvedTheme === "dark"
-        ? "https://hirekarma.s3.us-east-1.amazonaws.com/hirekarma_ui/home_ui/HKlogowhite.png"
+        ? "https://hirekarma.s3.us-east-1.amazonaws.com/hirekarma_ui/home_ui/HKlogoblack.png"
         : "https://hirekarma.s3.us-east-1.amazonaws.com/hirekarma_ui/home_ui/HKlogoblack.png";
 
     // Solviq Logo URLs based on theme
     const solviqLogoUrl = mounted && resolvedTheme === "dark"
-        ? "https://solviqai.s3.ap-south-1.amazonaws.com/solviqdark.png"
+        ? "https://solviqai.s3.ap-south-1.amazonaws.com/solviqligt.png"
         : "https://solviqai.s3.ap-south-1.amazonaws.com/solviqligt.png";
 
     const solviqFeatures = [
@@ -67,10 +67,10 @@ const LiveJobExecution: React.FC = () => {
                     {/* Solviq Premium Card */}
                     <div className="bg-[#EBF9FF] border border-[#B8DCFF] rounded-2xl" style={{ padding: '8px 10px' }}>
                         <div className="p-6">
-                            {/* Logo and Title/Subtitle - Logo on left, text stacked on right */}
-                            <div className="flex items-start gap-5 mb-6">
+                            {/* Logo and Title/Subtitle - Vertical on small, horizontal on larger screens */}
+                            <div className="flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-8 mb-6">
                                 {solviqLogoUrl && (
-                                    <div className="relative h-8 sm:h-10 w-auto flex items-center flex-shrink-0">
+                                    <div className="relative h-8 sm:h-10 w-auto flex items-center justify-center md:justify-start flex-shrink-0">
                                         <Image
                                             src={solviqLogoUrl}
                                             alt="Solviq Logo"
@@ -83,7 +83,7 @@ const LiveJobExecution: React.FC = () => {
                                     </div>
                                 )}
                                 {/* Title and Subtitle stacked vertically */}
-                                <div className="flex flex-col">
+                                <div className="flex flex-col items-center md:items-start">
                                     <h3 className="font-bold text-2xl lg:text-3xl text-gray-900 font-poppins mb-1">
                                         Solviq Premium
                                     </h3>
@@ -113,10 +113,10 @@ const LiveJobExecution: React.FC = () => {
                     {/* DISHA Premium Card */}
                     <div className="bg-[#FFF3FA] border border-[#EFD3FF] rounded-2xl" style={{ padding: '8px 10px' }}>
                         <div className="p-6">
-                            {/* Logo and Title/Subtitle - Logo on left, text stacked on right */}
-                            <div className="flex items-start gap-5 mb-6">
+                            {/* Logo and Title/Subtitle - Vertical on small, horizontal on larger screens */}
+                            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-8 mb-6">
                                 {hirekarmaLogoUrl && (
-                                    <div className="relative h-8 sm:h-10 w-auto flex items-center flex-shrink-0">
+                                    <div className="relative h-8 sm:h-10 w-auto flex items-center justify-center md:justify-start flex-shrink-0">
                                         <Image
                                             src={hirekarmaLogoUrl}
                                             alt="HireKarma Logo"
@@ -129,7 +129,7 @@ const LiveJobExecution: React.FC = () => {
                                     </div>
                                 )}
                                 {/* Title and Subtitle stacked vertically */}
-                                <div className="flex flex-col">
+                                <div className="flex flex-col items-center md:items-start">
                                     <h3 className="font-bold text-2xl lg:text-3xl text-gray-900 font-poppins mb-1">
                                         DISHA Premium
                                     </h3>
