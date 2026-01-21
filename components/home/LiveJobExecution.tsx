@@ -38,24 +38,18 @@ const LiveJobExecution: React.FC = () => {
     ];
 
     return (
-        <div className={`relative py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 ${mounted && resolvedTheme === 'dark'
-            ? 'bg-gray-900'
-            : 'bg-[#EAF8F8]'
-            }`}>
-            <div className="max-w-[90%] mx-auto">
+        <section className="relative bg-[#F0F9F4] py-16 lg:py-24">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
                 {/* Header Section */}
-                <div className="text-center mb-8 sm:mb-12">
-                    <h2 className="font-semibold text-3xl sm:text-4xl md:text-5xl lg:text-[64px] leading-[1.1] text-gray-900 dark:text-white font-poppins mb-4">
+                <div className="text-center mb-4">
+                    <h1 className="font-semibold text-[64px] leading-[1.1] text-gray-900 font-poppins mb-4">
                         Premium Practice + Live Job Execution
-                    </h2>
+                    </h1>
                     
                     {/* Duration with Calendar Icon */}
                     <div className="flex items-center justify-center gap-2 mb-4">
-                        <Calendar className={`w-5 h-5 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
-                            ? 'text-gray-400'
-                            : 'text-gray-700'
-                            }`} />
-                        <p className={`font-normal text-lg sm:text-xl text-gray-700 dark:text-gray-300 font-poppins`}>
+                        <Calendar className="w-5 h-5 text-gray-700 font-poppins" />
+                        <p className="font-normal text-2xl text-gray-700 font-poppins">
                             6-8 Weeks
                         </p>
                     </div>
@@ -71,10 +65,7 @@ const LiveJobExecution: React.FC = () => {
                 {/* Premium Cards Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-12">
                     {/* Solviq Premium Card */}
-                    <div className={`bg-[#EBF9FF] border border-[#B8DCFF] rounded-2xl transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'bg-gray-800 border-gray-700'
-                        : ''
-                        }`} style={{ padding: '8px 10px' }}>
+                    <div className="bg-[#EBF9FF] border border-[#B8DCFF] rounded-2xl" style={{ padding: '8px 10px' }}>
                         <div className="p-6">
                             {/* Logo and Title/Subtitle - Logo on left, text stacked on right */}
                             <div className="flex items-start gap-5 mb-6">
@@ -93,10 +84,10 @@ const LiveJobExecution: React.FC = () => {
                                 )}
                                 {/* Title and Subtitle stacked vertically */}
                                 <div className="flex flex-col">
-                                    <h3 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white font-poppins mb-1">
+                                    <h3 className="font-bold text-2xl lg:text-3xl text-gray-900 font-poppins mb-1">
                                         Solviq Premium
                                     </h3>
-                                    <p className="font-normal text-lg text-gray-700 dark:text-gray-300 font-poppins">
+                                    <p className="font-normal text-base lg:text-lg text-gray-700 font-poppins">
                                         Live Job Opportunities
                                     </p>
                                 </div>
@@ -107,10 +98,10 @@ const LiveJobExecution: React.FC = () => {
                                 {solviqFeatures.map((feature, index) => (
                                     <div
                                         key={index}
-                                        className="bg-white dark:bg-gray-700 rounded-xl p-3 flex items-center gap-3 shadow-sm"
+                                        className="bg-white rounded-xl p-3 flex items-center gap-3 shadow-sm"
                                     >
                                         <div className="w-3 h-3 rounded-full bg-[#00BAE8] flex-shrink-0"></div>
-                                        <p className="text-base text-gray-700 dark:text-gray-300 font-poppins">
+                                        <p className="font-normal text-[20px] leading-relaxed text-gray-900 font-poppins">
                                             {feature}
                                         </p>
                                     </div>
@@ -120,10 +111,7 @@ const LiveJobExecution: React.FC = () => {
                     </div>
 
                     {/* DISHA Premium Card */}
-                    <div className={`bg-[#FFF3FA] border border-[#EFD3FF] rounded-2xl transition-all duration-500 ${mounted && resolvedTheme === 'dark'
-                        ? 'bg-gray-800 border-gray-700'
-                        : ''
-                        }`} style={{ padding: '8px 10px' }}>
+                    <div className="bg-[#FFF3FA] border border-[#EFD3FF] rounded-2xl" style={{ padding: '8px 10px' }}>
                         <div className="p-6">
                             {/* Logo and Title/Subtitle - Logo on left, text stacked on right */}
                             <div className="flex items-start gap-5 mb-6">
@@ -142,10 +130,10 @@ const LiveJobExecution: React.FC = () => {
                                 )}
                                 {/* Title and Subtitle stacked vertically */}
                                 <div className="flex flex-col">
-                                    <h3 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white font-poppins mb-1">
+                                    <h3 className="font-bold text-2xl lg:text-3xl text-gray-900 font-poppins mb-1">
                                         DISHA Premium
                                     </h3>
-                                    <p className="font-normal text-lg text-gray-700 dark:text-gray-300 font-poppins">
+                                    <p className="font-normal text-base lg:text-lg text-gray-700 font-poppins">
                                         Live Job Opportunities
                                     </p>
                                 </div>
@@ -156,10 +144,10 @@ const LiveJobExecution: React.FC = () => {
                                 {dishaFeatures.map((feature, index) => (
                                     <div
                                         key={index}
-                                        className="bg-white dark:bg-gray-700 rounded-xl p-3 flex items-center gap-3 shadow-sm"
+                                        className="bg-white rounded-xl p-3 flex items-center gap-3 shadow-sm"
                                     >
                                         <div className="w-3 h-3 rounded-full bg-[#B14CFF] flex-shrink-0"></div>
-                                        <p className="text-base text-gray-700 dark:text-gray-300 font-poppins">
+                                        <p className="font-normal text-[20px] leading-relaxed text-gray-900 font-poppins">
                                             {feature}
                                         </p>
                                     </div>
@@ -171,12 +159,12 @@ const LiveJobExecution: React.FC = () => {
 
                 {/* Bottom Supporting Text */}
                 <div className="text-center">
-                    <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-gray-900 dark:text-white font-poppins">
+                    <p className="font-normal text-2xl text-gray-700 font-poppins">
                         Complete support from preparation to placement execution
                     </p>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

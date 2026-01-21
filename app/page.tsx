@@ -14,6 +14,7 @@ export default function HomePage() {
             <HeroSection />
             <WhyShortlistedSection />
             <HowProgramWorksSection />
+            <LiveJobExecution />
             <WhoCanJoin />
             <WhatMakesDifferent />
             <WhatYouWalkAwayWith />
