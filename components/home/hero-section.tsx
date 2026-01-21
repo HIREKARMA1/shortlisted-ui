@@ -62,7 +62,7 @@ export function HeroSection() {
           className="hero-image-right absolute top-1/2 transform -translate-y-1/2 w-[500px] xl:w-[550px] aspect-square z-10 pointer-events-auto"
         >
           <OptimizedImage
-            src="https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/heropage1.jpeg"
+            src="https://hirekarma.s3.us-east-1.amazonaws.com/shortlisted/homepage2.jpeg"
             alt="Students working on laptops"
             fill
             className="rounded-full object-cover"
