@@ -48,7 +48,7 @@ const CTABanner: React.FC = () => {
                             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                         </Button>
                         <Link 
-                            href="tel:+919078683876"
+                            href="tel:+91 91246 17797"
                             className="bg-transparent border border-white text-white hover:bg-white/10 h-[50px] px-4 sm:px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-[10px] w-full sm:w-auto whitespace-nowrap"
                         >
                             <Phone className="w-4 h-4 sm:w-5 sm:h-5" />

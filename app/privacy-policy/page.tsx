@@ -133,7 +133,7 @@ export default function PrivacyPolicyPage() {
                             <span className="font-semibold">Email:</span> <a href="mailto:info@hirekarma.in" className="text-[#00a2e5] hover:underline">info@hirekarma.in</a>
                         </li>
                         <li>
-                            <span className="font-semibold">Phone:</span> <a href="tel:+919078683876" className="text-[#00a2e5] hover:underline">+91 90786 83876</a>
+                            <span className="font-semibold">Phone:</span> <a href="tel:+919124617797" className="text-[#00a2e5] hover:underline">+91 91246 17797</a>
                         </li>
                         <li>
                             <span className="font-semibold">Address:</span> Room No: 109, 1st Floor, Tower A, O-HUB, Bhubaneswar

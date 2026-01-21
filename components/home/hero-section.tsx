@@ -24,7 +24,7 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative min-h-screen flex items-center bg-white dark:bg-[#1a1f2e] overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-white dark:bg-[#1a1f2e] overflow-hidden max-[375px]:pt-8">
       <style dangerouslySetInnerHTML={{
         __html: `
         @media (min-width: 1024px) {
@@ -113,7 +113,7 @@ export function HeroSection() {
                 className={cn(
                   "bg-[#00a2e5] hover:bg-[#0091cc] text-white rounded-lg",
                   "px-5 py-2 font-semibold text-[20px] font-poppins",
-                  "flex items-center justify-center gap-2 h-auto"
+                  "flex items-center justify-center gap-2 h-auto w-full sm:w-auto"
                 )}
               >
                 <Link href="https://forms.gle/oDq7HQkzx6zk3Nz76">Register Now</Link>
@@ -134,14 +134,14 @@ export function HeroSection() {
                   />
                 </svg>
               </Button>
-              <div className="relative group">
+              <div className="relative group w-full sm:w-auto">
                 <Button
                   variant="outline"
                   className={cn(
                     "border-2 border-gray-900 dark:border-white",
                     "text-gray-900 dark:text-white",
                     "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800",
-                    "rounded-lg px-5 py-2 font-semibold text-[20px] font-poppins h-auto"
+                    "rounded-lg px-5 py-2 font-semibold text-[20px] font-poppins h-auto w-full sm:w-auto"
                   )}
                 >
                   Check Eligibility

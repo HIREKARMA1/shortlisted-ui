@@ -119,7 +119,7 @@ const Footer: React.FC = () => {
                                     ? 'text-gray-300'
                                     : 'text-gray-700'
                                     }`}>
-                                    +91 90786 83876
+                                    +91 91246 17797
                                 </a>
                             </div>
                         </div>
