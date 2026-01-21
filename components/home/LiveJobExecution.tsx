@@ -41,15 +41,15 @@ const LiveJobExecution: React.FC = () => {
         <section className="relative bg-[#F0F9F4] py-16 lg:py-24">
             <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px]">
                 {/* Header Section */}
-                <div className="text-center mb-4">
-                    <h1 className="font-semibold text-[64px] leading-[1.1] text-gray-900 font-poppins mb-4">
+                <div className="text-center mb-4 px-2 sm:px-0">
+                    <h1 className="font-semibold text-[36px] max-[375px]:text-[32px] sm:text-[48px] md:text-[56px] lg:text-[64px] leading-[1.1] text-gray-900 font-poppins mb-4 break-words">
                         Premium Practice + Live Job Execution
                     </h1>
                     
                     {/* Duration with Calendar Icon */}
                     <div className="flex items-center justify-center gap-2 mb-4">
                         <Calendar className="w-5 h-5 text-gray-700 font-poppins" />
-                        <p className="font-normal text-2xl text-gray-700 font-poppins">
+                        <p className="font-normal text-base max-[375px]:text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-700 font-poppins">
                             6-8 Weeks
                         </p>
                     </div>
@@ -158,8 +158,8 @@ const LiveJobExecution: React.FC = () => {
                 </div>
 
                 {/* Bottom Supporting Text */}
-                <div className="text-center">
-                    <p className="font-normal text-2xl text-gray-700 font-poppins">
+                <div className="text-center px-2 sm:px-0">
+                    <p className="font-normal text-base max-[375px]:text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-700 font-poppins">
                         Complete support from preparation to placement execution
                     </p>
                 </div>

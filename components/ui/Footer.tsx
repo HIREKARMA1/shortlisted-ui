@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
 
                         {/* Contact Information */}
                         <div className="space-y-4">
-                            <div className="flex items-start justify-center sm:justify-start gap-3">
+                            <div className="flex items-start justify-center sm:justify-start gap-1 sm:gap-3">
                                 <MapPin className={`w-5 h-5 mt-0.5 flex-shrink-0 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                     ? 'text-gray-400'
                                     : 'text-gray-600'
@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
                                     Room No: 109, 1st Floor, <br /> Tower A, O-HUB, Bhubaneswar
                                 </p>
                             </div>
-                            <div className="flex items-center justify-center sm:justify-start gap-3">
+                            <div className="flex items-center justify-center sm:justify-start gap-1 sm:gap-3">
                                 <Mail className={`w-5 h-5 flex-shrink-0 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                     ? 'text-gray-400'
                                     : 'text-gray-600'
@@ -110,7 +110,7 @@ const Footer: React.FC = () => {
                                     info@hirekarma.in
                                 </a>
                             </div>
-                            <div className="flex items-center justify-center sm:justify-start gap-3">
+                            <div className="flex items-center justify-center sm:justify-start gap-1 sm:gap-3">
                                 <Phone className={`w-5 h-5 flex-shrink-0 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                                     ? 'text-gray-400'
                                     : 'text-gray-600'
