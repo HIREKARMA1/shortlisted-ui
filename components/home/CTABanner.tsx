@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { ArrowRight, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const CTABanner: React.FC = () => {
     const [mounted, setMounted] = useState(false);
@@ -43,16 +44,16 @@ const CTABanner: React.FC = () => {
                         <Button 
                             className="bg-black hover:bg-gray-900 text-white h-[50px] px-4 sm:px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 flex items-center gap-[10px] w-full sm:w-auto"
                         >
-                            Register Now
+                           <Link href="https://forms.gle/oDq7HQkzx6zk3Nz76">Register Now</Link>
                             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                         </Button>
-                        <Button 
-                            variant="outline"
-                            className="bg-transparent border border-white text-white hover:bg-white/10 h-[50px] px-4 sm:px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 flex items-center gap-[10px] w-full sm:w-auto"
+                        <Link 
+                            href="tel:+919078683876"
+                            className="bg-transparent border border-white text-white hover:bg-white/10 h-[50px] px-4 sm:px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-[10px] w-full sm:w-auto whitespace-nowrap"
                         >
                             <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
                             Talk to Placement Advisor
-                        </Button>
+                        </Link>
                     </div>
 
                     {/* Informational Bullet Points */}

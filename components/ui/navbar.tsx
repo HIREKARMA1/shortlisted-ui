@@ -93,7 +93,7 @@ export function Navbar({ className }: NavbarProps) {
               <Button
                 className="hidden sm:flex bg-[#00a2e5] hover:bg-[#0091cc] text-white rounded-lg px-6 py-2 font-medium text-sm"
               >
-                Register Now
+                <Link href="https://forms.gle/oDq7HQkzx6zk3Nz76">Register Now</Link>
               </Button>
 
               {/* Mobile Menu Button */}
