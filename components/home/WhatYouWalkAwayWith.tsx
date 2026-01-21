@@ -62,7 +62,7 @@ const WhatYouWalkAwayWith: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Bottom Banner */}
+                {/* Bottom Banner
                 <div className="bg-[#00BAE8] rounded-lg py-[9px] px-6 max-w-[1000px] mx-auto text-center">
                     <p className="text-3xl font-bold mb-2 text-white">
                         This is not a course. This is placementexecution
@@ -70,7 +70,7 @@ const WhatYouWalkAwayWith: React.FC = () => {
                     <p className="text-xl font-normal text-white">
                         60 days of focused action to get you placed
                     </p>
-                </div>
+                </div> */}
             </div>
         </div>
     );

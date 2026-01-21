@@ -3,6 +3,7 @@ import { WhyShortlistedSection } from "@/components/home/why-shortlisted-section
 import { HowProgramWorksSection } from "@/components/home/how-program-works-section"
 import WhoCanJoin from "@/components/home/WhoCanJoin"
 import WhatMakesDifferent from "@/components/home/WhatMakesDifferent"
+import LiveJobExecution from "@/components/home/LiveJobExecution"
 import WhatYouWalkAwayWith from "@/components/home/WhatYouWalkAwayWith"
 import CTABanner from "@/components/home/CTABanner"
 import Footer from "@/components/ui/Footer"
@@ -13,6 +14,7 @@ export default function HomePage() {
             <HeroSection />
             <WhyShortlistedSection />
             <HowProgramWorksSection />
+            <LiveJobExecution />
             <WhoCanJoin />
             <WhatMakesDifferent />
             <WhatYouWalkAwayWith />

@@ -31,14 +31,14 @@ const Footer: React.FC = () => {
     ];
 
     const contactLinks = [
-        { name: "Contact Us", href: "#" }
+        { name: "Contact Us", href: "https://forms.gle/oDq7HQkzx6zk3Nz76" }
     ];
 
     const privacyPolicyLinks = [
-        { name: "Terms of Service", href: "#" },
-        { name: "Cookie Policy", href: "#" },
-        { name: "Refund Policy", href: "#" },
-        { name: "Release Notes", href: "#" }
+        { name: "Privacy Policy", href: "/privacy-policy" },
+        { name: "Terms of Service", href: "/terms-of-service" },
+        { name: "Cookie Policy", href: "cookie-policy" },
+        { name: "Release Notes", href: "/release-notes" }
     ];
 
     const socialLinks = [
@@ -197,7 +197,7 @@ const Footer: React.FC = () => {
                             ? 'text-white'
                             : 'text-gray-900'
                             }`}>
-                            Privacy Policy
+                            Important Links
                         </h4>
                         <ul className="space-y-3">
                             {privacyPolicyLinks.map((link, index) => (
@@ -227,7 +227,7 @@ const Footer: React.FC = () => {
                             ? 'text-gray-400'
                             : 'text-gray-600'
                             }`}>
-                            © 2025 Solviq AI. All rights reserved. Made with • in India
+                            © 2026 Shortlisted. All rights reserved.
                         </p>
                         <p className={`text-sm mt-1 transition-colors duration-500 ${mounted && resolvedTheme === 'dark'
                             ? 'text-gray-400'
@@ -238,7 +238,7 @@ const Footer: React.FC = () => {
                                 ? 'text-[#00BAE8]'
                                 : 'text-[#00BAE8]'
                                 }`}>
-                                HireKarma Pvt Ltd
+                                <Link href="https://www.hirekarma.in/">HireKarma Pvt Ltd</Link>
                             </span>
                         </p>
                     </div>
