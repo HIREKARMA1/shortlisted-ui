@@ -13,12 +13,12 @@ interface NavbarProps {
   className?: string
 }
 
-const navigationItems = [
-  { label: "Program", href: "#program" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Outcomes", href: "#outcomes" },
-  { label: "Eligibility", href: "#eligibility" },
-]
+// const navigationItems = [
+//   { label: "Program", href: "#program" },
+//   { label: "How It Works", href: "#how-it-works" },
+//   { label: "Outcomes", href: "#outcomes" },
+//   { label: "Eligibility", href: "#eligibility" },
+// ]
 
 export function Navbar({ className }: NavbarProps) {
   const [mounted, setMounted] = useState(false)
@@ -117,7 +117,7 @@ export function Navbar({ className }: NavbarProps) {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 dark:border-[#2a3441] bg-white dark:bg-[#1a1f2e]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 max-w-[1600px] py-4 space-y-4">
-              {navigationItems.map((item) => (
+              {/* {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -126,7 +126,7 @@ export function Navbar({ className }: NavbarProps) {
                 >
                   {item.label}
                 </Link>
-              ))}
+              ))} */}
               <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-[#2a3441]">
                 <ThemeToggle />
                 <Button
