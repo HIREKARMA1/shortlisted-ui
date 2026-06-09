@@ -1,13 +1,21 @@
 {
   "title": "Activate your placement cell",
-  "subtitle": "Complete subscription to unlock jobs, batch assignment, and your dashboard.",
-  "seatsLabel": "Seats remaining in current batch",
-  "amountLabel": "Amount",
+  "subtitle": "Complete your one-time subscription to unlock batch assignment, curated jobs, and your student dashboard.",
+  "seatsLabel": "Seats remaining",
+  "amountLabel": "Subscription fee",
   "currency": "₹{{amount}}",
-  "cta": "Subscribe Now",
-  "processing": "Processing...",
-  "success": "Subscription activated.",
-  "razorpay": {
+  "cta": "Subscribe & Activate",
+  "processing": "Processing payment...",
+  "success": "Subscription activated. Welcome to your batch!",
+  "benefits": {
+    "title": "What's included",
+    "batch": "Automatic batch assignment (12 students)",
+    "jobs": "Access to curated job opportunities",
+    "coordinator": "Dedicated batch coordinator",
+    "dashboard": "Full student command centre"
+  },
+  "secure": "Secure payment via {{provider}}",
+  "checkout": {
     "name": "Shortlisted",
     "description": "Placement Program Subscription"
   }

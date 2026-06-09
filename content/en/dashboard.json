@@ -1,57 +1,93 @@
 {
+  "roles": {
+    "student": "Student",
+    "admin": "Coordinator",
+    "super_admin": "Super Admin"
+  },
   "student": {
     "title": "Command Centre",
-    "welcome": "Welcome, {{name}}",
+    "welcome": "Welcome back, {{name}}",
     "stats": {
-      "access": "Access",
-      "batch": "Your Batch",
+      "access": "Access status",
+      "batch": "Your batch",
       "batchAdmin": "Coordinator",
-      "batchAdminPending": "Assigning...",
-      "applications": "Applications"
+      "batchAdminPending": "Assigning coordinator...",
+      "applications": "Total applications"
     },
     "sections": {
-      "jobs": "Matched Jobs",
-      "applications": "Recent Applications"
+      "jobs": "Matched jobs",
+      "applications": "Recent applications"
     },
     "empty": {
-      "jobs": "No jobs assigned to your batch yet.",
-      "applications": "No applications yet."
+      "jobs": "No jobs assigned to your batch yet. Your coordinator will notify you when new opportunities arrive.",
+      "applications": "No applications yet. Browse matched jobs and apply in one click."
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "subtitle": "Browse opportunities or check your application pipeline.",
+      "browseJobs": "Browse jobs",
+      "viewApplications": "View applications"
     }
   },
   "jobs": {
     "title": "Jobs for your batch",
-    "empty": "No jobs assigned yet. DISHA admin will assign jobs to your batch.",
-    "applySuccess": "Application submitted successfully."
+    "subtitle": "Curated opportunities assigned to your batch",
+    "empty": "No jobs assigned yet. DISHA admins assign jobs to your batch — check back soon.",
+    "applySuccess": "Application submitted successfully.",
+    "company": "Company",
+    "location": "Location"
   },
   "applications": {
-    "title": "My Applications",
-    "empty": "No applications yet."
+    "title": "My applications",
+    "subtitle": "Track your placement pipeline",
+    "empty": "You haven't applied to any jobs yet.",
+    "status": "Status"
   },
   "admin": {
-    "title": "Admin — My Batches",
-    "seats": "{{filled}}/{{max}} students",
-    "empty": "No batches assigned yet."
+    "title": "My batches",
+    "subtitle": "Batches assigned to you as coordinator",
+    "seats": "{{filled}} of {{max}} students",
+    "empty": "No batches assigned yet. Contact super admin for batch assignment.",
+    "viewRoster": "View student roster"
   },
   "batchDetail": {
-    "seats": "{{filled}}/{{max}} seats",
-    "coordinator": "Coordinator: {{name}}"
-  },
-  "superAdmin": {
-    "title": "Super Admin",
-    "createAdmin": "Create Admin",
-    "fields": {
+    "seats": "{{filled}} of {{max}} seats filled",
+    "coordinator": "Coordinator: {{name}}",
+    "roster": "Student roster",
+    "rosterEmpty": "No students in this batch yet.",
+    "columns": {
       "name": "Name",
       "email": "Email",
-      "password": "Password",
+      "status": "Access"
+    }
+  },
+  "superAdmin": {
+    "title": "Platform overview",
+    "subtitle": "Manage coordinators, batches, and student access",
+    "createAdmin": "Create batch coordinator",
+    "fields": {
+      "name": "Full name",
+      "email": "Email",
+      "password": "Temporary password",
       "phone": "Phone"
     },
     "sections": {
-      "batches": "Batches ({{count}})",
-      "students": "Students"
+      "batches": "All batches ({{count}})",
+      "students": "All students ({{count}})",
+      "admins": "Coordinators"
     },
-    "batchMeta": "{{filled}}/{{max}} · {{admin}}",
+    "batchMeta": "{{filled}}/{{max}} seats · {{admin}}",
     "unassigned": "Unassigned",
-    "grantSuccess": "Access granted.",
-    "createSuccess": "Admin created."
+    "grantSuccess": "Access granted successfully.",
+    "createSuccess": "Coordinator created successfully.",
+    "syncDisha": "Sync to DISHA",
+    "syncAllDisha": "Sync all to DISHA",
+    "syncSuccess": "Batch synced to DISHA.",
+    "syncFailed": "DISHA sync failed. Check PLATFORM_API_KEY on both servers.",
+    "stats": {
+      "batches": "Total batches",
+      "students": "Total students",
+      "active": "Active students"
+    }
   }
 }

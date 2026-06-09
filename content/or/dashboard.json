@@ -1,57 +1,89 @@
 {
+  "roles": {
+    "student": "ଛାତ୍ର",
+    "admin": "କୋଅର୍ଡିନେଟର",
+    "super_admin": "ସୁପର୍ ଆଡମିନ୍"
+  },
   "student": {
     "title": "କମାଣ୍ଡ ସେଣ୍ଟର",
     "welcome": "ସ୍ୱାଗତ, {{name}}",
     "stats": {
-      "access": "ପ୍ରବେଶ",
-      "batch": "ଆପଣଙ୍କ ବ୍ୟାଚ",
+      "access": "ଆକ୍ସେସ୍ ସ୍ଥିତି",
+      "batch": "ଆପଣଙ୍କ ବ୍ୟାଚ୍",
       "batchAdmin": "କୋଅର୍ଡିନେଟର",
-      "batchAdminPending": "ଆସାଇନ୍ ହେଉଛି...",
-      "applications": "ଆବେଦନ"
+      "batchAdminPending": "କୋଅର୍ଡିନେଟର ଅସାଇନ୍ ହେଉଛି...",
+      "applications": "ମୋଟ ଆବେଦନ"
     },
     "sections": {
       "jobs": "ମିଳିଥିବା ଚାକିରି",
       "applications": "ସାମ୍ପ୍ରତିକ ଆବେଦନ"
     },
     "empty": {
-      "jobs": "ଆପଣଙ୍କ ବ୍ୟାଚରେ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚାକିରି ନାହିଁ।",
+      "jobs": "ଏପର୍ଯ୍ୟନ୍ତ ଆପଣଙ୍କ ବ୍ୟାଚ୍‌କୁ କୌଣସି ଚାକିରି ନାହିଁ।",
       "applications": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଆବେଦନ ନାହିଁ।"
+    },
+    "quickActions": {
+      "title": "ଦ୍ରୁତ କାର୍ଯ୍ୟ",
+      "subtitle": "ଅବସର ଦେଖନ୍ତୁ କିମ୍ବା ଆବେଦନ ଟ୍ରାକ୍ କରନ୍ତୁ।",
+      "browseJobs": "ଚାକିରି ଦେଖନ୍ତୁ",
+      "viewApplications": "ଆବେଦନ ଦେଖନ୍ତୁ"
     }
   },
   "jobs": {
-    "title": "ଆପଣଙ୍କ ବ୍ୟାଚର ଚାକିରି",
-    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚାକିରି ନାହିଁ। DISHA ଆଡମିନ୍ ଆପଣଙ୍କ ବ୍ୟାଚରେ ଚାକିରି ଆସାଇନ୍ କରିବେ।",
-    "applySuccess": "ଆବେଦନ ସଫଳତାର ସହ ଜମା ହେଲା।"
+    "title": "ଆପଣଙ୍କ ବ୍ୟାଚ୍ ପାଇଁ ଚାକିରି",
+    "subtitle": "ଆପଣଙ୍କ ବ୍ୟାଚ୍‌କୁ ଦିଆଯାଇଥିବା ଅବସର",
+    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚାକିରି ନାହିଁ।",
+    "applySuccess": "ଆବେଦନ ସଫଳ।",
+    "company": "କମ୍ପାନୀ",
+    "location": "ଅବସ୍ଥାନ"
   },
   "applications": {
-    "title": "ମୋର ଆବେଦନ",
-    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଆବେଦନ ନାହିଁ।"
+    "title": "ମୋ ଆବେଦନ",
+    "subtitle": "ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ଟ୍ରାକ୍ କରନ୍ତୁ",
+    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଆବେଦନ ନାହିଁ।",
+    "status": "ସ୍ଥିତି"
   },
   "admin": {
-    "title": "ଆଡମିନ୍ — ମୋର ବ୍ୟାଚ",
-    "seats": "{{filled}}/{{max}} ଛାତ୍ର",
-    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବ୍ୟାଚ ନାହିଁ।"
+    "title": "ମୋ ବ୍ୟାଚ୍",
+    "subtitle": "କୋଅର୍ଡିନେଟର ଭାବରେ ଅସାଇନ୍ ବ୍ୟାଚ୍",
+    "seats": "{{filled}} ରୁ {{max}} ଛାତ୍ର",
+    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବ୍ୟାଚ୍ ନାହିଁ।",
+    "viewRoster": "ଛାତ୍ର ତାଲିକା ଦେଖନ୍ତୁ"
   },
   "batchDetail": {
-    "seats": "{{filled}}/{{max}} ସିଟ୍",
-    "coordinator": "କୋଅର୍ଡିନେଟର: {{name}}"
-  },
-  "superAdmin": {
-    "title": "ସୁପର୍ ଆଡମିନ୍",
-    "createAdmin": "ଆଡମିନ୍ ତିଆରି କରନ୍ତୁ",
-    "fields": {
+    "seats": "{{filled}} ରୁ {{max}} ସିଟ୍ ପୂର୍ଣ୍ଣ",
+    "coordinator": "କୋଅର୍ଡିନେଟର: {{name}}",
+    "roster": "ଛାତ୍ର ତାଲିକା",
+    "rosterEmpty": "ଏହି ବ୍ୟାଚ୍‌ରେ କୌଣସି ଛାତ୍ର ନାହାନ୍ତି।",
+    "columns": {
       "name": "ନାମ",
       "email": "ଇମେଲ୍",
-      "password": "ପାସୱର୍ଡ",
+      "status": "ଆକ୍ସେସ୍"
+    }
+  },
+  "superAdmin": {
+    "title": "ପ୍ଲାଟଫର୍ମ ସମୀକ୍ଷା",
+    "subtitle": "କୋଅର୍ଡିନେଟର, ବ୍ୟାଚ୍ ଏବଂ ଛାତ୍ର ପରିଚାଳନା",
+    "createAdmin": "କୋଅର୍ଡିନେଟର ସୃଷ୍ଟି",
+    "fields": {
+      "name": "ପୂର୍ଣ୍ଣ ନାମ",
+      "email": "ଇମେଲ୍",
+      "password": "ଅସ୍ଥାୟୀ ପାସୱାର୍ଡ",
       "phone": "ଫୋନ୍"
     },
     "sections": {
-      "batches": "ବ୍ୟାଚ ({{count}})",
-      "students": "ଛାତ୍ର"
+      "batches": "ସମସ୍ତ ବ୍ୟାଚ୍ ({{count}})",
+      "students": "ସମସ୍ତ ଛାତ୍ର ({{count}})",
+      "admins": "କୋଅର୍ଡିନେଟର"
     },
-    "batchMeta": "{{filled}}/{{max}} · {{admin}}",
-    "unassigned": "ଆସାଇନ୍ ହୋଇନାହିଁ",
-    "grantSuccess": "ପ୍ରବେଶ ଦିଆଗଲା।",
-    "createSuccess": "ଆଡମିନ୍ ତିଆରି ହେଲା।"
+    "batchMeta": "{{filled}}/{{max}} ସିଟ୍ · {{admin}}",
+    "unassigned": "ଅସାଇନ୍ ନାହିଁ",
+    "grantSuccess": "ଆକ୍ସେସ୍ ଦିଆଗଲା।",
+    "createSuccess": "କୋଅର୍ଡିନେଟର ସୃଷ୍ଟି ହେଲା।",
+    "stats": {
+      "batches": "ମୋଟ ବ୍ୟାଚ୍",
+      "students": "ମୋଟ ଛାତ୍ର",
+      "active": "ସକ୍ରିୟ ଛାତ୍ର"
+    }
   }
 }

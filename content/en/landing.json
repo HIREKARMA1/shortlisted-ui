@@ -2,13 +2,83 @@
   "hero": {
     "badge": "HireKarma Placement Program",
     "title": "Not a course. A placement cell.",
-    "subtitle": "Subscribe once. Join a curated batch, access matched jobs, and work with a team focused on your placement every day.",
-    "ctaPrimary": "Start Registration",
-    "ctaSecondary": "Student Login"
+    "subtitle": "Subscribe once. Join a curated batch of 12 students, access matched jobs from top companies, and work with a coordinator focused on your placement every day.",
+    "ctaPrimary": "Claim Your Seat",
+    "ctaSecondary": "Student Login",
+    "trust": "Trusted by students across India"
+  },
+  "stats": {
+    "batchSize": { "value": "12", "label": "Students per batch" },
+    "support": { "value": "1:12", "label": "Coordinator ratio" },
+    "access": { "value": "24/7", "label": "Dashboard access" }
   },
   "seats": {
-    "label": "Current batch seats remaining",
-    "subscription": "Subscription",
-    "currency": "₹{{amount}}"
+    "label": "Seats remaining in current batch",
+    "subscription": "One-time subscription",
+    "currency": "₹{{amount}}",
+    "full": "Current batch is full — join the waitlist by registering",
+    "loading": "Checking availability..."
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Four steps from registration to placement",
+    "steps": {
+      "register": { "title": "Register", "desc": "Create your profile with skills, college, and preferred roles." },
+      "subscribe": { "title": "Subscribe", "desc": "Pay once to unlock your placement cell and batch assignment." },
+      "batch": { "title": "Join your batch", "desc": "Get matched to a batch of 12 with a dedicated coordinator." },
+      "apply": { "title": "Apply & track", "desc": "Access curated jobs, apply in one click, and track status live." }
+    }
+  },
+  "features": {
+    "title": "What you get",
+    "subtitle": "Everything a placement cell provides — without the college overhead",
+    "items": {
+      "jobs": { "title": "Curated job feed", "desc": "Jobs assigned to your batch by DISHA — matched to your profile and skills." },
+      "coordinator": { "title": "Dedicated coordinator", "desc": "A placement admin guides your batch, tracks progress, and supports applications." },
+      "tracking": { "title": "Live application tracking", "desc": "See shortlist, interview, and offer status in your dashboard — updated from corporate workflows." },
+      "batch": { "title": "Small batch advantage", "desc": "Only 12 seats per batch means personalised attention, not mass placement drives." },
+      "brands": { "title": "Corporate network", "desc": "Access opportunities from companies hiring through the HireKarma DISHA platform." },
+      "dashboard": { "title": "Your command centre", "desc": "One dashboard for jobs, applications, batch info, and coordinator contact." }
+    }
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "One subscription. Full placement cell access.",
+    "planName": "Placement Cell Access",
+    "includes": {
+      "batch": "Batch assignment (12 students)",
+      "jobs": "Curated job opportunities",
+      "coordinator": "Dedicated batch coordinator",
+      "tracking": "Application status tracking",
+      "dashboard": "Student command centre"
+    },
+    "cta": "Get Started",
+    "note": "Seats are limited per batch. Subscribe to secure your spot."
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": {
+      "course": { "q": "Is this a course?", "a": "No. Shortlisted is a placement program — like having your own placement cell. There are no classes or syllabus." },
+      "batch": { "q": "How are batches formed?", "a": "After you subscribe, you are automatically assigned to the current open batch (max 12 students). A coordinator is assigned to guide your batch." },
+      "jobs": { "q": "Where do jobs come from?", "a": "Jobs are posted on the DISHA platform by companies. DISHA admins assign relevant jobs to your Shortlisted batch." },
+      "refund": { "q": "Can I get a refund?", "a": "Subscription terms are shared at checkout. Contact support for exceptional cases." }
+    }
+  },
+  "cta": {
+    "title": "Ready to get shortlisted?",
+    "subtitle": "Limited seats per batch. Register today and secure your placement cell access.",
+    "primary": "Start Registration",
+    "secondary": "Already registered? Sign in"
+  },
+  "footer": {
+    "poweredBy": "Powered by HireKarma",
+    "program": "Program",
+    "account": "Account",
+    "rights": "All rights reserved.",
+    "links": {
+      "howItWorks": "How it works",
+      "features": "Features",
+      "pricing": "Pricing"
+    }
   }
 }

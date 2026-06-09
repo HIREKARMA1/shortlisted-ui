@@ -13,7 +13,7 @@ const variants = {
   label: 'text-sm font-medium text-ink-secondary',
   title: 'font-display text-2xl font-semibold tracking-tight text-ink-primary',
   subtitle: 'text-base text-ink-secondary',
-  badge: 'text-xs font-semibold uppercase tracking-wide text-secondary-500',
+  badge: 'badge-pill',
 };
 
 export function Text({ as: Tag = 'p', variant = 'body', className, children }: TextProps) {

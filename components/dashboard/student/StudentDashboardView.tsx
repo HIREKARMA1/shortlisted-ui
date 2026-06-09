@@ -3,14 +3,16 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
+import { Briefcase, ClipboardList, Shield, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
-import { DashboardShell } from '@/components/layout/Shell';
+import { applicationBadgeTone } from '@/lib/status';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { StatCard } from '@/components/ui/StatCard';
+import { SectionHeader } from '@/components/ui/SectionHeader';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LoadingState } from '@/components/ui/LoadingState';
 
@@ -40,72 +42,112 @@ export function StudentDashboardView() {
   const apps = (data.active_applications as Record<string, unknown>[]) || [];
 
   return (
-    <DashboardShell
+    <DashboardLayout
+      role="student"
       title={t('dashboard.student.title')}
       subtitle={t('dashboard.student.welcome', { name: String(student.name) })}
-      actions={
-        <>
-          <Link href="/dashboard/student/jobs">
-            <Button variant="secondary">{t('common.nav.jobs')}</Button>
-          </Link>
-          <Link href="/dashboard/student/applications">
-            <Button variant="secondary">{t('common.nav.applications')}</Button>
-          </Link>
-          <Button variant="ghost" onClick={logout}>
-            {t('common.nav.logout')}
-          </Button>
-        </>
-      }
+      onLogout={logout}
     >
       <div className="mb-8 grid gap-4 md:grid-cols-3">
-        <Card>
-          <p className="text-sm text-ink-muted">{t('dashboard.student.stats.access')}</p>
-          <p className="mt-1 text-xl font-semibold capitalize">{String(student.access_status)}</p>
-        </Card>
-        <Card>
-          <p className="text-sm text-ink-muted">{t('dashboard.student.stats.batch')}</p>
-          <p className="mt-1 text-xl font-semibold">{batch ? String(batch.name) : t('dashboard.student.stats.batchAdminPending')}</p>
-          {batch && (
-            <p className="text-sm text-ink-muted">
-              {t('dashboard.student.stats.batchAdmin')}: {String(batch.admin_name || '—')}
-            </p>
-          )}
-        </Card>
-        <Card>
-          <p className="text-sm text-ink-muted">{t('dashboard.student.stats.applications')}</p>
-          <p className="mt-1 text-xl font-semibold">{String(data.applications_count ?? 0)}</p>
-        </Card>
+        <StatCard
+          label={t('dashboard.student.stats.access')}
+          value={<span className="capitalize">{String(student.access_status)}</span>}
+          accent="green"
+          icon={Shield}
+        />
+        <StatCard
+          label={t('dashboard.student.stats.batch')}
+          value={batch ? String(batch.name) : t('dashboard.student.stats.batchAdminPending')}
+          hint={
+            batch
+              ? batch.admin_name
+                ? `${t('dashboard.student.stats.batchAdmin')}: ${String(batch.admin_name)}`
+                : t('dashboard.student.stats.batchAdminPending')
+              : undefined
+          }
+          accent="sky"
+          icon={Users}
+        />
+        <StatCard
+          label={t('dashboard.student.stats.applications')}
+          value={String(data.applications_count ?? 0)}
+          accent="orange"
+          icon={ClipboardList}
+        />
+      </div>
+
+      <div className="card-surface mb-8 flex flex-wrap items-center justify-between gap-4 p-5">
+        <div>
+          <p className="font-medium text-ink-primary">{t('dashboard.student.quickActions.title')}</p>
+          <p className="text-sm text-ink-muted">{t('dashboard.student.quickActions.subtitle')}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/dashboard/student/jobs">
+            <Button variant="secondary">
+              <Briefcase className="mr-2 h-4 w-4" />
+              {t('dashboard.student.quickActions.browseJobs')}
+            </Button>
+          </Link>
+          <Link href="/dashboard/student/applications">
+            <Button variant="ghost">{t('dashboard.student.quickActions.viewApplications')}</Button>
+          </Link>
+        </div>
       </div>
 
       <section className="mb-8">
-        <h2 className="mb-4 text-lg font-semibold">{t('dashboard.student.sections.jobs')}</h2>
+        <SectionHeader
+          title={t('dashboard.student.sections.jobs')}
+          action={
+            jobs.length > 0 ? (
+              <Link href="/dashboard/student/jobs" className="link-brand">
+                {t('common.actions.viewAll')} →
+              </Link>
+            ) : undefined
+          }
+        />
         {jobs.length === 0 ? (
           <EmptyState message={t('dashboard.student.empty.jobs')} />
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {jobs.map((job) => (
-              <Card key={String(job.id)}>
-                <h3 className="font-semibold">{String(job.title)}</h3>
-                <p className="text-sm text-ink-muted">{String(job.company_name || job.location || '')}</p>
-              </Card>
+              <div key={String(job.id)} className="card-surface p-5 transition-shadow hover:shadow-elevated">
+                <h3 className="font-semibold text-brand-blue">{String(job.title)}</h3>
+                <p className="mt-1 text-sm text-ink-muted">
+                  {String(job.company_name || job.location || '')}
+                </p>
+              </div>
             ))}
           </div>
         )}
       </section>
 
       <section>
-        <h2 className="mb-4 text-lg font-semibold">{t('dashboard.student.sections.applications')}</h2>
+        <SectionHeader
+          title={t('dashboard.student.sections.applications')}
+          action={
+            apps.length > 0 ? (
+              <Link href="/dashboard/student/applications" className="link-brand">
+                {t('common.actions.viewAll')} →
+              </Link>
+            ) : undefined
+          }
+        />
         {apps.length === 0 ? (
           <EmptyState message={t('dashboard.student.empty.applications')} />
         ) : (
-          apps.map((app) => (
-            <div key={String(app.id)} className="mb-2 flex items-center justify-between rounded-lg border border-line-default bg-white px-4 py-3">
-              <span className="font-medium">{String(app.job_title)}</span>
-              <Badge>{String(app.status)}</Badge>
-            </div>
-          ))
+          <div className="space-y-2">
+            {apps.map((app) => (
+              <div
+                key={String(app.id)}
+                className="flex items-center justify-between rounded-xl border border-line-default bg-white px-4 py-3"
+              >
+                <span className="font-medium">{String(app.job_title)}</span>
+                <Badge tone={applicationBadgeTone(String(app.status))}>{String(app.status)}</Badge>
+              </div>
+            ))}
+          </div>
         )}
       </section>
-    </DashboardShell>
+    </DashboardLayout>
   );
 }
