@@ -15,9 +15,6 @@ export const config = {
     name: process.env.NEXT_PUBLIC_APP_NAME ?? 'Shortlisted',
     url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001',
   },
-  razorpay: {
-    keyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? '',
-  },
   features: {
     devPaymentBypass: process.env.NEXT_PUBLIC_DEV_PAYMENT_BYPASS === 'true',
   },

@@ -5,12 +5,18 @@
   },
   "nav": {
     "login": "Login",
+    "profile": "Profile",
     "register": "Claim Your Seat",
     "logout": "Logout",
     "back": "Back",
     "dashboard": "Dashboard",
     "jobs": "Jobs",
-    "applications": "Applications"
+    "applications": "Applications",
+    "batches": "My Batches",
+    "overview": "Overview",
+    "howItWorks": "How it works",
+    "features": "Features",
+    "pricing": "Pricing"
   },
   "actions": {
     "submit": "Submit",
@@ -20,7 +26,9 @@
     "applying": "Applying...",
     "loading": "Loading...",
     "grantAccess": "Grant Access",
-    "createAdmin": "Create Admin"
+    "createAdmin": "Create Admin",
+    "viewAll": "View all",
+    "viewDetails": "View details"
   },
   "status": {
     "active": "Active",

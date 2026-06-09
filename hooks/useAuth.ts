@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { getPostLoginPath } from '@/lib/auth/session';
 import { api, TokenResponse, UserType } from '@/lib/api';
 
 export function useAuth() {
@@ -22,14 +23,14 @@ export function useAuth() {
   const login = async (email: string, password: string, user_type: UserType) => {
     const data = await api.login(email, password, user_type);
     saveSession(data);
-    if (data.user_type === 'student') {
-      if (data.access_status === 'active') router.push('/dashboard/student');
-      else router.push('/subscribe');
-    } else if (data.user_type === 'super_admin') {
-      router.push('/dashboard/super-admin');
-    } else {
-      router.push('/dashboard/admin');
-    }
+    router.push(
+      getPostLoginPath({
+        accessToken: data.access_token,
+        userType: data.user_type,
+        userName: data.name,
+        accessStatus: data.access_status || '',
+      }),
+    );
   };
 
   const getUserType = (): UserType | null => {

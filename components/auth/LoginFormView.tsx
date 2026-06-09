@@ -2,27 +2,27 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
+import { useGuestOnly, useSession } from '@/hooks/useSession';
 import { UserType } from '@/lib/api';
-import { PageContainer } from '@/components/layout/Shell';
+import { AuthLayout } from '@/components/layout/AuthLayout';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
-import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
-import { Text } from '@/components/ui/Text';
 
 export function LoginFormView() {
-  const router = useRouter();
   const { t } = useTranslation();
   const { login } = useAuth();
+  const { session, ready } = useSession();
+  useGuestOnly();
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState<UserType>('student');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  if (!ready || session) return null;
 
   const roleOptions: UserType[] = ['student', 'admin', 'super_admin'];
 
@@ -43,51 +43,47 @@ export function LoginFormView() {
   };
 
   return (
-    <main className="min-h-screen bg-surface-page">
-      <PageContainer className="max-w-md">
-        <div className="mb-6 flex justify-end">
-          <div className="w-40">
-            <LanguageSwitcher />
-          </div>
-        </div>
-        <Text variant="title">{t('auth.login.title')}</Text>
-        <Card className="mt-6">
-          <form onSubmit={onSubmit} className="space-y-4">
-            <Select
-              label={t('auth.login.roleLabel')}
-              value={userType}
-              onChange={(e) => setUserType(e.target.value as UserType)}
-              options={roleOptions.map((role) => ({
-                value: role,
-                label: t(`auth.login.roles.${role}`),
-              }))}
-            />
-            <Input
-              label={t('auth.login.emailLabel')}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <Input
-              label={t('auth.login.passwordLabel')}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <Button type="submit" fullWidth disabled={loading}>
-              {loading ? t('auth.login.submitting') : t('auth.login.submit')}
-            </Button>
-          </form>
-        </Card>
-        <Text variant="muted" className="mt-4 text-center">
+    <AuthLayout
+      title={t('auth.login.title')}
+      footer={
+        <>
           {t('auth.login.footer')}{' '}
-          <Link href="/auth/register" className="font-medium text-primary-600">
+          <Link href="/auth/register" className="link-brand font-medium">
             {t('auth.login.footerLink')}
           </Link>
-        </Text>
-      </PageContainer>
-    </main>
+        </>
+      }
+    >
+      <form onSubmit={onSubmit} className="space-y-4">
+        <Select
+          label={t('auth.login.roleLabel')}
+          value={userType}
+          onChange={(e) => setUserType(e.target.value as UserType)}
+          options={roleOptions.map((role) => ({
+            value: role,
+            label: t(`auth.login.roles.${role}`),
+          }))}
+        />
+        <Input
+          label={t('auth.login.emailLabel')}
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+        <Input
+          label={t('auth.login.passwordLabel')}
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="current-password"
+        />
+        <Button type="submit" fullWidth disabled={loading} className="mt-2">
+          {loading ? t('auth.login.submitting') : t('auth.login.submit')}
+        </Button>
+      </form>
+    </AuthLayout>
   );
 }

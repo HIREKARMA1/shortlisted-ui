@@ -1,6 +1,14 @@
 /**
- * SINGLE SOURCE OF TRUTH — change colors, fonts, radii, shadows here only.
- * Used by: theme/index.ts (CSS variables) and tailwind.config.js (utility classes)
+ * SINGLE SOURCE OF TRUTH — HireKarma / Shortlisted brand palette + derived tokens.
+ * Change colors, fonts, radii, shadows here only.
+ *
+ * Brand palette (6 colors):
+ *   blue   #1b52a4  — primary actions, logo, links
+ *   sky    #00a2e5  — secondary, info, highlights
+ *   yellow #fec40d  — warnings, badges
+ *   orange #f58020  — accent CTAs, emphasis
+ *   red    #d64246  — errors, destructive
+ *   green  #098855  — success, active states
  */
 module.exports = {
   fonts: {
@@ -15,23 +23,38 @@ module.exports = {
     xl: '1rem',
     full: '9999px',
   },
+  brand: {
+    blue: '#1b52a4',
+    sky: '#00a2e5',
+    yellow: '#fec40d',
+    orange: '#f58020',
+    red: '#d64246',
+    green: '#098855',
+  },
   colors: {
     primary: {
-      50: '#e6f3ff',
-      100: '#b3d9ff',
-      200: '#80bfff',
-      300: '#4da5ff',
-      400: '#1a8bff',
+      50: '#e8eef8',
+      100: '#c5d4eb',
+      200: '#9eb8dd',
+      300: '#779ccf',
+      400: '#4a78b8',
       500: '#1b52a4',
-      600: '#154a8f',
-      700: '#0f427a',
-      800: '#093a65',
-      900: '#033250',
+      600: '#174892',
+      700: '#133d7d',
+      800: '#0f3268',
+      900: '#0a2550',
     },
     secondary: {
+      50: '#e6f7fd',
+      100: '#b3e8f8',
+      200: '#80d9f3',
+      300: '#4dc9ee',
+      400: '#26bbea',
       500: '#00a2e5',
       600: '#0091cc',
-      700: '#0080b3',
+      700: '#007fb3',
+      800: '#006d99',
+      900: '#005b80',
     },
     accent: {
       yellow: '#fec40d',
@@ -52,9 +75,10 @@ module.exports = {
       900: '#0f172a',
     },
     surface: {
-      page: '#f8fafc',
+      page: '#f4f7fb',
       card: '#ffffff',
-      muted: '#f1f5f9',
+      muted: '#eef3f9',
+      hero: 'linear-gradient(165deg, #e8eef8 0%, #f4f9fd 45%, #ffffff 100%)',
     },
     text: {
       primary: '#0f172a',
@@ -62,10 +86,11 @@ module.exports = {
       muted: '#64748b',
       inverse: '#ffffff',
       link: '#1b52a4',
+      linkHover: '#174892',
     },
     border: {
-      default: '#e2e8f0',
-      strong: '#cbd5e1',
+      default: '#dce4ef',
+      strong: '#c5d4eb',
       focus: '#1b52a4',
     },
     semantic: {
@@ -75,9 +100,9 @@ module.exports = {
       info: '#00a2e5',
     },
     shadow: {
-      sm: '0 1px 2px rgba(15, 23, 42, 0.05)',
-      md: '0 4px 12px rgba(27, 82, 164, 0.08)',
-      lg: '0 12px 32px rgba(27, 82, 164, 0.12)',
+      sm: '0 1px 2px rgba(27, 82, 164, 0.06)',
+      md: '0 4px 16px rgba(27, 82, 164, 0.1)',
+      lg: '0 12px 40px rgba(27, 82, 164, 0.14)',
     },
   },
 };

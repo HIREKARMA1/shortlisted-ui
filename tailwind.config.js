@@ -10,6 +10,7 @@ module.exports = {
         display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       colors: {
+        brand: theme.brand,
         primary: theme.colors.primary,
         secondary: theme.colors.secondary,
         accent: theme.colors.accent,
@@ -23,6 +24,10 @@ module.exports = {
       boxShadow: {
         card: theme.colors.shadow.md,
         elevated: theme.colors.shadow.lg,
+      },
+      backgroundImage: {
+        'hero-gradient': 'var(--gradient-hero)',
+        'brand-stripe': 'var(--gradient-brand-stripe)',
       },
     },
   },

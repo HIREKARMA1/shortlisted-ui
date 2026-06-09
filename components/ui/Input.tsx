@@ -19,13 +19,13 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
         id={inputId}
         className={cn(
           'w-full rounded-lg border bg-white px-3 py-2.5 text-sm outline-none transition-shadow',
-          'border-line-default focus:border-line-focus focus:ring-2 focus:ring-primary-100',
-          error && 'border-state-error',
+          'border-line-default focus:border-brand-sky focus:ring-2 focus:ring-secondary-100',
+          error && 'border-brand-red focus:border-brand-red focus:ring-red-100',
           className
         )}
         {...props}
       />
-      {error && <p className="text-xs text-state-error">{error}</p>}
+      {error && <p className="text-xs text-brand-red">{error}</p>}
     </div>
   );
 }

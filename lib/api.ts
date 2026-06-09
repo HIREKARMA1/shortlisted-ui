@@ -46,12 +46,22 @@ class ApiClient {
     return res.data;
   }
 
+  async getPaymentConfig() {
+    const res = await this.client.get('/payments/config');
+    return res.data as { provider: string; dev_bypass: boolean };
+  }
+
   async createPaymentOrder() {
     const res = await this.client.post('/payments/create-order');
     return res.data;
   }
 
-  async verifyPayment(data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) {
+  async verifyPayment(data: {
+    order_id: string;
+    payment_id: string;
+    signature: string;
+    status?: string;
+  }) {
     const res = await this.client.post('/payments/verify', data);
     return res.data;
   }
@@ -113,6 +123,16 @@ class ApiClient {
 
   async assignBatchAdmin(batchId: string, adminId: string) {
     const res = await this.client.post(`/admin/batches/${batchId}/assign-admin`, { admin_id: adminId });
+    return res.data;
+  }
+
+  async syncBatchToDisha(batchId: string) {
+    const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`);
+    return res.data;
+  }
+
+  async syncPendingBatchesToDisha() {
+    const res = await this.client.post('/admin/batches/sync-disha-pending');
     return res.data;
   }
 }

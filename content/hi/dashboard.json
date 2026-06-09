@@ -1,57 +1,89 @@
 {
+  "roles": {
+    "student": "छात्र",
+    "admin": "कोऑर्डिनेटर",
+    "super_admin": "सुपर एडमिन"
+  },
   "student": {
     "title": "कमांड सेंटर",
-    "welcome": "स्वागत है, {{name}}",
+    "welcome": "वापसी पर स्वागत, {{name}}",
     "stats": {
-      "access": "एक्सेस",
+      "access": "एक्सेस स्थिति",
       "batch": "आपका बैच",
       "batchAdmin": "कोऑर्डिनेटर",
-      "batchAdminPending": "असाइन हो रहा है...",
-      "applications": "आवेदन"
+      "batchAdminPending": "कोऑर्डिनेटर असाइन हो रहा है...",
+      "applications": "कुल आवेदन"
     },
     "sections": {
       "jobs": "मैच की गई नौकरियां",
       "applications": "हाल के आवेदन"
     },
     "empty": {
-      "jobs": "आपके बैच में अभी कोई नौकरी असाइन नहीं है।",
-      "applications": "अभी कोई आवेदन नहीं।"
+      "jobs": "अभी आपके बैच को कोई नौकरी असाइन नहीं की गई।",
+      "applications": "अभी कोई आवेदन नहीं। नौकरियां देखें और आवेदन करें।"
+    },
+    "quickActions": {
+      "title": "त्वरित कार्य",
+      "subtitle": "अवसर देखें या अपने आवेदन ट्रैक करें।",
+      "browseJobs": "नौकरियां देखें",
+      "viewApplications": "आवेदन देखें"
     }
   },
   "jobs": {
     "title": "आपके बैच की नौकरियां",
-    "empty": "अभी कोई नौकरी असाइन नहीं। DISHA एडमिन आपके बैच में नौकरियां असाइन करेगा।",
-    "applySuccess": "आवेदन सफलतापूर्वक जमा हुआ।"
+    "subtitle": "आपके बैच को असाइन की गई अवसर",
+    "empty": "अभी कोई नौकरी असाइन नहीं। जल्द वापस जांचें।",
+    "applySuccess": "आवेदन सफलतापूर्वक जमा हुआ।",
+    "company": "कंपनी",
+    "location": "स्थान"
   },
   "applications": {
     "title": "मेरे आवेदन",
-    "empty": "अभी कोई आवेदन नहीं।"
+    "subtitle": "अपनी प्लेसमेंट प्रगति ट्रैक करें",
+    "empty": "अभी तक कोई आवेदन नहीं।",
+    "status": "स्थिति"
   },
   "admin": {
-    "title": "एडमिन — मेरे बैच",
-    "seats": "{{filled}}/{{max}} छात्र",
-    "empty": "अभी कोई बैच असाइन नहीं।"
+    "title": "मेरे बैच",
+    "subtitle": "कोऑर्डिनेटर के रूप में असाइन किए गए बैच",
+    "seats": "{{filled}} में से {{max}} छात्र",
+    "empty": "अभी कोई बैच असाइन नहीं।",
+    "viewRoster": "छात्र सूची देखें"
   },
   "batchDetail": {
-    "seats": "{{filled}}/{{max}} सीटें",
-    "coordinator": "कोऑर्डिनेटर: {{name}}"
-  },
-  "superAdmin": {
-    "title": "सुपर एडमिन",
-    "createAdmin": "एडमिन बनाएं",
-    "fields": {
+    "seats": "{{filled}} में से {{max}} सीटें भरी",
+    "coordinator": "कोऑर्डिनेटर: {{name}}",
+    "roster": "छात्र सूची",
+    "rosterEmpty": "इस बैच में अभी कोई छात्र नहीं।",
+    "columns": {
       "name": "नाम",
       "email": "ईमेल",
-      "password": "पासवर्ड",
-      "phone": "फ़ोन"
+      "status": "एक्सेस"
+    }
+  },
+  "superAdmin": {
+    "title": "प्लेटफॉर्म अवलोकन",
+    "subtitle": "कोऑर्डिनेटर, बैच और छात्र एक्सेस प्रबंधित करें",
+    "createAdmin": "बैच कोऑर्डिनेटर बनाएं",
+    "fields": {
+      "name": "पूरा नाम",
+      "email": "ईमेल",
+      "password": "अस्थायी पासवर्ड",
+      "phone": "फोन"
     },
     "sections": {
-      "batches": "बैच ({{count}})",
-      "students": "छात्र"
+      "batches": "सभी बैच ({{count}})",
+      "students": "सभी छात्र ({{count}})",
+      "admins": "कोऑर्डिनेटर"
     },
-    "batchMeta": "{{filled}}/{{max}} · {{admin}}",
+    "batchMeta": "{{filled}}/{{max}} सीटें · {{admin}}",
     "unassigned": "असाइन नहीं",
-    "grantSuccess": "एक्सेस दिया गया।",
-    "createSuccess": "एडमिन बनाया गया।"
+    "grantSuccess": "एक्सेस सफलतापूर्वक दिया गया।",
+    "createSuccess": "कोऑर्डिनेटर सफलतापूर्वक बनाया गया।",
+    "stats": {
+      "batches": "कुल बैच",
+      "students": "कुल छात्र",
+      "active": "सक्रिय छात्र"
+    }
   }
 }
