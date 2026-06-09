@@ -1,0 +1,57 @@
+{
+  "student": {
+    "title": "Command Centre",
+    "welcome": "Welcome, {{name}}",
+    "stats": {
+      "access": "Access",
+      "batch": "Your Batch",
+      "batchAdmin": "Coordinator",
+      "batchAdminPending": "Assigning...",
+      "applications": "Applications"
+    },
+    "sections": {
+      "jobs": "Matched Jobs",
+      "applications": "Recent Applications"
+    },
+    "empty": {
+      "jobs": "No jobs assigned to your batch yet.",
+      "applications": "No applications yet."
+    }
+  },
+  "jobs": {
+    "title": "Jobs for your batch",
+    "empty": "No jobs assigned yet. DISHA admin will assign jobs to your batch.",
+    "applySuccess": "Application submitted successfully."
+  },
+  "applications": {
+    "title": "My Applications",
+    "empty": "No applications yet."
+  },
+  "admin": {
+    "title": "Admin — My Batches",
+    "seats": "{{filled}}/{{max}} students",
+    "empty": "No batches assigned yet."
+  },
+  "batchDetail": {
+    "seats": "{{filled}}/{{max}} seats",
+    "coordinator": "Coordinator: {{name}}"
+  },
+  "superAdmin": {
+    "title": "Super Admin",
+    "createAdmin": "Create Admin",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone"
+    },
+    "sections": {
+      "batches": "Batches ({{count}})",
+      "students": "Students"
+    },
+    "batchMeta": "{{filled}}/{{max}} · {{admin}}",
+    "unassigned": "Unassigned",
+    "grantSuccess": "Access granted.",
+    "createSuccess": "Admin created."
+  }
+}

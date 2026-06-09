@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'Inter';
+    --font-display: 'DM Sans';
+    --font-mono: 'JetBrains Mono';
+  }
+
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-surface-page text-ink-primary font-sans;
+    background-color: var(--color-surface-page);
+    color: var(--color-text-primary);
+  }
+
+  a {
+    color: var(--color-text-link);
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card-surface {
+    @apply rounded-xl border bg-surface-card shadow-card;
+    border-color: var(--color-border);
+  }
+
+  .section-title {
+    @apply font-display text-2xl font-semibold tracking-tight text-ink-primary;
+  }
+
+  .muted-text {
+    @apply text-sm text-ink-muted;
+  }
+}

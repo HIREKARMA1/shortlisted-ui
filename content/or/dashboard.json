@@ -1,0 +1,57 @@
+{
+  "student": {
+    "title": "କମାଣ୍ଡ ସେଣ୍ଟର",
+    "welcome": "ସ୍ୱାଗତ, {{name}}",
+    "stats": {
+      "access": "ପ୍ରବେଶ",
+      "batch": "ଆପଣଙ୍କ ବ୍ୟାଚ",
+      "batchAdmin": "କୋଅର୍ଡିନେଟର",
+      "batchAdminPending": "ଆସାଇନ୍ ହେଉଛି...",
+      "applications": "ଆବେଦନ"
+    },
+    "sections": {
+      "jobs": "ମିଳିଥିବା ଚାକିରି",
+      "applications": "ସାମ୍ପ୍ରତିକ ଆବେଦନ"
+    },
+    "empty": {
+      "jobs": "ଆପଣଙ୍କ ବ୍ୟାଚରେ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚାକିରି ନାହିଁ।",
+      "applications": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଆବେଦନ ନାହିଁ।"
+    }
+  },
+  "jobs": {
+    "title": "ଆପଣଙ୍କ ବ୍ୟାଚର ଚାକିରି",
+    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚାକିରି ନାହିଁ। DISHA ଆଡମିନ୍ ଆପଣଙ୍କ ବ୍ୟାଚରେ ଚାକିରି ଆସାଇନ୍ କରିବେ।",
+    "applySuccess": "ଆବେଦନ ସଫଳତାର ସହ ଜମା ହେଲା।"
+  },
+  "applications": {
+    "title": "ମୋର ଆବେଦନ",
+    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଆବେଦନ ନାହିଁ।"
+  },
+  "admin": {
+    "title": "ଆଡମିନ୍ — ମୋର ବ୍ୟାଚ",
+    "seats": "{{filled}}/{{max}} ଛାତ୍ର",
+    "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବ୍ୟାଚ ନାହିଁ।"
+  },
+  "batchDetail": {
+    "seats": "{{filled}}/{{max}} ସିଟ୍",
+    "coordinator": "କୋଅର୍ଡିନେଟର: {{name}}"
+  },
+  "superAdmin": {
+    "title": "ସୁପର୍ ଆଡମିନ୍",
+    "createAdmin": "ଆଡମିନ୍ ତିଆରି କରନ୍ତୁ",
+    "fields": {
+      "name": "ନାମ",
+      "email": "ଇମେଲ୍",
+      "password": "ପାସୱର୍ଡ",
+      "phone": "ଫୋନ୍"
+    },
+    "sections": {
+      "batches": "ବ୍ୟାଚ ({{count}})",
+      "students": "ଛାତ୍ର"
+    },
+    "batchMeta": "{{filled}}/{{max}} · {{admin}}",
+    "unassigned": "ଆସାଇନ୍ ହୋଇନାହିଁ",
+    "grantSuccess": "ପ୍ରବେଶ ଦିଆଗଲା।",
+    "createSuccess": "ଆଡମିନ୍ ତିଆରି ହେଲା।"
+  }
+}

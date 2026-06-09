@@ -1,0 +1,14 @@
+{
+  "hero": {
+    "badge": "HireKarma Placement Program",
+    "title": "Not a course. A placement cell.",
+    "subtitle": "Subscribe once. Join a curated batch, access matched jobs, and work with a team focused on your placement every day.",
+    "ctaPrimary": "Start Registration",
+    "ctaSecondary": "Student Login"
+  },
+  "seats": {
+    "label": "Current batch seats remaining",
+    "subscription": "Subscription",
+    "currency": "₹{{amount}}"
+  }
+}

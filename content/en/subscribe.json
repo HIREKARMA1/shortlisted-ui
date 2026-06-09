@@ -1,0 +1,14 @@
+{
+  "title": "Activate your placement cell",
+  "subtitle": "Complete subscription to unlock jobs, batch assignment, and your dashboard.",
+  "seatsLabel": "Seats remaining in current batch",
+  "amountLabel": "Amount",
+  "currency": "₹{{amount}}",
+  "cta": "Subscribe Now",
+  "processing": "Processing...",
+  "success": "Subscription activated.",
+  "razorpay": {
+    "name": "Shortlisted",
+    "description": "Placement Program Subscription"
+  }
+}

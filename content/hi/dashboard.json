@@ -1,0 +1,57 @@
+{
+  "student": {
+    "title": "कमांड सेंटर",
+    "welcome": "स्वागत है, {{name}}",
+    "stats": {
+      "access": "एक्सेस",
+      "batch": "आपका बैच",
+      "batchAdmin": "कोऑर्डिनेटर",
+      "batchAdminPending": "असाइन हो रहा है...",
+      "applications": "आवेदन"
+    },
+    "sections": {
+      "jobs": "मैच की गई नौकरियां",
+      "applications": "हाल के आवेदन"
+    },
+    "empty": {
+      "jobs": "आपके बैच में अभी कोई नौकरी असाइन नहीं है।",
+      "applications": "अभी कोई आवेदन नहीं।"
+    }
+  },
+  "jobs": {
+    "title": "आपके बैच की नौकरियां",
+    "empty": "अभी कोई नौकरी असाइन नहीं। DISHA एडमिन आपके बैच में नौकरियां असाइन करेगा।",
+    "applySuccess": "आवेदन सफलतापूर्वक जमा हुआ।"
+  },
+  "applications": {
+    "title": "मेरे आवेदन",
+    "empty": "अभी कोई आवेदन नहीं।"
+  },
+  "admin": {
+    "title": "एडमिन — मेरे बैच",
+    "seats": "{{filled}}/{{max}} छात्र",
+    "empty": "अभी कोई बैच असाइन नहीं।"
+  },
+  "batchDetail": {
+    "seats": "{{filled}}/{{max}} सीटें",
+    "coordinator": "कोऑर्डिनेटर: {{name}}"
+  },
+  "superAdmin": {
+    "title": "सुपर एडमिन",
+    "createAdmin": "एडमिन बनाएं",
+    "fields": {
+      "name": "नाम",
+      "email": "ईमेल",
+      "password": "पासवर्ड",
+      "phone": "फ़ोन"
+    },
+    "sections": {
+      "batches": "बैच ({{count}})",
+      "students": "छात्र"
+    },
+    "batchMeta": "{{filled}}/{{max}} · {{admin}}",
+    "unassigned": "असाइन नहीं",
+    "grantSuccess": "एक्सेस दिया गया।",
+    "createSuccess": "एडमिन बनाया गया।"
+  }
+}

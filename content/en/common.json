@@ -1,0 +1,44 @@
+{
+  "brand": {
+    "name": "Shortlisted",
+    "tagline": "Your dedicated placement cell"
+  },
+  "nav": {
+    "login": "Login",
+    "register": "Claim Your Seat",
+    "logout": "Logout",
+    "back": "Back",
+    "dashboard": "Dashboard",
+    "jobs": "Jobs",
+    "applications": "Applications"
+  },
+  "actions": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "apply": "Apply",
+    "applying": "Applying...",
+    "loading": "Loading...",
+    "grantAccess": "Grant Access",
+    "createAdmin": "Create Admin"
+  },
+  "status": {
+    "active": "Active",
+    "locked": "Locked",
+    "revoked": "Revoked"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "hi": "Hindi",
+    "or": "Odia"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Unable to reach the server.",
+    "authRequired": "Please sign in to continue."
+  },
+  "empty": {
+    "noData": "No data available yet."
+  }
+}
