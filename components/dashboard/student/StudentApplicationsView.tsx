@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Building2 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
+import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
 import { applicationBadgeTone } from '@/lib/status';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -17,6 +18,7 @@ export function StudentApplicationsView() {
   const router = useRouter();
   const { t } = useTranslation();
   const { logout } = useAuth();
+  useStudentActiveGate();
   const [apps, setApps] = useState<Record<string, unknown>[]>([]);
   const [ready, setReady] = useState(false);
 

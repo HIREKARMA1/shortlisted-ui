@@ -50,6 +50,57 @@
     "empty": "No batches assigned yet. Contact super admin for batch assignment.",
     "viewRoster": "View student roster"
   },
+  "adminStudents": {
+    "title": "Student management",
+    "subtitle": "View student details across your batches — payment, applications, and activity",
+    "filterBatch": "Filter by batch",
+    "allBatches": "All my batches",
+    "empty": "No students found for the selected batch.",
+    "offerLetter": "Offer letter",
+    "columns": {
+      "name": "Student",
+      "email": "Contact",
+      "batch": "Batch",
+      "joined": "Joined batch",
+      "payment": "Payment",
+      "paymentDate": "Paid on",
+      "applied": "Applied",
+      "selected": "Selected",
+      "offers": "Offer letters",
+      "lastLogin": "Last login",
+      "status": "Access"
+    }
+  },
+  "adminJobs": {
+    "title": "Job management",
+    "subtitle": "Jobs assigned to your batches — filter by batch and review applicants",
+    "filterBatch": "Filter by batch",
+    "allBatches": "All my batches",
+    "empty": "No jobs found for the selected batch(es). Jobs appear here once assigned via DISHA.",
+    "viewApplicants": "View applicants",
+    "applicantsFor": "Applicants from {{batch}}",
+    "noApplicants": "No students from this batch have applied to this job yet.",
+    "selectApplicant": "Select an applicant to view their profile.",
+    "profileTitle": "Student profile",
+    "viewResume": "View resume",
+    "columns": {
+      "title": "Job title",
+      "company": "Company",
+      "location": "Location",
+      "batch": "Batch",
+      "actions": "Actions"
+    },
+    "profile": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "college": "College",
+      "branch": "Branch",
+      "graduation_year": "Graduation year",
+      "skills": "Skills",
+      "preferred_roles": "Preferred roles"
+    }
+  },
   "batchDetail": {
     "seats": "{{filled}} of {{max}} seats filled",
     "coordinator": "Coordinator: {{name}}",
@@ -61,9 +112,57 @@
       "status": "Access"
     }
   },
+  "superAdminStudents": {
+    "title": "Student management",
+    "subtitle": "View all students across batches — payment, applications, and activity",
+    "filterBatch": "Filter by batch",
+    "allBatches": "All batches",
+    "empty": "No students found for the selected batch.",
+    "statusUpdated": "Student access status updated."
+  },
+  "superAdminRevenue": {
+    "title": "Revenue",
+    "subtitle": "Subscription payments and revenue statement",
+    "totalRevenue": "Total revenue",
+    "paymentCount": "Payments received",
+    "filterBatch": "Filter by batch",
+    "allBatches": "All batches",
+    "dateFrom": "From date",
+    "dateTo": "To date",
+    "empty": "No payments found for the selected filters.",
+    "columns": {
+      "date": "Paid on",
+      "student": "Student",
+      "batch": "Batch",
+      "amount": "Amount",
+      "provider": "Provider",
+      "transaction": "Transaction ID"
+    }
+  },
   "superAdmin": {
     "title": "Platform overview",
     "subtitle": "Manage coordinators, batches, and student access",
+    "coordinators": {
+      "title": "Coordinator management",
+      "subtitle": "Create coordinators, manage credentials, and assign batches",
+      "empty": "No coordinators created yet.",
+      "assignBatch": "Assign batch",
+      "pickBatch": "Select batch to assign",
+      "editTitle": "Edit coordinator",
+      "newPassword": "New password (leave blank to keep)",
+      "active": "Active",
+      "inactive": "Inactive",
+      "updateSuccess": "Coordinator updated successfully.",
+      "deactivateSuccess": "Coordinator deactivated.",
+      "columns": {
+        "name": "Coordinator",
+        "email": "Email",
+        "password": "Password",
+        "batches": "Assigned batches",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
     "createAdmin": "Create batch coordinator",
     "fields": {
       "name": "Full name",
@@ -78,6 +177,8 @@
     },
     "batchMeta": "{{filled}}/{{max}} seats · {{admin}}",
     "unassigned": "Unassigned",
+    "assignCoordinator": "Assign coordinator",
+    "assignSuccess": "Coordinator assigned to batch.",
     "grantSuccess": "Access granted successfully.",
     "createSuccess": "Coordinator created successfully.",
     "syncDisha": "Sync to DISHA",

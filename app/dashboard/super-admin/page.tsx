@@ -1,5 +1,5 @@
-import { SuperAdminDashboardView } from '@/components/dashboard/super-admin/SuperAdminDashboardView';
+import { redirect } from 'next/navigation';
 
-export default function Page() {
-  return <SuperAdminDashboardView />;
+export default function SuperAdminIndexPage() {
+  redirect('/dashboard/super-admin/students');
 }

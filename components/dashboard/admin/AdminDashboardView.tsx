@@ -20,7 +20,10 @@ export function AdminDashboardView() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem('access_token')) router.push('/auth/login');
+    if (!localStorage.getItem('access_token') || localStorage.getItem('user_type') !== 'admin') {
+      router.push('/auth/login');
+      return;
+    }
     api
       .listMyBatches()
       .then(setBatches)

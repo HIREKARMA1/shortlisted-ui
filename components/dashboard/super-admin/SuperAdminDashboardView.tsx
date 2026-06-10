@@ -11,6 +11,7 @@ import { accessBadgeTone } from '@/lib/status';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
 import { Badge } from '@/components/ui/Badge';
 import { StatCard } from '@/components/ui/StatCard';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -24,16 +25,19 @@ export function SuperAdminDashboardView() {
   const { logout } = useAuth();
   const [batches, setBatches] = useState<Record<string, unknown>[]>([]);
   const [students, setStudents] = useState<Record<string, unknown>[]>([]);
+  const [coordinators, setCoordinators] = useState<Record<string, unknown>[]>([]);
+  const [assigningBatchId, setAssigningBatchId] = useState<string | null>(null);
   const [adminForm, setAdminForm] = useState<Record<string, string>>(
     Object.fromEntries(ADMIN_FIELDS.map((k) => [k, '']))
   );
   const [ready, setReady] = useState(false);
 
   const load = () =>
-    Promise.all([api.listAllBatches(), api.listStudents()])
-      .then(([b, s]) => {
+    Promise.all([api.listAllBatches(), api.listStudents(), api.listAdmins()])
+      .then(([b, s, a]) => {
         setBatches(b);
         setStudents(s);
+        setCoordinators(a);
       })
       .catch(() => router.push('/auth/login'))
       .finally(() => setReady(true));
@@ -72,6 +76,20 @@ export function SuperAdminDashboardView() {
       load();
     } catch {
       toast.error(t('dashboard.superAdmin.syncFailed'));
+    }
+  };
+
+  const assignCoordinator = async (batchId: string, adminId: string) => {
+    if (!adminId) return;
+    setAssigningBatchId(batchId);
+    try {
+      await api.assignBatchAdmin(batchId, adminId);
+      toast.success(t('dashboard.superAdmin.assignSuccess'));
+      load();
+    } catch {
+      toast.error(t('common.errors.generic'));
+    } finally {
+      setAssigningBatchId(null);
     }
   };
 
@@ -181,15 +199,30 @@ export function SuperAdminDashboardView() {
                     }}
                   />
                 </div>
-                {dishaStatus !== 'registered' && (
-                  <Button
-                    className="mt-4 w-full"
-                    variant="accent"
-                    onClick={() => syncBatchToDisha(String(b.id))}
-                  >
-                    {t('dashboard.superAdmin.syncDisha')}
-                  </Button>
-                )}
+                <div className="mt-4 space-y-2">
+                  <Select
+                    label={t('dashboard.superAdmin.assignCoordinator')}
+                    value={String(b.admin_id || '')}
+                    onChange={(e) => assignCoordinator(String(b.id), e.target.value)}
+                    disabled={assigningBatchId === String(b.id)}
+                    options={[
+                      { value: '', label: t('dashboard.superAdmin.unassigned') },
+                      ...coordinators.map((c) => ({
+                        value: String(c.id),
+                        label: String(c.name),
+                      })),
+                    ]}
+                  />
+                  {dishaStatus !== 'registered' && (
+                    <Button
+                      className="w-full"
+                      variant="accent"
+                      onClick={() => syncBatchToDisha(String(b.id))}
+                    >
+                      {t('dashboard.superAdmin.syncDisha')}
+                    </Button>
+                  )}
+                </div>
               </div>
             );
           })}

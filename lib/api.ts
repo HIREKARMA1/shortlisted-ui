@@ -96,6 +96,27 @@ class ApiClient {
     return res.data;
   }
 
+  async getAdminJobs(batchId?: string) {
+    const res = await this.client.get('/admin/jobs', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
+  async getJobApplicants(jobId: string, batchId: string) {
+    const res = await this.client.get(`/admin/jobs/${jobId}/applicants`, {
+      params: { batch_id: batchId },
+    });
+    return res.data;
+  }
+
+  async getCoordinatorStudents(batchId?: string) {
+    const res = await this.client.get('/admin/my-students', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
   async listAdmins() {
     const res = await this.client.get('/admin/admins');
     return res.data;
@@ -123,6 +144,38 @@ class ApiClient {
 
   async assignBatchAdmin(batchId: string, adminId: string) {
     const res = await this.client.post(`/admin/batches/${batchId}/assign-admin`, { admin_id: adminId });
+    return res.data;
+  }
+
+  async updateBatch(batchId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/batches/${batchId}`, data);
+    return res.data;
+  }
+
+  async listCoordinators() {
+    const res = await this.client.get('/admin/coordinators');
+    return res.data;
+  }
+
+  async updateAdmin(adminId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/admins/${adminId}`, data);
+    return res.data;
+  }
+
+  async deactivateAdmin(adminId: string) {
+    const res = await this.client.delete(`/admin/admins/${adminId}`);
+    return res.data;
+  }
+
+  async getRevenueReport(params?: { batch_id?: string; date_from?: string; date_to?: string }) {
+    const res = await this.client.get('/admin/revenue', { params });
+    return res.data;
+  }
+
+  async updateStudentAccessStatus(studentId: string, access_status: 'active' | 'inactive') {
+    const res = await this.client.patch(`/admin/students/${studentId}/access-status`, {
+      access_status,
+    });
     return res.data;
   }
 
