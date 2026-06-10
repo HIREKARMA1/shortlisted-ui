@@ -51,13 +51,10 @@ export function SubscribePageView() {
     setLoading(true);
     try {
       const order = await api.createPaymentOrder();
-      await startCheckout(order, async (payload) => {
-        await api.verifyPayment(payload);
-        toast.success(t('subscribe.success'));
-        localStorage.setItem('access_status', 'active');
-        router.push('/dashboard/student');
-      });
+      toast.loading(t('subscribe.redirecting'), { id: 'payu-redirect' });
+      startCheckout(order);
     } catch (err: unknown) {
+      toast.dismiss('payu-redirect');
       const msg =
         (err as { response?: { data?: { detail?: string } }; message?: string })?.response?.data
           ?.detail ||

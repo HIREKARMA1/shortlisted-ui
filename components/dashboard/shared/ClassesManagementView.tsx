@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Pencil, Trash2, Users, X } from 'lucide-react';
+import { Download, Pencil, Trash2, Users, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
@@ -37,6 +37,47 @@ function formatDate(value: unknown): string {
   const date = new Date(String(value));
   if (Number.isNaN(date.getTime())) return '—';
   return date.toLocaleString();
+}
+
+function escapeCsvField(value: string): string {
+  if (/[",\n\r]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+}
+
+function downloadAttendanceCsv(
+  classRow: ClassRow,
+  attendances: Record<string, unknown>[],
+  headers: { name: string; email: string; attendedAt: string },
+) {
+  const meta = [
+    ['Class', String(classRow.title ?? '')],
+    ['Trainer', String(classRow.trainer_name ?? '')],
+    ['Batch', String(classRow.batch_name ?? '')],
+    ['Scheduled at', classRow.scheduled_at ? formatDate(classRow.scheduled_at) : ''],
+    [],
+    [headers.name, headers.email, headers.attendedAt],
+  ];
+  const rows = attendances.map((a) => [
+    escapeCsvField(String(a.name ?? '')),
+    escapeCsvField(String(a.email ?? '')),
+    escapeCsvField(a.attended_at ? formatDate(a.attended_at) : ''),
+  ]);
+  const csv = [...meta.map((row) => row.map(escapeCsvField).join(',')), ...rows.map((r) => r.join(','))].join('\n');
+  const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const slug = String(classRow.title ?? 'class')
+    .replace(/[^\w-]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 40);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `attendance-${slug || 'export'}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 function toLocalInputValue(iso: unknown): string {
@@ -386,7 +427,24 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
           ) : attendances.length === 0 ? (
             <EmptyState message={t('dashboard.classes.noAttendance')} />
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-4">
+              <div className="flex justify-end">
+                <Button
+                  variant="secondary"
+                  className="text-sm"
+                  onClick={() =>
+                    downloadAttendanceCsv(attendanceClass, attendances, {
+                      name: t('dashboard.classes.exportColumns.name'),
+                      email: t('dashboard.classes.exportColumns.email'),
+                      attendedAt: t('dashboard.classes.exportColumns.attendedAt'),
+                    })
+                  }
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {t('dashboard.classes.exportAttendance')}
+                </Button>
+              </div>
+              <div className="space-y-2">
               {attendances.map((a) => (
                 <div key={String(a.student_id)} className="rounded-lg border border-line-default px-3 py-2">
                   <p className="font-medium">{String(a.name)}</p>
@@ -394,6 +452,7 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
                   <p className="text-xs text-ink-muted">{formatDate(a.attended_at)}</p>
                 </div>
               ))}
+              </div>
             </div>
           )}
         </Modal>

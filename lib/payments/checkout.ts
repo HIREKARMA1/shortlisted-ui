@@ -1,4 +1,4 @@
-export type PaymentProvider = 'payu' | 'dev';
+export type PaymentProvider = 'payu';
 
 export type CreateOrderResponse = {
   provider: PaymentProvider;
@@ -7,13 +7,6 @@ export type CreateOrderResponse = {
   currency: string;
   payment_record_id: string;
   checkout: Record<string, unknown>;
-};
-
-type VerifyPayload = {
-  order_id: string;
-  payment_id: string;
-  signature: string;
-  status?: string;
 };
 
 type PayUCheckout = {
@@ -41,24 +34,10 @@ function submitHostedForm(checkout: PayUCheckout) {
   form.submit();
 }
 
-export async function startCheckout(
-  order: CreateOrderResponse,
-  onVerify: (payload: VerifyPayload) => Promise<void>,
-) {
-  if (order.checkout.mode === 'dev_bypass') {
-    await onVerify({
-      order_id: order.order_id,
-      payment_id: `dev_${Date.now()}`,
-      signature: 'dev',
-      status: 'success',
-    });
-    return;
+/** Redirects the browser to the PayU hosted checkout page. */
+export function startCheckout(order: CreateOrderResponse): void {
+  if (order.checkout.mode !== 'hosted_form') {
+    throw new Error('unsupported_checkout_mode');
   }
-
-  if (order.checkout.mode === 'hosted_form') {
-    submitHostedForm(order.checkout as PayUCheckout);
-    return;
-  }
-
-  throw new Error('unsupported_checkout_mode');
+  submitHostedForm(order.checkout as PayUCheckout);
 }
