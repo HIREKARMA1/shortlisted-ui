@@ -71,6 +71,59 @@
       "status": "Access"
     }
   },
+  "classes": {
+    "title": "Class management",
+    "subtitle": "Schedule and manage batch classes — online links, recordings, and attendance",
+    "createTitle": "Schedule a new class",
+    "create": "Create class",
+    "editTitle": "Edit class",
+    "createSuccess": "Class created successfully.",
+    "updateSuccess": "Class updated successfully.",
+    "deleteSuccess": "Class deleted.",
+    "recordingSaved": "Recording link saved.",
+    "filterBatch": "Filter by batch",
+    "filterStatus": "Show classes",
+    "allBatches": "All batches",
+    "pickBatch": "Select batch",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "empty": "No classes found for the selected filters.",
+    "openLink": "Open meeting link",
+    "recordingPlaceholder": "Paste recording URL",
+    "attendanceTitle": "Attendance — {{title}}",
+    "noAttendance": "No students marked attendance for this class.",
+    "types": {
+      "soft_skill": "Soft skill",
+      "technical": "Technical",
+      "aptitude": "Aptitude"
+    },
+    "columns": {
+      "title": "Title",
+      "trainer": "Trainer",
+      "batch": "Batch",
+      "type": "Class type",
+      "scheduled": "Scheduled at",
+      "duration": "Duration (minutes)",
+      "link": "Online link",
+      "description": "Description",
+      "attendance": "Attended",
+      "recording": "Recording",
+      "actions": "Actions"
+    }
+  },
+  "studentClasses": {
+    "title": "My classes",
+    "subtitle": "Join live sessions and watch recordings from your batch",
+    "filterStatus": "Show classes",
+    "empty": "No classes scheduled for your batch yet.",
+    "joinClass": "Join class",
+    "joining": "Joining...",
+    "linkInactive": "Opens 5 min before start",
+    "attendanceMarked": "Attendance marked. Opening class link...",
+    "attended": "Attended",
+    "watchRecording": "Watch recording",
+    "noRecording": "Recording not available yet"
+  },
   "adminJobs": {
     "title": "Job management",
     "subtitle": "Jobs assigned to your batches — filter by batch and review applicants",
