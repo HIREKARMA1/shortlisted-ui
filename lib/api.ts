@@ -96,6 +96,27 @@ class ApiClient {
     return res.data;
   }
 
+  async getAdminJobs(batchId?: string) {
+    const res = await this.client.get('/admin/jobs', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
+  async getJobApplicants(jobId: string, batchId: string) {
+    const res = await this.client.get(`/admin/jobs/${jobId}/applicants`, {
+      params: { batch_id: batchId },
+    });
+    return res.data;
+  }
+
+  async getCoordinatorStudents(batchId?: string) {
+    const res = await this.client.get('/admin/my-students', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
   async listAdmins() {
     const res = await this.client.get('/admin/admins');
     return res.data;

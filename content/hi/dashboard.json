@@ -50,6 +50,57 @@
     "empty": "अभी कोई बैच असाइन नहीं।",
     "viewRoster": "छात्र सूची देखें"
   },
+  "adminStudents": {
+    "title": "छात्र प्रबंधन",
+    "subtitle": "अपने बैच के छात्र — भुगतान, आवेदन और गतिविधि",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी मेरे बैच",
+    "empty": "चयनित बैच में कोई छात्र नहीं मिला।",
+    "offerLetter": "ऑफर लेटर",
+    "columns": {
+      "name": "छात्र",
+      "email": "संपर्क",
+      "batch": "बैच",
+      "joined": "बैच में शामिल",
+      "payment": "भुगतान",
+      "paymentDate": "भुगतान तिथि",
+      "applied": "आवेदन",
+      "selected": "चयनित",
+      "offers": "ऑफर लेटर",
+      "lastLogin": "अंतिम लॉगिन",
+      "status": "एक्सेस"
+    }
+  },
+  "adminJobs": {
+    "title": "नौकरी प्रबंधन",
+    "subtitle": "आपके बैच की नौकरियां — फ़िल्टर करें और आवेदक देखें",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी मेरे बैच",
+    "empty": "चयनित बैच के लिए कोई नौकरी नहीं मिली।",
+    "viewApplicants": "आवेदक देखें",
+    "applicantsFor": "{{batch}} के आवेदक",
+    "noApplicants": "इस बैच के कोई छात्र ने अभी आवेदन नहीं किया।",
+    "selectApplicant": "प्रोफ़ाइल देखने के लिए आवेदक चुनें।",
+    "profileTitle": "छात्र प्रोफ़ाइल",
+    "viewResume": "रिज़्यूमे देखें",
+    "columns": {
+      "title": "नौकरी",
+      "company": "कंपनी",
+      "location": "स्थान",
+      "batch": "बैच",
+      "actions": "कार्रवाई"
+    },
+    "profile": {
+      "name": "नाम",
+      "email": "ईमेल",
+      "phone": "फोन",
+      "college": "कॉलेज",
+      "branch": "शाखा",
+      "graduation_year": "स्नातक वर्ष",
+      "skills": "कौशल",
+      "preferred_roles": "पसंदीदा भूमिकाएं"
+    }
+  },
   "batchDetail": {
     "seats": "{{filled}} में से {{max}} सीटें भरी",
     "coordinator": "कोऑर्डिनेटर: {{name}}",
@@ -78,6 +129,8 @@
     },
     "batchMeta": "{{filled}}/{{max}} सीटें · {{admin}}",
     "unassigned": "असाइन नहीं",
+    "assignCoordinator": "कोऑर्डिनेटर असाइन करें",
+    "assignSuccess": "बैच में कोऑर्डिनेटर असाइन किया गया।",
     "grantSuccess": "एक्सेस सफलतापूर्वक दिया गया।",
     "createSuccess": "कोऑर्डिनेटर सफलतापूर्वक बनाया गया।",
     "stats": {

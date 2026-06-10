@@ -50,6 +50,57 @@
     "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବ୍ୟାଚ୍ ନାହିଁ।",
     "viewRoster": "ଛାତ୍ର ତାଲିକା ଦେଖନ୍ତୁ"
   },
+  "adminStudents": {
+    "title": "ଛାତ୍ର ପରିଚାଳନା",
+    "subtitle": "ଆପଣଙ୍କ ବ୍ୟାଚ୍‌ର ଛାତ୍ର — ପେମେଣ୍ଟ, ଆବେଦନ ଏବଂ କାର୍ଯ୍ୟକଳାପ",
+    "filterBatch": "ବ୍ୟାଚ୍ ଦ୍ୱାରା ଫିଲ୍ଟର",
+    "allBatches": "ସମସ୍ତ ମୋ ବ୍ୟାଚ୍",
+    "empty": "ଚୟନିତ ବ୍ୟାଚ୍‌ରେ କୌଣସି ଛାତ୍ର ନାହିଁ।",
+    "offerLetter": "ଅଫର୍ ଲେଟର",
+    "columns": {
+      "name": "ଛାତ୍ର",
+      "email": "ଯୋଗାଯୋଗ",
+      "batch": "ବ୍ୟାଚ୍",
+      "joined": "ବ୍ୟାଚ୍‌ରେ ଯୋଗ",
+      "payment": "ପେମେଣ୍ଟ",
+      "paymentDate": "ପେମେଣ୍ଟ ତାରିଖ",
+      "applied": "ଆବେଦନ",
+      "selected": "ଚୟନିତ",
+      "offers": "ଅଫର୍ ଲେଟର",
+      "lastLogin": "ଶେଷ ଲଗଇନ୍",
+      "status": "ଆକ୍ସେସ୍"
+    }
+  },
+  "adminJobs": {
+    "title": "ଚାକିରି ପରିଚାଳନା",
+    "subtitle": "ଆପଣଙ୍କ ବ୍ୟାଚ୍‌ର ଚାକିରି — ଫିଲ୍ଟର କରି ଆବେଦକ ଦେଖନ୍ତୁ",
+    "filterBatch": "ବ୍ୟାଚ୍ ଦ୍ୱାରା ଫିଲ୍ଟର",
+    "allBatches": "ସମସ୍ତ ମୋ ବ୍ୟାଚ୍",
+    "empty": "ଚୟନିତ ବ୍ୟାଚ୍‌ରେ କୌଣସି ଚାକିରି ନାହିଁ।",
+    "viewApplicants": "ଆବେଦକ ଦେଖନ୍ତୁ",
+    "applicantsFor": "{{batch}} ର ଆବେଦକ",
+    "noApplicants": "ଏହି ବ୍ୟାଚ୍‌ର କୌଣସି ଛାତ୍ର ଏପର୍ଯ୍ୟନ୍ତ ଆବେଦନ କରିନାହାନ୍ତି।",
+    "selectApplicant": "ପ୍ରୋଫାଇଲ୍ ଦେଖିବାକୁ ଆବେଦକ ବାଛନ୍ତୁ।",
+    "profileTitle": "ଛାତ୍ର ପ୍ରୋଫାଇଲ୍",
+    "viewResume": "ରେଜ୍ୟୁମେ ଦେଖନ୍ତୁ",
+    "columns": {
+      "title": "ଚାକିରି",
+      "company": "କମ୍ପାନୀ",
+      "location": "ସ୍ଥାନ",
+      "batch": "ବ୍ୟାଚ୍",
+      "actions": "କାର୍ଯ୍ୟ"
+    },
+    "profile": {
+      "name": "ନାମ",
+      "email": "ଇମେଲ୍",
+      "phone": "ଫୋନ୍",
+      "college": "କଲେଜ୍",
+      "branch": "ଶାଖା",
+      "graduation_year": "ସ୍ନାତକ ବର୍ଷ",
+      "skills": "ଦକ୍ଷତା",
+      "preferred_roles": "ପସନ୍ଦର ଭୂମିକା"
+    }
+  },
   "batchDetail": {
     "seats": "{{filled}} ରୁ {{max}} ସିଟ୍ ପୂର୍ଣ୍ଣ",
     "coordinator": "କୋଅର୍ଡିନେଟର: {{name}}",
@@ -78,6 +129,8 @@
     },
     "batchMeta": "{{filled}}/{{max}} ସିଟ୍ · {{admin}}",
     "unassigned": "ଅସାଇନ୍ ନାହିଁ",
+    "assignCoordinator": "କୋଅର୍ଡିନେଟର ଅସାଇନ୍ କରନ୍ତୁ",
+    "assignSuccess": "ବ୍ୟାଚ୍‌ରେ କୋଅର୍ଡିନେଟର ଅସାଇନ୍ ହେଲା।",
     "grantSuccess": "ଆକ୍ସେସ୍ ଦିଆଗଲା।",
     "createSuccess": "କୋଅର୍ଡିନେଟର ସୃଷ୍ଟି ହେଲା।",
     "stats": {

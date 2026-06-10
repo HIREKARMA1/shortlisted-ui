@@ -23,7 +23,10 @@ export function AdminBatchDetailView() {
   const [batch, setBatch] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
-    if (!localStorage.getItem('access_token')) router.push('/auth/login');
+    if (!localStorage.getItem('access_token') || localStorage.getItem('user_type') !== 'admin') {
+      router.push('/auth/login');
+      return;
+    }
     api.getBatchDetail(id).then(setBatch).catch(() => router.push('/dashboard/admin'));
   }, [id, router]);
 

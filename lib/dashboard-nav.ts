@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, ClipboardList, LayoutDashboard, Users, Shield } from 'lucide-react';
+import { Briefcase, ClipboardList, LayoutDashboard, Users, Shield, GraduationCap } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
 
@@ -18,6 +18,8 @@ export const studentNav: NavItem[] = [
 
 export const adminNav: NavItem[] = [
   { href: '/dashboard/admin', labelKey: 'common.nav.batches', icon: Users, exact: true },
+  { href: '/dashboard/admin/students', labelKey: 'common.nav.students', icon: GraduationCap },
+  { href: '/dashboard/admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
 ];
 
 export const superAdminNav: NavItem[] = [
