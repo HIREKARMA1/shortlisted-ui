@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Briefcase, ClipboardList, Shield, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
+import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
 import { applicationBadgeTone } from '@/lib/status';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -20,18 +21,23 @@ export function StudentDashboardView() {
   const router = useRouter();
   const { t } = useTranslation();
   const { logout } = useAuth();
+  useStudentActiveGate();
   const [data, setData] = useState<Record<string, unknown> | null>(null);
 
   useEffect(() => {
-    if (!localStorage.getItem('access_token')) {
-      router.push('/auth/login');
-      return;
-    }
-    if (localStorage.getItem('access_status') !== 'active') {
-      router.push('/subscribe');
-      return;
-    }
-    api.getDashboard().then(setData).catch(() => router.push('/subscribe'));
+    if (!localStorage.getItem('access_token')) return;
+    api
+      .getDashboard()
+      .then((dashboard) => {
+        const status = String((dashboard.student as { access_status?: string })?.access_status || '');
+        localStorage.setItem('access_status', status);
+        if (status !== 'active') {
+          router.push('/subscribe');
+          return;
+        }
+        setData(dashboard);
+      })
+      .catch(() => router.push('/subscribe'));
   }, [router]);
 
   if (!data) return <LoadingState />;

@@ -112,9 +112,57 @@
       "status": "Access"
     }
   },
+  "superAdminStudents": {
+    "title": "Student management",
+    "subtitle": "View all students across batches — payment, applications, and activity",
+    "filterBatch": "Filter by batch",
+    "allBatches": "All batches",
+    "empty": "No students found for the selected batch.",
+    "statusUpdated": "Student access status updated."
+  },
+  "superAdminRevenue": {
+    "title": "Revenue",
+    "subtitle": "Subscription payments and revenue statement",
+    "totalRevenue": "Total revenue",
+    "paymentCount": "Payments received",
+    "filterBatch": "Filter by batch",
+    "allBatches": "All batches",
+    "dateFrom": "From date",
+    "dateTo": "To date",
+    "empty": "No payments found for the selected filters.",
+    "columns": {
+      "date": "Paid on",
+      "student": "Student",
+      "batch": "Batch",
+      "amount": "Amount",
+      "provider": "Provider",
+      "transaction": "Transaction ID"
+    }
+  },
   "superAdmin": {
     "title": "Platform overview",
     "subtitle": "Manage coordinators, batches, and student access",
+    "coordinators": {
+      "title": "Coordinator management",
+      "subtitle": "Create coordinators, manage credentials, and assign batches",
+      "empty": "No coordinators created yet.",
+      "assignBatch": "Assign batch",
+      "pickBatch": "Select batch to assign",
+      "editTitle": "Edit coordinator",
+      "newPassword": "New password (leave blank to keep)",
+      "active": "Active",
+      "inactive": "Inactive",
+      "updateSuccess": "Coordinator updated successfully.",
+      "deactivateSuccess": "Coordinator deactivated.",
+      "columns": {
+        "name": "Coordinator",
+        "email": "Email",
+        "password": "Password",
+        "batches": "Assigned batches",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
     "createAdmin": "Create batch coordinator",
     "fields": {
       "name": "Full name",

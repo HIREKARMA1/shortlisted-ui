@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Building2, MapPin, Briefcase } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
+import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
@@ -16,6 +17,7 @@ export function StudentJobsView() {
   const router = useRouter();
   const { t } = useTranslation();
   const { logout } = useAuth();
+  useStudentActiveGate();
   const [jobs, setJobs] = useState<Record<string, unknown>[]>([]);
   const [applying, setApplying] = useState<string | null>(null);
   const [ready, setReady] = useState(false);

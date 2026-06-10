@@ -1,5 +1,14 @@
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, ClipboardList, LayoutDashboard, Users, Shield, GraduationCap } from 'lucide-react';
+import {
+  Briefcase,
+  ClipboardList,
+  LayoutDashboard,
+  Users,
+  Shield,
+  GraduationCap,
+  UserCog,
+  IndianRupee,
+} from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
 
@@ -23,7 +32,10 @@ export const adminNav: NavItem[] = [
 ];
 
 export const superAdminNav: NavItem[] = [
-  { href: '/dashboard/super-admin', labelKey: 'common.nav.overview', icon: Shield, exact: true },
+  { href: '/dashboard/super-admin/students', labelKey: 'common.nav.students', icon: GraduationCap },
+  { href: '/dashboard/super-admin/coordinators', labelKey: 'common.nav.coordinators', icon: UserCog },
+  { href: '/dashboard/super-admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
+  { href: '/dashboard/super-admin/revenue', labelKey: 'common.nav.revenue', icon: IndianRupee },
 ];
 
 export function getNavForRole(role: DashboardRole): NavItem[] {

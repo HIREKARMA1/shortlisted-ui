@@ -147,6 +147,38 @@ class ApiClient {
     return res.data;
   }
 
+  async updateBatch(batchId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/batches/${batchId}`, data);
+    return res.data;
+  }
+
+  async listCoordinators() {
+    const res = await this.client.get('/admin/coordinators');
+    return res.data;
+  }
+
+  async updateAdmin(adminId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/admins/${adminId}`, data);
+    return res.data;
+  }
+
+  async deactivateAdmin(adminId: string) {
+    const res = await this.client.delete(`/admin/admins/${adminId}`);
+    return res.data;
+  }
+
+  async getRevenueReport(params?: { batch_id?: string; date_from?: string; date_to?: string }) {
+    const res = await this.client.get('/admin/revenue', { params });
+    return res.data;
+  }
+
+  async updateStudentAccessStatus(studentId: string, access_status: 'active' | 'inactive') {
+    const res = await this.client.patch(`/admin/students/${studentId}/access-status`, {
+      access_status,
+    });
+    return res.data;
+  }
+
   async syncBatchToDisha(batchId: string) {
     const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`);
     return res.data;

@@ -51,10 +51,10 @@ export function useStudentSubscribeGate() {
     api
       .getDashboard()
       .then((data) => {
-        const status = (data.student as { access_status?: string })?.access_status;
+        const status = String((data.student as { access_status?: string })?.access_status || '');
+        localStorage.setItem('access_status', status);
+        setAccessStatus(status);
         if (status === 'active') {
-          localStorage.setItem('access_status', 'active');
-          setAccessStatus('active');
           router.replace('/dashboard/student');
         }
       })

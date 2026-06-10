@@ -14,6 +14,8 @@
     "applications": "ଆବେଦନ",
     "batches": "ମୋ ବ୍ୟାଚ୍",
     "students": "ଛାତ୍ର",
+    "coordinators": "କୋଅର୍ଡିନେଟର",
+    "revenue": "ରାଜସ୍ୱ",
     "overview": "ସମୀକ୍ଷା",
     "howItWorks": "କିପରି କାମ କରେ",
     "features": "ବିଶେଷତା",
@@ -33,6 +35,7 @@
   },
   "status": {
     "active": "ସକ୍ରିୟ",
+    "inactive": "ନିଷ୍କ୍ରିୟ",
     "locked": "ଲକ୍",
     "revoked": "ବାତିଲ୍"
   },
