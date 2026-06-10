@@ -13,6 +13,9 @@
     "jobs": "नौकरियां",
     "applications": "आवेदन",
     "batches": "मेरे बैच",
+    "students": "छात्र",
+    "coordinators": "कोऑर्डिनेटर",
+    "revenue": "राजस्व",
     "overview": "अवलोकन",
     "howItWorks": "कैसे काम करता है",
     "features": "विशेषताएं",
@@ -32,6 +35,7 @@
   },
   "status": {
     "active": "सक्रिय",
+    "inactive": "निष्क्रिय",
     "locked": "लॉक",
     "revoked": "रद्द"
   },

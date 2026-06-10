@@ -50,6 +50,57 @@
     "empty": "अभी कोई बैच असाइन नहीं।",
     "viewRoster": "छात्र सूची देखें"
   },
+  "adminStudents": {
+    "title": "छात्र प्रबंधन",
+    "subtitle": "अपने बैच के छात्र — भुगतान, आवेदन और गतिविधि",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी मेरे बैच",
+    "empty": "चयनित बैच में कोई छात्र नहीं मिला।",
+    "offerLetter": "ऑफर लेटर",
+    "columns": {
+      "name": "छात्र",
+      "email": "संपर्क",
+      "batch": "बैच",
+      "joined": "बैच में शामिल",
+      "payment": "भुगतान",
+      "paymentDate": "भुगतान तिथि",
+      "applied": "आवेदन",
+      "selected": "चयनित",
+      "offers": "ऑफर लेटर",
+      "lastLogin": "अंतिम लॉगिन",
+      "status": "एक्सेस"
+    }
+  },
+  "adminJobs": {
+    "title": "नौकरी प्रबंधन",
+    "subtitle": "आपके बैच की नौकरियां — फ़िल्टर करें और आवेदक देखें",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी मेरे बैच",
+    "empty": "चयनित बैच के लिए कोई नौकरी नहीं मिली।",
+    "viewApplicants": "आवेदक देखें",
+    "applicantsFor": "{{batch}} के आवेदक",
+    "noApplicants": "इस बैच के कोई छात्र ने अभी आवेदन नहीं किया।",
+    "selectApplicant": "प्रोफ़ाइल देखने के लिए आवेदक चुनें।",
+    "profileTitle": "छात्र प्रोफ़ाइल",
+    "viewResume": "रिज़्यूमे देखें",
+    "columns": {
+      "title": "नौकरी",
+      "company": "कंपनी",
+      "location": "स्थान",
+      "batch": "बैच",
+      "actions": "कार्रवाई"
+    },
+    "profile": {
+      "name": "नाम",
+      "email": "ईमेल",
+      "phone": "फोन",
+      "college": "कॉलेज",
+      "branch": "शाखा",
+      "graduation_year": "स्नातक वर्ष",
+      "skills": "कौशल",
+      "preferred_roles": "पसंदीदा भूमिकाएं"
+    }
+  },
   "batchDetail": {
     "seats": "{{filled}} में से {{max}} सीटें भरी",
     "coordinator": "कोऑर्डिनेटर: {{name}}",
@@ -59,6 +110,33 @@
       "name": "नाम",
       "email": "ईमेल",
       "status": "एक्सेस"
+    }
+  },
+  "superAdminStudents": {
+    "title": "छात्र प्रबंधन",
+    "subtitle": "सभी बैच के छात्र — भुगतान, आवेदन और गतिविधि",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी बैच",
+    "empty": "चयनित बैच में कोई छात्र नहीं।",
+    "statusUpdated": "छात्र एक्सेस स्थिति अपडेट की गई।"
+  },
+  "superAdminRevenue": {
+    "title": "राजस्व",
+    "subtitle": "सब्सक्रिप्शन भुगतान और राजस्व विवरण",
+    "totalRevenue": "कुल राजस्व",
+    "paymentCount": "भुगतान संख्या",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी बैच",
+    "dateFrom": "प्रारंभ तिथि",
+    "dateTo": "समाप्ति तिथि",
+    "empty": "चयनित फ़िल्टर के लिए कोई भुगतान नहीं।",
+    "columns": {
+      "date": "भुगतान तिथि",
+      "student": "छात्र",
+      "batch": "बैच",
+      "amount": "राशि",
+      "provider": "प्रदाता",
+      "transaction": "लेनदेन ID"
     }
   },
   "superAdmin": {
@@ -78,6 +156,29 @@
     },
     "batchMeta": "{{filled}}/{{max}} सीटें · {{admin}}",
     "unassigned": "असाइन नहीं",
+    "assignCoordinator": "कोऑर्डिनेटर असाइन करें",
+    "assignSuccess": "बैच में कोऑर्डिनेटर असाइन किया गया।",
+    "coordinators": {
+      "title": "कोऑर्डिनेटर प्रबंधन",
+      "subtitle": "कोऑर्डिनेटर बनाएं, क्रेडेंशियल प्रबंधित करें और बैच असाइन करें",
+      "empty": "अभी कोई कोऑर्डिनेटर नहीं।",
+      "assignBatch": "बैच असाइन करें",
+      "pickBatch": "असाइन करने के लिए बैच चुनें",
+      "editTitle": "कोऑर्डिनेटर संपादित करें",
+      "newPassword": "नया पासवर्ड (खाली छोड़ें यदि न बदलें)",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "updateSuccess": "कोऑर्डिनेटर अपडेट किया गया।",
+      "deactivateSuccess": "कोऑर्डिनेटर निष्क्रिय किया गया।",
+      "columns": {
+        "name": "कोऑर्डिनेटर",
+        "email": "ईमेल",
+        "password": "पासवर्ड",
+        "batches": "असाइन बैच",
+        "status": "स्थिति",
+        "actions": "कार्रवाई"
+      }
+    },
     "grantSuccess": "एक्सेस सफलतापूर्वक दिया गया।",
     "createSuccess": "कोऑर्डिनेटर सफलतापूर्वक बनाया गया।",
     "stats": {

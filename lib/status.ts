@@ -13,6 +13,7 @@ export function accessBadgeTone(status: string): BadgeTone {
   const s = status.toLowerCase();
   if (s === 'active') return 'success';
   if (s === 'locked') return 'warning';
+  if (s === 'inactive') return 'error';
   if (s === 'revoked') return 'error';
   return 'neutral';
 }
