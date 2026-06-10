@@ -15,7 +15,4 @@ export const config = {
     name: process.env.NEXT_PUBLIC_APP_NAME ?? 'Shortlisted',
     url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001',
   },
-  features: {
-    devPaymentBypass: process.env.NEXT_PUBLIC_DEV_PAYMENT_BYPASS === 'true',
-  },
 } as const;

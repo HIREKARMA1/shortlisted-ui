@@ -92,6 +92,12 @@
     "recordingPlaceholder": "Paste recording URL",
     "attendanceTitle": "Attendance — {{title}}",
     "noAttendance": "No students marked attendance for this class.",
+    "exportAttendance": "Export CSV",
+    "exportColumns": {
+      "name": "Student name",
+      "email": "Email",
+      "attendedAt": "Attended at"
+    },
     "types": {
       "soft_skill": "Soft skill",
       "technical": "Technical",
