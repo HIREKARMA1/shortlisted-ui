@@ -188,6 +188,43 @@ class ApiClient {
     const res = await this.client.post('/admin/batches/sync-disha-pending');
     return res.data;
   }
+
+  async getAdminClasses(params?: { batch_id?: string; filter?: string }) {
+    const res = await this.client.get('/admin/classes', { params });
+    return res.data;
+  }
+
+  async getAdminClassDetail(classId: string) {
+    const res = await this.client.get(`/admin/classes/${classId}`);
+    return res.data;
+  }
+
+  async createClass(data: Record<string, unknown>) {
+    const res = await this.client.post('/admin/classes', data);
+    return res.data;
+  }
+
+  async updateClass(classId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/classes/${classId}`, data);
+    return res.data;
+  }
+
+  async deleteClass(classId: string) {
+    const res = await this.client.delete(`/admin/classes/${classId}`);
+    return res.data;
+  }
+
+  async getStudentClasses(filter?: string) {
+    const res = await this.client.get('/students/me/classes', {
+      params: filter ? { filter } : undefined,
+    });
+    return res.data;
+  }
+
+  async joinClass(classId: string) {
+    const res = await this.client.post(`/students/me/classes/${classId}/join`);
+    return res.data;
+  }
 }
 
 export const api = new ApiClient();
