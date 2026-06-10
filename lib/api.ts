@@ -48,7 +48,7 @@ class ApiClient {
 
   async getPaymentConfig() {
     const res = await this.client.get('/payments/config');
-    return res.data as { provider: string; dev_bypass: boolean };
+    return res.data as { provider: string; amount_paise: number };
   }
 
   async createPaymentOrder() {

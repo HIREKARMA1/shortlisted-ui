@@ -6,6 +6,7 @@
   "currency": "₹{{amount}}",
   "cta": "Subscribe & Activate",
   "processing": "Processing payment...",
+  "redirecting": "Redirecting to PayU secure checkout...",
   "success": "Subscription activated. Welcome to your batch!",
   "benefits": {
     "title": "What's included",
