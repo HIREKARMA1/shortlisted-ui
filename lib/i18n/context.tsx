@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { getMergedContent } from './loader';
-import { resolvePath, resolveWithParams } from './resolve';
+import { resolvePath, resolveRaw, resolveWithParams } from './resolve';
 import { ContentTree, Locale, LOCALES } from './types';
 
 const STORAGE_KEY = 'shortlisted_locale';
@@ -11,6 +11,7 @@ type I18nContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: (path: string, params?: Record<string, string | number>) => string;
+  tRaw: (path: string) => unknown;
   content: ContentTree;
 };
 
@@ -45,7 +46,9 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     [content]
   );
 
-  const value = useMemo(() => ({ locale, setLocale, t, content }), [locale, setLocale, t, content]);
+  const tRaw = useCallback((path: string) => resolveRaw(content, path), [content]);
+
+  const value = useMemo(() => ({ locale, setLocale, t, tRaw, content }), [locale, setLocale, t, tRaw, content]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
@@ -57,6 +60,6 @@ export function useI18n() {
 }
 
 export function useTranslation() {
-  const { t, locale, setLocale } = useI18n();
-  return { t, locale, setLocale };
+  const { t, tRaw, locale, setLocale } = useI18n();
+  return { t, tRaw, locale, setLocale };
 }

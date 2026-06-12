@@ -13,7 +13,7 @@
 module.exports = {
   fonts: {
     sans: 'Inter',
-    display: 'DM Sans',
+    display: 'Plus Jakarta Sans',
     mono: 'JetBrains Mono',
   },
   radius: {
@@ -75,13 +75,14 @@ module.exports = {
       900: '#0f172a',
     },
     surface: {
-      page: '#f4f7fb',
+      page: '#ffffff',
       card: '#ffffff',
-      muted: '#eef3f9',
+      muted: '#f6f8fb',
+      soft: '#f6f8fb',
       hero: 'linear-gradient(165deg, #e8eef8 0%, #f4f9fd 45%, #ffffff 100%)',
     },
     text: {
-      primary: '#0f172a',
+      primary: '#0f1622',
       secondary: '#475569',
       muted: '#64748b',
       inverse: '#ffffff',
@@ -89,7 +90,7 @@ module.exports = {
       linkHover: '#174892',
     },
     border: {
-      default: '#dce4ef',
+      default: '#e6e8ec',
       strong: '#c5d4eb',
       focus: '#1b52a4',
     },

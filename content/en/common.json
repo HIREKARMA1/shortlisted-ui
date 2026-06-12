@@ -1,7 +1,8 @@
 {
   "brand": {
     "name": "Shortlisted",
-    "tagline": "Your dedicated placement cell"
+    "tagline": "Your dedicated placement cell",
+    "badge": "Placement"
   },
   "nav": {
     "login": "Login",
@@ -20,7 +21,15 @@
     "overview": "Overview",
     "howItWorks": "How it works",
     "features": "Features",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "languageSwitcher": {
+    "title": "Select language",
+    "subtitle": "Choose English, Hindi, or Odia",
+    "ariaSelect": "Select language",
+    "close": "Close"
   },
   "actions": {
     "submit": "Submit",

@@ -1,7 +1,8 @@
 {
   "brand": {
     "name": "Shortlisted",
-    "tagline": "आपका समर्पित प्लेसमेंट सेल"
+    "tagline": "आपका समर्पित प्लेसमेंट सेल",
+    "badge": "प्लेसमेंट"
   },
   "nav": {
     "login": "लॉगिन",
@@ -20,7 +21,15 @@
     "overview": "अवलोकन",
     "howItWorks": "कैसे काम करता है",
     "features": "विशेषताएं",
-    "pricing": "मूल्य"
+    "pricing": "मूल्य",
+    "about": "हमारे बारे में",
+    "contact": "संपर्क"
+  },
+  "languageSwitcher": {
+    "title": "भाषा चुनें",
+    "subtitle": "अंग्रेजी, हिंदी या ओडिया चुनें",
+    "ariaSelect": "भाषा चुनें",
+    "close": "बंद करें"
   },
   "actions": {
     "submit": "जमा करें",
