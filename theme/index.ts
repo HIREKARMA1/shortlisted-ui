@@ -34,6 +34,9 @@ export function themeToCssVariables(t: Theme = theme): Record<string, string> {
     '--color-surface-page': t.colors.surface.page,
     '--color-surface-card': t.colors.surface.card,
     '--color-surface-muted': t.colors.surface.muted,
+    '--color-surface-soft': t.colors.surface.soft,
+    '--color-ink': t.colors.text.primary,
+    '--color-line': t.colors.border.default,
     '--gradient-hero': t.colors.surface.hero,
 
     '--color-text-primary': t.colors.text.primary,

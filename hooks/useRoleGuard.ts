@@ -11,7 +11,7 @@ export function useRoleGuard(role: DashboardRole) {
     const token = localStorage.getItem('access_token');
     const userType = localStorage.getItem('user_type');
     if (!token || userType !== role) {
-      router.push('/auth/login');
+      router.push(role === 'super_admin' ? '/auth/login/internal' : '/auth/login');
     }
   }, [router, role]);
 }

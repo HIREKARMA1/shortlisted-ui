@@ -5,12 +5,15 @@
 @layer base {
   :root {
     --font-sans: 'Inter';
-    --font-display: 'DM Sans';
+    --font-display: 'Plus Jakarta Sans';
     --font-mono: 'JetBrains Mono';
+    --radius: 10px;
   }
 
   html {
     @apply antialiased;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   body {
@@ -19,12 +22,17 @@
     color: var(--color-text-primary);
   }
 
-  a {
-    color: var(--color-text-link);
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 
-  a:hover {
-    color: var(--color-text-link-hover);
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 
   ::selection {
@@ -35,15 +43,19 @@
 
 @layer components {
   .page-container {
-    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
   .brand-stripe {
-    @apply h-1 w-full bg-brand-stripe;
+    @apply h-1.5 w-full;
+  }
+
+  .brand-stripe > div {
+    @apply flex h-full w-full;
   }
 
   .card-surface {
-    @apply rounded-xl border bg-surface-card shadow-card;
+    @apply rounded-lg border bg-surface-card shadow-card;
     border-color: var(--color-border);
   }
 
@@ -58,35 +70,90 @@
   }
 
   .section-title {
-    @apply font-display text-2xl font-semibold tracking-tight text-ink-primary;
+    @apply font-display text-3xl font-extrabold tracking-tight text-ink-primary sm:text-4xl;
+  }
+
+  .section-eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-blue;
   }
 
   .muted-text {
     @apply text-sm text-ink-muted;
   }
 
-  .hero-panel {
-    @apply rounded-2xl bg-hero-gradient px-6 py-12 sm:px-10 sm:py-16;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--color-border);
-  }
-
   .badge-pill {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide;
-    background-color: rgba(0, 162, 229, 0.12);
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wider;
+    border-color: var(--color-border);
+    background-color: #ffffff;
     color: var(--color-brand-blue);
   }
 
   .link-brand {
-    @apply text-sm font-medium transition-colors;
+    @apply text-sm font-semibold;
     color: var(--color-brand-blue);
   }
 
   .link-brand:hover {
-    color: var(--color-brand-sky);
+    color: var(--color-brand-blue);
+  }
+
+  .nav-cta {
+    @apply text-white;
+  }
+
+  .nav-cta:hover {
+    color: white;
   }
 
   .auth-gradient-panel {
     background: linear-gradient(145deg, #1b52a4 0%, #174892 50%, #133d7d 100%);
+  }
+
+  .sl-bracket {
+    position: relative;
+    display: inline-block;
+    padding: 0 0.35em;
+  }
+
+  .sl-bracket::before,
+  .sl-bracket::after {
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--color-brand-orange);
+    opacity: 0.85;
+  }
+
+  .sl-bracket::before {
+    content: '[';
+    left: -0.05em;
+    top: -0.05em;
+  }
+
+  .sl-bracket::after {
+    content: ']';
+    right: -0.05em;
+    bottom: -0.05em;
+  }
+
+  .sl-diagonal-band {
+    clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+  }
+
+  .sl-cohort-ring {
+    box-shadow: inset 0 0 0 1px rgba(27, 82, 164, 0.06);
+  }
+
+  @keyframes sl-seat-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(9, 136, 85, 0.35); }
+    50% { box-shadow: 0 0 0 6px rgba(9, 136, 85, 0); }
+  }
+
+  .sl-seat-pulse {
+    animation: sl-seat-pulse 2.5s ease-in-out infinite;
+  }
+
+  .sl-pricing-glow {
+    background: radial-gradient(ellipse at 50% 0%, rgba(27, 82, 164, 0.08) 0%, transparent 70%);
   }
 }
