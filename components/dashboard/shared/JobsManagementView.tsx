@@ -206,7 +206,7 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
                   <div className="space-y-4">
                     <h4 className="font-semibold text-brand-blue">{t('dashboard.adminJobs.profileTitle')}</h4>
                     <dl className="space-y-3 text-sm">
-                      {[
+                      {([
                         ['name', student.name],
                         ['email', student.email],
                         ['phone', student.phone],
@@ -215,7 +215,7 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
                         ['graduation_year', student.graduation_year],
                         ['skills', student.skills],
                         ['preferred_roles', student.preferred_roles],
-                      ].map(([key, value]) =>
+                      ] as [string, unknown][]).map(([key, value]) =>
                         value ? (
                           <div key={key}>
                             <dt className="text-xs font-semibold uppercase tracking-wide text-ink-muted">

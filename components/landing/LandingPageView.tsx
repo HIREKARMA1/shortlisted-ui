@@ -7,27 +7,39 @@ import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
 import { SiteHeader, PageContainer } from '@/components/layout/Shell';
 import { SiteFooter } from '@/components/layout/Footer';
-import { Button } from '@/components/ui/Button';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { BatchCohortVisual } from '@/components/landing/BatchCohortVisual';
+import { ImpactSection } from '@/components/landing/ImpactSection';
+import { WhyShortlisted } from '@/components/landing/WhyShortlisted';
+import { PricingSection } from '@/components/landing/PricingSection';
+import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { CourseVsPlacement } from '@/components/landing/CourseVsPlacement';
 import { PlacementPipeline } from '@/components/landing/PlacementPipeline';
-import { BentoFeatures } from '@/components/landing/BentoFeatures';
 import { CoordinatorSpotlight } from '@/components/landing/CoordinatorSpotlight';
 import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
 
 type BatchInfo = {
   seats_remaining?: number;
+  max_seats?: number;
+  batch_name?: string;
   subscription_amount_inr?: number;
   has_open_batch?: boolean;
 };
 
+type Testimonial = {
+  id: string;
+  name: string;
+  batch_name: string;
+  feedback: string;
+  image_url: string;
+};
+
 const faqKeys = ['course', 'batch', 'jobs', 'refund'] as const;
-const pricingIncludes = ['batch', 'jobs', 'coordinator', 'tracking', 'dashboard'] as const;
 
 export function LandingPageView() {
   const { t } = useTranslation();
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loadingBatch, setLoadingBatch] = useState(true);
 
   useEffect(() => {
@@ -36,157 +48,107 @@ export function LandingPageView() {
       .then(setBatchInfo)
       .catch(() => setBatchInfo(null))
       .finally(() => setLoadingBatch(false));
+    api
+      .getTestimonials()
+      .then((rows) => setTestimonials(Array.isArray(rows) ? rows : []))
+      .catch(() => setTestimonials([]));
   }, []);
 
   const seats = batchInfo?.seats_remaining ?? 0;
+  const maxSeats = batchInfo?.max_seats ?? 12;
 
   return (
     <main className="min-h-screen bg-white">
       <SiteHeader />
 
-      {/* Hero — cohort-first, not marketplace-style */}
-      <section className="relative overflow-hidden">
+      {/* Hero + Impact — one continuous background (no seam) */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -left-32 top-20 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl"
+          className="pointer-events-none absolute -right-24 top-8 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl"
           aria-hidden
         />
 
-        <PageContainer className="relative grid items-center gap-12 pb-16 pt-12 lg:grid-cols-2 lg:gap-16 lg:pb-24 lg:pt-16">
+        {/* Hero — keep a bit shorter so Impact peeks in first screen */}
+        <section className="relative flex lg:h-[calc(100dvh-10rem)] lg:items-center">
+          <PageContainer className="relative grid w-full items-center gap-8 py-6 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:py-8">
           <div>
-            <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink-primary sm:text-5xl lg:text-[52px]">
-              {t('landing.hero.title1')}{' '}
-              <span className="sl-bracket text-brand-blue">{t('landing.hero.title2')}</span>
+            <h1 className="font-serif text-[2.35rem] font-bold leading-[1.06] tracking-tight text-ink-primary sm:text-[3.4rem] lg:text-[4rem]">
+              <span className="block">{t('landing.hero.title1')}</span>
+              <span className="sl-bracket mt-0.5 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
             </h1>
-            <p className="mt-3 font-display text-2xl font-bold text-brand-orange sm:text-3xl">
+            <p className="mt-2 font-display text-base font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-lg">
               {t('landing.hero.title3')}
             </p>
 
-            <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-muted sm:text-lg">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-secondary sm:text-[0.95rem]">
               {t('landing.hero.subtitle')}
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/auth/register" className={navRegisterClass}>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <Link href="/auth/register" className={`${navRegisterClass} px-5 py-2.5`}>
                 {t('landing.hero.ctaPrimary')}
               </Link>
-              <Link href="/auth/login" className={navLoginClass}>
+              <Link
+                href="/auth/login"
+                className="inline-flex items-center justify-center rounded-md border-2 border-primary bg-white px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-primary shadow-sm"
+              >
                 {t('landing.hero.ctaSecondary')}
               </Link>
             </div>
 
-            <p className="mt-6 text-sm text-ink-muted">{t('landing.hero.trust')}</p>
-
-            <dl className="mt-10 grid grid-cols-3 gap-px overflow-hidden rounded-lg border border-line bg-line">
-              {(['batchSize', 'support', 'access'] as const).map((key) => (
-                <div key={key} className="bg-white px-3 py-5 text-center sm:px-4">
-                  <dt className="font-display text-2xl font-extrabold text-primary sm:text-3xl">
-                    {t(`landing.stats.${key}.value`)}
-                  </dt>
-                  <dd className="mt-1.5 text-[11px] uppercase tracking-wider text-muted-foreground sm:text-xs">
-                    {t(`landing.stats.${key}.label`)}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            <div className="mt-6 border-t border-brand-blue/15 pt-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-blue/70">
+                {t('landing.hero.trust')}
+              </p>
+              <dl className="mt-3 grid grid-cols-3 gap-3">
+                {(['batchSize', 'support', 'access'] as const).map((key) => (
+                  <div key={key}>
+                    <dt className="font-display text-2xl font-extrabold text-brand-blue sm:text-3xl">
+                      {t(`landing.stats.${key}.value`)}
+                    </dt>
+                    <dd className="mt-1 text-[9px] font-semibold uppercase leading-snug tracking-wider text-ink-muted sm:text-[10px]">
+                      {t(`landing.stats.${key}.label`)}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
 
           <BatchCohortVisual
             seatsRemaining={seats}
+            maxSeats={batchInfo?.max_seats ?? 12}
+            batchName={batchInfo?.batch_name}
             loading={loadingBatch}
-            coordinatorLabel={t('landing.cohort.coordinator')}
+            eyebrowLabel={t('landing.cohort.eyebrow')}
+            primaryLeadLabel={t('landing.cohort.primaryLead')}
+            coordinatorRoleLabel={t('landing.cohort.coordinatorRole')}
             seatsLabel={t('landing.cohort.seatsOpen')}
+            manifestLabel={t('landing.cohort.manifest')}
+            statusLabel={t('landing.cohort.statusLabel')}
+            statusOpenLabel={t('landing.cohort.statusOpen')}
+            statusFullLabel={t('landing.cohort.statusFull')}
             loadingLabel={t('landing.seats.loading')}
-            fullLabel={t('landing.seats.full')}
           />
-        </PageContainer>
-      </section>
+          </PageContainer>
+        </section>
+
+        <ImpactSection />
+      </div>
+
+      <WhyShortlisted />
+
+      <PricingSection
+        seats={seats}
+        maxSeats={maxSeats}
+        loading={loadingBatch}
+        amountInr={batchInfo?.subscription_amount_inr}
+      />
+      <TestimonialsSection testimonials={testimonials} />
 
       <CourseVsPlacement />
       <PlacementPipeline />
       <CoordinatorSpotlight />
-      <BentoFeatures />
-
-      {/* Pricing — subscription card with seat context */}
-      <section id="pricing" className="border-t border-line-default sl-pricing-glow py-16 sm:py-20">
-        <PageContainer>
-          <SectionHeader
-            eyebrow={t('landing.pricing.eyebrow')}
-            title={t('landing.pricing.title')}
-            subtitle={t('landing.pricing.subtitle')}
-            className="text-center [&>div]:mx-auto [&>div]:text-center"
-          />
-
-          <div className="mx-auto grid max-w-3xl gap-8 lg:grid-cols-5">
-            <div className="flex flex-col justify-center rounded-2xl border border-line-default bg-soft p-6 lg:col-span-2">
-              <p className="text-xs font-bold uppercase tracking-wider text-brand-blue">
-                {t('landing.pricing.seatContext.title')}
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                {t('landing.pricing.seatContext.desc')}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {Array.from({ length: 12 }, (_, i) => {
-                  const filled = i < 12 - seats;
-                  const open = !filled && seats > 0;
-                  return (
-                    <span
-                      key={i}
-                      className={`h-3 w-3 rounded-full ${
-                        filled
-                          ? 'bg-brand-blue/40'
-                          : open
-                            ? 'bg-brand-green sl-seat-pulse'
-                            : 'bg-line-default'
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-              <p className="mt-4 text-sm font-semibold text-ink-primary">
-                {loadingBatch
-                  ? t('landing.seats.loading')
-                  : t('landing.pricing.seatContext.remaining', { count: seats })}
-              </p>
-            </div>
-
-            <div className="overflow-hidden rounded-2xl border border-line-default bg-white shadow-elevated lg:col-span-3">
-              <div className="bg-brand-blue px-6 py-4 text-white">
-                <h3 className="font-display text-lg font-bold">{t('landing.pricing.planName')}</h3>
-                <p className="mt-1 text-sm text-white/80">{t('landing.pricing.note')}</p>
-              </div>
-              <div className="p-6 sm:p-8">
-                {batchInfo?.subscription_amount_inr != null && (
-                  <p className="font-display text-5xl font-extrabold text-brand-blue">
-                    {t('landing.seats.currency', { amount: batchInfo.subscription_amount_inr })}
-                    <span className="ml-2 text-base font-normal text-ink-muted">
-                      {t('landing.pricing.oneTime')}
-                    </span>
-                  </p>
-                )}
-                <ul className="mt-6 space-y-3">
-                  {pricingIncludes.map((key) => (
-                    <li key={key} className="flex items-start gap-3 text-sm text-ink-secondary">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green">
-                        <ChevronRight className="h-3 w-3" />
-                      </span>
-                      {t(`landing.pricing.includes.${key}`)}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/auth/register" className="mt-8 block">
-                  <Button variant="primary" fullWidth className="rounded-full py-3.5">
-                    {t('landing.pricing.cta')}
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </PageContainer>
-      </section>
 
       {/* FAQ */}
       <section className="border-t border-line-default bg-soft py-16 sm:py-20">

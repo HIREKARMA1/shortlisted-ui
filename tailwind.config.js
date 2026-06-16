@@ -8,6 +8,7 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Iowan Old Style', 'Georgia', 'serif'],
         body: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       colors: {

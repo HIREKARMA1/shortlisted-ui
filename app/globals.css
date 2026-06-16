@@ -4,9 +4,10 @@
 
 @layer base {
   :root {
-    --font-sans: 'Inter';
-    --font-display: 'Plus Jakarta Sans';
-    --font-mono: 'JetBrains Mono';
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-display: 'DM Sans', 'Inter', system-ui, sans-serif;
+    --font-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     --radius: 10px;
   }
 
@@ -118,8 +119,8 @@
   .sl-bracket::before,
   .sl-bracket::after {
     position: absolute;
-    font-family: var(--font-display);
-    font-weight: 800;
+    font-family: var(--font-serif);
+    font-weight: 700;
     color: var(--color-brand-orange);
     opacity: 0.85;
   }
@@ -155,5 +156,15 @@
 
   .sl-pricing-glow {
     background: radial-gradient(ellipse at 50% 0%, rgba(27, 82, 164, 0.08) 0%, transparent 70%);
+  }
+
+  .sl-brick-pattern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.14;
+    background-image: url("data:image/svg+xml,%3Csvg width='56' height='32' viewBox='0 0 56 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h24v14H0V0zm28 0h28v14H28V0zM14 18h28v14H14V18z' fill='%23000000' fill-opacity='0.45'/%3E%3C/svg%3E");
+    background-size: 56px 32px;
+    pointer-events: none;
   }
 }

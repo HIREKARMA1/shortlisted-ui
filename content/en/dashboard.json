@@ -249,5 +249,29 @@
       "students": "Total students",
       "active": "Active students"
     }
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "Add and manage student feedback shown on the landing page",
+    "createTitle": "Add new testimonial",
+    "create": "Add testimonial",
+    "createSuccess": "Testimonial added successfully.",
+    "deleteSuccess": "Testimonial deleted.",
+    "statusUpdated": "Testimonial status updated.",
+    "listTitle": "Published testimonials",
+    "imageRequired": "Please upload a profile image.",
+    "statusLabel": "Status",
+    "filterStatus": "Filter by status",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "fields": {
+      "name": "Student name",
+      "batchName": "Batch name",
+      "feedback": "Feedback",
+      "image": "Profile image"
+    }
   }
 }

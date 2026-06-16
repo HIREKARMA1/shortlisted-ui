@@ -14,9 +14,61 @@
     "support": { "value": "1:12", "label": "Coordinator ratio" },
     "access": { "value": "24/7", "label": "Dashboard access" }
   },
+  "impact": {
+    "stats": {
+      "batch": { "value": "12", "label": "Students max per curated batch" },
+      "coordinator": { "value": "1:1", "label": "Dedicated coordinator for your batch" },
+      "matching": { "value": "DISHA", "label": "HireKarma job matching network" }
+    },
+    "skills": {
+      "title": "Placement readiness that companies actually hire for",
+      "subtitle": "Real job prep through matched roles and coordinator support — not endless coursework.",
+      "tags": {
+        "jobs": "Curated job feed",
+        "interviews": "Interview prep",
+        "tracking": "Application tracking",
+        "resume": "Profile & resume support",
+        "coaching": "Batch coaching",
+        "network": "DISHA corporate network"
+      }
+    },
+    "mission": {
+      "title": "Personally guiding every student in your batch to placement",
+      "subtitle": "Small cohorts, real coordinators, and outcomes over attendance — the placement cell experience, without the college overhead."
+    }
+  },
+  "whyShortlisted": {
+    "title": "Why Shortlisted?",
+    "subtitle": "A dedicated placement ecosystem designed to get you hired, not just trained.",
+    "cards": {
+      "cohorts": {
+        "title": "Small batch advantage",
+        "desc": "Only 12 seats per batch means personalised attention, not mass placement drives."
+      },
+      "support": {
+        "title": "Dedicated coordinator",
+        "desc": "A placement admin guides your batch, tracks progress, and supports applications."
+      },
+      "matching": {
+        "title": "Corporate network",
+        "desc": "Access opportunities from companies hiring through the HireKarma DISHA platform."
+      },
+      "tracking": {
+        "title": "Live application tracking",
+        "desc": "See shortlist, interview, and offer status in your dashboard — updated from corporate workflows."
+      }
+    }
+  },
   "cohort": {
+    "eyebrow": "Active cohort",
+    "primaryLead": "Primary lead",
+    "coordinatorRole": "Placement coordinator",
     "coordinator": "Your coordinator",
-    "seatsOpen": "seats open"
+    "seatsOpen": "Seats open",
+    "manifest": "Certified recruitment manifest",
+    "statusLabel": "Batch status",
+    "statusOpen": "Enrollment open",
+    "statusFull": "Batch full"
   },
   "seats": {
     "label": "Seats remaining",
@@ -119,6 +171,11 @@
     },
     "cta": "Get Started",
     "note": "Seats are limited per batch. Subscribe to secure your spot."
+  },
+  "testimonials": {
+    "eyebrow": "Success stories",
+    "title": "What our students say",
+    "subtitle": "Real feedback from students who joined the Shortlisted placement program."
   },
   "faq": {
     "eyebrow": "FAQ",
