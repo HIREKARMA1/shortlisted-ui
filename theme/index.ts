@@ -7,9 +7,10 @@ export type Theme = typeof theme;
 export function themeToCssVariables(t: Theme = theme): Record<string, string> {
   const { brand } = t;
   const vars: Record<string, string> = {
-    '--font-sans': t.fonts.sans,
-    '--font-display': t.fonts.display,
-    '--font-mono': t.fonts.mono,
+    '--font-sans': `'${t.fonts.sans}', system-ui, sans-serif`,
+    '--font-display': `'${t.fonts.display}', '${t.fonts.sans}', system-ui, sans-serif`,
+    '--font-serif': `'${t.fonts.serif}', 'Iowan Old Style', Georgia, serif`,
+    '--font-mono': `'${t.fonts.mono}', ui-monospace, monospace`,
     '--radius-sm': t.radius.sm,
     '--radius-md': t.radius.md,
     '--radius-lg': t.radius.lg,

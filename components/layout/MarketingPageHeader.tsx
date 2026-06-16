@@ -14,7 +14,7 @@ export function MarketingPageHeader({ eyebrow, title, subtitle }: MarketingPageH
       />
       <div className="page-container relative py-14 sm:py-20">
         <p className="section-eyebrow">{eyebrow}</p>
-        <h1 className="mt-3 max-w-3xl font-display text-3xl font-extrabold leading-tight text-ink-primary sm:text-5xl">
+        <h1 className="mt-3 max-w-3xl font-serif text-3xl font-bold leading-tight text-ink-primary sm:text-5xl">
           {title}
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-ink-muted">{subtitle}</p>

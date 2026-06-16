@@ -46,6 +46,11 @@ class ApiClient {
     return res.data;
   }
 
+  async getTestimonials() {
+    const res = await this.client.get('/public/testimonials');
+    return res.data;
+  }
+
   async getPaymentConfig() {
     const res = await this.client.get('/payments/config');
     return res.data as { provider: string; amount_paise: number };
@@ -154,6 +159,32 @@ class ApiClient {
 
   async listCoordinators() {
     const res = await this.client.get('/admin/coordinators');
+    return res.data;
+  }
+
+  async listTestimonials() {
+    const res = await this.client.get('/admin/testimonials');
+    return res.data;
+  }
+
+  async createTestimonial(data: FormData) {
+    const res = await this.client.post('/admin/testimonials', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async updateTestimonialStatus(testimonialId: string, isActive: boolean) {
+    const data = new FormData();
+    data.append('is_active', String(isActive));
+    const res = await this.client.patch(`/admin/testimonials/${testimonialId}`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async deleteTestimonial(testimonialId: string) {
+    const res = await this.client.delete(`/admin/testimonials/${testimonialId}`);
     return res.data;
   }
 

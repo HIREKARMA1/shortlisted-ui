@@ -13,7 +13,8 @@
 module.exports = {
   fonts: {
     sans: 'Inter',
-    display: 'Plus Jakarta Sans',
+    display: 'DM Sans',
+    serif: 'Newsreader',
     mono: 'JetBrains Mono',
   },
   radius: {
