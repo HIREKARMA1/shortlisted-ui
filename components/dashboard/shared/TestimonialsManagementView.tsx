@@ -1,4 +1,4 @@
-'use client';
+  'use client';
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -53,17 +53,15 @@ export function TestimonialsManagementView({ role }: { role: DashboardRole }) {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!imageFile) {
-      toast.error(t('dashboard.testimonials.imageRequired'));
-      return;
-    }
     setSubmitting(true);
     try {
       const data = new FormData();
       data.append('name', form.name);
       data.append('batch_name', form.batch_name);
       data.append('feedback', form.feedback);
-      data.append('image', imageFile);
+      if (imageFile) {
+        data.append('image', imageFile);
+      }
       await api.createTestimonial(data);
       toast.success(t('dashboard.testimonials.createSuccess'));
       setForm(EMPTY_FORM);
@@ -184,7 +182,13 @@ export function TestimonialsManagementView({ role }: { role: DashboardRole }) {
             <article key={row.id} className="card-surface p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <img src={row.image_url} alt={row.name} className="h-12 w-12 rounded-full border border-line-default object-cover" />
+                  {row.image_url ? (
+                    <img src={row.image_url} alt={row.name} className="h-12 w-12 rounded-full border border-line-default object-cover" />
+                  ) : (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-line-default bg-brand-blue/10 text-sm font-bold text-brand-blue">
+                      {row.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <div>
                     <h3 className="font-semibold text-ink-primary">{row.name}</h3>
                     <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">{row.batch_name}</p>
