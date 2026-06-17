@@ -167,4 +167,17 @@
     background-size: 56px 32px;
     pointer-events: none;
   }
+
+  @keyframes sl-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .animate-sl-marquee {
+    animation: sl-marquee 35s linear infinite;
+  }
 }
