@@ -61,6 +61,11 @@ class ApiClient {
     return res.data;
   }
 
+  async submitContact(data: { name: string; email: string; phone: string; message: string }) {
+    const res = await this.client.post('/public/contact', data);
+    return res.data;
+  }
+
   async getPaymentConfig() {
     const res = await this.client.get('/payments/config');
     return res.data as { provider: string; amount_paise: number };

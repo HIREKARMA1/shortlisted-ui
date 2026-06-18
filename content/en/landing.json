@@ -203,6 +203,26 @@
       "refund": { "q": "Can I get a refund?", "a": "Subscription terms are shared at checkout. Contact support for exceptional cases — we are happy to clarify before you pay." }
     }
   },
+  "contactSupport": {
+    "title": "Having doubts? Let's get in touch!",
+    "subtitle": "Send us your queries and we'll get back to you soon.",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "Your email address",
+    "phonePlaceholder": "Your contact number",
+    "messagePlaceholder": "Type your query here...",
+    "submit": "Submit",
+    "submitting": "Sending...",
+    "success": "Thanks! We've received your message and will get back to you soon.",
+    "error": "Something went wrong. Please try again.",
+    "phoneHint": "{{count}}-digit mobile number only",
+    "messageCharCount": "{{count}}/{{max}}",
+    "errors": {
+      "nameRequired": "Please enter your name",
+      "emailInvalid": "Enter a valid email (e.g. name@domain.com)",
+      "phoneInvalid": "Enter a valid 10-digit mobile number (numbers only)",
+      "messageMin": "Message must be at least 10 characters"
+    }
+  },
   "cta": {
     "eyebrow": "Get started",
     "title": "Ready to get shortlisted?",
