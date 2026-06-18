@@ -273,5 +273,30 @@
       "feedback": "Feedback",
       "image": "Profile image"
     }
+  },
+  "successStories": {
+    "title": "Success stories",
+    "subtitle": "Upload student success videos and thumbnails for the landing page",
+    "createTitle": "Add new success story",
+    "create": "Add success story",
+    "createSuccess": "Success story added successfully.",
+    "deleteSuccess": "Success story deleted.",
+    "statusUpdated": "Success story status updated.",
+    "listTitle": "Published success stories",
+    "thumbnailRequired": "Please upload a thumbnail image.",
+    "videoRequired": "Please upload a video file.",
+    "viewVideo": "View video",
+    "statusLabel": "Status",
+    "filterStatus": "Filter by status",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "fields": {
+      "title": "Video title",
+      "thumbnail": "Thumbnail image",
+      "video": "Video file"
+    }
   }
 }

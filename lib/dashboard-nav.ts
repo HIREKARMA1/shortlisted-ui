@@ -10,6 +10,7 @@ import {
   IndianRupee,
   Video,
   MessageCircle,
+  Clapperboard,
 } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
@@ -34,6 +35,7 @@ export const adminNav: NavItem[] = [
   { href: '/dashboard/admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/admin/classes', labelKey: 'common.nav.classes', icon: Video },
   { href: '/dashboard/admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
+  { href: '/dashboard/admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
 ];
 
 export const superAdminNav: NavItem[] = [
@@ -43,6 +45,7 @@ export const superAdminNav: NavItem[] = [
   { href: '/dashboard/super-admin/revenue', labelKey: 'common.nav.revenue', icon: IndianRupee },
   { href: '/dashboard/super-admin/classes', labelKey: 'common.nav.classes', icon: Video },
   { href: '/dashboard/super-admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
+  { href: '/dashboard/super-admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
 ];
 
 export function getNavForRole(role: DashboardRole): NavItem[] {

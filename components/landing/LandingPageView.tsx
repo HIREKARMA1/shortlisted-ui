@@ -13,6 +13,7 @@ import { ImpactSection } from '@/components/landing/ImpactSection';
 import { WhyShortlisted } from '@/components/landing/WhyShortlisted';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
+import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSection';
 import { CourseVsPlacement } from '@/components/landing/CourseVsPlacement';
 import { PlacementPipeline } from '@/components/landing/PlacementPipeline';
 import { CoordinatorSpotlight } from '@/components/landing/CoordinatorSpotlight';
@@ -34,12 +35,20 @@ type Testimonial = {
   image_url: string;
 };
 
+type SuccessStory = {
+  id: string;
+  title: string;
+  thumbnail_url: string;
+  video_url: string;
+};
+
 const faqKeys = ['course', 'batch', 'jobs', 'refund'] as const;
 
 export function LandingPageView() {
   const { t } = useTranslation();
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [successStories, setSuccessStories] = useState<SuccessStory[]>([]);
   const [loadingBatch, setLoadingBatch] = useState(true);
 
   useEffect(() => {
@@ -52,6 +61,10 @@ export function LandingPageView() {
       .getTestimonials()
       .then((rows) => setTestimonials(Array.isArray(rows) ? rows : []))
       .catch(() => setTestimonials([]));
+    api
+      .getSuccessStories()
+      .then((rows) => setSuccessStories(Array.isArray(rows) ? rows : []))
+      .catch(() => setSuccessStories([]));
   }, []);
 
   const seats = batchInfo?.seats_remaining ?? 0;
@@ -145,6 +158,7 @@ export function LandingPageView() {
         amountInr={batchInfo?.subscription_amount_inr}
       />
       <TestimonialsSection testimonials={testimonials} />
+      <SuccessStoriesSection stories={successStories} />
 
       <CourseVsPlacement />
       <PlacementPipeline />
