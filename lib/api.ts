@@ -56,6 +56,11 @@ class ApiClient {
     return res.data;
   }
 
+  async getCommunity() {
+    const res = await this.client.get('/public/community');
+    return res.data;
+  }
+
   async getPaymentConfig() {
     const res = await this.client.get('/payments/config');
     return res.data as { provider: string; amount_paise: number };
@@ -216,6 +221,33 @@ class ApiClient {
 
   async deleteSuccessStory(storyId: string) {
     const res = await this.client.delete(`/admin/success-stories/${storyId}`);
+    return res.data;
+  }
+
+  async listCommunityPhotos() {
+    const res = await this.client.get('/admin/community-photos');
+    return res.data;
+  }
+
+  async createCommunityPhoto(data: FormData) {
+    const res = await this.client.post('/admin/community-photos', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async updateCommunityPhotoStatus(photoId: string, isActive: boolean, displayOrder?: number) {
+    const data = new FormData();
+    data.append('is_active', String(isActive));
+    if (displayOrder !== undefined) data.append('display_order', String(displayOrder));
+    const res = await this.client.patch(`/admin/community-photos/${photoId}`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async deleteCommunityPhoto(photoId: string) {
+    const res = await this.client.delete(`/admin/community-photos/${photoId}`);
     return res.data;
   }
 
