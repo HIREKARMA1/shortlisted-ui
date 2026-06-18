@@ -1,7 +1,9 @@
 {
   "hero": {
-    "badge": "HireKarma Placement Program",
-    "title": "Not a course. A placement cell.",
+    "eyebrow": "HireKarma Placement Program",
+    "title1": "Not a course.",
+    "title2": "A placement cell.",
+    "title3": "Get shortlisted.",
     "subtitle": "Subscribe once. Join a curated batch of 12 students, access matched jobs from top companies, and work with a coordinator focused on your placement every day.",
     "ctaPrimary": "Claim Your Seat",
     "ctaSecondary": "Student Login",
@@ -12,26 +14,134 @@
     "support": { "value": "1:12", "label": "Coordinator ratio" },
     "access": { "value": "24/7", "label": "Dashboard access" }
   },
+  "impact": {
+    "stats": {
+      "batch": { "value": "12", "label": "Students max per curated batch" },
+      "coordinator": { "value": "1:1", "label": "Dedicated coordinator for your batch" },
+      "matching": { "value": "DISHA", "label": "HireKarma job matching network" }
+    },
+    "skills": {
+      "title": "Placement readiness that companies actually hire for",
+      "subtitle": "Real job prep through matched roles and coordinator support — not endless coursework.",
+      "tags": {
+        "jobs": "Curated job feed",
+        "interviews": "Interview prep",
+        "tracking": "Application tracking",
+        "resume": "Profile & resume support",
+        "coaching": "Batch coaching",
+        "network": "DISHA corporate network"
+      }
+    },
+    "mission": {
+      "title": "Personally guiding every student in your batch to placement",
+      "subtitle": "Small cohorts, real coordinators, and outcomes over attendance — the placement cell experience, without the college overhead."
+    }
+  },
+  "whyShortlisted": {
+    "title": "Why Shortlisted?",
+    "subtitle": "A dedicated placement ecosystem designed to get you hired, not just trained.",
+    "cards": {
+      "cohorts": {
+        "title": "Small batch advantage",
+        "desc": "Only 12 seats per batch means personalised attention, not mass placement drives."
+      },
+      "support": {
+        "title": "Dedicated coordinator",
+        "desc": "A placement admin guides your batch, tracks progress, and supports applications."
+      },
+      "matching": {
+        "title": "Corporate network",
+        "desc": "Access opportunities from companies hiring through the HireKarma DISHA platform."
+      },
+      "tracking": {
+        "title": "Live application tracking",
+        "desc": "See shortlist, interview, and offer status in your dashboard — updated from corporate workflows."
+      }
+    }
+  },
+  "cohort": {
+    "eyebrow": "Active cohort",
+    "primaryLead": "Primary lead",
+    "coordinatorRole": "Placement coordinator",
+    "coordinator": "Your coordinator",
+    "seatsOpen": "Seats open",
+    "manifest": "Certified recruitment manifest",
+    "statusLabel": "Batch status",
+    "statusOpen": "Enrollment open",
+    "statusFull": "Batch full"
+  },
   "seats": {
-    "label": "Seats remaining in current batch",
+    "label": "Seats remaining",
     "subscription": "One-time subscription",
     "currency": "₹{{amount}}",
     "full": "Current batch is full — join the waitlist by registering",
     "loading": "Checking availability..."
   },
+  "compare": {
+    "eyebrow": "The difference",
+    "title": "This is not another online course",
+    "subtitle": "Shortlisted works like the placement cell at your college — focused on getting you hired, not keeping you in class.",
+    "course": {
+      "label": "Typical course",
+      "title": "Learn skills, get a certificate",
+      "items": {
+        "classes": "Scheduled classes and syllabus",
+        "syllabus": "Months of coursework before applying",
+        "exams": "Tests and assignments to pass",
+        "certificate": "Certificate — but no job guarantee"
+      }
+    },
+    "placement": {
+      "label": "Shortlisted",
+      "title": "Get placed, with support",
+      "items": {
+        "jobs": "Curated jobs matched to your profile",
+        "coordinator": "Dedicated coordinator for your batch",
+        "tracking": "Live application status tracking",
+        "batch": "Small batch of 12 — personal attention"
+      }
+    }
+  },
   "howItWorks": {
-    "title": "How it works",
-    "subtitle": "Four steps from registration to placement",
+    "eyebrow": "Your placement journey",
+    "title": "From signup to offer letter",
+    "subtitle": "Five milestones. One coordinator guiding you through each.",
     "steps": {
-      "register": { "title": "Register", "desc": "Create your profile with skills, college, and preferred roles." },
-      "subscribe": { "title": "Subscribe", "desc": "Pay once to unlock your placement cell and batch assignment." },
-      "batch": { "title": "Join your batch", "desc": "Get matched to a batch of 12 with a dedicated coordinator." },
-      "apply": { "title": "Apply & track", "desc": "Access curated jobs, apply in one click, and track status live." }
+      "register": { "title": "Create your profile", "desc": "Sign up in your language. Add skills, college, and preferred roles in under two minutes." },
+      "subscribe": { "title": "Subscribe once", "desc": "Pay once to unlock your placement cell and secure your batch seat." },
+      "batch": { "title": "Join your batch", "desc": "Get matched to a batch of 12 with a dedicated coordinator guiding you." },
+      "apply": { "title": "Apply & interview", "desc": "Access curated jobs, apply with coordinator support, and track every status." },
+      "placed": { "title": "Get placed", "desc": "Land your role with ongoing support until you join — wages, offer, and onboarding." }
+    }
+  },
+  "coordinator": {
+    "eyebrow": "Human support",
+    "title": "Someone in your corner, every day",
+    "subtitle": "Every batch gets one dedicated placement coordinator — not a chatbot, not a call centre. A real person who knows your name, your skills, and your applications.",
+    "cta": "Meet your batch",
+    "channels": {
+      "call": "On call",
+      "whatsapp": "On WhatsApp",
+      "batch": "Batch check-ins"
+    },
+    "card": {
+      "role": "Batch coordinator",
+      "name": "Your placement guide",
+      "desc": "Tracks applications, preps you for interviews, and escalates when needed.",
+      "badge": "Batch of 12",
+      "quote": "I know every student in my batch by name. That's how placement should work.",
+      "stats": {
+        "students": { "value": "12", "label": "Students max" },
+        "applications": { "value": "1:1", "label": "Support ratio" },
+        "placements": { "value": "24/7", "label": "Dashboard" }
+      }
     }
   },
   "features": {
-    "title": "What you get",
-    "subtitle": "Everything a placement cell provides — without the college overhead",
+    "eyebrow": "Your toolkit",
+    "title": "Everything a placement cell provides",
+    "subtitle": "Without the college overhead — personalised, structured, and built for outcomes.",
+    "bentoNote": "One subscription unlocks the full placement stack.",
     "items": {
       "jobs": { "title": "Curated job feed", "desc": "Jobs assigned to your batch by DISHA — matched to your profile and skills." },
       "coordinator": { "title": "Dedicated coordinator", "desc": "A placement admin guides your batch, tracks progress, and supports applications." },
@@ -42,9 +152,16 @@
     }
   },
   "pricing": {
+    "eyebrow": "Pricing",
     "title": "Simple, transparent pricing",
     "subtitle": "One subscription. Full placement cell access.",
     "planName": "Placement Cell Access",
+    "oneTime": "one-time",
+    "seatContext": {
+      "title": "Live batch availability",
+      "desc": "Each dot is a seat in the current cohort. Green means open — claim yours before the batch fills.",
+      "remaining": "{{count}} seats left in current batch"
+    },
     "includes": {
       "batch": "Batch assignment (12 students)",
       "jobs": "Curated job opportunities",
@@ -55,8 +172,16 @@
     "cta": "Get Started",
     "note": "Seats are limited per batch. Subscribe to secure your spot."
   },
+  "testimonials": {
+    "eyebrow": "Success stories",
+    "title": "What our students say",
+    "subtitle": "Real feedback from students who joined the Shortlisted placement program."
+  },
   "faq": {
-    "title": "Frequently asked questions",
+    "eyebrow": "FAQ",
+    "title": "Common questions",
+    "sideNote": "Still unsure? Register free and explore — you only pay when you're ready to join a batch.",
+    "sideCta": "Create your profile",
     "items": {
       "course": { "q": "Is this a course?", "a": "No. Shortlisted is a placement program — like having your own placement cell. There are no classes or syllabus." },
       "batch": { "q": "How are batches formed?", "a": "After you subscribe, you are automatically assigned to the current open batch (max 12 students). A coordinator is assigned to guide your batch." },
@@ -65,16 +190,18 @@
     }
   },
   "cta": {
+    "eyebrow": "Get started",
     "title": "Ready to get shortlisted?",
     "subtitle": "Limited seats per batch. Register today and secure your placement cell access.",
     "primary": "Start Registration",
     "secondary": "Already registered? Sign in"
   },
   "footer": {
-    "poweredBy": "Powered by HireKarma",
+    "poweredBy": "A product of Hirekarma Private Limited.",
     "program": "Program",
     "account": "Account",
     "rights": "All rights reserved.",
+    "madeFor": "Built for students, not classrooms",
     "links": {
       "howItWorks": "How it works",
       "features": "Features",

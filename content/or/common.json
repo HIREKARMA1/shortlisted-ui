@@ -1,7 +1,8 @@
 {
   "brand": {
     "name": "Shortlisted",
-    "tagline": "ଆପଣଙ୍କ ନିଜସ୍ୱ ପ୍ଲେସମେଣ୍ଟ ସେଲ"
+    "tagline": "ଆପଣଙ୍କ ନିଜସ୍ୱ ପ୍ଲେସମେଣ୍ଟ ସେଲ",
+    "badge": "ପ୍ଲେସମେଣ୍ଟ"
   },
   "nav": {
     "login": "ଲଗଇନ୍",
@@ -16,11 +17,20 @@
     "batches": "ମୋ ବ୍ୟାଚ୍",
     "students": "ଛାତ୍ର",
     "coordinators": "କୋଅର୍ଡିନେଟର",
+    "testimonials": "ମତାମତ",
     "revenue": "ରାଜସ୍ୱ",
     "overview": "ସମୀକ୍ଷା",
     "howItWorks": "କିପରି କାମ କରେ",
     "features": "ବିଶେଷତା",
-    "pricing": "ମୂଲ୍ୟ"
+    "pricing": "ମୂଲ୍ୟ",
+    "about": "ବିଷୟରେ",
+    "contact": "ଯୋଗାଯୋଗ"
+  },
+  "languageSwitcher": {
+    "title": "ଭାଷା ବାଛନ୍ତୁ",
+    "subtitle": "ଇଂରାଜୀ, ହିନ୍ଦୀ କିମ୍ବା ଓଡ଼ିଆ ବାଛନ୍ତୁ",
+    "ariaSelect": "ଭାଷା ବାଛନ୍ତୁ",
+    "close": "ବନ୍ଦ କରନ୍ତୁ"
   },
   "actions": {
     "submit": "ଦାଖଲ କରନ୍ତୁ",

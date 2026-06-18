@@ -13,6 +13,13 @@ export type ContentNamespace =
   | 'landing'
   | 'auth'
   | 'subscribe'
-  | 'dashboard';
+  | 'dashboard'
+  | 'pages';
+
+export const LOCALE_OPTIONS = [
+  { code: 'en' as Locale, label: 'English', native: 'ENGLISH' },
+  { code: 'hi' as Locale, label: 'Hindi', native: 'हिन्दी' },
+  { code: 'or' as Locale, label: 'Odia', native: 'ଓଡ଼ିଆ' },
+];
 
 export type ContentTree = Record<string, unknown>;
