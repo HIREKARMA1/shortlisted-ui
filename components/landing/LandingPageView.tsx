@@ -14,8 +14,6 @@ import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSection';
 import { CommunitySection } from '@/components/landing/CommunitySection';
 import { FaqSection } from '@/components/landing/FaqSection';
-import { CourseVsPlacement } from '@/components/landing/CourseVsPlacement';
-import { PlacementPipeline } from '@/components/landing/PlacementPipeline';
 import { CoordinatorSpotlight } from '@/components/landing/CoordinatorSpotlight';
 import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
 
@@ -174,8 +172,6 @@ export function LandingPageView() {
       <SuccessStoriesSection stories={successStories} />
       <CommunitySection content={community} />
 
-      <CourseVsPlacement />
-      <PlacementPipeline />
       <CoordinatorSpotlight />
 
       <FaqSection />
