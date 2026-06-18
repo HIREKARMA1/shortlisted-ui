@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Code2, ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
-import { PageContainer } from '@/components/layout/Shell';
 
 export function WhyShortlisted() {
   const { t } = useTranslation();
@@ -29,32 +28,29 @@ export function WhyShortlisted() {
   const visibleCards = isMobile ? [center] : [left, center, right];
 
   return (
-    <section className="border-t border-white/70 bg-[#f3f4f6] py-16 sm:py-20">
-      <PageContainer>
+    <section className="w-full border-t border-white/70 bg-[#f3f4f6] py-16 sm:py-20">
+      <div className="mx-auto w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <div className="mb-10 text-center sm:mb-12">
           <h2 className="font-display text-4xl font-extrabold tracking-tight text-brand-blue sm:text-5xl">
             {t('landing.whyShortlisted.title')}
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base text-ink-secondary sm:text-lg">
+          <p className="mx-auto mt-3 max-w-3xl text-base text-ink-secondary sm:text-lg">
             {t('landing.whyShortlisted.subtitle')}
           </p>
         </div>
 
-        <div className="relative overflow-hidden px-1 sm:px-2">
-          <div className={`grid gap-4 md:gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-3'}`}>
+        <div className="relative overflow-hidden">
+          <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-3 gap-5 lg:gap-6'}`}>
             {visibleCards.map((card, index) => {
               const isCenter = isMobile ? true : index === 1;
               return (
-                <div
-                  key={`${card.id}-${index}`}
-                  className="px-2"
-                >
+                <div key={`${card.id}-${index}`}>
                   <article
                     className={[
-                      'h-[260px] w-full rounded-xl p-8 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+                      'flex min-h-[280px] w-full flex-col rounded-2xl p-8 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[300px] sm:p-10',
                       isCenter
-                        ? 'scale-[1.01] bg-[#212263] text-white shadow-lg'
-                        : 'scale-[0.97] bg-white text-ink-secondary shadow-sm opacity-35',
+                        ? 'scale-[1.02] bg-[#212263] text-white shadow-lg'
+                        : 'scale-[0.98] bg-white text-ink-secondary shadow-sm opacity-35',
                     ].join(' ')}
                   >
                     <div
@@ -68,16 +64,21 @@ export function WhyShortlisted() {
 
                     <h3
                       className={[
-                        'mt-5 font-display text-[2rem] font-bold leading-tight',
+                        'mt-5 font-display text-2xl font-bold leading-tight sm:text-[2rem]',
                         isCenter ? 'text-white' : 'text-ink-primary',
                       ].join(' ')}
                     >
                       {t(card.titleKey)}
                     </h3>
 
-                    <div className={['mt-3 h-[2px] w-10 rounded-full', isCenter ? 'bg-[#3ec2ff]' : 'bg-[#25d0ba]'].join(' ')} />
+                    <div className={['mt-3 h-[2px] w-12 rounded-full', isCenter ? 'bg-[#3ec2ff]' : 'bg-[#25d0ba]'].join(' ')} />
 
-                    <p className={['mt-4 text-sm leading-relaxed', isCenter ? 'text-white/85' : 'text-ink-muted'].join(' ')}>
+                    <p
+                      className={[
+                        'mt-4 flex-1 text-sm leading-relaxed sm:text-base',
+                        isCenter ? 'text-white/85' : 'text-ink-muted',
+                      ].join(' ')}
+                    >
                       {t(card.descKey)}
                     </p>
                   </article>
@@ -89,19 +90,19 @@ export function WhyShortlisted() {
           <button
             aria-label="Previous"
             onClick={() => setActive((p) => (p - 1 + cards.length) % cards.length)}
-            className="absolute left-0 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-zinc-500 text-white shadow-lg"
+            className="absolute -left-1 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zinc-500 text-white shadow-lg sm:left-0"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
           <button
             aria-label="Next"
             onClick={() => setActive((p) => (p + 1) % cards.length)}
-            className="absolute right-0 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-zinc-500 text-white shadow-lg"
+            className="absolute -right-1 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-zinc-500 text-white shadow-lg sm:right-0"
           >
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
-      </PageContainer>
+      </div>
     </section>
   );
 }
