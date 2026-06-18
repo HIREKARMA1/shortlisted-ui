@@ -298,5 +298,32 @@
       "thumbnail": "Thumbnail image",
       "video": "Video file"
     }
+  },
+  "community": {
+    "title": "Community",
+    "subtitle": "Manage landing page community banner and gallery photos",
+    "createTitle": "Add community photo",
+    "create": "Add photo",
+    "createSuccess": "Community photo added successfully.",
+    "deleteSuccess": "Community photo deleted.",
+    "statusUpdated": "Community photo status updated.",
+    "listTitle": "Community photos",
+    "collageHint": "Collage images appear in the hero banner. Only one active collage is shown at a time.",
+    "statusLabel": "Status",
+    "filterStatus": "Filter by status",
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "types": {
+      "collage": "Hero collage",
+      "gallery": "Gallery photo"
+    },
+    "fields": {
+      "type": "Photo type",
+      "image": "Image",
+      "displayOrder": "Display order"
+    }
   }
 }
