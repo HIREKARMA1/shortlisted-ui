@@ -212,14 +212,12 @@
   },
   "footer": {
     "poweredBy": "A product of Hirekarma Private Limited.",
-    "program": "Program",
-    "account": "Account",
+    "companyName": "Hirekarma Pvt Ltd",
     "rights": "All rights reserved.",
-    "madeFor": "Built for students, not classrooms",
-    "links": {
-      "howItWorks": "How it works",
-      "features": "Features",
-      "pricing": "Pricing"
+    "legal": {
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy",
+      "refund": "Refund & Cancellation"
     }
   }
 }
