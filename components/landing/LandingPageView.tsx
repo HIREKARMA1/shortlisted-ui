@@ -14,6 +14,7 @@ import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSection';
 import { CommunitySection } from '@/components/landing/CommunitySection';
 import { FaqSection } from '@/components/landing/FaqSection';
+import { ContactSupportSection } from '@/components/landing/ContactSupportSection';
 import { CoordinatorSpotlight } from '@/components/landing/CoordinatorSpotlight';
 import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
 
@@ -176,32 +177,7 @@ export function LandingPageView() {
 
       <FaqSection />
 
-      {/* Final CTA — gradient band, not solid ink block */}
-      <section className="relative overflow-hidden border-t border-line-default">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue via-primary-700 to-brand-blue" aria-hidden />
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.15\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} aria-hidden />
-
-        <PageContainer className="relative py-16 text-center sm:py-20">
-          <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">
-            {t('landing.cta.title')}
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-white/85">{t('landing.cta.subtitle')}</p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              href="/auth/register"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-bold text-brand-blue shadow-lg transition hover:bg-white/95"
-            >
-              {t('landing.cta.primary')}
-            </Link>
-            <Link
-              href="/auth/login"
-              className="inline-flex items-center justify-center rounded-full border-2 border-white/40 px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
-            >
-              {t('landing.cta.secondary')}
-            </Link>
-          </div>
-        </PageContainer>
-      </section>
+      <ContactSupportSection />
 
       <SiteFooter />
     </main>
