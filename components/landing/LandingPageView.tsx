@@ -2,19 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { SiteFooter } from '@/components/layout/Footer';
 import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
 import { SiteHeader, PageContainer } from '@/components/layout/Shell';
-import { SiteFooter } from '@/components/layout/Footer';
-import { SectionHeader } from '@/components/ui/SectionHeader';
 import { BatchCohortVisual } from '@/components/landing/BatchCohortVisual';
 import { ImpactSection } from '@/components/landing/ImpactSection';
 import { WhyShortlisted } from '@/components/landing/WhyShortlisted';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
-import { CourseVsPlacement } from '@/components/landing/CourseVsPlacement';
-import { PlacementPipeline } from '@/components/landing/PlacementPipeline';
+import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSection';
+import { CommunitySection } from '@/components/landing/CommunitySection';
+import { FaqSection } from '@/components/landing/FaqSection';
+import { ContactSupportSection } from '@/components/landing/ContactSupportSection';
 import { CoordinatorSpotlight } from '@/components/landing/CoordinatorSpotlight';
 import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
 
@@ -34,12 +34,24 @@ type Testimonial = {
   image_url: string;
 };
 
-const faqKeys = ['course', 'batch', 'jobs', 'refund'] as const;
+type SuccessStory = {
+  id: string;
+  title: string;
+  thumbnail_url: string;
+  video_url: string;
+};
+
+type CommunityContent = {
+  collage_url: string | null;
+  gallery: { id: string; image_url: string }[];
+};
 
 export function LandingPageView() {
   const { t } = useTranslation();
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [successStories, setSuccessStories] = useState<SuccessStory[]>([]);
+  const [community, setCommunity] = useState<CommunityContent>({ collage_url: null, gallery: [] });
   const [loadingBatch, setLoadingBatch] = useState(true);
 
   useEffect(() => {
@@ -52,6 +64,19 @@ export function LandingPageView() {
       .getTestimonials()
       .then((rows) => setTestimonials(Array.isArray(rows) ? rows : []))
       .catch(() => setTestimonials([]));
+    api
+      .getSuccessStories()
+      .then((rows) => setSuccessStories(Array.isArray(rows) ? rows : []))
+      .catch(() => setSuccessStories([]));
+    api
+      .getCommunity()
+      .then((data) =>
+        setCommunity({
+          collage_url: data?.collage_url ?? null,
+          gallery: Array.isArray(data?.gallery) ? data.gallery : [],
+        }),
+      )
+      .catch(() => setCommunity({ collage_url: null, gallery: [] }));
   }, []);
 
   const seats = batchInfo?.seats_remaining ?? 0;
@@ -145,76 +170,14 @@ export function LandingPageView() {
         amountInr={batchInfo?.subscription_amount_inr}
       />
       <TestimonialsSection testimonials={testimonials} />
+      <SuccessStoriesSection stories={successStories} />
+      <CommunitySection content={community} />
 
-      <CourseVsPlacement />
-      <PlacementPipeline />
       <CoordinatorSpotlight />
 
-      {/* FAQ */}
-      <section className="border-t border-line-default bg-soft py-16 sm:py-20">
-        <PageContainer>
-          <div className="grid gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-4">
-              <SectionHeader eyebrow={t('landing.faq.eyebrow')} title={t('landing.faq.title')} />
-              <p className="text-sm text-ink-muted">{t('landing.faq.sideNote')}</p>
-              <Link
-                href="/auth/register"
-                className="mt-6 inline-flex text-sm font-semibold text-brand-blue hover:text-primary-600"
-              >
-                {t('landing.faq.sideCta')} →
-              </Link>
-            </div>
-            <div className="space-y-3 lg:col-span-8">
-              {faqKeys.map((key, i) => (
-                <details
-                  key={key}
-                  className="group rounded-xl border border-line-default bg-white px-5 py-4 open:shadow-sm"
-                >
-                  <summary className="flex cursor-pointer list-none items-center gap-4 marker:content-none [&::-webkit-details-marker]:hidden">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-blue/10 font-display text-sm font-bold text-brand-blue">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className="flex-1 font-display font-bold text-ink-primary">
-                      {t(`landing.faq.items.${key}.q`)}
-                    </span>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-ink-muted transition-transform group-open:rotate-90" />
-                  </summary>
-                  <p className="ml-12 mt-3 text-sm leading-relaxed text-ink-muted">
-                    {t(`landing.faq.items.${key}.a`)}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </PageContainer>
-      </section>
+      <FaqSection />
 
-      {/* Final CTA — gradient band, not solid ink block */}
-      <section className="relative overflow-hidden border-t border-line-default">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-blue via-primary-700 to-brand-blue" aria-hidden />
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.15\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} aria-hidden />
-
-        <PageContainer className="relative py-16 text-center sm:py-20">
-          <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">
-            {t('landing.cta.title')}
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-white/85">{t('landing.cta.subtitle')}</p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link
-              href="/auth/register"
-              className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-bold text-brand-blue shadow-lg transition hover:bg-white/95"
-            >
-              {t('landing.cta.primary')}
-            </Link>
-            <Link
-              href="/auth/login"
-              className="inline-flex items-center justify-center rounded-full border-2 border-white/40 px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
-            >
-              {t('landing.cta.secondary')}
-            </Link>
-          </div>
-        </PageContainer>
-      </section>
+      <ContactSupportSection />
 
       <SiteFooter />
     </main>

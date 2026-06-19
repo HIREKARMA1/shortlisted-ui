@@ -1,69 +1,91 @@
 'use client';
 
 import Link from 'next/link';
+import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { BrandLogo } from './Shell';
 import { BrandStripe } from '@/components/ui/BrandStripe';
 
+const LEGAL_LINKS = [
+  { href: 'https://www.hirekarma.in/TermsofService', labelKey: 'landing.footer.legal.terms' },
+  { href: 'https://www.hirekarma.in/PrivacyPolicy', labelKey: 'landing.footer.legal.privacy' },
+  { href: 'https://www.hirekarma.in/contact', labelKey: 'landing.footer.legal.refund' },
+] as const;
+
+const SOCIAL_LINKS = [
+  { href: 'https://twitter.com/hirekarma', label: 'Twitter', icon: Twitter },
+  { href: 'https://www.linkedin.com/company/hirekarma-pvt-ltd', label: 'LinkedIn', icon: Linkedin },
+  { href: 'https://facebook.com/hirekarma', label: 'Facebook', icon: Facebook },
+  { href: 'https://instagram.com/hirekarma', label: 'Instagram', icon: Instagram },
+] as const;
+
 export function SiteFooter() {
   const { t } = useTranslation();
-
-  const programLinks = [
-    { href: '/about', label: t('common.nav.about') },
-    { href: '/contact', label: t('common.nav.contact') },
-    { href: '/#pricing', label: t('landing.footer.links.pricing') },
-  ];
-
-  const accountLinks = [
-    { href: '/auth/register', label: t('common.nav.register') },
-    { href: '/auth/login', label: t('common.nav.login') },
-  ];
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-white">
       <BrandStripe />
-      <div className="page-container py-14">
-        <div className="grid gap-10 md:grid-cols-12">
-          <div className="md:col-span-5">
+      <div className="page-container py-12 sm:py-14">
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-md">
             <BrandLogo />
-            <p className="mt-4 max-w-sm text-sm text-ink-muted">{t('common.brand.tagline')}</p>
-            <p className="mt-3 max-w-sm text-xs leading-relaxed text-ink-muted">{t('landing.footer.poweredBy')}</p>
+            <p className="mt-4 text-base leading-relaxed text-ink-muted sm:text-[1.05rem]">
+              {t('common.brand.tagline')}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-base">
+              {t('landing.footer.poweredBy')}
+            </p>
+
+            <div className="mt-6 flex items-center gap-3">
+              {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line-default bg-white text-ink-muted transition hover:border-brand-blue hover:text-brand-blue"
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </div>
           </div>
 
-          <FooterCol title={t('landing.footer.program')} items={programLinks} />
-          <FooterCol title={t('landing.footer.account')} items={accountLinks} />
+          <nav aria-label="Legal" className="lg:pt-2">
+            <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
+              {LEGAL_LINKS.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-base font-medium text-ink-secondary transition hover:text-brand-blue sm:text-[1.05rem]"
+                  >
+                    {t(item.labelKey)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-line-default pt-6 text-xs text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 border-t border-line-default pt-6 text-sm text-ink-muted sm:text-base">
           <span>
-            © {new Date().getFullYear()} {t('common.brand.name')}. {t('landing.footer.rights')}
+            © {year}{' '}
+            <a
+              href="https://hirekarma.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-ink-secondary transition hover:text-brand-blue"
+            >
+              {t('landing.footer.companyName')}
+            </a>
+            . {t('landing.footer.rights')}
           </span>
-          <span>{t('landing.footer.madeFor')}</span>
         </div>
       </div>
     </footer>
-  );
-}
-
-function FooterCol({ title, items }: { title: string; items: { href: string; label: string }[] }) {
-  return (
-    <div className="md:col-span-3">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink-primary">{title}</p>
-      <ul className="mt-4 space-y-2.5">
-        {items.map((item) => (
-          <li key={item.href}>
-            {item.href.startsWith('#') ? (
-              <a href={item.href} className="text-sm text-ink-muted transition hover:text-brand-blue">
-                {item.label}
-              </a>
-            ) : (
-              <Link href={item.href} className="text-sm text-ink-muted transition hover:text-brand-blue">
-                {item.label}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
