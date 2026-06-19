@@ -15,7 +15,6 @@ import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSectio
 import { CommunitySection } from '@/components/landing/CommunitySection';
 import { FaqSection } from '@/components/landing/FaqSection';
 import { ContactSupportSection } from '@/components/landing/ContactSupportSection';
-import { CoordinatorSpotlight } from '@/components/landing/CoordinatorSpotlight';
 import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
 
 type BatchInfo = {
@@ -172,8 +171,6 @@ export function LandingPageView() {
       <TestimonialsSection testimonials={testimonials} />
       <SuccessStoriesSection stories={successStories} />
       <CommunitySection content={community} />
-
-      <CoordinatorSpotlight />
 
       <FaqSection />
 

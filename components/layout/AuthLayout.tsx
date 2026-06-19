@@ -50,10 +50,7 @@ export function AuthLayout({
           </div>
 
           <div className="relative">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-brand-yellow">
-              {t('landing.hero.eyebrow')}
-            </p>
-            <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight sm:text-4xl">
+            <h2 className="font-display text-3xl font-extrabold leading-tight sm:text-4xl">
               {t('auth.layout.panelTitle')}
             </h2>
             <p className="mt-4 max-w-md text-white/85">{t('auth.layout.panelSubtitle')}</p>
