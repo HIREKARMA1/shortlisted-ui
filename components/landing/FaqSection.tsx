@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 
-const faqKeys = ['course', 'batch', 'jobs', 'support', 'refund'] as const;
+const faqKeys = ['ai', 'course', 'batch', 'jobs', 'support', 'refund'] as const;
 
 export function FaqSection() {
   const { t } = useTranslation();
