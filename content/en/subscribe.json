@@ -5,9 +5,18 @@
   "amountLabel": "Subscription fee",
   "currency": "₹{{amount}}",
   "cta": "Subscribe & Activate",
+  "ctaOnline": "Pay online & activate",
   "processing": "Processing payment...",
   "redirecting": "Redirecting to PayU secure checkout...",
   "success": "Subscription activated. Welcome to your batch!",
+  "paymentMode": {
+    "online": "Online payment",
+    "offline": "Offline payment"
+  },
+  "offline": {
+    "description": "Prefer to pay offline? Contact our sales team. Once payment is received, your account will be activated.",
+    "note": "Your dashboard stays locked until our team confirms your payment."
+  },
   "benefits": {
     "title": "What's included",
     "batch": "Automatic batch assignment (12 students)",
