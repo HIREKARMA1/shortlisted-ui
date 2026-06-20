@@ -90,12 +90,24 @@ export function SuperAdminRevenueView() {
       subtitle={t('dashboard.superAdminRevenue.subtitle')}
       onLogout={logout}
     >
-      <div className="mb-8 grid gap-4 sm:grid-cols-2">
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label={t('dashboard.superAdminRevenue.totalRevenue')}
           value={formatAmount(report?.total_revenue_paise, report?.currency)}
           accent="green"
           icon={IndianRupee}
+        />
+        <StatCard
+          label={t('dashboard.superAdminRevenue.onlineRevenue')}
+          value={formatAmount(report?.online_revenue_paise, report?.currency)}
+          accent="sky"
+          icon={Receipt}
+        />
+        <StatCard
+          label={t('dashboard.superAdminRevenue.offlineRevenue')}
+          value={formatAmount(report?.offline_revenue_paise, report?.currency)}
+          accent="orange"
+          icon={Receipt}
         />
         <StatCard
           label={t('dashboard.superAdminRevenue.paymentCount')}
@@ -139,6 +151,7 @@ export function SuperAdminRevenueView() {
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.student')}</th>
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.batch')}</th>
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.amount')}</th>
+                <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.mode')}</th>
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.provider')}</th>
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.transaction')}</th>
               </tr>
@@ -156,6 +169,9 @@ export function SuperAdminRevenueView() {
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap font-medium">
                     {formatAmount(row.amount_paise, row.currency)}
+                  </td>
+                  <td className="px-4 py-3 capitalize text-ink-muted">
+                    {String(row.payment_mode || 'online')}
                   </td>
                   <td className="px-4 py-3 uppercase text-ink-muted">{String(row.payment_provider)}</td>
                   <td className="px-4 py-3 font-mono text-xs text-ink-muted">

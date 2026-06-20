@@ -68,7 +68,13 @@ class ApiClient {
 
   async getPaymentConfig() {
     const res = await this.client.get('/payments/config');
-    return res.data as { provider: string; amount_paise: number };
+    return res.data as {
+      provider: string;
+      amount_paise: number;
+      amount_inr: number;
+      sales_contact_email?: string;
+      sales_contact_phone?: string;
+    };
   }
 
   async createPaymentOrder() {
@@ -160,6 +166,28 @@ class ApiClient {
   async manualGrant(studentId: string) {
     const res = await this.client.post('/payments/manual-grant', { student_id: studentId });
     return res.data;
+  }
+
+  async recordOfflinePayment(data: FormData) {
+    const res = await this.client.post('/payments/offline-record', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async listLeads(params?: {
+    date_from?: string;
+    date_to?: string;
+    page?: number;
+    page_size?: number;
+  }) {
+    const res = await this.client.get('/admin/leads', { params });
+    return res.data as {
+      total: number;
+      page: number;
+      page_size: number;
+      leads: Record<string, unknown>[];
+    };
   }
 
   async assignBatchAdmin(batchId: string, adminId: string) {
