@@ -125,6 +125,7 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                 <th className="px-4 py-3">{t('dashboard.adminStudents.columns.batch')}</th>
                 <th className="px-4 py-3">{t('dashboard.adminStudents.columns.joined')}</th>
                 <th className="px-4 py-3">{t('dashboard.adminStudents.columns.payment')}</th>
+                <th className="px-4 py-3">{t('dashboard.adminStudents.columns.paymentMode')}</th>
                 <th className="px-4 py-3">{t('dashboard.adminStudents.columns.paymentDate')}</th>
                 <th className="px-4 py-3">{t('dashboard.adminStudents.columns.applied')}</th>
                 <th className="px-4 py-3">{t('dashboard.adminStudents.columns.selected')}</th>
@@ -151,6 +152,9 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                     <td className="px-4 py-3 whitespace-nowrap text-ink-muted">{formatDate(row.joined_at)}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       {formatAmount(row.payment_amount_paise, row.payment_currency)}
+                    </td>
+                    <td className="px-4 py-3 capitalize text-ink-muted">
+                      {row.payment_mode ? String(row.payment_mode) : '—'}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-ink-muted">{formatDate(row.payment_date)}</td>
                     <td className="px-4 py-3 text-center">{String(row.jobs_applied ?? 0)}</td>
