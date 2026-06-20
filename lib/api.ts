@@ -158,6 +158,18 @@ class ApiClient {
     return res.data;
   }
 
+  async createBatch(data: { name?: string; max_seats?: number; admin_id?: string }) {
+    const res = await this.client.post('/admin/batches', data);
+    return res.data;
+  }
+
+  async reassignStudentBatch(studentId: string, batchId: string) {
+    const res = await this.client.patch(`/admin/students/${studentId}/batch`, {
+      batch_id: batchId,
+    });
+    return res.data;
+  }
+
   async listStudents() {
     const res = await this.client.get('/admin/students');
     return res.data;

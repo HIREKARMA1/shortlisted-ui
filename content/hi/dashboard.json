@@ -119,7 +119,30 @@
     "filterBatch": "बैच से फ़िल्टर",
     "allBatches": "सभी बैच",
     "empty": "चयनित बैच में कोई छात्र नहीं।",
-    "statusUpdated": "छात्र एक्सेस स्थिति अपडेट की गई।"
+    "statusUpdated": "छात्र एक्सेस स्थिति अपडेट की गई।",
+    "batchUpdated": "छात्र का बैच अपडेट किया गया।"
+  },
+  "superAdminBatches": {
+    "title": "बैच प्रबंधन",
+    "subtitle": "मैन्युअल रूप से बैच बनाएं और क्षमता देखें",
+    "createTitle": "बैच बनाएं",
+    "name": "बैच नाम (वैकल्पिक)",
+    "namePlaceholder": "खाली होने पर स्वतः बनेगा",
+    "maxSeats": "अधिकतम सीटें",
+    "coordinator": "समन्वयक",
+    "autoCoordinator": "स्वतः समन्वयक नियुक्त करें",
+    "createCta": "बैच बनाएं",
+    "invalidSeats": "मान्य सीट संख्या दर्ज करें।",
+    "createSuccess": "बैच सफलतापूर्वक बनाया गया।",
+    "empty": "अभी कोई बैच नहीं।",
+    "columns": {
+      "name": "नाम",
+      "seats": "सीटें",
+      "status": "स्थिति",
+      "coordinator": "समन्वयक",
+      "disha": "DISHA",
+      "created": "बनाया गया"
+    }
   },
   "superAdminRevenue": {
     "title": "राजस्व",

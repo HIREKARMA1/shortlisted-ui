@@ -178,7 +178,30 @@
     "filterBatch": "Filter by batch",
     "allBatches": "All batches",
     "empty": "No students found for the selected batch.",
-    "statusUpdated": "Student access status updated."
+    "statusUpdated": "Student access status updated.",
+    "batchUpdated": "Student batch updated."
+  },
+  "superAdminBatches": {
+    "title": "Batch management",
+    "subtitle": "Create batches manually and view capacity across the platform",
+    "createTitle": "Create batch",
+    "name": "Batch name (optional)",
+    "namePlaceholder": "Auto-generated if empty",
+    "maxSeats": "Max seats",
+    "coordinator": "Coordinator",
+    "autoCoordinator": "Auto-assign coordinator",
+    "createCta": "Create batch",
+    "invalidSeats": "Enter a valid number of seats.",
+    "createSuccess": "Batch created successfully.",
+    "empty": "No batches yet.",
+    "columns": {
+      "name": "Name",
+      "seats": "Seats",
+      "status": "Status",
+      "coordinator": "Coordinator",
+      "disha": "DISHA",
+      "created": "Created"
+    }
   },
   "superAdminRevenue": {
     "title": "Revenue",
