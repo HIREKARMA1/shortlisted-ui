@@ -2,7 +2,6 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Briefcase,
   ClipboardList,
-  ClipboardCheck,
   LayoutDashboard,
   Users,
   Shield,
@@ -30,7 +29,6 @@ export const studentNav: NavItem[] = [
   { href: '/dashboard/student/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/student/applications', labelKey: 'common.nav.applications', icon: ClipboardList },
   { href: '/dashboard/student/classes', labelKey: 'common.nav.classes', icon: Video },
-  { href: '/dashboard/student/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
 ];
 
 export const adminNav: NavItem[] = [
@@ -38,7 +36,6 @@ export const adminNav: NavItem[] = [
   { href: '/dashboard/admin/students', labelKey: 'common.nav.students', icon: GraduationCap },
   { href: '/dashboard/admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/admin/classes', labelKey: 'common.nav.classes', icon: Video },
-  { href: '/dashboard/admin/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
   { href: '/dashboard/admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
   { href: '/dashboard/admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
 ];
@@ -51,7 +48,6 @@ export const superAdminNav: NavItem[] = [
   { href: '/dashboard/super-admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/super-admin/revenue', labelKey: 'common.nav.revenue', icon: IndianRupee },
   { href: '/dashboard/super-admin/classes', labelKey: 'common.nav.classes', icon: Video },
-  { href: '/dashboard/super-admin/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
   { href: '/dashboard/super-admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
   { href: '/dashboard/super-admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
   { href: '/dashboard/super-admin/community', labelKey: 'common.nav.community', icon: UsersRound },
