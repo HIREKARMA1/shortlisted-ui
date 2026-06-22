@@ -42,6 +42,7 @@ export const adminNav: NavItem[] = [
 
 export const superAdminNav: NavItem[] = [
   { href: '/dashboard/super-admin/leads', labelKey: 'common.nav.leads', icon: UserPlus },
+  { href: '/dashboard/super-admin/batches', labelKey: 'common.nav.batches', icon: Users },
   { href: '/dashboard/super-admin/students', labelKey: 'common.nav.students', icon: GraduationCap },
   { href: '/dashboard/super-admin/coordinators', labelKey: 'common.nav.coordinators', icon: UserCog },
   { href: '/dashboard/super-admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
