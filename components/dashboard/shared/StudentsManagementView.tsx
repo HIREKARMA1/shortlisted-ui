@@ -40,6 +40,7 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
   const [ready, setReady] = useState(false);
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [updatingStudentId, setUpdatingStudentId] = useState<string | null>(null);
+  const [reassigningStudentId, setReassigningStudentId] = useState<string | null>(null);
 
   const loadStudents = useCallback(() => {
     setLoadingStudents(true);
@@ -75,6 +76,37 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
       setUpdatingStudentId(null);
     }
   };
+
+  const reassignBatch = async (studentId: string, batchId: string) => {
+    if (!batchId || batchId === String(students.find((s) => s.student_id === studentId)?.batch_id)) {
+      return;
+    }
+    setReassigningStudentId(studentId);
+    try {
+      await api.reassignStudentBatch(studentId, batchId);
+      toast.success(t('dashboard.superAdminStudents.batchUpdated'));
+      loadStudents();
+      if (role === 'super_admin') {
+        api.listAllBatches().then(setBatches).catch(() => undefined);
+      }
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
+        t('common.errors.generic');
+      toast.error(String(msg));
+    } finally {
+      setReassigningStudentId(null);
+    }
+  };
+
+  const allBatchOptions = useMemo(
+    () =>
+      batches.map((b) => ({
+        value: String(b.id),
+        label: `${String(b.name)} (${String(b.seats_filled)}/${String(b.max_seats)})`,
+      })),
+    [batches],
+  );
 
   const batchOptions = useMemo(
     () => [
@@ -148,7 +180,21 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                       <p>{String(row.email)}</p>
                       {row.phone ? <p className="text-xs">{String(row.phone)}</p> : null}
                     </td>
-                    <td className="px-4 py-3 font-medium text-brand-blue">{String(row.batch_name)}</td>
+                    <td className="px-4 py-3">
+                      {role === 'super_admin' ? (
+                        <Select
+                          value={String(row.batch_id)}
+                          onChange={(e) =>
+                            reassignBatch(String(row.student_id), e.target.value)
+                          }
+                          disabled={reassigningStudentId === String(row.student_id)}
+                          options={allBatchOptions}
+                          className="min-w-[160px] text-xs"
+                        />
+                      ) : (
+                        <span className="font-medium text-brand-blue">{String(row.batch_name)}</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 whitespace-nowrap text-ink-muted">{formatDate(row.joined_at)}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       {formatAmount(row.payment_amount_paise, row.payment_currency)}

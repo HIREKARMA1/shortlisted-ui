@@ -158,6 +158,23 @@ class ApiClient {
     return res.data;
   }
 
+  async createBatch(data: { name?: string; max_seats?: number; admin_id?: string }) {
+    const res = await this.client.post('/admin/batches', data);
+    return res.data;
+  }
+
+  async deleteBatch(batchId: string) {
+    const res = await this.client.delete(`/admin/batches/${batchId}`);
+    return res.data;
+  }
+
+  async reassignStudentBatch(studentId: string, batchId: string) {
+    const res = await this.client.patch(`/admin/students/${studentId}/batch`, {
+      batch_id: batchId,
+    });
+    return res.data;
+  }
+
   async listStudents() {
     const res = await this.client.get('/admin/students');
     return res.data;
@@ -306,8 +323,10 @@ class ApiClient {
     return res.data;
   }
 
-  async syncBatchToDisha(batchId: string) {
-    const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`);
+  async syncBatchToDisha(batchId: string, force = false) {
+    const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`, null, {
+      params: force ? { force: true } : undefined,
+    });
     return res.data;
   }
 
@@ -350,6 +369,109 @@ class ApiClient {
 
   async joinClass(classId: string) {
     const res = await this.client.post(`/students/me/classes/${classId}/join`);
+    return res.data;
+  }
+
+  async getAdminAssessments(batchId?: string) {
+    const res = await this.client.get('/admin/assessments/list', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
+  async createAssessment(data: Record<string, unknown>) {
+    const res = await this.client.post('/admin/assessments/create', data);
+    return res.data;
+  }
+
+  async updateAssessment(assessmentId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/assessments/${assessmentId}`, data);
+    return res.data;
+  }
+
+  async getAssessment(assessmentId: string) {
+    return this.getAdminAssessmentDetail(assessmentId);
+  }
+
+  async getAdminAssessmentDetail(assessmentId: string) {
+    const res = await this.client.get(`/admin/assessments/${assessmentId}`);
+    return res.data;
+  }
+
+  async getAssessmentStats(assessmentId: string) {
+    const res = await this.client.get(`/admin/assessments/${assessmentId}/stats`);
+    return res.data;
+  }
+
+  async getAssessmentAttempts(assessmentId: string) {
+    const res = await this.client.get(`/admin/assessments/${assessmentId}/attempts`);
+    return res.data;
+  }
+
+  async pullSolviqResults(assessmentId: string) {
+    const res = await this.client.post(`/admin/assessments/${assessmentId}/pull-solviq-results`);
+    return res.data;
+  }
+
+  async syncAssessmentToSolviq(assessmentId: string) {
+    const res = await this.client.post(`/admin/assessments/${assessmentId}/sync-solviq`);
+    return res.data;
+  }
+
+  async deleteAssessment(assessmentId: string) {
+    const res = await this.client.delete(`/admin/assessments/${assessmentId}`);
+    return res.data;
+  }
+
+  async getStudentAssessments() {
+    const res = await this.client.get('/students/me/assessments');
+    return res.data;
+  }
+
+  async getStudentExam(assessmentId: string) {
+    const res = await this.client.get(`/students/me/assessments/${assessmentId}/exam`);
+    return res.data;
+  }
+
+  async getAssessmentEligibility(assessmentId: string) {
+    try {
+      const res = await this.client.get(`/assessments/${assessmentId}/my-eligibility`);
+      return res.data;
+    } catch {
+      const res = await this.client.get(`/students/me/assessments/${assessmentId}/eligibility`);
+      return res.data;
+    }
+  }
+
+  async generateAssessmentToken(
+    assessmentId: string,
+    body?: { student_id?: string; expires_in_minutes?: number }
+  ) {
+    try {
+      const res = await this.client.post(`/assessments/${assessmentId}/token`, body || {});
+      return res.data;
+    } catch {
+      return this.startAssessment(assessmentId);
+    }
+  }
+
+  async startAssessment(assessmentId: string) {
+    const res = await this.client.post(`/students/me/assessments/${assessmentId}/start`);
+    return res.data;
+  }
+
+  async getPublicAssessment(assessmentId: string) {
+    const res = await this.client.get(`/assessments/public/${assessmentId}`);
+    return res.data;
+  }
+
+  async get<T = unknown>(path: string): Promise<T> {
+    const res = await this.client.get(path);
+    return res.data;
+  }
+
+  async post<T = unknown>(path: string, data?: unknown): Promise<T> {
+    const res = await this.client.post(path, data);
     return res.data;
   }
 }
