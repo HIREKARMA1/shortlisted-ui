@@ -194,13 +194,29 @@
     "invalidSeats": "Enter a valid number of seats.",
     "createSuccess": "Batch created successfully.",
     "empty": "No batches yet.",
+    "sync": "Sync",
+    "syncing": "Syncing...",
+    "syncAll": "Sync all to DISHA",
+    "syncingAll": "Syncing all...",
+    "dishaSyncTitle": "DISHA sync",
+    "syncSuccess": "Batch synced to DISHA.",
+    "syncFailed": "DISHA sync failed. Check API key and DISHA server.",
+    "pendingDisha": "{{count}} batch(es) not yet registered on DISHA.",
+    "syncAllHint": "Registers batches on DISHA and removes batches deleted here from DISHA.",
+    "delete": "Delete",
+    "deleteTitle": "Delete batch?",
+    "deleteConfirm": "Delete \"{{name}}\"? Its {{count}} student(s) will be moved to other batches with open seats. New batches are created automatically if needed.",
+    "deleteConfirmCta": "Delete batch",
+    "deleteSuccess": "Batch deleted. {{reassigned}} student(s) reassigned.",
+    "deleteNewBatches": "{{created}} new batch(es) created for overflow students.",
     "columns": {
       "name": "Name",
       "seats": "Seats",
       "status": "Status",
       "coordinator": "Coordinator",
       "disha": "DISHA",
-      "created": "Created"
+      "created": "Created",
+      "actions": "Actions"
     }
   },
   "superAdminRevenue": {
