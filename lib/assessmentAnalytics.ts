@@ -88,6 +88,17 @@ export function getPassFailLabel(
   return 'PENDING';
 }
 
+export function getPassFailBadgeClass(label: 'PASS' | 'FAIL' | 'PENDING'): string {
+  switch (label) {
+    case 'PASS':
+      return 'border border-brand-green/30 bg-brand-green/10 text-brand-green';
+    case 'FAIL':
+      return 'border border-brand-red/30 bg-brand-red/10 text-brand-red';
+    default:
+      return 'border border-line bg-soft text-ink-secondary';
+  }
+}
+
 export function formatAttemptScore(attempt: AttemptLike, assessment?: AssessmentLike | null): string {
   const max = getAttemptMaxScore(attempt, assessment);
   if (!isAttemptEvaluated(attempt)) {

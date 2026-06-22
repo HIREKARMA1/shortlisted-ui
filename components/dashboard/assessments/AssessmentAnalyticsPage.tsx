@@ -20,6 +20,7 @@ import {
     formatAttemptScore,
     getAttemptMaxScore,
     getPassFailLabel,
+    getPassFailBadgeClass,
     getTotalQuestionsFromAssessment,
     isAttemptEvaluated,
 } from '@/lib/assessmentAnalytics'
@@ -86,10 +87,10 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'PASSED': return 'bg-green-100 text-green-800 border-green-200'
-            case 'FAILED': return 'bg-red-100 text-red-800 border-red-200'
-            case 'COMPLETED': return 'bg-blue-100 text-blue-800 border-blue-200'
-            default: return 'bg-gray-100 text-gray-800 border-gray-200'
+            case 'PASSED': return 'border border-brand-green/30 bg-brand-green/10 text-brand-green'
+            case 'FAILED': return 'border border-brand-red/30 bg-brand-red/10 text-brand-red'
+            case 'COMPLETED': return 'border border-brand-blue/30 bg-primary-50 text-brand-blue'
+            default: return 'border border-line bg-soft text-ink-secondary'
         }
     }
 
@@ -431,10 +432,7 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
                                                 {(() => {
                                                     const label = getPassFailLabel(attempt, assessmentDetails)
                                                     return (
-                                                        <span className={`px-3 py-1 text-xs font-semibold rounded-full ${label === 'PASS' ? 'bg-blue-600 text-white' :
-                                                                label === 'FAIL' ? 'bg-red-500 text-white' :
-                                                                    'bg-gray-200 text-gray-700'
-                                                            }`}>
+                                                        <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getPassFailBadgeClass(label)}`}>
                                                             {label}
                                                         </span>
                                                     )
@@ -603,10 +601,7 @@ function AttemptDetailsModal({
                         </div>
                         <div>
                             <p className="text-sm text-gray-500 mb-2">Status</p>
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${passFail === 'PASS' ? 'bg-blue-600 text-white' :
-                                    passFail === 'FAIL' ? 'bg-red-500 text-white' :
-                                        'bg-gray-200 text-gray-700'
-                                }`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${getPassFailBadgeClass(passFail)}`}>
                                 {passFail}
                             </span>
                         </div>
