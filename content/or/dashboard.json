@@ -135,13 +135,29 @@
     "invalidSeats": "ଏକ ବୈଧ ସିଟ୍ ସଂଖ୍ୟା ପ୍ରବେଶ କରନ୍ତୁ।",
     "createSuccess": "ବ୍ୟାଚ୍ ସଫଳତାର ସହ ସୃଷ୍ଟି ହେଲା।",
     "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ବ୍ୟାଚ୍ ନାହିଁ।",
+    "sync": "ସିଙ୍କ୍",
+    "syncing": "ସିଙ୍କ୍ ହେଉଛି...",
+    "syncAll": "ସମସ୍ତ DISHA ସହ ସିଙ୍କ୍ କରନ୍ତୁ",
+    "syncingAll": "ସମସ୍ତ ସିଙ୍କ୍ ହେଉଛି...",
+    "dishaSyncTitle": "DISHA ସିଙ୍କ୍",
+    "syncSuccess": "ବ୍ୟାଚ୍ DISHA ସହ ସିଙ୍କ୍ ହେଲା।",
+    "syncFailed": "DISHA ସିଙ୍କ୍ ବିଫଳ। API କି ଏବଂ ସର୍ଭର ଯାଞ୍ଚ କରନ୍ତୁ।",
+    "pendingDisha": "{{count}} ବ୍ୟାଚ୍ ଏପର୍ଯ୍ୟନ୍ତ DISHA ରେ ପଞ୍ଜିକୃତ ନୁହେଁ।",
+    "syncAllHint": "DISHA ରେ ବ୍ୟାଚ୍ ପଞ୍ଜିକରଣ କରେ ଏବଂ ଏଠାରୁ ଡିଲିଟ୍ ହୋଇଥିବା ବ୍ୟାଚ୍ DISHA ରୁ ହଟାଏ।",
+    "delete": "ଡିଲିଟ୍",
+    "deleteTitle": "ବ୍ୟାଚ୍ ଡିଲିଟ୍ କରିବେ?",
+    "deleteConfirm": "\"{{name}}\" ଡିଲିଟ୍ କରିବେ? ଏହାର {{count}} ଛାତ୍ରଙ୍କୁ ଖାଲି ସିଟ୍ ଥିବା ଅନ୍ୟ ବ୍ୟାଚ୍‌କୁ ସ୍ଥାନାନ୍ତର କରାଯିବ। ଆବଶ୍ୟକ ହେଲେ ନୂଆ ବ୍ୟାଚ୍ ସୃଷ୍ଟି ହେବ।",
+    "deleteConfirmCta": "ବ୍ୟାଚ୍ ଡିଲିଟ୍ କରନ୍ତୁ",
+    "deleteSuccess": "ବ୍ୟାଚ୍ ଡିଲିଟ୍ ହେଲା। {{reassigned}} ଛାତ୍ର ପୁନଃ ନିୟୋଜିତ ହେଲେ।",
+    "deleteNewBatches": "ଅତିରିକ୍ତ ଛାତ୍ରଙ୍କ ପାଇଁ {{created}} ନୂଆ ବ୍ୟାଚ୍ ସୃଷ୍ଟି ହେଲା।",
     "columns": {
       "name": "ନାମ",
       "seats": "ସିଟ୍",
       "status": "ସ୍ଥିତି",
       "coordinator": "ସମନ୍ୱୟକ",
       "disha": "DISHA",
-      "created": "ସୃଷ୍ଟି"
+      "created": "ସୃଷ୍ଟି",
+      "actions": "କାର୍ଯ୍ୟ"
     }
   },
   "superAdminRevenue": {

@@ -163,6 +163,11 @@ class ApiClient {
     return res.data;
   }
 
+  async deleteBatch(batchId: string) {
+    const res = await this.client.delete(`/admin/batches/${batchId}`);
+    return res.data;
+  }
+
   async reassignStudentBatch(studentId: string, batchId: string) {
     const res = await this.client.patch(`/admin/students/${studentId}/batch`, {
       batch_id: batchId,
@@ -318,8 +323,10 @@ class ApiClient {
     return res.data;
   }
 
-  async syncBatchToDisha(batchId: string) {
-    const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`);
+  async syncBatchToDisha(batchId: string, force = false) {
+    const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`, null, {
+      params: force ? { force: true } : undefined,
+    });
     return res.data;
   }
 

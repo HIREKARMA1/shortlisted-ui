@@ -135,13 +135,29 @@
     "invalidSeats": "मान्य सीट संख्या दर्ज करें।",
     "createSuccess": "बैच सफलतापूर्वक बनाया गया।",
     "empty": "अभी कोई बैच नहीं।",
+    "sync": "सिंक",
+    "syncing": "सिंक हो रहा है...",
+    "syncAll": "सभी को DISHA से सिंक करें",
+    "syncingAll": "सभी सिंक हो रहे हैं...",
+    "dishaSyncTitle": "DISHA सिंक",
+    "syncSuccess": "बैच DISHA से सिंक हो गया।",
+    "syncFailed": "DISHA सिंक विफल। API कुंजी और सर्वर जांचें।",
+    "pendingDisha": "{{count}} बैच अभी DISHA पर पंजीकृत नहीं हैं।",
+    "syncAllHint": "DISHA पर बैच पंजीकृत करता है और यहाँ से हटाए गए बैच DISHA से भी हटाता है।",
+    "delete": "हटाएं",
+    "deleteTitle": "बैच हटाएं?",
+    "deleteConfirm": "\"{{name}}\" हटाएं? इसके {{count}} छात्र खाली सीट वाले अन्य बैच में स्थानांतरित होंगे। जरूरत पड़ने पर नए बैच बनाए जाएंगे।",
+    "deleteConfirmCta": "बैच हटाएं",
+    "deleteSuccess": "बैच हटाया गया। {{reassigned}} छात्र पुनः नियुक्त किए गए।",
+    "deleteNewBatches": "अतिरिक्त छात्रों के लिए {{created}} नए बैच बनाए गए।",
     "columns": {
       "name": "नाम",
       "seats": "सीटें",
       "status": "स्थिति",
       "coordinator": "समन्वयक",
       "disha": "DISHA",
-      "created": "बनाया गया"
+      "created": "बनाया गया",
+      "actions": "कार्रवाई"
     }
   },
   "superAdminRevenue": {
