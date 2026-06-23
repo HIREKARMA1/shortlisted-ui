@@ -36,6 +36,11 @@ class ApiClient {
     return res.data;
   }
 
+  async sendRegistrationOtp(email: string) {
+    const res = await this.client.post('/auth/register/send-otp', { email });
+    return res.data as { message: string; expires_in_minutes: number };
+  }
+
   async login(email: string, password: string, user_type: UserType) {
     const res = await this.client.post<TokenResponse>('/auth/login', { email, password, user_type });
     return res.data;

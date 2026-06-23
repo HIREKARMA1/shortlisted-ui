@@ -10,6 +10,7 @@ import { useGuestOnly, useSession } from '@/hooks/useSession';
 import { UserType } from '@/lib/api';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
+import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
 import { RoleSelector } from '@/components/auth/RoleSelector';
 import { Button } from '@/components/ui/Button';
 
@@ -29,6 +30,7 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
   const [userType, setUserType] = useState<UserType>(fixedRole ?? 'student');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   if (!ready || session) return null;
 
@@ -101,7 +103,12 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
           autoComplete="current-password"
           placeholder={t('auth.login.placeholders.password')}
         />
-        <Button type="submit" fullWidth disabled={loading} className="h-11 rounded-xl">
+        <LegalConsentCheckbox
+          id="login-legal-consent"
+          checked={agreedToTerms}
+          onCheckedChange={setAgreedToTerms}
+        />
+        <Button type="submit" fullWidth disabled={loading || !agreedToTerms} className="h-11 rounded-xl">
           {loading ? (
             <span className="inline-flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />

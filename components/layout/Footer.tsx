@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
+import { PRIVACY_URL, REFUND_URL, TERMS_URL } from '@/lib/legal-links';
 import { BrandLogo } from './Shell';
 import { BrandStripe } from '@/components/ui/BrandStripe';
 
 const LEGAL_LINKS = [
-  { href: 'https://www.hirekarma.in/TermsofService', labelKey: 'landing.footer.legal.terms' },
-  { href: 'https://www.hirekarma.in/PrivacyPolicy', labelKey: 'landing.footer.legal.privacy' },
-  { href: 'https://www.hirekarma.in/contact', labelKey: 'landing.footer.legal.refund' },
+  { href: TERMS_URL, labelKey: 'landing.footer.legal.terms' },
+  { href: PRIVACY_URL, labelKey: 'landing.footer.legal.privacy' },
+  { href: REFUND_URL, labelKey: 'landing.footer.legal.refund' },
 ] as const;
 
 const SOCIAL_LINKS = [
@@ -57,14 +58,12 @@ export function SiteFooter() {
             <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
               {LEGAL_LINKS.map((item) => (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="text-base font-medium text-ink-secondary transition hover:text-brand-blue sm:text-[1.05rem]"
                   >
                     {t(item.labelKey)}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

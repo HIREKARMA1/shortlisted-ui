@@ -32,9 +32,9 @@ export function AuthLayout({
   ];
 
   return (
-    <div className={cn('bg-white', fitViewport ? 'h-dvh overflow-hidden' : 'min-h-screen')}>
-      <div className={cn('grid lg:grid-cols-2', fitViewport ? 'h-full' : 'min-h-screen')}>
-        <div className="auth-gradient-panel relative hidden flex-col justify-between overflow-hidden p-10 text-white lg:flex">
+    <div className={cn('overflow-x-hidden bg-white', fitViewport ? 'h-dvh overflow-hidden' : 'min-h-screen')}>
+      <div className={cn('grid min-w-0 lg:grid-cols-2', fitViewport ? 'h-full' : 'min-h-screen')}>
+        <div className="auth-gradient-panel relative hidden min-w-0 flex-col justify-between overflow-hidden p-10 text-white lg:flex">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-brand-yellow/10" aria-hidden />
           <div className="absolute -right-16 top-20 h-48 w-48 rounded-full bg-brand-sky/30 blur-2xl" aria-hidden />
           <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-brand-yellow/20 blur-2xl" aria-hidden />
@@ -73,7 +73,7 @@ export function AuthLayout({
           <p className="relative text-xs text-white/60">{t('landing.footer.poweredBy')}</p>
         </div>
 
-        <div className={cn('relative flex flex-col', fitViewport && 'h-full overflow-hidden')}>
+        <div className={cn('relative flex min-w-0 flex-col overflow-x-hidden', fitViewport && 'h-full overflow-hidden')}>
           <AuthDecor />
 
           <div className="flex h-1 w-full shrink-0 lg:hidden" aria-hidden>
@@ -99,11 +99,11 @@ export function AuthLayout({
 
           <div
             className={cn(
-              'relative z-10 flex flex-1 items-center justify-center px-4 sm:px-8',
-              fitViewport ? 'min-h-0 overflow-hidden pb-4' : 'pb-12'
+              'relative z-10 flex flex-1 justify-center px-4 sm:px-8',
+              fitViewport ? 'min-h-0 items-start overflow-y-auto overscroll-y-contain py-4 pb-6' : 'items-center pb-12'
             )}
           >
-            <div className="w-full max-w-md">
+            <div className="w-full min-w-0 max-w-md">
               {kicker && (
                 <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-orange">{kicker}</p>
               )}

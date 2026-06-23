@@ -1,0 +1,182 @@
+{
+  "contactUs": "Contact us",
+  "legal": {
+    "terms": {
+      "eyebrow": "Legal",
+      "title": "Terms & Conditions",
+      "intro": "Welcome to Shortlisted. If you continue to browse and use this website or register for our placement program, you agree to comply with and be bound by the following terms and conditions, which together with our Privacy Policy govern HireKarma Private Limited's relationship with you in relation to this platform.",
+      "sections": [
+        {
+          "title": "Definitions",
+          "paragraphs": [
+            "\"Shortlisted\", \"we\", \"us\" or \"our\" refers to the Shortlisted placement program operated by HireKarma Private Limited.",
+            "\"You\" refers to the student, coordinator, or visitor using our website or services."
+          ]
+        },
+        {
+          "title": "Use of This Website",
+          "bullets": [
+            "The content of this website is for general information and use only and is subject to change without notice.",
+            "Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials on this website for any particular purpose.",
+            "You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.",
+            "Your use of any information or materials on this website is entirely at your own risk, for which we shall not be liable.",
+            "It shall be your own responsibility to ensure that any products, services or information available through this website meet your specific requirements."
+          ]
+        },
+        {
+          "title": "Program & Subscription",
+          "bullets": [
+            "Shortlisted is a subscription-based placement program — not a training course or degree program.",
+            "Access to batch assignment, curated jobs, coordinator support, and the student dashboard requires an active subscription unless otherwise approved by HireKarma.",
+            "Batch seats are limited (maximum 12 students per batch) and are assigned on a first-subscribe basis while seats remain available.",
+            "You agree to provide accurate registration details including name, email, phone number, and academic profile information."
+          ]
+        },
+        {
+          "title": "Copyright & Trademarks",
+          "bullets": [
+            "This website contains material which is owned by or licensed to HireKarma Private Limited, including design, layout, graphics and appearance.",
+            "Reproduction is prohibited other than in accordance with the copyright notice.",
+            "All trademarks that are not the property of or licensed to the operator are acknowledged on the website."
+          ]
+        },
+        {
+          "title": "Unauthorized Use & External Links",
+          "bullets": [
+            "Unauthorized use of this website may give rise to a claim for damages and/or may be a criminal offense.",
+            "This website may include links to other websites for additional information. These links do not signify endorsement, and we are not responsible for their content.",
+            "You may not create a link to this website from another website or document without prior written consent from HireKarma Private Limited."
+          ]
+        },
+        {
+          "title": "Payments, Usage & Liability",
+          "bullets": [
+            "Online payments commence after authorization or confirmation from the respective payment gateway.",
+            "Placement support only: The platform is designed to help students access placement opportunities. We do not guarantee any specific job, salary, or offer outcome.",
+            "No placement assurance: We do not promise jobs, interview shortlists, or earnings. Hiring decisions are made solely by employers.",
+            "User responsibility: You are solely responsible for your applications, interview preparation, and conduct during the placement process.",
+            "Refund terms are governed by our Refund & Cancellation Policy."
+          ]
+        },
+        {
+          "title": "Legal Jurisdiction",
+          "paragraphs": [
+            "Your use of this website and any dispute arising out of such use is subject to the laws of India. Courts at Bhubaneswar, Odisha shall have exclusive jurisdiction, subject to applicable law."
+          ]
+        }
+      ],
+      "closing": "By continuing to use the Shortlisted website and services, you fully accept and agree to these terms and conditions."
+    },
+    "privacy": {
+      "eyebrow": "Legal",
+      "title": "Privacy Policy",
+      "intro": "This Privacy Policy describes our policies and procedures on the collection, use and disclosure of your information when you use Shortlisted and informs you about your privacy rights and how the law protects you. We use your personal data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy.",
+      "sections": [
+        {
+          "title": "Interpretation and Definitions",
+          "paragraphs": [
+            "Words where the initial letter is capitalized have meanings defined under the following conditions."
+          ],
+          "bullets": [
+            "You means the individual using the Service or the entity on whose behalf the Service is being used.",
+            "Company (We, Us or Our) refers to HireKarma Private Limited, operator of Shortlisted.",
+            "Account means a unique account created to access the Service.",
+            "Website refers to the Shortlisted web application and related domains.",
+            "Service refers to the Shortlisted placement program, dashboard, and website.",
+            "Personal Data means information that identifies an individual.",
+            "Usage Data refers to data collected automatically, such as device information and usage patterns."
+          ]
+        },
+        {
+          "title": "Personal Data We Collect",
+          "bullets": [
+            "Name, email address, and phone number provided during registration.",
+            "Academic and profile information such as college, branch, skills, and preferred roles.",
+            "Subscription and payment-related information processed through our payment partners.",
+            "Application activity, batch membership, assessment attempts, and coordinator interactions within the platform.",
+            "Usage Data including IP address, browser type, pages visited, and diagnostic data."
+          ]
+        },
+        {
+          "title": "How We Use Your Data",
+          "bullets": [
+            "To provide and maintain the Shortlisted placement program.",
+            "To manage user accounts, batch assignment, and dashboard access.",
+            "To process subscriptions and fulfill payment contracts.",
+            "To contact you regarding updates, security notices, and support requests.",
+            "To assign curated job opportunities and track application status.",
+            "To analyze platform performance and improve our services."
+          ]
+        },
+        {
+          "title": "Retention, Transfer & Disclosure",
+          "bullets": [
+            "Data is retained only as long as necessary for legal, compliance, and operational requirements.",
+            "Your data may be processed on servers located in India or with trusted service providers.",
+            "We may disclose data to comply with legal obligations, prevent fraud, or protect users and the public.",
+            "We do not sell your personal data to third parties."
+          ]
+        },
+        {
+          "title": "Security & Children's Privacy",
+          "bullets": [
+            "We use commercially acceptable practices to protect personal data, but no system is 100% secure.",
+            "The Service is intended for students and adults. If we learn that data was collected from a child without appropriate consent, we will remove it."
+          ]
+        },
+        {
+          "title": "Changes to This Policy",
+          "paragraphs": [
+            "We may update this Privacy Policy periodically. Continued use of the Service after updates constitutes acceptance of the revised policy. You are advised to review this page periodically for changes."
+          ]
+        }
+      ],
+      "closing": "For privacy-related questions,"
+    },
+    "refund": {
+      "eyebrow": "Legal",
+      "title": "Refund & Cancellation Policy",
+      "intro": "This Refund & Cancellation Policy applies to Shortlisted subscription payments made through our official website or approved offline payment channels operated by HireKarma Private Limited.",
+      "sections": [
+        {
+          "title": "General Policy",
+          "bullets": [
+            "Shortlisted provides access to a digital placement program including dashboard access, batch assignment, coordinator support, and curated job opportunities.",
+            "Because access to digital services may begin immediately after payment confirmation, subscription fees are generally non-refundable once access is activated.",
+            "All payments must be made only through official Shortlisted checkout or payment instructions shared by HireKarma. Payments made to unauthorized third parties are not eligible for support or refund."
+          ]
+        },
+        {
+          "title": "Eligible Refund Cases",
+          "bullets": [
+            "You are entitled to a refund if you were charged twice for the same subscription.",
+            "You are entitled to a refund if payment was successful but your subscription or batch access was not activated within a reasonable time and our support team is unable to resolve the issue.",
+            "You may be eligible for a refund if a technical error on our platform prevented activation and the issue cannot be corrected."
+          ]
+        },
+        {
+          "title": "Non-Refundable Cases",
+          "bullets": [
+            "Change of mind after subscription activation.",
+            "Dissatisfaction with job opportunities, interview outcomes, or placement results.",
+            "Failure to participate in the program, complete profile details, or apply to assigned opportunities.",
+            "Violation of platform terms resulting in account suspension or revocation."
+          ]
+        },
+        {
+          "title": "Offline Payments",
+          "paragraphs": [
+            "If you pay offline through our sales team, your dashboard remains locked until payment is verified and manually activated. Refund requests for offline payments must include payment proof and will be reviewed on a case-by-case basis."
+          ]
+        },
+        {
+          "title": "How to Request a Refund",
+          "paragraphs": [
+            "Contact our support team through the official contact page with your registered email, payment reference, and reason for the request. Approved refunds are processed to the original payment method within 7–14 business days, subject to payment gateway timelines."
+          ]
+        }
+      ],
+      "closing": "We encourage you to review subscription details and batch availability before completing payment. Our team is happy to answer questions before you subscribe."
+    }
+  }
+}
