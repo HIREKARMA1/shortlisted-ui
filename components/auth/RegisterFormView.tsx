@@ -12,7 +12,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
 import { Button } from '@/components/ui/Button';
 
-const FIELDS = ['name', 'email', 'password', 'phone', 'otp'] as const;
+const FIELDS = ['name', 'email', 'password', 'confirmPassword', 'phone', 'otp'] as const;
 type FieldKey = (typeof FIELDS)[number];
 
 const OTP_COOLDOWN_SECONDS = 60;
@@ -40,7 +40,12 @@ export function RegisterFormView() {
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
   const otpValid = /^\d{6}$/.test(form.otp.trim());
-  const canSubmit = otpSent && otpValid && form.name.trim() && form.password.trim().length >= 8;
+  const passwordValid = form.password.trim().length >= 8;
+  const passwordsMatch = form.password === form.confirmPassword && form.confirmPassword.length > 0;
+  const confirmPasswordError =
+    form.confirmPassword.length > 0 && !passwordsMatch ? t('auth.register.errors.passwordMismatch') : undefined;
+  const canSubmit =
+    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch;
 
   const handleSendOtp = async () => {
     if (!emailValid) {
@@ -66,6 +71,10 @@ export function RegisterFormView() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
+    if (!passwordsMatch) {
+      toast.error(t('auth.register.errors.passwordMismatch'));
+      return;
+    }
     setLoading(true);
     try {
       await api.register({
@@ -89,7 +98,6 @@ export function RegisterFormView() {
 
   return (
     <AuthLayout
-      fitViewport
       kicker={t('auth.register.kicker')}
       title={t('auth.register.title')}
       subtitle={t('auth.register.subtitle')}
@@ -175,17 +183,17 @@ export function RegisterFormView() {
             placeholder={t('auth.register.placeholders.otp')}
           />
         )}
+        <AuthField
+          name="phone"
+          label={t('auth.register.fields.phone')}
+          icon={Phone}
+          type="tel"
+          value={form.phone}
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          autoComplete="tel"
+          placeholder={t('auth.register.placeholders.phone')}
+        />
         <div className="grid gap-3.5 sm:grid-cols-2">
-          <AuthField
-            name="phone"
-            label={t('auth.register.fields.phone')}
-            icon={Phone}
-            type="tel"
-            value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            autoComplete="tel"
-            placeholder={t('auth.register.placeholders.phone')}
-          />
           <AuthField
             name="password"
             label={t('auth.register.fields.password')}
@@ -196,6 +204,18 @@ export function RegisterFormView() {
             required
             autoComplete="new-password"
             placeholder={t('auth.register.placeholders.password')}
+          />
+          <AuthField
+            name="confirmPassword"
+            label={t('auth.register.fields.confirmPassword')}
+            icon={Lock}
+            type="password"
+            value={form.confirmPassword}
+            onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+            required
+            autoComplete="new-password"
+            placeholder={t('auth.register.placeholders.confirmPassword')}
+            error={confirmPasswordError}
           />
         </div>
         <p className="text-[11px] leading-relaxed text-ink-muted">{t('auth.register.terms')}</p>
