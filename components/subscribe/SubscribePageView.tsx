@@ -87,15 +87,15 @@ export function SubscribePageView() {
   return (
     <AuthLayout title={t('subscribe.title')} subtitle={t('subscribe.subtitle')}>
       <div className="space-y-6">
-        {batchInfo && (
+        {(batchInfo || amountInr != null) && (
           <div className="rounded-xl border border-line-default bg-surface-muted p-5 text-center">
-            <Text variant="muted">{t('subscribe.seatsLabel')}</Text>
+            <Text variant="muted">{t('subscribe.amountLabel')}</Text>
             <p className="mt-1 font-display text-4xl font-bold text-brand-sky">
-              {batchInfo.seats_remaining ?? 0}
+              {amountInr != null ? t('subscribe.currency', { amount: amountInr }) : '—'}
             </p>
-            {amountInr != null && (
+            {batchInfo && (
               <p className="mt-3 text-lg font-semibold text-brand-blue">
-                {t('subscribe.amountLabel')}: {t('subscribe.currency', { amount: amountInr })}
+                {t('subscribe.seatsLabel')}: {batchInfo.seats_remaining ?? 0}
               </p>
             )}
           </div>

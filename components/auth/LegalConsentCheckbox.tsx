@@ -20,7 +20,7 @@ export function LegalConsentCheckbox({ id, checked, onCheckedChange }: LegalCons
       checked={checked}
       onCheckedChange={onCheckedChange}
       label={
-        <span className="text-[11px] leading-relaxed text-ink-muted">
+        <span className="text-[10px] leading-snug text-ink-muted">
           {t('auth.legalConsent.prefix')}{' '}
           <Link
             href={TERMS_URL}
