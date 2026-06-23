@@ -1,2 +1,3 @@
-export const TERMS_URL = 'https://www.hirekarma.in/TermsofService';
-export const PRIVACY_URL = 'https://www.hirekarma.in/PrivacyPolicy';
+export const TERMS_URL = '/terms';
+export const PRIVACY_URL = '/privacy-policy';
+export const REFUND_URL = '/refund-policy';
