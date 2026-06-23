@@ -15,12 +15,14 @@
     @apply antialiased;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-surface-page text-ink-primary font-sans;
     background-color: var(--color-surface-page);
     color: var(--color-text-primary);
+    overflow-x: hidden;
   }
 
   h1,
