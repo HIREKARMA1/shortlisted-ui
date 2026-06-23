@@ -46,8 +46,11 @@ export function RegisterFormView() {
   const passwordsMatch = form.password === form.confirmPassword && form.confirmPassword.length > 0;
   const confirmPasswordError =
     form.confirmPassword.length > 0 && !passwordsMatch ? t('auth.register.errors.passwordMismatch') : undefined;
+  const phoneValid = /^\d{10}$/.test(form.phone);
+  const phoneError =
+    form.phone.length > 0 && !phoneValid ? t('auth.register.errors.invalidPhone') : undefined;
   const canSubmit =
-    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch && agreedToTerms;
+    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch && phoneValid && agreedToTerms;
 
   const handleSendOtp = async () => {
     if (!emailValid) {
@@ -84,7 +87,7 @@ export function RegisterFormView() {
         email: form.email.trim(),
         otp: form.otp.trim(),
         password: form.password,
-        ...(form.phone ? { phone: form.phone } : {}),
+        phone: form.phone,
       });
       toast.success(t('auth.register.success'));
       await login(form.email.trim(), form.password, 'student');
@@ -113,8 +116,9 @@ export function RegisterFormView() {
         </>
       }
     >
-      <form onSubmit={onSubmit} className="space-y-3.5">
+      <form onSubmit={onSubmit} className="space-y-2.5">
         <AuthField
+          compact
           name="name"
           label={t('auth.register.fields.name')}
           icon={User}
@@ -124,8 +128,8 @@ export function RegisterFormView() {
           autoComplete="name"
           placeholder={t('auth.register.placeholders.name')}
         />
-        <div className="space-y-1.5">
-          <label htmlFor="email" className="text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
+        <div className="space-y-1">
+          <label htmlFor="email" className="text-[10px] font-semibold uppercase tracking-wider text-ink-muted">
             {t('auth.register.fields.email')}
           </label>
           <div className="flex gap-2">
@@ -146,7 +150,7 @@ export function RegisterFormView() {
                 required
                 autoComplete="email"
                 placeholder={t('auth.register.placeholders.email')}
-                className="w-full rounded-xl border border-line-default bg-white py-2.5 pl-10 pr-3.5 text-sm text-ink-primary outline-none transition-shadow placeholder:text-ink-muted/60 focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/15"
+                className="w-full rounded-xl border border-line-default bg-white py-2 pl-10 pr-3.5 text-sm text-ink-primary outline-none transition-shadow placeholder:text-ink-muted/60 focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/15"
               />
             </div>
             <Button
@@ -154,7 +158,7 @@ export function RegisterFormView() {
               variant="secondary"
               disabled={!emailValid || sendingOtp || resendIn > 0}
               onClick={handleSendOtp}
-              className="h-[42px] shrink-0 rounded-xl px-3 text-xs sm:px-4 sm:text-sm"
+              className="h-[38px] shrink-0 rounded-xl px-3 text-xs sm:px-4"
             >
               {sendingOtp ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -168,11 +172,12 @@ export function RegisterFormView() {
             </Button>
           </div>
           {otpSent && (
-            <p className="text-[11px] leading-relaxed text-ink-muted">{t('auth.register.otp.hint')}</p>
+            <p className="text-[10px] leading-relaxed text-ink-muted">{t('auth.register.otp.hint')}</p>
           )}
         </div>
         {otpSent && (
           <AuthField
+            compact
             name="otp"
             label={t('auth.register.fields.otp')}
             icon={KeyRound}
@@ -186,18 +191,24 @@ export function RegisterFormView() {
             placeholder={t('auth.register.placeholders.otp')}
           />
         )}
-        <AuthField
-          name="phone"
-          label={t('auth.register.fields.phone')}
-          icon={Phone}
-          type="tel"
-          value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          autoComplete="tel"
-          placeholder={t('auth.register.placeholders.phone')}
-        />
-        <div className="grid gap-3.5 sm:grid-cols-2">
+        <div className="grid gap-2.5 sm:grid-cols-2">
           <AuthField
+            compact
+            name="phone"
+            label={t('auth.register.fields.phone')}
+            icon={Phone}
+            type="tel"
+            inputMode="numeric"
+            maxLength={10}
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+            required
+            autoComplete="tel"
+            placeholder={t('auth.register.placeholders.phone')}
+            error={phoneError}
+          />
+          <AuthField
+            compact
             name="password"
             label={t('auth.register.fields.password')}
             icon={Lock}
@@ -208,25 +219,26 @@ export function RegisterFormView() {
             autoComplete="new-password"
             placeholder={t('auth.register.placeholders.password')}
           />
-          <AuthField
-            name="confirmPassword"
-            label={t('auth.register.fields.confirmPassword')}
-            icon={Lock}
-            type="password"
-            value={form.confirmPassword}
-            onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-            required
-            autoComplete="new-password"
-            placeholder={t('auth.register.placeholders.confirmPassword')}
-            error={confirmPasswordError}
-          />
         </div>
+        <AuthField
+          compact
+          name="confirmPassword"
+          label={t('auth.register.fields.confirmPassword')}
+          icon={Lock}
+          type="password"
+          value={form.confirmPassword}
+          onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+          required
+          autoComplete="new-password"
+          placeholder={t('auth.register.placeholders.confirmPassword')}
+          error={confirmPasswordError}
+        />
         <LegalConsentCheckbox
           id="register-legal-consent"
           checked={agreedToTerms}
           onCheckedChange={setAgreedToTerms}
         />
-        <Button type="submit" fullWidth variant="accent" disabled={loading || !canSubmit} className="h-11 rounded-xl">
+        <Button type="submit" fullWidth variant="accent" disabled={loading || !canSubmit} className="h-10 rounded-xl">
           {loading ? (
             <span className="inline-flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
