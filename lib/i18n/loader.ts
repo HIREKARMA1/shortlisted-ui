@@ -6,6 +6,7 @@ import enAuth from '@/content/en/auth.json';
 import enSubscribe from '@/content/en/subscribe.json';
 import enDashboard from '@/content/en/dashboard.json';
 import enPages from '@/content/en/pages.json';
+import enLegal from '@/content/en/legal.json';
 
 import hiCommon from '@/content/hi/common.json';
 import hiLanding from '@/content/hi/landing.json';
@@ -13,6 +14,7 @@ import hiAuth from '@/content/hi/auth.json';
 import hiSubscribe from '@/content/hi/subscribe.json';
 import hiDashboard from '@/content/hi/dashboard.json';
 import hiPages from '@/content/hi/pages.json';
+import hiLegal from '@/content/hi/legal.json';
 
 import orCommon from '@/content/or/common.json';
 import orLanding from '@/content/or/landing.json';
@@ -20,6 +22,7 @@ import orAuth from '@/content/or/auth.json';
 import orSubscribe from '@/content/or/subscribe.json';
 import orDashboard from '@/content/or/dashboard.json';
 import orPages from '@/content/or/pages.json';
+import orLegal from '@/content/or/legal.json';
 
 const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
   en: {
@@ -28,7 +31,7 @@ const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
     auth: enAuth,
     subscribe: enSubscribe,
     dashboard: enDashboard,
-    pages: enPages,
+    pages: { ...enPages, ...enLegal },
   },
   hi: {
     common: hiCommon,
@@ -36,7 +39,7 @@ const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
     auth: hiAuth,
     subscribe: hiSubscribe,
     dashboard: hiDashboard,
-    pages: hiPages,
+    pages: { ...hiPages, ...hiLegal },
   },
   or: {
     common: orCommon,
@@ -44,7 +47,7 @@ const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
     auth: orAuth,
     subscribe: orSubscribe,
     dashboard: orDashboard,
-    pages: orPages,
+    pages: { ...orPages, ...orLegal },
   },
 };
 
