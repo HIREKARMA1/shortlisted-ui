@@ -99,8 +99,8 @@ export function AuthLayout({
 
           <div
             className={cn(
-              'relative z-10 flex flex-1 justify-center px-4 sm:px-8',
-              fitViewport ? 'min-h-0 items-start overflow-y-auto overscroll-y-contain py-4 pb-6' : 'items-center pb-12'
+              'relative z-10 flex flex-1 items-center justify-center px-4 sm:px-8',
+              fitViewport ? 'min-h-0 overflow-hidden pb-4' : 'pb-12'
             )}
           >
             <div className="w-full max-w-md">

@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useGuestOnly, useSession } from '@/hooks/useSession';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
+import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
 import { Button } from '@/components/ui/Button';
 
 const FIELDS = ['name', 'email', 'password', 'confirmPassword', 'phone', 'otp'] as const;
@@ -26,6 +27,7 @@ export function RegisterFormView() {
   const [sendingOtp, setSendingOtp] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [resendIn, setResendIn] = useState(0);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [form, setForm] = useState<Record<FieldKey, string>>(
     Object.fromEntries(FIELDS.map((k) => [k, ''])) as Record<FieldKey, string>
   );
@@ -45,7 +47,7 @@ export function RegisterFormView() {
   const confirmPasswordError =
     form.confirmPassword.length > 0 && !passwordsMatch ? t('auth.register.errors.passwordMismatch') : undefined;
   const canSubmit =
-    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch;
+    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch && agreedToTerms;
 
   const handleSendOtp = async () => {
     if (!emailValid) {
@@ -98,6 +100,7 @@ export function RegisterFormView() {
 
   return (
     <AuthLayout
+      fitViewport
       kicker={t('auth.register.kicker')}
       title={t('auth.register.title')}
       subtitle={t('auth.register.subtitle')}
@@ -218,7 +221,11 @@ export function RegisterFormView() {
             error={confirmPasswordError}
           />
         </div>
-        <p className="text-[11px] leading-relaxed text-ink-muted">{t('auth.register.terms')}</p>
+        <LegalConsentCheckbox
+          id="register-legal-consent"
+          checked={agreedToTerms}
+          onCheckedChange={setAgreedToTerms}
+        />
         <Button type="submit" fullWidth variant="accent" disabled={loading || !canSubmit} className="h-11 rounded-xl">
           {loading ? (
             <span className="inline-flex items-center gap-2">
