@@ -35,13 +35,77 @@
     "empty": "अभी कोई नौकरी असाइन नहीं। जल्द वापस जांचें।",
     "applySuccess": "आवेदन सफलतापूर्वक जमा हुआ।",
     "company": "कंपनी",
-    "location": "स्थान"
+    "location": "स्थान",
+    "headerHint": "अपने बैच को असाइन की गई नौकरियां देखें। आवेदन से पहले पूरी JD पढ़ें।",
+    "resultsCount": "{{count}} अवसर उपलब्ध",
+    "searchPlaceholder": "शीर्षक, कंपनी या स्थान से खोजें...",
+    "viewJd": "JD देखें",
+    "applyNow": "अभी आवेदन करें",
+    "downloadJd": "JD डाउनलोड",
+    "downloading": "डाउनलोड हो रहा है...",
+    "downloadSuccess": "जॉब विवरण डाउनलोड हो गया।",
+    "downloadFailed": "जॉब विवरण डाउनलोड नहीं हो सका।",
+    "salary": "वेतन",
+    "experience": "अनुभव",
+    "jobType": "नौकरी प्रकार",
+    "deadline": "अंतिम तिथि",
+    "posted": "पोस्ट किया",
+    "notSpecified": "निर्दिष्ट नहीं",
+    "description": "नौकरी विवरण",
+    "requirements": "आवश्यकताएं",
+    "responsibilities": "जिम्मेदारियां",
+    "skills": "आवश्यक कौशल",
+    "deadlineNear": "जल्द बंद",
+    "expired": "समाप्त",
+    "deadlineExpired": "इस भूमिका की आवेदन अंतिम तिथि समाप्त हो गई है।",
+    "jobTypes": {
+      "full_time": "पूर्णकालिक",
+      "part_time": "अंशकालिक",
+      "contract": "अनुबंध",
+      "internship": "इंटर्नशिप",
+      "freelance": "फ्रीलांस",
+      "unknown": "भूमिका"
+    },
+    "status": {
+      "applied": "आवेदन किया",
+      "shortlisted": "शॉर्टलिस्ट",
+      "selected": "चयनित",
+      "rejected": "चयनित नहीं",
+      "pending": "समीक्षाधीन"
+    }
   },
   "applications": {
     "title": "मेरे आवेदन",
     "subtitle": "अपनी प्लेसमेंट प्रगति ट्रैक करें",
     "empty": "अभी तक कोई आवेदन नहीं।",
-    "status": "स्थिति"
+    "status": "स्थिति",
+    "searchPlaceholder": "नौकरी, कंपनी या स्थिति से खोजें...",
+    "viewOffer": "ऑफर देखें",
+    "downloadOffer": "डाउनलोड",
+    "offerPending": "ऑफर लेटर लंबित",
+    "rejected": "आवेदन अस्वीकृत",
+    "pagination": "{{total}} में से {{from}}–{{to}} दिखा रहे हैं",
+    "page": "पृष्ठ {{page}} / {{total}}",
+    "stats": {
+      "total": "कुल आवेदन",
+      "active": "प्रगति में",
+      "selected": "चयनित"
+    },
+    "columns": {
+      "jobTitle": "नौकरी शीर्षक",
+      "company": "कंपनी",
+      "status": "स्थिति",
+      "appliedAt": "आवेदन तिथि",
+      "interview": "इंटरव्यू",
+      "actions": "कार्रवाई"
+    },
+    "statuses": {
+      "applied": "आवेदन किया",
+      "shortlisted": "शॉर्टलिस्ट",
+      "selected": "चयनित",
+      "rejected": "अस्वीकृत",
+      "pending": "समीक्षाधीन"
+    }
   },
   "admin": {
     "title": "मेरे बैच",
