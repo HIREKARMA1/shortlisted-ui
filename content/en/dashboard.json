@@ -35,13 +35,77 @@
     "empty": "No jobs assigned yet. DISHA admins assign jobs to your batch — check back soon.",
     "applySuccess": "Application submitted successfully.",
     "company": "Company",
-    "location": "Location"
+    "location": "Location",
+    "headerHint": "Browse curated roles assigned to your batch. View the full job description before you apply.",
+    "resultsCount": "{{count}} opportunities available",
+    "searchPlaceholder": "Search by title, company, or location...",
+    "viewJd": "View JD",
+    "applyNow": "Apply now",
+    "downloadJd": "Download JD",
+    "downloading": "Downloading...",
+    "downloadSuccess": "Job description downloaded.",
+    "downloadFailed": "Could not download job description.",
+    "salary": "Salary",
+    "experience": "Experience",
+    "jobType": "Job type",
+    "deadline": "Deadline",
+    "posted": "Posted",
+    "notSpecified": "Not specified",
+    "description": "Job description",
+    "requirements": "Requirements",
+    "responsibilities": "Responsibilities",
+    "skills": "Skills required",
+    "deadlineNear": "closing soon",
+    "expired": "Expired",
+    "deadlineExpired": "The application deadline for this role has passed.",
+    "jobTypes": {
+      "full_time": "Full time",
+      "part_time": "Part time",
+      "contract": "Contract",
+      "internship": "Internship",
+      "freelance": "Freelance",
+      "unknown": "Role"
+    },
+    "status": {
+      "applied": "Applied",
+      "shortlisted": "Shortlisted",
+      "selected": "Selected",
+      "rejected": "Not selected",
+      "pending": "Under review"
+    }
   },
   "applications": {
     "title": "My applications",
     "subtitle": "Track your placement pipeline",
     "empty": "You haven't applied to any jobs yet.",
-    "status": "Status"
+    "status": "Status",
+    "searchPlaceholder": "Search by job, company, or status...",
+    "viewOffer": "View offer",
+    "downloadOffer": "Download",
+    "offerPending": "Offer letter pending",
+    "rejected": "Application rejected",
+    "pagination": "Showing {{from}}–{{to}} of {{total}}",
+    "page": "Page {{page}} of {{total}}",
+    "stats": {
+      "total": "Total applications",
+      "active": "In progress",
+      "selected": "Selected"
+    },
+    "columns": {
+      "jobTitle": "Job title",
+      "company": "Company",
+      "status": "Status",
+      "appliedAt": "Applied on",
+      "interview": "Interview",
+      "actions": "Actions"
+    },
+    "statuses": {
+      "applied": "Applied",
+      "shortlisted": "Shortlisted",
+      "selected": "Selected",
+      "rejected": "Rejected",
+      "pending": "Under review"
+    }
   },
   "admin": {
     "title": "My batches",

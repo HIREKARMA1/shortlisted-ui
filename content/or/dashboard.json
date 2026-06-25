@@ -35,13 +35,77 @@
     "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଚାକିରି ନାହିଁ।",
     "applySuccess": "ଆବେଦନ ସଫଳ।",
     "company": "କମ୍ପାନୀ",
-    "location": "ଅବସ୍ଥାନ"
+    "location": "ଅବସ୍ଥାନ",
+    "headerHint": "ଆପଣଙ୍କ ବ୍ୟାଚ୍‌କୁ ଦିଆଯାଇଥିବା ଚାକିରି ଦେଖନ୍ତୁ। ଆବେଦନ ପୂର୍ବରୁ ସମ୍ପୂର୍ଣ୍ଣ JD ପଢ଼ନ୍ତୁ।",
+    "resultsCount": "{{count}} ଅବସର ଉପଲବ୍ଧ",
+    "searchPlaceholder": "ଶୀର୍ଷକ, କମ୍ପାନୀ କିମ୍ବା ଅବସ୍ଥାନ ଖୋଜନ୍ତୁ...",
+    "viewJd": "JD ଦେଖନ୍ତୁ",
+    "applyNow": "ବର୍ତ୍ତମାନ ଆବେଦନ",
+    "downloadJd": "JD ଡାଉନଲୋଡ୍",
+    "downloading": "ଡାଉନଲୋଡ୍ ହେଉଛି...",
+    "downloadSuccess": "ଚାକିରି ବିବରଣୀ ଡାଉନଲୋଡ୍ ହେଲା।",
+    "downloadFailed": "ଚାକିରି ବିବରଣୀ ଡାଉନଲୋଡ୍ ହେଲା ନାହିଁ।",
+    "salary": "ବେତନ",
+    "experience": "ଅଭିଜ୍ଞତା",
+    "jobType": "ଚାକିରି ପ୍ରକାର",
+    "deadline": "ଶେଷ ତାରିଖ",
+    "posted": "ପୋଷ୍ଟ",
+    "notSpecified": "ଉଲ୍ଲେଖ ନାହିଁ",
+    "description": "ଚାକିରି ବିବରଣୀ",
+    "requirements": "ଆବଶ୍ୟକତା",
+    "responsibilities": "ଦାୟିତ୍ୱ",
+    "skills": "ଆବଶ୍ୟକ ଦକ୍ଷତା",
+    "deadlineNear": "ଶୀଘ୍ର ବନ୍ଦ",
+    "expired": "ସମାପ୍ତ",
+    "deadlineExpired": "ଏହି ଭୂମିକାର ଆବେଦନ ଶେଷ ତାରିଖ ସମାପ୍ତ ହୋଇଛି।",
+    "jobTypes": {
+      "full_time": "ପୂର୍ଣ୍ଣକାଳୀନ",
+      "part_time": "ଅଂଶକାଳୀନ",
+      "contract": "ଚୁକ୍ତି",
+      "internship": "ଇଣ୍ଟର୍ନସିପ୍",
+      "freelance": "ଫ୍ରିଲାନ୍ସ",
+      "unknown": "ଭୂମିକା"
+    },
+    "status": {
+      "applied": "ଆବେଦନ କରାଯାଇଛି",
+      "shortlisted": "ଶର୍ଟଲିଷ୍ଟ",
+      "selected": "ଚୟନିତ",
+      "rejected": "ଚୟନିତ ନୁହେଁ",
+      "pending": "ସମୀକ୍ଷାଧୀନ"
+    }
   },
   "applications": {
     "title": "ମୋ ଆବେଦନ",
     "subtitle": "ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ଟ୍ରାକ୍ କରନ୍ତୁ",
     "empty": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଆବେଦନ ନାହିଁ।",
-    "status": "ସ୍ଥିତି"
+    "status": "ସ୍ଥିତି",
+    "searchPlaceholder": "ଚାକିରି, କମ୍ପାନୀ କିମ୍ବା ସ୍ଥିତି ଖୋଜନ୍ତୁ...",
+    "viewOffer": "ଅଫର ଦେଖନ୍ତୁ",
+    "downloadOffer": "ଡାଉନଲୋଡ୍",
+    "offerPending": "ଅଫର ଲେଟର ବାକି",
+    "rejected": "ଆବେଦନ ପ୍ରତ୍ୟାଖ୍ୟାନ",
+    "pagination": "{{total}} ରୁ {{from}}–{{to}} ଦେଖାଯାଉଛି",
+    "page": "ପୃଷ୍ଠା {{page}} / {{total}}",
+    "stats": {
+      "total": "ମୋଟ ଆବେଦନ",
+      "active": "ଚାଲୁଛି",
+      "selected": "ଚୟନିତ"
+    },
+    "columns": {
+      "jobTitle": "ଚାକିରି ଶୀର୍ଷକ",
+      "company": "କମ୍ପାନୀ",
+      "status": "ସ୍ଥିତି",
+      "appliedAt": "ଆବେଦନ ତାରିଖ",
+      "interview": "ଇଣ୍ଟରଭ୍ୟୁ",
+      "actions": "କାର୍ଯ୍ୟ"
+    },
+    "statuses": {
+      "applied": "ଆବେଦନ କରାଯାଇଛି",
+      "shortlisted": "ଶର୍ଟଲିଷ୍ଟ",
+      "selected": "ଚୟନିତ",
+      "rejected": "ପ୍ରତ୍ୟାଖ୍ୟାତ",
+      "pending": "ସମୀକ୍ଷାଧୀନ"
+    }
   },
   "admin": {
     "title": "ମୋ ବ୍ୟାଚ୍",
