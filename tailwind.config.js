@@ -41,6 +41,18 @@ module.exports = {
         red: theme.brand.red,
         green: theme.brand.green,
         soft: theme.colors.surface.soft,
+        disha: {
+          50: '#e6f3ff',
+          100: '#b3d9ff',
+          200: '#80bfff',
+          300: '#4da5ff',
+          400: '#1a8bff',
+          500: '#1b52a4',
+          600: '#154a8f',
+          700: '#0f427a',
+          800: '#093a65',
+          900: '#033250',
+        },
       },
       borderRadius: {
         ...theme.radius,
