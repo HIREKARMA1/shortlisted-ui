@@ -29,6 +29,31 @@
       "viewApplications": "View applications"
     }
   },
+  "profile": {
+    "title": "My profile",
+    "subtitle": "Update your name, contact number, and resume",
+    "heading": "Profile details",
+    "headingHint": "All fields are required to apply for jobs.",
+    "name": "Name",
+    "email": "Email",
+    "contact": "Contact number",
+    "resume": "Resume",
+    "resumeHint": "PDF only, max 5MB.",
+    "resumePlaceholder": "Upload your resume (PDF)",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "saveSuccess": "Profile saved successfully.",
+    "saveFailed": "Failed to save profile.",
+    "saveError": "Please fill all required fields and upload your resume.",
+    "resumeSuccess": "Resume uploaded successfully.",
+    "resumeFailed": "Failed to upload resume.",
+    "nameRequired": "Name is required",
+    "phoneRequired": "Contact number is required",
+    "phoneInvalid": "Enter a valid 10-digit contact number",
+    "resumeRequired": "Resume is required",
+    "incompleteHint": "Complete your name, contact number, and resume to apply for jobs.",
+    "tryAgain": "Try again"
+  },
   "jobs": {
     "title": "Jobs for your batch",
     "subtitle": "Curated opportunities assigned to your batch",

@@ -4,6 +4,7 @@ import {
   ClipboardList,
   ClipboardCheck,
   LayoutDashboard,
+  User,
   Users,
   Shield,
   GraduationCap,
@@ -27,6 +28,7 @@ export type NavItem = {
 
 export const studentNav: NavItem[] = [
   { href: '/dashboard/student', labelKey: 'common.nav.dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/dashboard/student/profile', labelKey: 'common.nav.profile', icon: User },
   { href: '/dashboard/student/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/student/applications', labelKey: 'common.nav.applications', icon: ClipboardList },
   { href: '/dashboard/student/classes', labelKey: 'common.nav.classes', icon: Video },

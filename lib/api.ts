@@ -117,6 +117,49 @@ class ApiClient {
     return res.data;
   }
 
+  async getStudentProfile() {
+    const res = await this.client.get('/students/me/profile');
+    return res.data;
+  }
+
+  async updateStudentProfile(data: Record<string, unknown>) {
+    const res = await this.client.put('/students/me/profile', data);
+    return res.data;
+  }
+
+  async getStudentProfileCompletion() {
+    const res = await this.client.get('/students/me/profile-completion');
+    return res.data;
+  }
+
+  async uploadStudentResume(file: File) {
+    const form = new FormData();
+    form.append('resume', file);
+    const res = await this.client.post('/students/me/upload-resume', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async uploadStudentProfilePicture(file: File) {
+    const form = new FormData();
+    form.append('profile_picture', file);
+    const res = await this.client.post('/students/me/upload-profile-picture', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async uploadStudentCertificate(file: File, type: string) {
+    const form = new FormData();
+    form.append('certificate', file);
+    form.append('type', type);
+    const res = await this.client.post('/students/me/upload-certificate', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
   async listMyBatches() {
     const res = await this.client.get('/admin/my-batches');
     return res.data;
