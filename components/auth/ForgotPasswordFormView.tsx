@@ -7,13 +7,12 @@ import toast from 'react-hot-toast';
 import { KeyRound, Loader2, Lock, Mail } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api, type UserType } from '@/lib/api';
+import { getLoginPathForRole } from '@/lib/auth/login-routes';
 import { useGuestOnly, useSession } from '@/hooks/useSession';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
-import { RoleSelector } from '@/components/auth/RoleSelector';
 import { Button } from '@/components/ui/Button';
 
-const PUBLIC_ROLES: UserType[] = ['student', 'admin'];
 const OTP_COOLDOWN_SECONDS = 60;
 
 function parseRole(value: string | null): UserType | undefined {
@@ -31,21 +30,17 @@ export function ForgotPasswordFormView() {
   useGuestOnly();
 
   const fixedRole = useMemo(() => parseRole(searchParams.get('role')), [searchParams]);
-  const isInternal = fixedRole === 'super_admin';
+  const isSuperAdmin = fixedRole === 'super_admin';
+  const isCoordinator = fixedRole === 'admin';
 
   const [loading, setLoading] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [resendIn, setResendIn] = useState(0);
-  const [userType, setUserType] = useState<UserType>(fixedRole ?? 'student');
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  useEffect(() => {
-    if (fixedRole) setUserType(fixedRole);
-  }, [fixedRole]);
 
   useEffect(() => {
     if (resendIn <= 0) return;
@@ -55,7 +50,7 @@ export function ForgotPasswordFormView() {
 
   if (!ready || session) return null;
 
-  const role = fixedRole ?? userType;
+  const role: UserType = fixedRole ?? 'student';
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const otpValid = /^\d{6}$/.test(otp.trim());
   const passwordValid = password.trim().length >= 8;
@@ -66,7 +61,13 @@ export function ForgotPasswordFormView() {
       : undefined;
   const canSubmit = otpSent && emailValid && otpValid && passwordValid && passwordsMatch;
 
-  const loginHref = isInternal ? '/auth/login/internal' : '/auth/login';
+  const loginHref = getLoginPathForRole(fixedRole);
+
+  const forgotKicker = isSuperAdmin
+    ? t('auth.forgotPassword.internalKicker')
+    : isCoordinator
+      ? t('auth.forgotPassword.coordinatorKicker')
+      : t('auth.forgotPassword.kicker');
 
   const handleSendOtp = async () => {
     if (!emailValid) {
@@ -115,7 +116,7 @@ export function ForgotPasswordFormView() {
   return (
     <AuthLayout
       fitViewport
-      kicker={isInternal ? t('auth.forgotPassword.internalKicker') : t('auth.forgotPassword.kicker')}
+      kicker={forgotKicker}
       title={t('auth.forgotPassword.title')}
       subtitle={t('auth.forgotPassword.subtitle')}
       footer={
@@ -128,18 +129,6 @@ export function ForgotPasswordFormView() {
       }
     >
       <form onSubmit={onSubmit} className="space-y-4">
-        {!fixedRole && (
-          <RoleSelector
-            label={t('auth.login.roleLabel')}
-            value={userType}
-            onChange={setUserType}
-            options={PUBLIC_ROLES.map((r) => ({
-              value: r,
-              label: t(`auth.login.roles.${r}`),
-            }))}
-          />
-        )}
-
         <AuthField
           name="email"
           label={t('auth.login.emailLabel')}

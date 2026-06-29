@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
+import { getLoginPathForRole } from '@/lib/auth/login-routes';
 import { accessBadgeTone } from '@/lib/status';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Badge } from '@/components/ui/Badge';
@@ -24,7 +25,7 @@ export function AdminBatchDetailView() {
 
   useEffect(() => {
     if (!localStorage.getItem('access_token') || localStorage.getItem('user_type') !== 'admin') {
-      router.push('/auth/login');
+      router.push(getLoginPathForRole('admin'));
       return;
     }
     api.getBatchDetail(id).then(setBatch).catch(() => router.push('/dashboard/admin'));

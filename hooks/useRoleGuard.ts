@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { DashboardRole } from '@/lib/dashboard-nav';
+import { getLoginPathForRole } from '@/lib/auth/login-routes';
 
 export function useRoleGuard(role: DashboardRole) {
   const router = useRouter();
@@ -12,7 +13,7 @@ export function useRoleGuard(role: DashboardRole) {
     const token = localStorage.getItem('access_token');
     const userType = localStorage.getItem('user_type');
     if (!token || userType !== role) {
-      router.push(role === 'super_admin' ? '/auth/login/internal' : '/auth/login');
+      router.push(getLoginPathForRole(role));
     } else {
       setReady(true);
     }
