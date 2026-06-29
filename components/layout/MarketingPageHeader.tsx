@@ -4,7 +4,7 @@ type MarketingPageHeaderProps = {
   subtitle: string;
 };
 
-/** Shortlisted marketing pages — diagonal soft band, single accent bar (not Lakshya grid + rainbow) */
+/** Shortlisted marketing pages - diagonal soft band, single accent bar (not Lakshya grid + rainbow) */
 export function MarketingPageHeader({ eyebrow, title, subtitle }: MarketingPageHeaderProps) {
   return (
     <section className="relative overflow-hidden border-b border-line-default">

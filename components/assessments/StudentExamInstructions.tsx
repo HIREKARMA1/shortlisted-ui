@@ -66,7 +66,7 @@ export interface PublicExamBrief {
 
 const WAITING_ROOM_TIPS = [
   'Review the exam window, rounds, and instructions on this page so you know what to expect.',
-  'Stay signed in with your student account and keep this tab open — you can return here when the exam opens.',
+  'Stay signed in with your student account and keep this tab open - you can return here when the exam opens.',
   'Use a supported browser (Chrome or Edge) on a laptop or desktop with a stable internet connection.',
   'Find a quiet spot, plug in your device if you can, and close other heavy tabs or downloads.',
   'When the countdown ends, read the declaration at the bottom and click I am ready to begin to open the exam.',
@@ -169,7 +169,7 @@ function ExamWaitingCard({
 
         <p className="text-sm text-gray-600 leading-relaxed">
           It&apos;s scheduled for <strong className="font-medium text-gray-800">{startLabel}</strong>.
-          You can read through the instructions below while you wait — no need to refresh; the{' '}
+          You can read through the instructions below while you wait - no need to refresh; the{' '}
           <strong className="font-medium text-gray-800">I am ready to begin</strong> button
           will turn on by itself when the window opens.
         </p>
@@ -179,7 +179,7 @@ function ExamWaitingCard({
           <ul className="space-y-1.5 list-none">
             {WAITING_ROOM_TIPS.map((tip) => (
               <li key={tip} className="flex gap-2 leading-relaxed">
-                <span className="text-primary-500 select-none shrink-0">—</span>
+                <span className="text-primary-500 select-none shrink-0">-</span>
                 <span>{tip}</span>
               </li>
             ))}
@@ -284,7 +284,7 @@ export function StudentExamInstructions({
           </motion.div>
         )}
 
-        {/* Summary table — AMCAT-style overview */}
+        {/* Summary table - AMCAT-style overview */}
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
           <table className="w-full text-sm">
             <thead>
@@ -363,7 +363,7 @@ export function StudentExamInstructions({
                       <td className="px-4 py-3 font-medium text-gray-900">{round.round_name}</td>
                       <td className="px-4 py-3 text-gray-700">{formatRoundType(round.round_type)}</td>
                       <td className="px-4 py-3 text-center text-gray-700">
-                        {(round.config?.num_questions as number) ?? '—'}
+                        {(round.config?.num_questions as number) ?? '-'}
                       </td>
                       <td className="px-4 py-3 text-center text-gray-700">
                         {formatDuration(round.duration_minutes)}
@@ -375,7 +375,7 @@ export function StudentExamInstructions({
                       Total (all rounds)
                     </td>
                     <td className="px-4 py-3 text-center text-gray-900">
-                      {exam.total_questions > 0 ? exam.total_questions : '—'}
+                      {exam.total_questions > 0 ? exam.total_questions : '-'}
                     </td>
                     <td className="px-4 py-3 text-center text-gray-900">
                       {formatDuration(exam.total_duration_minutes)}
@@ -420,7 +420,7 @@ export function StudentExamInstructions({
           </section>
         </div>
 
-        {/* General directions — scrollable instruction box */}
+        {/* General directions - scrollable instruction box */}
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
           <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
             <h2 className="text-lg font-semibold text-gray-900">General directions</h2>

@@ -33,9 +33,9 @@ const EMPTY_FORM = {
 };
 
 function formatDate(value: unknown): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return '—';
+  if (Number.isNaN(date.getTime())) return '-';
   return date.toLocaleString();
 }
 
@@ -348,7 +348,7 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
                       <p className="mt-1 text-xs text-ink-muted">{String(row.description)}</p>
                     ) : null}
                   </td>
-                  <td className="px-4 py-3">{row.trainer_name ? String(row.trainer_name) : '—'}</td>
+                  <td className="px-4 py-3">{row.trainer_name ? String(row.trainer_name) : '-'}</td>
                   <td className="px-4 py-3 font-medium text-brand-blue">{String(row.batch_name)}</td>
                   <td className="px-4 py-3">{t(`dashboard.classes.types.${String(row.class_type)}`)}</td>
                   <td className="px-4 py-3 whitespace-nowrap text-ink-muted">

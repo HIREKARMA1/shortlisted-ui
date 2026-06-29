@@ -9,7 +9,7 @@ const STAT_KEYS = ['batch', 'coordinator', 'matching'] as const;
 const STAT_ICONS = { batch: Users, coordinator: Trophy, matching: Briefcase } as const;
 const TAG_KEYS = ['jobs', 'interviews', 'tracking', 'resume', 'coaching', 'network'] as const;
 
-/** 100xdevs.com impact bento — same layout, Shortlisted content */
+/** 100xdevs.com impact bento - same layout, Shortlisted content */
 export function ImpactSection() {
   const { t } = useTranslation();
 
@@ -17,7 +17,7 @@ export function ImpactSection() {
     <section className="relative py-8 sm:py-10">
       <PageContainer>
         <div className="flex flex-col gap-6">
-          {/* Stats bar — bg-primary rounded-tr-[140px] */}
+          {/* Stats bar - bg-primary rounded-tr-[140px] */}
           <div className="mx-auto w-full rounded-lg rounded-tr-[140px] bg-brand-blue py-8">
             <div className="grid h-full grid-cols-1 divide-y-2 divide-white/80 px-4 py-4 sm:grid-cols-2 sm:divide-x-2 sm:divide-y-0 md:grid-cols-3">
               {STAT_KEYS.map((key) => {
@@ -42,7 +42,7 @@ export function ImpactSection() {
             </div>
           </div>
 
-          {/* Bottom row — sm:grid-cols-5, 3 + 2 */}
+          {/* Bottom row - sm:grid-cols-5, 3 + 2 */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-5">
             <div className="relative col-span-1 flex flex-col gap-4 overflow-hidden rounded-lg rounded-bl-[44px] rounded-tr-[44px] bg-brand-green sl-brick-pattern p-6 sm:col-span-3 lg:p-8">
               <div className="relative z-10 flex flex-col gap-2">

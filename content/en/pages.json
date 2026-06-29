@@ -2,17 +2,17 @@
   "about": {
     "eyebrow": "About Shortlisted",
     "title": "Not a course. A placement cell for every student.",
-    "subtitle": "Shortlisted is HireKarma's subscription-based placement program — curated batches, dedicated coordinators, and matched jobs through the DISHA platform.",
+    "subtitle": "Shortlisted is HireKarma's subscription-based placement program - curated batches, dedicated coordinators, and matched jobs through the DISHA platform.",
     "storyEyebrow": "Our story",
     "storyTitle": "The placement cell, without the college",
-    "storyBody": "Most students outside top campuses never get a real placement cell — no coordinator, no curated jobs, no one tracking their applications. Shortlisted fixes that with a structured program built for outcomes.",
-    "storyBody2": "Subscribe once, join a batch of 12, and work with a dedicated coordinator who knows your profile, your applications, and your timeline — until you get placed.",
+    "storyBody": "Most students outside top campuses never get a real placement cell - no coordinator, no curated jobs, no one tracking their applications. Shortlisted fixes that with a structured program built for outcomes.",
+    "storyBody2": "Subscribe once, join a batch of 12, and work with a dedicated coordinator who knows your profile, your applications, and your timeline - until you get placed.",
     "highlightsEyebrow": "Why Shortlisted",
     "highlightsTitle": "Built for placement, not classrooms",
     "highlights": [
       {
         "title": "Small batch model",
-        "body": "Only 12 students per batch — so your coordinator actually knows you, not just your roll number."
+        "body": "Only 12 students per batch - so your coordinator actually knows you, not just your roll number."
       },
       {
         "title": "Curated job matching",
@@ -20,7 +20,7 @@
       },
       {
         "title": "Live tracking",
-        "body": "Shortlist, interview, and offer status updated in your dashboard — no guessing, no ghosting."
+        "body": "Shortlist, interview, and offer status updated in your dashboard - no guessing, no ghosting."
       }
     ],
     "stats": [
@@ -31,7 +31,7 @@
     "impact": {
       "eyebrow": "Program model",
       "title": "Structured for real placements",
-      "subtitle": "One subscription unlocks your entire placement cell — batch, coordinator, jobs, and tracking.",
+      "subtitle": "One subscription unlocks your entire placement cell - batch, coordinator, jobs, and tracking.",
       "metrics": [
         { "value": "12", "label": "Batch size", "hint": "Maximum students per cohort" },
         { "value": "1:1", "label": "Coordinator support", "hint": "Dedicated guide for your batch" },
@@ -42,19 +42,19 @@
     "journey": {
       "eyebrow": "Our approach",
       "title": "From signup to offer letter",
-      "subtitle": "Five clear milestones — each with coordinator support at every step.",
+      "subtitle": "Five clear milestones - each with coordinator support at every step.",
       "milestones": [
         { "year": "Step 1", "title": "Register your profile", "body": "Sign up in English, Hindi, or Odia. Add skills, college, and target roles in minutes." },
         { "year": "Step 2", "title": "Subscribe & secure your seat", "body": "One-time payment unlocks placement cell access and assigns you to the current open batch." },
         { "year": "Step 3", "title": "Join your batch of 12", "body": "Your coordinator introduces the batch, sets expectations, and starts tracking your progress." },
         { "year": "Step 4", "title": "Apply to curated jobs", "body": "DISHA admins assign relevant openings. Apply with one click and track every status live." },
-        { "year": "Step 5", "title": "Get placed", "body": "Interview prep, follow-ups, and offer support — until you join your new role." }
+        { "year": "Step 5", "title": "Get placed", "body": "Interview prep, follow-ups, and offer support - until you join your new role." }
       ]
     },
     "explore": {
       "eyebrow": "Get started",
       "title": "Ready to join?",
-      "subtitle": "Limited seats per batch. Start with a free profile — subscribe when you're ready.",
+      "subtitle": "Limited seats per batch. Start with a free profile - subscribe when you're ready.",
       "cards": [
         { "title": "Claim your seat", "body": "Register and subscribe to join the current batch before seats fill up.", "href": "/auth/register", "cta": "Register now" },
         { "title": "Student login", "body": "Already registered? Sign in to your dashboard, jobs, and applications.", "href": "/auth/login", "cta": "Sign in" },
@@ -67,7 +67,7 @@
     "title": "We're here to help",
     "subtitle": "Reach our team for batch enquiries, subscription support, or application questions. We respond quickly on call and WhatsApp.",
     "reachTitle": "Talk to us",
-    "reachBody": "Prefer a quick chat? Call or message us — we help students and coordinators across India.",
+    "reachBody": "Prefer a quick chat? Call or message us - we help students and coordinators across India.",
     "call": "Call now",
     "whatsapp": "WhatsApp us",
     "emailCta": "Send email",
@@ -84,7 +84,7 @@
     "hoursTitle": "Support hours",
     "hoursBody": "Monday to Saturday, 9:00 AM – 7:00 PM IST. WhatsApp messages are answered within 30 minutes during business hours.",
     "safetyTitle": "Stay informed",
-    "safetyBody": "Shortlisted is a placement program — not a course. Never pay anyone outside the official checkout for batch access.",
+    "safetyBody": "Shortlisted is a placement program - not a course. Never pay anyone outside the official checkout for batch access.",
     "address": "2nd Floor, SS Niwas, Hirekarma Private Limited, Raghunathpur, Bhubaneswar, Raghunathpurjali, Odisha 751024"
   }
 }

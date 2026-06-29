@@ -284,7 +284,7 @@ export function AssessmentDetailPage({ role }: { role: DashboardRole }) {
             <div>
               <p className="text-gray-600 text-sm">Average Score</p>
               <p className="text-3xl font-bold text-blue-600 mt-1">
-                {stats.average_score != null ? `${stats.average_score.toFixed(1)}` : '—'}
+                {stats.average_score != null ? `${stats.average_score.toFixed(1)}` : '-'}
               </p>
             </div>
           </div>

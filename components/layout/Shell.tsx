@@ -27,7 +27,7 @@ export function BrandLogo({ className = '', showBadge = false }: { className?: s
   );
 }
 
-/** Port of lakshya-ui/components/landing/Navbar.tsx — same classes, Shortlisted routes */
+/** Port of lakshya-ui/components/landing/Navbar.tsx - same classes, Shortlisted routes */
 export function SiteHeader() {
   const { t } = useTranslation();
   const { session, ready } = useSession();

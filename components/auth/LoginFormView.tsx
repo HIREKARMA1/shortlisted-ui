@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/Button';
 const PUBLIC_ROLES: UserType[] = ['student', 'admin'];
 
 type LoginFormViewProps = {
-  /** Fixed role for internal login links — hides the role selector */
+  /** Fixed role for internal login links - hides the role selector */
   fixedRole?: UserType;
 };
 

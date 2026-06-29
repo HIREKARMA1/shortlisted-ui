@@ -19,9 +19,9 @@ type LeadRow = Record<string, unknown>;
 const PAGE_SIZE = 10;
 
 function formatDate(value: unknown): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return '—';
+  if (Number.isNaN(date.getTime())) return '-';
   return date.toLocaleString();
 }
 
@@ -31,7 +31,7 @@ function profileSummary(row: LeadRow, gradLabel: (year: string) => string): stri
     row.branch ? String(row.branch) : '',
     row.graduation_year ? gradLabel(String(row.graduation_year)) : '',
   ].filter(Boolean);
-  return parts.join(' · ') || '—';
+  return parts.join(' · ') || '-';
 }
 
 function escapeCsv(value: string): string {
@@ -367,7 +367,7 @@ export function SuperAdminLeadsView() {
                           {String(row.phone)}
                         </a>
                       ) : (
-                        <span className="text-ink-muted">—</span>
+                        <span className="text-ink-muted">-</span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-xs text-ink-muted max-w-[220px] truncate">

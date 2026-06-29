@@ -171,7 +171,7 @@ export function SuperAdminCoordinatorsView() {
                     </td>
                     <td className="px-4 py-3 text-ink-muted">{String(coordinator.email)}</td>
                     <td className="px-4 py-3 font-mono text-xs">
-                      {String(coordinator.password || '—')}
+                      {String(coordinator.password || '-')}
                     </td>
                     <td className="px-4 py-3">
                       {assignedBatches.length === 0 ? (

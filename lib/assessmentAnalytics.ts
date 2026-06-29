@@ -102,15 +102,15 @@ export function getPassFailBadgeClass(label: 'PASS' | 'FAIL' | 'PENDING'): strin
 export function formatAttemptScore(attempt: AttemptLike, assessment?: AssessmentLike | null): string {
   const max = getAttemptMaxScore(attempt, assessment);
   if (!isAttemptEvaluated(attempt)) {
-    return max > 0 ? `— / ${max}` : '—';
+    return max > 0 ? `- / ${max}` : '-';
   }
-  const score = typeof attempt.total_score === 'number' ? attempt.total_score.toFixed(1) : '—';
+  const score = typeof attempt.total_score === 'number' ? attempt.total_score.toFixed(1) : '-';
   return max > 0 ? `${score} / ${max}` : String(score);
 }
 
 export function formatAttemptPercentage(attempt: AttemptLike): string {
   if (!isAttemptEvaluated(attempt) || typeof attempt.percentage !== 'number') {
-    return '—';
+    return '-';
   }
   return `${attempt.percentage.toFixed(1)}%`;
 }

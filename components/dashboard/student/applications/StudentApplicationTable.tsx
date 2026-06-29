@@ -156,7 +156,7 @@ export function StudentApplicationTable({ applications, loading = false }: Stude
                         <FileText className="h-5 w-5 text-brand-blue" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-semibold text-ink-primary">{app.job_title || '—'}</p>
+                        <p className="font-semibold text-ink-primary">{app.job_title || '-'}</p>
                       </div>
                     </div>
                   </td>
@@ -179,7 +179,7 @@ export function StudentApplicationTable({ applications, loading = false }: Stude
                     </div>
                   </td>
                   <td className="px-5 py-4 text-sm text-ink-secondary">
-                    {app.interview_date ? formatJobDate(app.interview_date) : '—'}
+                    {app.interview_date ? formatJobDate(app.interview_date) : '-'}
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-center gap-2">

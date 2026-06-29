@@ -46,7 +46,7 @@ export function BatchCohortVisual({
           <div className="min-w-0">
             <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-brand-sky">{eyebrowLabel}</p>
             <p className="mt-1 truncate font-display text-base font-bold text-brand-blue sm:text-lg">
-              <span className="border-b-2 border-brand-orange/80 pb-0.5">{batchName ?? '—'}</span>
+              <span className="border-b-2 border-brand-orange/80 pb-0.5">{batchName ?? '-'}</span>
             </p>
           </div>
           <div className="shrink-0 text-right">

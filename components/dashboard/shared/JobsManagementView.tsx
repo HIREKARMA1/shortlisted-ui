@@ -127,7 +127,7 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
                       {String(job.company_name)}
                     </span>
                   ) : (
-                    '—'
+                    '-'
                   )}
                 </p>
                 <p className="mt-1 text-sm text-ink-muted md:mt-0">
@@ -137,7 +137,7 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
                       {String(job.location)}
                     </span>
                   ) : (
-                    '—'
+                    '-'
                   )}
                 </p>
                 <p className="mt-1 text-sm font-medium text-brand-blue md:mt-0">{String(job.batch_name)}</p>

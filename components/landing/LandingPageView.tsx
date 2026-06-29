@@ -85,14 +85,14 @@ export function LandingPageView() {
     <main className="min-h-screen bg-white">
       <SiteHeader />
 
-      {/* Hero + Impact — one continuous background (no seam) */}
+      {/* Hero + Impact - one continuous background (no seam) */}
       <div className="relative overflow-hidden bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
         <div
           className="pointer-events-none absolute -right-24 top-8 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl"
           aria-hidden
         />
 
-        {/* Hero — keep a bit shorter so Impact peeks in first screen */}
+        {/* Hero - keep a bit shorter so Impact peeks in first screen */}
         <section className="relative flex lg:h-[calc(100dvh-10rem)] lg:items-center">
           <PageContainer className="relative grid w-full items-center gap-8 py-6 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:py-8">
           <div>

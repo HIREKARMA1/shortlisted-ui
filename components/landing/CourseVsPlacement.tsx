@@ -19,7 +19,7 @@ export function CourseVsPlacement() {
         </div>
 
         <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
-          {/* Course — muted / crossed feel */}
+          {/* Course - muted / crossed feel */}
           <div className="relative overflow-hidden rounded-2xl border border-line-default bg-white p-6 opacity-90 sm:p-8">
             <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-full bg-neutral-200/60" aria-hidden />
             <p className="text-xs font-bold uppercase tracking-widest text-ink-muted">
@@ -40,7 +40,7 @@ export function CourseVsPlacement() {
             </ul>
           </div>
 
-          {/* Placement cell — highlighted */}
+          {/* Placement cell - highlighted */}
           <div className="relative overflow-hidden rounded-2xl border-2 border-brand-blue bg-white p-6 shadow-elevated sm:p-8">
             <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-brand-blue/10" aria-hidden />
             <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-brand-blue via-brand-sky to-brand-green" />

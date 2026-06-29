@@ -160,7 +160,7 @@ export function StudentResumePrompt() {
         setOpen(true);
       }
     } catch {
-      // Ignore — dashboard pages handle their own errors
+      // Ignore - dashboard pages handle their own errors
     } finally {
       setChecked(true);
     }
