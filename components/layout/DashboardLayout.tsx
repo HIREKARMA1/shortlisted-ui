@@ -128,10 +128,12 @@ export function DashboardLayout({
 
           <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-6xl">
-              <div className="mb-8 border-b border-line-default pb-6">
-                <h1 className="section-title">{title}</h1>
-                {subtitle && <p className="mt-1 text-ink-secondary">{subtitle}</p>}
-              </div>
+              {(title || subtitle) && (
+                <div className="mb-8 border-b border-line-default pb-6">
+                  {title ? <h1 className="section-title">{title}</h1> : null}
+                  {subtitle ? <p className="mt-1 text-ink-secondary">{subtitle}</p> : null}
+                </div>
+              )}
               {children}
             </div>
           </main>
