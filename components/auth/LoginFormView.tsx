@@ -11,13 +11,10 @@ import { UserType } from '@/lib/api';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
 import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
-import { RoleSelector } from '@/components/auth/RoleSelector';
 import { Button } from '@/components/ui/Button';
 
-const PUBLIC_ROLES: UserType[] = ['student', 'admin'];
-
 type LoginFormViewProps = {
-  /** Fixed role for internal login links — hides the role selector */
+  /** Fixed role for internal login links - hides the role selector */
   fixedRole?: UserType;
 };
 
@@ -27,20 +24,41 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
   const { session, ready } = useSession();
   useGuestOnly();
   const [loading, setLoading] = useState(false);
-  const [userType, setUserType] = useState<UserType>(fixedRole ?? 'student');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   if (!ready || session) return null;
 
-  const isInternal = fixedRole === 'super_admin';
+  const isSuperAdmin = fixedRole === 'super_admin';
+  const isCoordinator = fixedRole === 'admin';
+  const isTeamLogin = isSuperAdmin || isCoordinator;
+
+  const kicker = isSuperAdmin
+    ? t('auth.loginInternal.kicker')
+    : isCoordinator
+      ? t('auth.loginCoordinator.kicker')
+      : t('auth.login.kicker');
+  const title = isSuperAdmin
+    ? t('auth.loginInternal.title')
+    : isCoordinator
+      ? t('auth.loginCoordinator.title')
+      : t('auth.login.title');
+  const subtitle = isSuperAdmin
+    ? t('auth.loginInternal.subtitle')
+    : isCoordinator
+      ? t('auth.loginCoordinator.subtitle')
+      : t('auth.login.subtitle');
+
+  const forgotPasswordHref = fixedRole
+    ? `/auth/forgot-password?role=${fixedRole}`
+    : '/auth/forgot-password';
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password, fixedRole ?? userType);
+      await login(email, password, fixedRole ?? 'student');
       toast.success(t('auth.login.success'));
     } catch (err: unknown) {
       const msg =
@@ -55,11 +73,11 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
   return (
     <AuthLayout
       fitViewport
-      kicker={isInternal ? t('auth.loginInternal.kicker') : t('auth.login.kicker')}
-      title={isInternal ? t('auth.loginInternal.title') : t('auth.login.title')}
-      subtitle={isInternal ? t('auth.loginInternal.subtitle') : t('auth.login.subtitle')}
+      kicker={kicker}
+      title={title}
+      subtitle={subtitle}
       footer={
-        isInternal ? undefined : (
+        isTeamLogin ? undefined : (
           <>
             {t('auth.login.footer')}{' '}
             <Link href="/auth/register" className="font-semibold text-brand-orange">
@@ -70,17 +88,6 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
       }
     >
       <form onSubmit={onSubmit} className="space-y-4">
-        {!fixedRole && (
-          <RoleSelector
-            label={t('auth.login.roleLabel')}
-            value={userType}
-            onChange={setUserType}
-            options={PUBLIC_ROLES.map((role) => ({
-              value: role,
-              label: t(`auth.login.roles.${role}`),
-            }))}
-          />
-        )}
         <AuthField
           name="email"
           label={t('auth.login.emailLabel')}
@@ -105,11 +112,7 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
         />
         <div className="text-right">
           <Link
-            href={
-              isInternal
-                ? '/auth/forgot-password?role=super_admin'
-                : '/auth/forgot-password'
-            }
+            href={forgotPasswordHref}
             className="text-sm font-medium text-brand-blue hover:text-brand-sky"
           >
             {t('auth.login.forgotPassword')}

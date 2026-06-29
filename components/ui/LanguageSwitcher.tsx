@@ -6,7 +6,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { LOCALE_OPTIONS, Locale } from '@/lib/i18n/types';
 
 type LanguageSwitcherProps = {
-  /** Use inside mobile nav drawer — expands inline instead of absolute flyout */
+  /** Use inside mobile nav drawer - expands inline instead of absolute flyout */
   variant?: 'default' | 'menu';
 };
 

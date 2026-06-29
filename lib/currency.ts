@@ -30,7 +30,7 @@ export function formatSalaryRange(
   return emptyLabel;
 }
 
-/** @deprecated Use formatSalaryRange — kept for call sites that pass currency from API (display is always INR). */
+/** @deprecated Use formatSalaryRange - kept for call sites that pass currency from API (display is always INR). */
 export function formatSalaryWithCurrency(
   _currency: string | undefined,
   min?: number | string | null,

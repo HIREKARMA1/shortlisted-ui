@@ -17,14 +17,14 @@ import { LoadingState } from '@/components/ui/LoadingState';
 type StudentRow = Record<string, unknown>;
 
 function formatDate(value: unknown): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return '—';
+  if (Number.isNaN(date.getTime())) return '-';
   return date.toLocaleString();
 }
 
 function formatAmount(paise: unknown, currency: unknown): string {
-  if (paise == null || paise === '') return '—';
+  if (paise == null || paise === '') return '-';
   const amount = Number(paise) / 100;
   const code = String(currency || 'INR');
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: code }).format(amount);
@@ -200,14 +200,14 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                       {formatAmount(row.payment_amount_paise, row.payment_currency)}
                     </td>
                     <td className="px-4 py-3 capitalize text-ink-muted">
-                      {row.payment_mode ? String(row.payment_mode) : '—'}
+                      {row.payment_mode ? String(row.payment_mode) : '-'}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-ink-muted">{formatDate(row.payment_date)}</td>
                     <td className="px-4 py-3 text-center">{String(row.jobs_applied ?? 0)}</td>
                     <td className="px-4 py-3 text-center">{String(row.jobs_selected ?? 0)}</td>
                     <td className="px-4 py-3">
                       {offers.length === 0 ? (
-                        <span className="text-ink-muted">—</span>
+                        <span className="text-ink-muted">-</span>
                       ) : (
                         <div className="space-y-1">
                           {offers.map((offer, index) => (

@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { getPostLoginPath } from '@/lib/auth/session';
+import { getLoginPathForRole } from '@/lib/auth/login-routes';
 import { api, TokenResponse, UserType } from '@/lib/api';
 
 export function useAuth() {
@@ -16,8 +17,10 @@ export function useAuth() {
   };
 
   const logout = () => {
+    const userType = localStorage.getItem('user_type');
+    const loginPath = getLoginPathForRole(userType);
     localStorage.clear();
-    router.push('/auth/login');
+    router.push(loginPath);
   };
 
   const login = async (email: string, password: string, user_type: UserType) => {

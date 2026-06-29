@@ -69,7 +69,7 @@
   "jobs": {
     "title": "Jobs for your batch",
     "subtitle": "Curated opportunities assigned to your batch",
-    "empty": "No jobs assigned yet. DISHA admins assign jobs to your batch — check back soon.",
+    "empty": "No jobs assigned yet. DISHA admins assign jobs to your batch - check back soon.",
     "applySuccess": "Application submitted successfully.",
     "company": "Company",
     "location": "Location",
@@ -155,7 +155,7 @@
   },
   "adminStudents": {
     "title": "Student management",
-    "subtitle": "View student details across your batches — payment, applications, and activity",
+    "subtitle": "View student details across your batches - payment, applications, and activity",
     "filterBatch": "Filter by batch",
     "allBatches": "All my batches",
     "empty": "No students found for the selected batch.",
@@ -177,7 +177,7 @@
   },
   "classes": {
     "title": "Class management",
-    "subtitle": "Schedule and manage batch classes — online links, recordings, and attendance",
+    "subtitle": "Schedule and manage batch classes - online links, recordings, and attendance",
     "createTitle": "Schedule a new class",
     "create": "Create class",
     "editTitle": "Edit class",
@@ -194,7 +194,7 @@
     "empty": "No classes found for the selected filters.",
     "openLink": "Open meeting link",
     "recordingPlaceholder": "Paste recording URL",
-    "attendanceTitle": "Attendance — {{title}}",
+    "attendanceTitle": "Attendance - {{title}}",
     "noAttendance": "No students marked attendance for this class.",
     "exportAttendance": "Export CSV",
     "exportColumns": {
@@ -287,7 +287,7 @@
   },
   "adminJobs": {
     "title": "Job management",
-    "subtitle": "Jobs assigned to your batches — filter by batch and review applicants",
+    "subtitle": "Jobs assigned to your batches - filter by batch and review applicants",
     "filterBatch": "Filter by batch",
     "allBatches": "All my batches",
     "empty": "No jobs found for the selected batch(es). Jobs appear here once assigned via DISHA.",
@@ -328,7 +328,7 @@
   },
   "superAdminStudents": {
     "title": "Student management",
-    "subtitle": "View all students across batches — payment, applications, and activity",
+    "subtitle": "View all students across batches - payment, applications, and activity",
     "filterBatch": "Filter by batch",
     "allBatches": "All batches",
     "empty": "No students found for the selected batch.",
@@ -397,7 +397,7 @@
   },
   "superAdminLeads": {
     "title": "Leads",
-    "subtitle": "Students who signed up but have not paid yet — follow up to convert",
+    "subtitle": "Students who signed up but have not paid yet - follow up to convert",
     "totalLeads": "Unpaid signups",
     "empty": "No unpaid signups right now.",
     "signupFrom": "Signed up from",

@@ -71,13 +71,13 @@ export function getCompanyName(job: StudentJob | StudentApplication): string {
   return (
     job.company_name ||
     ('corporate_name' in job ? job.corporate_name : null) ||
-    '—'
+    '-'
   );
 }
 
 export function formatJobLocation(location?: string | string[] | null): string {
-  if (!location) return '—';
-  if (Array.isArray(location)) return location.filter(Boolean).join(', ') || '—';
+  if (!location) return '-';
+  if (Array.isArray(location)) return location.filter(Boolean).join(', ') || '-';
   return location;
 }
 
@@ -108,9 +108,9 @@ export function formatExperienceRange(
 }
 
 export function formatJobDate(value?: string | null): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return '—';
+  if (Number.isNaN(d.getTime())) return '-';
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 }
 

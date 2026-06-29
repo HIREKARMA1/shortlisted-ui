@@ -18,14 +18,14 @@ type PaymentRow = Record<string, unknown>;
 type Batch = Record<string, unknown>;
 
 function formatDate(value: unknown): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return '—';
+  if (Number.isNaN(date.getTime())) return '-';
   return date.toLocaleString();
 }
 
 function formatAmount(paise: unknown, currency: unknown): string {
-  if (paise == null) return '—';
+  if (paise == null) return '-';
   const amount = Number(paise) / 100;
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -165,7 +165,7 @@ export function SuperAdminRevenueView() {
                     <p className="text-xs text-ink-muted">{String(row.student_email)}</p>
                   </td>
                   <td className="px-4 py-3 font-medium text-brand-blue">
-                    {String(row.batch_name || '—')}
+                    {String(row.batch_name || '-')}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap font-medium">
                     {formatAmount(row.amount_paise, row.currency)}
@@ -175,7 +175,7 @@ export function SuperAdminRevenueView() {
                   </td>
                   <td className="px-4 py-3 uppercase text-ink-muted">{String(row.payment_provider)}</td>
                   <td className="px-4 py-3 font-mono text-xs text-ink-muted">
-                    {String(row.gateway_payment_id || '—')}
+                    {String(row.gateway_payment_id || '-')}
                   </td>
                 </tr>
               ))}

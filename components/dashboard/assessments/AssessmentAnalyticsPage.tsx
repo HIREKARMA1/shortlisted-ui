@@ -441,7 +441,7 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
 
                                             {/* Rounds */}
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {attempt.result_data?.rounds?.length ?? '—'}
+                                                {attempt.result_data?.rounds?.length ?? '-'}
                                             </td>
 
                                             {/* Proctoring photos */}
@@ -587,9 +587,9 @@ function AttemptDetailsModal({
                             <p className="text-3xl font-bold text-gray-900">
                                 {evaluated && typeof attempt.total_score === 'number'
                                     ? attempt.total_score.toFixed(1)
-                                    : '—'}{' '}
+                                    : '-'}{' '}
                                 <span className="text-lg text-gray-400 font-normal">
-                                    / {totalMaxScore > 0 ? totalMaxScore : '—'}
+                                    / {totalMaxScore > 0 ? totalMaxScore : '-'}
                                 </span>
                             </p>
                         </div>
@@ -768,5 +768,5 @@ function userEstimateRoundTotal(round: any) {
     if (round.percentage > 0 && round.score != null) {
         return Math.round(round.score / (round.percentage / 100))
     }
-    return '—'
+    return '-'
 }

@@ -7,6 +7,7 @@ import { Users, ChevronRight } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
+import { getLoginPathForRole } from '@/lib/auth/login-routes';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/ui/StatCard';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -21,13 +22,13 @@ export function AdminDashboardView() {
 
   useEffect(() => {
     if (!localStorage.getItem('access_token') || localStorage.getItem('user_type') !== 'admin') {
-      router.push('/auth/login');
+      router.push(getLoginPathForRole('admin'));
       return;
     }
     api
       .listMyBatches()
       .then(setBatches)
-      .catch(() => router.push('/auth/login'))
+      .catch(() => router.push(getLoginPathForRole('admin')))
       .finally(() => setReady(true));
   }, [router]);
 

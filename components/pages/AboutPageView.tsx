@@ -107,7 +107,7 @@ export function AboutPageView() {
         </div>
       </section>
 
-      {/* Journey — vertical timeline with step badges (Shortlisted style) */}
+      {/* Journey - vertical timeline with step badges (Shortlisted style) */}
       <section className="border-b border-line-default bg-gradient-to-br from-brand-blue to-primary-800 text-white">
         <div className="page-container py-16 sm:py-20">
           <div className="max-w-xl">

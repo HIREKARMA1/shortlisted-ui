@@ -257,7 +257,7 @@ export function SuperAdminBatchesView() {
                       </Badge>
                     </td>
                     <td className="px-4 py-3 text-ink-muted">
-                      {String(batch.admin_name || '—')}
+                      {String(batch.admin_name || '-')}
                     </td>
                     <td className="px-4 py-3 capitalize">
                       <Badge tone={dishaTone(dishaStatus)}>{dishaStatus}</Badge>
@@ -265,7 +265,7 @@ export function SuperAdminBatchesView() {
                     <td className="px-4 py-3 whitespace-nowrap text-ink-muted">
                       {batch.created_at
                         ? new Date(String(batch.created_at)).toLocaleString()
-                        : '—'}
+                        : '-'}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-2">

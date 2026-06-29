@@ -4,10 +4,10 @@
     "title1": "India's first",
     "title2": "AI virtual placement cell.",
     "title3": "Get shortlisted.",
-    "subtitle": "Subscribe once. Join a curated batch of 12 — get AI-matched jobs from top companies, 24/7 application tracking, and a human coordinator focused on your placement every day.",
+    "subtitle": "Subscribe once. Join a curated batch of 12 - get AI-matched jobs from top companies, 24/7 application tracking, and a human coordinator focused on your placement every day.",
     "ctaPrimary": "Claim Your Seat",
     "ctaSecondary": "Student Login",
-    "trust": "Built by HireKarma — trusted by students across India"
+    "trust": "Built by HireKarma - trusted by students across India"
   },
   "stats": {
     "batchSize": { "value": "12", "label": "Students per batch" },
@@ -22,7 +22,7 @@
     },
     "skills": {
       "title": "An AI placement cell built for real hiring outcomes",
-      "subtitle": "Intelligent job matching, live application tracking, and coordinator-led interview prep — not another certificate course.",
+      "subtitle": "Intelligent job matching, live application tracking, and coordinator-led interview prep - not another certificate course.",
       "tags": {
         "jobs": "AI-matched job feed",
         "interviews": "Interview prep",
@@ -33,17 +33,17 @@
       }
     },
     "mission": {
-      "title": "Your college placement cell — reimagined with AI",
+      "title": "Your college placement cell - reimagined with AI",
       "subtitle": "Small cohorts, smart automation, and a real coordinator on every batch. Outcomes over attendance, available anytime you need it."
     }
   },
   "whyShortlisted": {
     "title": "Why an AI virtual placement cell?",
-    "subtitle": "Shortlisted combines AI-powered matching and tracking with the personal care of a real placement cell — built to get you hired, not just trained.",
+    "subtitle": "Shortlisted combines AI-powered matching and tracking with the personal care of a real placement cell - built to get you hired, not just trained.",
     "cards": {
       "cohorts": {
         "title": "Small batch advantage",
-        "desc": "Only 12 seats per batch — AI scales the ops, humans keep it personal."
+        "desc": "Only 12 seats per batch - AI scales the ops, humans keep it personal."
       },
       "support": {
         "title": "AI + human guidance",
@@ -51,11 +51,11 @@
       },
       "matching": {
         "title": "AI job matching",
-        "desc": "Roles from top companies via DISHA — ranked and assigned to your batch by our placement engine."
+        "desc": "Roles from top companies via DISHA - ranked and assigned to your batch by our placement engine."
       },
       "tracking": {
         "title": "Real-time AI tracking",
-        "desc": "Every shortlist, interview, and offer updates live in your dashboard — nothing falls through the cracks."
+        "desc": "Every shortlist, interview, and offer updates live in your dashboard - nothing falls through the cracks."
       }
     }
   },
@@ -74,13 +74,13 @@
     "label": "Seats remaining",
     "subscription": "One-time subscription",
     "currency": "₹{{amount}}",
-    "full": "Current batch is full — join the waitlist by registering",
+    "full": "Current batch is full - join the waitlist by registering",
     "loading": "Checking availability..."
   },
   "compare": {
     "eyebrow": "The difference",
     "title": "This is not another online course",
-    "subtitle": "Shortlisted is India's first AI virtual placement cell — focused on getting you hired, not keeping you in class.",
+    "subtitle": "Shortlisted is India's first AI virtual placement cell - focused on getting you hired, not keeping you in class.",
     "course": {
       "label": "Typical course",
       "title": "Learn skills, get a certificate",
@@ -88,7 +88,7 @@
         "classes": "Scheduled classes and syllabus",
         "syllabus": "Months of coursework before applying",
         "exams": "Tests and assignments to pass",
-        "certificate": "Certificate — but no job guarantee"
+        "certificate": "Certificate - but no job guarantee"
       }
     },
     "placement": {
@@ -98,7 +98,7 @@
         "jobs": "AI-matched jobs for your profile",
         "coordinator": "Dedicated human coordinator",
         "tracking": "24/7 application tracking",
-        "batch": "Small batch of 12 — personal attention"
+        "batch": "Small batch of 12 - personal attention"
       }
     }
   },
@@ -107,11 +107,11 @@
     "title": "From signup to offer letter",
     "subtitle": "Five milestones. AI keeps you on track; your coordinator guides you through each.",
     "steps": {
-      "register": { "title": "Create your profile", "desc": "Sign up in your language. Add skills, college, and preferred roles — our engine starts matching immediately." },
+      "register": { "title": "Create your profile", "desc": "Sign up in your language. Add skills, college, and preferred roles - our engine starts matching immediately." },
       "subscribe": { "title": "Subscribe once", "desc": "Pay once to unlock your AI virtual placement cell and secure your batch seat." },
       "batch": { "title": "Join your batch", "desc": "Get matched to a batch of 12 with a dedicated coordinator and AI-curated job feed." },
       "apply": { "title": "Apply & interview", "desc": "Apply to matched roles, prep with your coordinator, and track every status in real time." },
-      "placed": { "title": "Get placed", "desc": "Land your role with ongoing support until you join — offer, onboarding, and beyond." }
+      "placed": { "title": "Get placed", "desc": "Land your role with ongoing support until you join - offer, onboarding, and beyond." }
     }
   },
   "coordinator": {
@@ -127,7 +127,7 @@
     "card": {
       "role": "Batch coordinator",
       "name": "Your placement guide",
-      "desc": "Works alongside the AI engine — tracks applications, preps you for interviews, and escalates when needed.",
+      "desc": "Works alongside the AI engine - tracks applications, preps you for interviews, and escalates when needed.",
       "badge": "Batch of 12",
       "quote": "AI keeps the pipeline moving. I make sure every student in my batch gets across the line.",
       "stats": {
@@ -140,12 +140,12 @@
   "features": {
     "eyebrow": "Your toolkit",
     "title": "Everything an AI placement cell provides",
-    "subtitle": "Intelligent automation plus human care — personalised, structured, and built for outcomes.",
+    "subtitle": "Intelligent automation plus human care - personalised, structured, and built for outcomes.",
     "bentoNote": "One subscription unlocks the full AI virtual placement stack.",
     "items": {
-      "jobs": { "title": "AI-matched job feed", "desc": "Jobs assigned to your batch by DISHA — ranked for your profile and readiness." },
+      "jobs": { "title": "AI-matched job feed", "desc": "Jobs assigned to your batch by DISHA - ranked for your profile and readiness." },
       "coordinator": { "title": "Dedicated coordinator", "desc": "A placement admin guides your batch, tracks progress, and supports applications." },
-      "tracking": { "title": "Live application tracking", "desc": "See shortlist, interview, and offer status in your dashboard — updated in real time." },
+      "tracking": { "title": "Live application tracking", "desc": "See shortlist, interview, and offer status in your dashboard - updated in real time." },
       "batch": { "title": "Small batch advantage", "desc": "Only 12 seats per batch means personalised attention, not mass placement drives." },
       "brands": { "title": "Corporate network", "desc": "Access opportunities from companies hiring through the HireKarma DISHA platform." },
       "dashboard": { "title": "Your AI command centre", "desc": "One dashboard for matched jobs, applications, batch info, and coordinator contact." }
@@ -159,7 +159,7 @@
     "oneTime": "one-time",
     "seatContext": {
       "title": "Live batch availability",
-      "desc": "Each dot is a seat in the current cohort. Green means open — claim yours before the batch fills.",
+      "desc": "Each dot is a seat in the current cohort. Green means open - claim yours before the batch fills.",
       "remaining": "{{count}} seats left in current batch"
     },
     "includes": {
@@ -179,7 +179,7 @@
   },
   "successStories": {
     "title": "Listen to our success stories",
-    "subtitle": "Hear from students placed through Shortlisted's AI-powered placement cell — real journeys, real outcomes."
+    "subtitle": "Hear from students placed through Shortlisted's AI-powered placement cell - real journeys, real outcomes."
   },
   "community": {
     "title": "A Community That Has Your Back",
@@ -196,12 +196,12 @@
     "title": "FAQs",
     "subtitle": "Get your questions answered",
     "items": {
-      "ai": { "q": "What is an AI virtual placement cell?", "a": "Shortlisted is India's first AI virtual placement cell — it uses intelligent job matching and real-time application tracking, combined with a dedicated human coordinator for every batch of 12. Think of it as your college placement cell, available 24/7, powered by AI." },
+      "ai": { "q": "What is an AI virtual placement cell?", "a": "Shortlisted is India's first AI virtual placement cell - it uses intelligent job matching and real-time application tracking, combined with a dedicated human coordinator for every batch of 12. Think of it as your college placement cell, available 24/7, powered by AI." },
       "course": { "q": "Is Shortlisted a course?", "a": "No. Shortlisted is not a course or certificate program. It's an AI virtual placement cell focused on interviews, applications, and getting you hired." },
       "batch": { "q": "How are batches formed?", "a": "After you subscribe, you are automatically assigned to the current open batch (max 12 students). A dedicated coordinator is assigned to guide your batch while the AI engine keeps jobs and applications organised." },
       "jobs": { "q": "Where do jobs come from?", "a": "Jobs are posted on the DISHA platform by companies. Our AI placement engine and DISHA admins assign relevant openings to your Shortlisted batch based on your profile and readiness." },
       "support": { "q": "What kind of support can I expect?", "a": "You get AI-powered job matching and 24/7 dashboard tracking, plus a human batch coordinator for applications, interview prep, and live updates on shortlist and offer status." },
-      "refund": { "q": "Can I get a refund?", "a": "Subscription terms are shared at checkout. Contact support for exceptional cases — we are happy to clarify before you pay." }
+      "refund": { "q": "Can I get a refund?", "a": "Subscription terms are shared at checkout. Contact support for exceptional cases - we are happy to clarify before you pay." }
     }
   },
   "contactSupport": {
@@ -237,7 +237,7 @@
     "rights": "All rights reserved.",
     "contactTitle": "Contact us",
     "policyTitle": "Policy",
-    "description": "Shortlisted is India's first AI virtual placement cell — built to get you hired, not just trained. Subscribe once, join a curated batch of 12, and get AI-matched jobs, application tracking, and a dedicated coordinator focused on your placement every day.",
+    "description": "Shortlisted is India's first AI virtual placement cell - built to get you hired, not just trained. Subscribe once, join a curated batch of 12, and get AI-matched jobs, application tracking, and a dedicated coordinator focused on your placement every day.",
     "officeLabel": "office",
     "emailLabel": "email",
     "contactLabel": "contact",

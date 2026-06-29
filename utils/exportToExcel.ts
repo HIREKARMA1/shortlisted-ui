@@ -92,9 +92,9 @@ function formatAnalyticsResultCsvRow(item: AnalyticsExport): string[] {
     : item.status;
   return [
     displayStatus,
-    item.total_score != null ? String(item.total_score) : '—',
-    String(item.max_score ?? '—'),
-    item.percentage != null ? item.percentage.toFixed(1) : '—',
+    item.total_score != null ? String(item.total_score) : '-',
+    String(item.max_score ?? '-'),
+    item.percentage != null ? item.percentage.toFixed(1) : '-',
     item.pass_fail,
     String(item.rounds_completed || 0),
     item.snapshot_1_url || '',

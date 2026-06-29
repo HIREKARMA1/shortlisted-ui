@@ -91,7 +91,7 @@ export function SubscribePageView() {
           <div className="rounded-xl border border-line-default bg-surface-muted p-5 text-center">
             <Text variant="muted">{t('subscribe.amountLabel')}</Text>
             <p className="mt-1 font-display text-4xl font-bold text-brand-sky">
-              {amountInr != null ? t('subscribe.currency', { amount: amountInr }) : '—'}
+              {amountInr != null ? t('subscribe.currency', { amount: amountInr }) : '-'}
             </p>
             {batchInfo && (
               <p className="mt-3 text-lg font-semibold text-brand-blue">
