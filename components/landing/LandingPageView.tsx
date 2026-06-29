@@ -98,7 +98,7 @@ export function LandingPageView() {
           <div>
             <h1 className="font-serif text-[2.35rem] font-bold leading-[1.06] tracking-tight text-ink-primary sm:text-[3.4rem] lg:text-[4rem]">
               <span className="block">{t('landing.hero.title1')}</span>
-              <span className="sl-bracket mt-0.5 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
+              <span className="mt-0.5 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
             </h1>
             <p className="mt-2 font-display text-base font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-lg">
               {t('landing.hero.title3')}
