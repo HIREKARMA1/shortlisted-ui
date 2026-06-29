@@ -103,6 +103,18 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
           autoComplete="current-password"
           placeholder={t('auth.login.placeholders.password')}
         />
+        <div className="text-right">
+          <Link
+            href={
+              isInternal
+                ? '/auth/forgot-password?role=super_admin'
+                : '/auth/forgot-password'
+            }
+            className="text-sm font-medium text-brand-blue hover:text-brand-sky"
+          >
+            {t('auth.login.forgotPassword')}
+          </Link>
+        </div>
         <LegalConsentCheckbox
           id="login-legal-consent"
           checked={agreedToTerms}

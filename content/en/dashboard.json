@@ -27,6 +27,18 @@
       "subtitle": "Browse opportunities or check your application pipeline.",
       "browseJobs": "Browse jobs",
       "viewApplications": "View applications"
+    },
+    "resumeModal": {
+      "title": "Upload your resume",
+      "subtitle": "Required before you can apply to jobs.",
+      "uploadPlaceholder": "Upload your resume (PDF)",
+      "uploading": "Uploading...",
+      "uploadFailed": "Failed to upload resume. Please try again.",
+      "success": "Resume saved to your profile.",
+      "completeTitle": "Resume uploaded",
+      "completeHint": "You can now apply for jobs.",
+      "footerHint": "PDF only, max 5MB.",
+      "dismiss": "Close"
     }
   },
   "profile": {
@@ -97,7 +109,9 @@
       "selected": "Selected",
       "rejected": "Not selected",
       "pending": "Under review"
-    }
+    },
+    "resumeRequired": "You need to upload your resume before applying to jobs.",
+    "uploadResumeLink": "Go to profile and upload resume"
   },
   "applications": {
     "title": "My applications",

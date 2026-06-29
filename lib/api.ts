@@ -41,6 +41,21 @@ class ApiClient {
     return res.data as { message: string; expires_in_minutes: number };
   }
 
+  async sendForgotPasswordOtp(email: string, user_type: UserType) {
+    const res = await this.client.post('/auth/forgot-password/send-otp', { email, user_type });
+    return res.data as { message: string; expires_in_minutes: number };
+  }
+
+  async resetPassword(data: {
+    email: string;
+    otp: string;
+    password: string;
+    user_type: UserType;
+  }) {
+    const res = await this.client.post('/auth/forgot-password/reset', data);
+    return res.data as { message: string };
+  }
+
   async login(email: string, password: string, user_type: UserType) {
     const res = await this.client.post<TokenResponse>('/auth/login', { email, password, user_type });
     return res.data;
