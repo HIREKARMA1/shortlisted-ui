@@ -66,6 +66,15 @@ class ApiClient {
     return res.data;
   }
 
+  async getSiteInfo() {
+    const res = await this.client.get('/public/site-info');
+    return res.data as {
+      office_address?: string;
+      contact_email?: string;
+      contact_phone?: string;
+    };
+  }
+
   async getTestimonials() {
     const res = await this.client.get('/public/testimonials');
     return res.data;
