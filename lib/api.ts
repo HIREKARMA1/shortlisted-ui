@@ -422,6 +422,15 @@ class ApiClient {
     return res.data;
   }
 
+  async createRecurringClasses(data: Record<string, unknown>) {
+    const res = await this.client.post('/admin/classes/recurring', data);
+    return res.data as {
+      created_count: number;
+      skipped_count: number;
+      classes: Record<string, unknown>[];
+    };
+  }
+
   async updateClass(classId: string, data: Record<string, unknown>) {
     const res = await this.client.patch(`/admin/classes/${classId}`, data);
     return res.data;
