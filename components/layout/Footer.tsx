@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
-import { config } from '@/lib/config';
 import { PRIVACY_URL, REFUND_URL, TERMS_URL } from '@/lib/legal-links';
 import { BrandLogo } from './Shell';
 import { BrandStripe } from '@/components/ui/BrandStripe';
@@ -41,9 +40,9 @@ export function SiteFooter() {
       .catch(() => setSiteInfo(null));
   }, []);
 
-  const officeAddress = siteInfo?.office_address ?? t('landing.footer.officeAddress');
-  const contactEmail = siteInfo?.contact_email ?? config.contact.email;
-  const contactPhone = siteInfo?.contact_phone ?? config.contact.phone;
+  const officeAddress = t('landing.footer.officeAddress');
+  const contactEmail = siteInfo?.contact_email ?? t('landing.footer.contactEmail');
+  const contactPhone = siteInfo?.contact_phone ?? t('landing.footer.contactPhone');
 
   return (
     <footer className="bg-white">
