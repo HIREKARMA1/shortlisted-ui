@@ -58,6 +58,21 @@ export function StudentProfileView() {
     loadProfile();
   }, [loadProfile]);
 
+  useEffect(() => {
+    if (loading || typeof window === 'undefined') return;
+    if (window.location.hash !== '#resume') return;
+    const el = document.getElementById('resume-upload');
+    if (!el) return;
+    const timer = window.setTimeout(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('ring-2', 'ring-brand-blue', 'ring-offset-2');
+      window.setTimeout(() => {
+        el.classList.remove('ring-2', 'ring-brand-blue', 'ring-offset-2');
+      }, 2500);
+    }, 150);
+    return () => window.clearTimeout(timer);
+  }, [loading, profile]);
+
   const validate = (currentProfile: StudentProfile | null): boolean => {
     const nextErrors: Record<string, string> = {};
     if (!name.trim()) {
@@ -192,7 +207,10 @@ export function StudentProfileView() {
               error={errors.phone}
             />
 
-            <div className="md:col-span-2 xl:col-span-3">
+            <div
+              id="resume-upload"
+              className="scroll-mt-24 rounded-lg transition-shadow md:col-span-2 xl:col-span-3"
+            >
               <p className="mb-2 text-sm font-medium text-ink-secondary">
                 {t('dashboard.profile.resume')} *
               </p>

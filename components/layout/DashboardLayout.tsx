@@ -10,6 +10,7 @@ import { BrandStripe } from '@/components/ui/BrandStripe';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { BrandLogo } from './Shell';
 import { DashboardRole, getNavForRole, NavItem } from '@/lib/dashboard-nav';
+import { StudentResumePrompt } from '@/components/dashboard/student/StudentResumeUploadModal';
 
 function NavLink({ item, pathname, onNavigate }: { item: NavItem; pathname: string; onNavigate?: () => void }) {
   const { t } = useTranslation();
@@ -83,6 +84,7 @@ export function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-surface-page">
+      {role === 'student' && <StudentResumePrompt />}
       <BrandStripe />
       <div className="flex min-h-[calc(100vh-4px)]">
         <aside className="hidden w-64 shrink-0 border-r border-line-default bg-white lg:block">{sidebar}</aside>

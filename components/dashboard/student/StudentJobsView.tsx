@@ -9,6 +9,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
 import { normalizeApplication, normalizeJob } from '@/lib/jobUtils';
+import {
+  hasResume,
+  isResumeRequiredError,
+  showResumeRequiredToast,
+} from '@/lib/resumeRequiredToast';
+import { profileService } from '@/lib/services/profileService';
 import type { StudentJob } from '@/lib/types/studentJobs';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { JobCard } from '@/components/dashboard/student/jobs/JobCard';
@@ -74,6 +80,15 @@ export function StudentJobsView() {
   const apply = async (jobId: string) => {
     setApplying(jobId);
     try {
+      const profile = await profileService.getProfile();
+      if (!hasResume(profile)) {
+        showResumeRequiredToast(
+          t('dashboard.jobs.resumeRequired'),
+          t('dashboard.jobs.uploadResumeLink')
+        );
+        return;
+      }
+
       await api.applyJob(jobId);
       toast.success(t('dashboard.jobs.applySuccess'));
       setAppStatusByJob((prev) => ({ ...prev, [jobId]: 'applied' }));
@@ -84,10 +99,17 @@ export function StudentJobsView() {
       );
       setSelectedJob((prev) => (prev?.id === jobId ? { ...prev, application_status: 'applied' } : prev));
     } catch (err: unknown) {
-      const msg =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        t('common.errors.generic');
-      toast.error(msg);
+      const detail =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      if (isResumeRequiredError(detail)) {
+        showResumeRequiredToast(
+          t('dashboard.jobs.resumeRequired'),
+          t('dashboard.jobs.uploadResumeLink')
+        );
+        return;
+      }
+      const msg = detail || t('common.errors.generic');
+      toast.error(String(msg));
     } finally {
       setApplying(null);
     }
