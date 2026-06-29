@@ -16,7 +16,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: 'Shortlisted — Your Dedicated Placement Cell',
+  title: 'Shortlisted - Your Dedicated Placement Cell',
   description: 'Subscription-based placement program by HireKarma. Curated batches, matched jobs, dedicated coordinators.',
 };
 

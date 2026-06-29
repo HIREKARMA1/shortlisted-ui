@@ -17,9 +17,9 @@ import { LoadingState } from '@/components/ui/LoadingState';
 type ClassRow = Record<string, unknown>;
 
 function formatDate(value: unknown): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const date = new Date(String(value));
-  if (Number.isNaN(date.getTime())) return '—';
+  if (Number.isNaN(date.getTime())) return '-';
   return date.toLocaleString();
 }
 

@@ -1,4 +1,4 @@
-/** Brick overlay — matches 100xdevs impact card texture */
+/** Brick overlay - matches 100xdevs impact card texture */
 export function ImpactBrickPattern({ id = 'sl-impact-brick' }: { id?: string }) {
   return (
     <svg

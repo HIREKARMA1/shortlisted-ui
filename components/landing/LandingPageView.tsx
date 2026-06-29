@@ -85,20 +85,20 @@ export function LandingPageView() {
     <main className="min-h-screen bg-white">
       <SiteHeader />
 
-      {/* Hero + Impact — one continuous background (no seam) */}
+      {/* Hero + Impact - one continuous background (no seam) */}
       <div className="relative overflow-hidden bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
         <div
           className="pointer-events-none absolute -right-24 top-8 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl"
           aria-hidden
         />
 
-        {/* Hero — keep a bit shorter so Impact peeks in first screen */}
+        {/* Hero - keep a bit shorter so Impact peeks in first screen */}
         <section className="relative flex lg:h-[calc(100dvh-10rem)] lg:items-center">
           <PageContainer className="relative grid w-full items-center gap-8 py-6 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:py-8">
           <div>
             <h1 className="font-serif text-[2.35rem] font-bold leading-[1.06] tracking-tight text-ink-primary sm:text-[3.4rem] lg:text-[4rem]">
               <span className="block">{t('landing.hero.title1')}</span>
-              <span className="sl-bracket mt-0.5 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
+              <span className="mt-0.5 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
             </h1>
             <p className="mt-2 font-display text-base font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-lg">
               {t('landing.hero.title3')}

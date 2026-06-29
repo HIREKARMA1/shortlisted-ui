@@ -81,7 +81,7 @@ export function JobCard({
             <h3 className="line-clamp-2 text-lg font-semibold text-ink-primary group-hover:text-brand-blue">
               {job.title}
             </h3>
-            {company !== '—' && (
+            {company !== '-' && (
               <p className="mt-1 flex items-center gap-2 text-sm text-ink-muted">
                 <Building2 className="h-4 w-4 shrink-0" />
                 <span className="truncate">{company}</span>

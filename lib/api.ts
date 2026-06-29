@@ -41,6 +41,21 @@ class ApiClient {
     return res.data as { message: string; expires_in_minutes: number };
   }
 
+  async sendForgotPasswordOtp(email: string, user_type: UserType) {
+    const res = await this.client.post('/auth/forgot-password/send-otp', { email, user_type });
+    return res.data as { message: string; expires_in_minutes: number };
+  }
+
+  async resetPassword(data: {
+    email: string;
+    otp: string;
+    password: string;
+    user_type: UserType;
+  }) {
+    const res = await this.client.post('/auth/forgot-password/reset', data);
+    return res.data as { message: string };
+  }
+
   async login(email: string, password: string, user_type: UserType) {
     const res = await this.client.post<TokenResponse>('/auth/login', { email, password, user_type });
     return res.data;
@@ -49,6 +64,15 @@ class ApiClient {
   async getActiveBatch() {
     const res = await this.client.get('/public/batches/active');
     return res.data;
+  }
+
+  async getSiteInfo() {
+    const res = await this.client.get('/public/site-info');
+    return res.data as {
+      office_address?: string;
+      contact_email?: string;
+      contact_phone?: string;
+    };
   }
 
   async getTestimonials() {
@@ -114,6 +138,49 @@ class ApiClient {
 
   async getApplications() {
     const res = await this.client.get('/students/me/applications');
+    return res.data;
+  }
+
+  async getStudentProfile() {
+    const res = await this.client.get('/students/me/profile');
+    return res.data;
+  }
+
+  async updateStudentProfile(data: Record<string, unknown>) {
+    const res = await this.client.put('/students/me/profile', data);
+    return res.data;
+  }
+
+  async getStudentProfileCompletion() {
+    const res = await this.client.get('/students/me/profile-completion');
+    return res.data;
+  }
+
+  async uploadStudentResume(file: File) {
+    const form = new FormData();
+    form.append('resume', file);
+    const res = await this.client.post('/students/me/upload-resume', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async uploadStudentProfilePicture(file: File) {
+    const form = new FormData();
+    form.append('profile_picture', file);
+    const res = await this.client.post('/students/me/upload-profile-picture', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
+  async uploadStudentCertificate(file: File, type: string) {
+    const form = new FormData();
+    form.append('certificate', file);
+    form.append('type', type);
+    const res = await this.client.post('/students/me/upload-certificate', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return res.data;
   }
 
@@ -353,6 +420,15 @@ class ApiClient {
   async createClass(data: Record<string, unknown>) {
     const res = await this.client.post('/admin/classes', data);
     return res.data;
+  }
+
+  async createRecurringClasses(data: Record<string, unknown>) {
+    const res = await this.client.post('/admin/classes/recurring', data);
+    return res.data as {
+      created_count: number;
+      skipped_count: number;
+      classes: Record<string, unknown>[];
+    };
   }
 
   async updateClass(classId: string, data: Record<string, unknown>) {

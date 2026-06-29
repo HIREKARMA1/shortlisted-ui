@@ -67,5 +67,8 @@
   },
   "empty": {
     "noData": "No data available yet."
+  },
+  "whatsapp": {
+    "ariaLabel": "Chat on WhatsApp"
   }
 }
