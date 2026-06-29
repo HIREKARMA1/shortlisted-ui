@@ -112,33 +112,6 @@
     background: linear-gradient(145deg, #1b52a4 0%, #174892 50%, #133d7d 100%);
   }
 
-  .sl-bracket {
-    position: relative;
-    display: inline-block;
-    padding: 0 0.35em;
-  }
-
-  .sl-bracket::before,
-  .sl-bracket::after {
-    position: absolute;
-    font-family: var(--font-serif);
-    font-weight: 700;
-    color: var(--color-brand-orange);
-    opacity: 0.85;
-  }
-
-  .sl-bracket::before {
-    content: '[';
-    left: -0.05em;
-    top: -0.05em;
-  }
-
-  .sl-bracket::after {
-    content: ']';
-    right: -0.05em;
-    bottom: -0.05em;
-  }
-
   .sl-diagonal-band {
     clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
   }
