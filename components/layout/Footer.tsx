@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
+import { api } from '@/lib/api';
 import { PRIVACY_URL, REFUND_URL, TERMS_URL } from '@/lib/legal-links';
 import { BrandLogo } from './Shell';
 import { BrandStripe } from '@/components/ui/BrandStripe';
@@ -20,19 +22,37 @@ const SOCIAL_LINKS = [
   { href: 'https://instagram.com/hirekarma', label: 'Instagram', icon: Instagram },
 ] as const;
 
+type SiteInfo = {
+  office_address?: string;
+  contact_email?: string;
+  contact_phone?: string;
+};
+
 export function SiteFooter() {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
+  const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null);
+
+  useEffect(() => {
+    api
+      .getSiteInfo()
+      .then(setSiteInfo)
+      .catch(() => setSiteInfo(null));
+  }, []);
+
+  const officeAddress = t('landing.footer.officeAddress');
+  const contactEmail = siteInfo?.contact_email ?? t('landing.footer.contactEmail');
+  const contactPhone = siteInfo?.contact_phone ?? t('landing.footer.contactPhone');
 
   return (
     <footer className="bg-white">
       <BrandStripe />
       <div className="page-container py-12 sm:py-14">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_auto] lg:items-start lg:gap-12">
           <div className="max-w-md">
             <BrandLogo />
-            <p className="mt-4 text-base leading-relaxed text-ink-muted sm:text-[1.05rem]">
-              {t('common.brand.tagline')}
+            <p className="mt-4 text-sm leading-relaxed text-ink-muted sm:text-base">
+              {t('landing.footer.description')}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-base">
               {t('landing.footer.poweredBy')}
@@ -54,8 +74,43 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <nav aria-label="Legal" className="lg:pt-2">
-            <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
+          <div className="space-y-2 text-sm leading-relaxed text-ink-muted sm:text-base">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-primary">
+              {t('landing.footer.contactTitle')}
+            </h3>
+
+            <p>
+              <span className="font-medium text-ink-secondary">{t('landing.footer.officeLabel')}:</span>{' '}
+              {officeAddress}
+            </p>
+
+            {contactEmail && (
+              <p>
+                <span className="font-medium text-ink-secondary">{t('landing.footer.emailLabel')}:</span>{' '}
+                <a href={`mailto:${contactEmail}`} className="transition hover:text-brand-blue">
+                  {contactEmail}
+                </a>
+              </p>
+            )}
+
+            {contactPhone && (
+              <p>
+                <span className="font-medium text-ink-secondary">{t('landing.footer.contactLabel')}:</span>{' '}
+                <a
+                  href={`tel:${contactPhone.replace(/\s/g, '')}`}
+                  className="transition hover:text-brand-blue"
+                >
+                  {contactPhone}
+                </a>
+              </p>
+            )}
+          </div>
+
+          <nav aria-label="Legal">
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-primary">
+              {t('landing.footer.policyTitle')}
+            </h3>
+            <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3 lg:flex-col">
               {LEGAL_LINKS.map((item) => (
                 <li key={item.href}>
                   <Link
