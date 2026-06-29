@@ -2,16 +2,22 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Building2, MapPin, Users, X } from 'lucide-react';
+import { Briefcase, Building2, Eye, MapPin, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
 import { api } from '@/lib/api';
-import { applicationBadgeTone } from '@/lib/status';
 import type { DashboardRole } from '@/lib/dashboard-nav';
+import { AppliedStudentsModal } from '@/components/dashboard/shared/AppliedStudentsModal';
+import { ManagementPageHeader } from '@/components/dashboard/shared/ManagementPageHeader';
+import { ManagementSearchInput } from '@/components/dashboard/shared/management/ManagementSearchInput';
+import {
+  alternatingRowClass,
+  ManagementPagination,
+  paginateItems,
+} from '@/components/dashboard/shared/management/ManagementPagination';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { Select } from '@/components/ui/Select';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LoadingState } from '@/components/ui/LoadingState';
@@ -26,12 +32,13 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
   const [batches, setBatches] = useState<JobRow[]>([]);
   const [jobs, setJobs] = useState<JobRow[]>([]);
   const [batchFilter, setBatchFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
   const [ready, setReady] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
   const [selectedJob, setSelectedJob] = useState<JobRow | null>(null);
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [loadingApplicants, setLoadingApplicants] = useState(false);
-  const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
 
   useEffect(() => {
     const loadBatches = role === 'super_admin' ? api.listAllBatches() : api.listMyBatches();
@@ -51,6 +58,10 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
       .finally(() => setLoadingJobs(false));
   }, [ready, batchFilter, t]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [batchFilter, searchTerm]);
+
   const batchOptions = useMemo(
     () => [
       { value: '', label: t('dashboard.adminJobs.allBatches') },
@@ -59,9 +70,21 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
     [batches, t],
   );
 
+  const filteredJobs = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase();
+    if (!query) return jobs;
+    return jobs.filter((job) => {
+      const haystack = [job.title, job.company_name, job.location, job.batch_name]
+        .filter(Boolean)
+        .map((value) => String(value).toLowerCase());
+      return haystack.some((value) => value.includes(query));
+    });
+  }, [jobs, searchTerm]);
+
+  const paginatedJobs = useMemo(() => paginateItems(filteredJobs, page), [filteredJobs, page]);
+
   const openApplicants = async (job: JobRow) => {
     setSelectedJob(job);
-    setSelectedApplicant(null);
     setLoadingApplicants(true);
     try {
       const data = await api.getJobApplicants(String(job.id), String(job.batch_id));
@@ -77,174 +100,127 @@ export function JobsManagementView({ role }: { role: DashboardRole }) {
   const closeApplicants = () => {
     setSelectedJob(null);
     setApplicants([]);
-    setSelectedApplicant(null);
   };
 
   if (!ready) return <LoadingState />;
 
-  const student = selectedApplicant?.student as Record<string, unknown> | undefined;
-
   return (
-    <DashboardLayout
-      role={role}
-      title={t('dashboard.adminJobs.title')}
-      subtitle={t('dashboard.adminJobs.subtitle')}
-      onLogout={logout}
-    >
-      <div className="mb-6 max-w-xs">
-        <Select
-          label={t('dashboard.adminJobs.filterBatch')}
-          value={batchFilter}
-          onChange={(e) => setBatchFilter(e.target.value)}
-          options={batchOptions}
+    <DashboardLayout role={role} title="" subtitle="" onLogout={logout}>
+      <div className="space-y-6">
+        <ManagementPageHeader
+          title={t('dashboard.adminJobs.title')}
+          subtitle={t('dashboard.adminJobs.subtitle')}
+          tags={[
+            {
+              label: t('dashboard.adminJobs.statsJobs', { count: filteredJobs.length }),
+              icon: Briefcase,
+              tone: 'primary',
+            },
+            {
+              label: t('dashboard.adminJobs.statsBatches', { count: batches.length }),
+              icon: Users,
+              tone: 'blue',
+            },
+          ]}
         />
+
+        <div className="rounded-xl border border-line-default bg-white p-6 shadow-card">
+          <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
+            <ManagementSearchInput
+              label={t('dashboard.adminJobs.searchLabel')}
+              value={searchTerm}
+              onChange={setSearchTerm}
+              placeholder={t('dashboard.adminJobs.searchPlaceholder')}
+            />
+            <Select
+              label={t('dashboard.adminJobs.filterBatch')}
+              value={batchFilter}
+              onChange={(e) => setBatchFilter(e.target.value)}
+              options={batchOptions}
+            />
+          </div>
+        </div>
+
+        {loadingJobs ? (
+          <LoadingState />
+        ) : filteredJobs.length === 0 ? (
+          <EmptyState message={t('dashboard.adminJobs.empty')} />
+        ) : (
+          <div className="overflow-hidden rounded-xl border border-line-default bg-white shadow-lg">
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left text-sm">
+                <thead className="border-b border-line-default bg-surface-muted text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                  <tr>
+                    <th className="px-4 py-3">{t('dashboard.adminJobs.columns.title')}</th>
+                    <th className="px-4 py-3">{t('dashboard.adminJobs.columns.company')}</th>
+                    <th className="px-4 py-3">{t('dashboard.adminJobs.columns.location')}</th>
+                    <th className="px-4 py-3">{t('dashboard.adminJobs.columns.batch')}</th>
+                    <th className="px-4 py-3">{t('dashboard.adminJobs.columns.actions')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedJobs.map((job, index) => (
+                    <tr
+                      key={`${String(job.batch_id)}-${String(job.id)}`}
+                      className={`border-b border-line-default ${alternatingRowClass(index)}`}
+                    >
+                      <td className="px-4 py-4">
+                        <p className="font-medium text-ink-primary">{String(job.title)}</p>
+                      </td>
+                      <td className="px-4 py-4 text-ink-muted">
+                        {job.company_name ? (
+                          <span className="inline-flex items-center gap-1.5">
+                            <Building2 className="h-4 w-4" />
+                            {String(job.company_name)}
+                          </span>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                      <td className="px-4 py-4 text-ink-muted">
+                        {job.location ? (
+                          <span className="inline-flex items-center gap-1.5">
+                            <MapPin className="h-4 w-4" />
+                            {String(job.location)}
+                          </span>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                      <td className="px-4 py-4 font-medium text-brand-blue">{String(job.batch_name)}</td>
+                      <td className="px-4 py-4">
+                        <Button variant="secondary" className="text-xs" onClick={() => openApplicants(job)}>
+                          <Eye className="mr-1.5 h-3.5 w-3.5" />
+                          {t('dashboard.adminJobs.viewApplicants')}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <ManagementPagination
+              page={page}
+              total={filteredJobs.length}
+              onPageChange={setPage}
+              summary={t('dashboard.adminJobs.pagination', {
+                from: filteredJobs.length === 0 ? 0 : (page - 1) * 10 + 1,
+                to: Math.min(page * 10, filteredJobs.length),
+                total: filteredJobs.length,
+              })}
+              prevLabel={t('dashboard.adminJobs.prev')}
+              nextLabel={t('dashboard.adminJobs.next')}
+            />
+          </div>
+        )}
       </div>
 
-      {loadingJobs ? (
-        <LoadingState />
-      ) : jobs.length === 0 ? (
-        <EmptyState message={t('dashboard.adminJobs.empty')} />
-      ) : (
-        <div className="overflow-hidden rounded-xl border border-line-default bg-white">
-          <div className="hidden border-b border-line-default bg-surface-muted px-4 py-3 text-xs font-semibold uppercase tracking-wide text-ink-muted md:grid md:grid-cols-5 md:gap-4">
-            <span>{t('dashboard.adminJobs.columns.title')}</span>
-            <span>{t('dashboard.adminJobs.columns.company')}</span>
-            <span>{t('dashboard.adminJobs.columns.location')}</span>
-            <span>{t('dashboard.adminJobs.columns.batch')}</span>
-            <span>{t('dashboard.adminJobs.columns.actions')}</span>
-          </div>
-          <div className="divide-y divide-line-default">
-            {jobs.map((job) => (
-              <div
-                key={`${String(job.batch_id)}-${String(job.id)}`}
-                className="px-4 py-4 md:grid md:grid-cols-5 md:items-center md:gap-4"
-              >
-                <p className="font-medium text-ink-primary">{String(job.title)}</p>
-                <p className="mt-1 text-sm text-ink-muted md:mt-0">
-                  {job.company_name ? (
-                    <span className="inline-flex items-center gap-1">
-                      <Building2 className="h-3.5 w-3.5" />
-                      {String(job.company_name)}
-                    </span>
-                  ) : (
-                    '-'
-                  )}
-                </p>
-                <p className="mt-1 text-sm text-ink-muted md:mt-0">
-                  {job.location ? (
-                    <span className="inline-flex items-center gap-1">
-                      <MapPin className="h-3.5 w-3.5" />
-                      {String(job.location)}
-                    </span>
-                  ) : (
-                    '-'
-                  )}
-                </p>
-                <p className="mt-1 text-sm font-medium text-brand-blue md:mt-0">{String(job.batch_name)}</p>
-                <div className="mt-3 md:mt-0">
-                  <Button variant="secondary" className="text-xs" onClick={() => openApplicants(job)}>
-                    <Users className="mr-1.5 h-3.5 w-3.5" />
-                    {t('dashboard.adminJobs.viewApplicants')}
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {selectedJob && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-elevated">
-            <div className="flex items-center justify-between border-b border-line-default px-5 py-4">
-              <div>
-                <h3 className="font-semibold text-ink-primary">{String(selectedJob.title)}</h3>
-                <p className="text-sm text-ink-muted">
-                  {t('dashboard.adminJobs.applicantsFor', { batch: String(selectedJob.batch_name) })}
-                </p>
-              </div>
-              <button type="button" onClick={closeApplicants} className="rounded-lg p-2 hover:bg-surface-muted">
-                <X className="h-5 w-5 text-ink-muted" />
-              </button>
-            </div>
-
-            <div className="grid max-h-[calc(90vh-4rem)] gap-0 overflow-hidden md:grid-cols-2">
-              <div className="overflow-y-auto border-b border-line-default p-4 md:border-b-0 md:border-r">
-                {loadingApplicants ? (
-                  <LoadingState />
-                ) : applicants.length === 0 ? (
-                  <EmptyState message={t('dashboard.adminJobs.noApplicants')} />
-                ) : (
-                  <div className="space-y-2">
-                    {applicants.map((app) => {
-                      const s = app.student as Record<string, unknown>;
-                      return (
-                        <button
-                          key={String(app.application_id)}
-                          type="button"
-                          onClick={() => setSelectedApplicant(app)}
-                          className={`w-full rounded-lg border px-3 py-3 text-left transition-colors ${
-                            selectedApplicant?.application_id === app.application_id
-                              ? 'border-brand-sky bg-primary-50'
-                              : 'border-line-default hover:border-brand-sky'
-                          }`}
-                        >
-                          <p className="font-medium">{String(s.name)}</p>
-                          <p className="text-sm text-ink-muted">{String(s.email)}</p>
-                          <div className="mt-2">
-                            <Badge tone={applicationBadgeTone(String(app.status))}>{String(app.status)}</Badge>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              <div className="overflow-y-auto p-4">
-                {selectedApplicant && student ? (
-                  <div className="space-y-4">
-                    <h4 className="font-semibold text-brand-blue">{t('dashboard.adminJobs.profileTitle')}</h4>
-                    <dl className="space-y-3 text-sm">
-                      {([
-                        ['name', student.name],
-                        ['email', student.email],
-                        ['phone', student.phone],
-                        ['college', student.college],
-                        ['branch', student.branch],
-                        ['graduation_year', student.graduation_year],
-                        ['skills', student.skills],
-                        ['preferred_roles', student.preferred_roles],
-                      ] as [string, unknown][]).map(([key, value]) =>
-                        value ? (
-                          <div key={key}>
-                            <dt className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                              {t(`dashboard.adminJobs.profile.${key}`)}
-                            </dt>
-                            <dd className="mt-1 text-ink-primary">{String(value)}</dd>
-                          </div>
-                        ) : null,
-                      )}
-                    </dl>
-                    {Boolean(student.resume_url) && (
-                      <a
-                        href={String(student.resume_url)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link-brand text-sm"
-                      >
-                        {t('dashboard.adminJobs.viewResume')}
-                      </a>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-sm text-ink-muted">{t('dashboard.adminJobs.selectApplicant')}</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <AppliedStudentsModal
+        job={selectedJob}
+        applicants={applicants}
+        loading={loadingApplicants}
+        onClose={closeApplicants}
+      />
     </DashboardLayout>
   );
 }
