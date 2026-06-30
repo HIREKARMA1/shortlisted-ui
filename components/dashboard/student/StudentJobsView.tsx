@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTranslation } from '@/lib/i18n/context';
@@ -25,6 +25,7 @@ import { LoadingState } from '@/components/ui/LoadingState';
 
 export function StudentJobsView() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
   const { logout } = useAuth();
   useStudentActiveGate();
@@ -34,6 +35,7 @@ export function StudentJobsView() {
   const [selectedJob, setSelectedJob] = useState<StudentJob | null>(null);
   const [search, setSearch] = useState('');
   const [ready, setReady] = useState(false);
+  const autoApplyAttempted = useRef(false);
 
   const load = useCallback(async () => {
     try {
@@ -56,6 +58,49 @@ export function StudentJobsView() {
     }
   }, [t]);
 
+  const apply = useCallback(
+    async (jobId: string) => {
+      setApplying(jobId);
+      try {
+        const profile = await profileService.getProfile();
+        if (!hasResume(profile)) {
+          showResumeRequiredToast(
+            t('dashboard.jobs.resumeRequired'),
+            t('dashboard.jobs.uploadResumeLink')
+          );
+          return;
+        }
+
+        await api.applyJob(jobId);
+        toast.success(t('dashboard.jobs.applySuccess'));
+        setAppStatusByJob((prev) => ({ ...prev, [jobId]: 'applied' }));
+        setJobs((prev) =>
+          prev.map((job) =>
+            job.id === jobId ? { ...job, application_status: 'applied' } : job
+          )
+        );
+        setSelectedJob((prev) =>
+          prev?.id === jobId ? { ...prev, application_status: 'applied' } : prev
+        );
+      } catch (err: unknown) {
+        const detail =
+          (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+        if (isResumeRequiredError(detail)) {
+          showResumeRequiredToast(
+            t('dashboard.jobs.resumeRequired'),
+            t('dashboard.jobs.uploadResumeLink')
+          );
+          return;
+        }
+        const msg = detail || t('common.errors.generic');
+        toast.error(String(msg));
+      } finally {
+        setApplying(null);
+      }
+    },
+    [t]
+  );
+
   useEffect(() => {
     if (!localStorage.getItem('access_token')) {
       router.push('/auth/login');
@@ -63,6 +108,23 @@ export function StudentJobsView() {
     }
     load();
   }, [router, load]);
+
+  useEffect(() => {
+    if (!ready || jobs.length === 0) return;
+    const jobId = searchParams.get('jobId');
+    if (!jobId) return;
+    const job = jobs.find((item) => item.id === jobId);
+    if (!job) return;
+    setSelectedJob(job);
+    if (
+      searchParams.get('apply') === '1' &&
+      !appStatusByJob[jobId] &&
+      !autoApplyAttempted.current
+    ) {
+      autoApplyAttempted.current = true;
+      void apply(jobId);
+    }
+  }, [ready, jobs, searchParams, appStatusByJob, apply]);
 
   const filteredJobs = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -76,44 +138,6 @@ export function StudentJobsView() {
       );
     });
   }, [jobs, search]);
-
-  const apply = async (jobId: string) => {
-    setApplying(jobId);
-    try {
-      const profile = await profileService.getProfile();
-      if (!hasResume(profile)) {
-        showResumeRequiredToast(
-          t('dashboard.jobs.resumeRequired'),
-          t('dashboard.jobs.uploadResumeLink')
-        );
-        return;
-      }
-
-      await api.applyJob(jobId);
-      toast.success(t('dashboard.jobs.applySuccess'));
-      setAppStatusByJob((prev) => ({ ...prev, [jobId]: 'applied' }));
-      setJobs((prev) =>
-        prev.map((job) =>
-          job.id === jobId ? { ...job, application_status: 'applied' } : job
-        )
-      );
-      setSelectedJob((prev) => (prev?.id === jobId ? { ...prev, application_status: 'applied' } : prev));
-    } catch (err: unknown) {
-      const detail =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
-      if (isResumeRequiredError(detail)) {
-        showResumeRequiredToast(
-          t('dashboard.jobs.resumeRequired'),
-          t('dashboard.jobs.uploadResumeLink')
-        );
-        return;
-      }
-      const msg = detail || t('common.errors.generic');
-      toast.error(String(msg));
-    } finally {
-      setApplying(null);
-    }
-  };
 
   if (!ready) return <LoadingState />;
 
