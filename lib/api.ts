@@ -1,5 +1,6 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { config } from './config';
+import { forceLogoutToLogin } from '@/lib/auth/logout';
 
 export type UserType = 'student' | 'admin' | 'super_admin';
 
@@ -11,6 +12,40 @@ export interface TokenResponse {
   user_id: string;
   name: string;
   email: string;
+}
+
+type RetriableRequestConfig = InternalAxiosRequestConfig & { _retry?: boolean };
+
+let isRefreshing = false;
+let refreshWaiters: Array<{
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}> = [];
+
+function flushRefreshWaiters(error: unknown, token: string | null) {
+  refreshWaiters.forEach((waiter) => {
+    if (error || !token) waiter.reject(error);
+    else waiter.resolve(token);
+  });
+  refreshWaiters = [];
+}
+
+function persistTokenResponse(data: TokenResponse) {
+  localStorage.setItem('access_token', data.access_token);
+  localStorage.setItem('refresh_token', data.refresh_token);
+  localStorage.setItem('user_type', data.user_type);
+  localStorage.setItem('user_name', data.name);
+  localStorage.setItem('access_status', data.access_status || '');
+}
+
+function isAuthEndpoint(url?: string) {
+  if (!url) return false;
+  return (
+    url.includes('/auth/login') ||
+    url.includes('/auth/refresh') ||
+    url.includes('/auth/register') ||
+    url.includes('/auth/forgot-password')
+  );
 }
 
 class ApiClient {
@@ -29,6 +64,66 @@ class ApiClient {
       }
       return cfg;
     });
+
+    this.client.interceptors.response.use(
+      (response) => response,
+      async (error: AxiosError) => {
+        const original = error.config as RetriableRequestConfig | undefined;
+        if (!original || error.response?.status !== 401 || isAuthEndpoint(original.url)) {
+          return Promise.reject(error);
+        }
+
+        if (typeof window === 'undefined') {
+          return Promise.reject(error);
+        }
+
+        if (original._retry) {
+          forceLogoutToLogin();
+          return Promise.reject(error);
+        }
+
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) {
+          forceLogoutToLogin();
+          return Promise.reject(error);
+        }
+
+        if (isRefreshing) {
+          return new Promise<string>((resolve, reject) => {
+            refreshWaiters.push({ resolve, reject });
+          }).then((token) => {
+            original.headers.Authorization = `Bearer ${token}`;
+            return this.client(original);
+          });
+        }
+
+        original._retry = true;
+        isRefreshing = true;
+
+        try {
+          const { data } = await axios.post<TokenResponse>(
+            `${config.api.fullUrl}/auth/refresh`,
+            { refresh_token: refreshToken },
+            { headers: { 'Content-Type': 'application/json' } },
+          );
+          persistTokenResponse(data);
+          flushRefreshWaiters(null, data.access_token);
+          original.headers.Authorization = `Bearer ${data.access_token}`;
+          return this.client(original);
+        } catch (refreshError) {
+          flushRefreshWaiters(refreshError, null);
+          forceLogoutToLogin();
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
+        }
+      },
+    );
+  }
+
+  async refresh(refresh_token: string) {
+    const res = await this.client.post<TokenResponse>('/auth/refresh', { refresh_token });
+    return res.data;
   }
 
   async register(data: Record<string, unknown>) {

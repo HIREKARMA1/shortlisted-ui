@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import { Briefcase, ClipboardList, Shield, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
@@ -26,9 +27,11 @@ export function StudentDashboardView() {
 
   useEffect(() => {
     if (!localStorage.getItem('access_token')) return;
+    let cancelled = false;
     api
       .getDashboard()
       .then((dashboard) => {
+        if (cancelled) return;
         const status = String((dashboard.student as { access_status?: string })?.access_status || '');
         localStorage.setItem('access_status', status);
         if (status !== 'active') {
@@ -37,7 +40,15 @@ export function StudentDashboardView() {
         }
         setData(dashboard);
       })
-      .catch(() => router.push('/subscribe'));
+      .catch((err) => {
+        if (cancelled) return;
+        // 401 is handled by the API interceptor (refresh or force logout).
+        if (axios.isAxiosError(err) && err.response?.status === 401) return;
+        router.push('/subscribe');
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   if (!data) return <LoadingState />;
