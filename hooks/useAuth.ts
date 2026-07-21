@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { getPostLoginPath } from '@/lib/auth/session';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
+import { clearSession } from '@/lib/auth/logout';
 import { api, TokenResponse, UserType } from '@/lib/api';
 
 export function useAuth() {
@@ -17,9 +18,8 @@ export function useAuth() {
   };
 
   const logout = () => {
-    const userType = localStorage.getItem('user_type');
-    const loginPath = getLoginPathForRole(userType);
-    localStorage.clear();
+    const loginPath = getLoginPathForRole(localStorage.getItem('user_type'));
+    clearSession();
     router.push(loginPath);
   };
 

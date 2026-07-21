@@ -43,11 +43,9 @@ export function useStudentSubscribeGate() {
       router.replace(getPostLoginPath(session));
       return;
     }
-    if (session.accessStatus === 'active') {
-      router.replace('/dashboard/student');
-      return;
-    }
 
+    // Always validate with the API. Do not trust stale localStorage access_status —
+    // that caused a dashboard ↔ subscribe redirect loop when the access token expired.
     api
       .getDashboard()
       .then((data) => {
