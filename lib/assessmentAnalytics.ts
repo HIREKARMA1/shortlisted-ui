@@ -7,16 +7,23 @@ export type AssessmentRoundLike = {
 export type AssessmentLike = {
   rounds?: AssessmentRoundLike[];
   passing_criteria?: { overall_percentage?: number } | null;
+  end_time?: string | null;
 };
 
 export type AttemptLike = {
   status?: string;
   total_score?: number | null;
   percentage?: number | null;
+  started_at?: string | null;
   submitted_at?: string | null;
+  solviq_attempt_id?: string | null;
   result_data?: { rounds?: unknown[] } | null;
   total_questions?: number | null;
+  proctoring_snapshot_count?: number | null;
+  proctoring_snapshots?: unknown[] | null;
 };
+
+export type AttemptResultState = 'evaluated' | 'in_progress' | 'awaiting_results' | 'not_finished';
 
 const EVALUATED_STATUSES = new Set(['COMPLETED', 'PASSED', 'FAILED', 'SUBMITTED']);
 
@@ -69,6 +76,82 @@ export function isAttemptEvaluated(attempt: AttemptLike): boolean {
   return EVALUATED_STATUSES.has(status);
 }
 
+function hasProctoringEvidence(attempt: AttemptLike): boolean {
+  if (typeof attempt.proctoring_snapshot_count === 'number' && attempt.proctoring_snapshot_count > 0) {
+    return true;
+  }
+  return Array.isArray(attempt.proctoring_snapshots) && attempt.proctoring_snapshots.length > 0;
+}
+
+function isAssessmentWindowEnded(assessment?: AssessmentLike | null): boolean {
+  if (!assessment?.end_time) return false;
+  const end = new Date(assessment.end_time).getTime();
+  return Number.isFinite(end) && Date.now() > end;
+}
+
+/**
+ * Distinguishes:
+ * - evaluated: scores received
+ * - awaiting_results: evidence of Solviq progress, scores not synced yet
+ * - in_progress: exam window still open, student started, no scores yet
+ * - not_finished: exam window ended and student never completed / no Solviq result
+ */
+export function getAttemptResultState(
+  attempt: AttemptLike,
+  assessment?: AssessmentLike | null
+): AttemptResultState {
+  if (isAttemptEvaluated(attempt)) return 'evaluated';
+
+  if (attempt.solviq_attempt_id || hasProctoringEvidence(attempt)) {
+    return 'awaiting_results';
+  }
+
+  if (isAssessmentWindowEnded(assessment)) {
+    return 'not_finished';
+  }
+
+  return 'in_progress';
+}
+
+export function getAttemptResultLabel(state: AttemptResultState): string {
+  switch (state) {
+    case 'evaluated':
+      return 'EVALUATED';
+    case 'awaiting_results':
+      return 'AWAITING RESULTS';
+    case 'in_progress':
+      return 'IN PROGRESS';
+    case 'not_finished':
+      return 'NOT FINISHED';
+  }
+}
+
+export function getAttemptResultBadgeClass(state: AttemptResultState): string {
+  switch (state) {
+    case 'evaluated':
+      return 'bg-blue-600 text-white';
+    case 'awaiting_results':
+      return 'bg-amber-100 text-amber-800';
+    case 'in_progress':
+      return 'bg-sky-100 text-sky-800';
+    case 'not_finished':
+      return 'bg-slate-200 text-slate-700';
+  }
+}
+
+export function getAttemptResultHint(state: AttemptResultState): string {
+  switch (state) {
+    case 'evaluated':
+      return '';
+    case 'awaiting_results':
+      return 'Student likely finished on Solviq, but scores have not synced yet. Try Pull results from Solviq.';
+    case 'in_progress':
+      return 'Student started the exam. Waiting for them to finish, or for Solviq to send scores.';
+    case 'not_finished':
+      return 'Exam window ended and this student did not complete the test. No score will appear.';
+  }
+}
+
 export function getPassingPercentage(assessment?: AssessmentLike | null): number {
   return assessment?.passing_criteria?.overall_percentage ?? 60;
 }
@@ -76,7 +159,10 @@ export function getPassingPercentage(assessment?: AssessmentLike | null): number
 export function getPassFailLabel(
   attempt: AttemptLike,
   assessment?: AssessmentLike | null
-): 'PASS' | 'FAIL' | 'PENDING' {
+): 'PASS' | 'FAIL' | 'PENDING' | 'INCOMPLETE' {
+  const state = getAttemptResultState(attempt, assessment);
+  if (state === 'not_finished') return 'INCOMPLETE';
+  if (state === 'awaiting_results' || state === 'in_progress') return 'PENDING';
   if (!isAttemptEvaluated(attempt)) return 'PENDING';
   const threshold = getPassingPercentage(assessment);
   const status = (attempt.status || '').toUpperCase();
@@ -88,12 +174,14 @@ export function getPassFailLabel(
   return 'PENDING';
 }
 
-export function getPassFailBadgeClass(label: 'PASS' | 'FAIL' | 'PENDING'): string {
+export function getPassFailBadgeClass(label: 'PASS' | 'FAIL' | 'PENDING' | 'INCOMPLETE'): string {
   switch (label) {
     case 'PASS':
       return 'border border-brand-green/30 bg-brand-green/10 text-brand-green';
     case 'FAIL':
       return 'border border-brand-red/30 bg-brand-red/10 text-brand-red';
+    case 'INCOMPLETE':
+      return 'border border-slate-300 bg-slate-100 text-slate-700';
     default:
       return 'border border-line bg-soft text-ink-secondary';
   }
