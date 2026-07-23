@@ -19,6 +19,10 @@ import {
     formatAttemptPercentage,
     formatAttemptScore,
     getAttemptMaxScore,
+    getAttemptResultBadgeClass,
+    getAttemptResultHint,
+    getAttemptResultLabel,
+    getAttemptResultState,
     getPassFailLabel,
     getPassFailBadgeClass,
     getTotalQuestionsFromAssessment,
@@ -173,7 +177,18 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
         }
     }
 
-    const hasAwaitingResults = attempts.some((a) => !isAttemptEvaluated(a))
+    const hasAwaitingResults = attempts.some(
+        (a) => getAttemptResultState(a, assessmentDetails) === 'awaiting_results'
+    )
+    const incompleteCount = attempts.filter(
+        (a) => getAttemptResultState(a, assessmentDetails) === 'not_finished'
+    ).length
+    const awaitingCount = attempts.filter(
+        (a) => getAttemptResultState(a, assessmentDetails) === 'awaiting_results'
+    ).length
+    const inProgressCount = attempts.filter(
+        (a) => getAttemptResultState(a, assessmentDetails) === 'in_progress'
+    ).length
 
     const handlePullSolviqResults = async () => {
         try {
@@ -189,7 +204,15 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
             )
             await fetchData()
         } catch (err: any) {
-            setPullMessage(err.message || 'Could not pull results from Solviq')
+            const detail =
+                err?.response?.data?.detail ||
+                err?.response?.data?.message ||
+                err?.message
+            setPullMessage(
+                typeof detail === 'string'
+                    ? detail
+                    : 'Could not pull results from Solviq'
+            )
         } finally {
             setPullingResults(false)
         }
@@ -228,33 +251,67 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
                     </p>
                 )}
 
-                {hasAwaitingResults && (
-                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                            <div className="flex-1">
-                                <p className="font-semibold">Results not received from Solviq yet</p>
-                                <p className="mt-1 text-amber-800/90">
-                                    Students may have finished on Solviq, but the callback did not reach DISHA.
-                                    Use the button to ask Solviq to send scores again.
+                {(hasAwaitingResults || incompleteCount > 0 || inProgressCount > 0) && (
+                    <div className="space-y-3">
+                        {incompleteCount > 0 && (
+                            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-800">
+                                <p className="font-semibold">
+                                    {incompleteCount} student{incompleteCount === 1 ? '' : 's'} did not finish the exam
                                 </p>
-                                {pullMessage && (
-                                    <p className="mt-2 text-amber-900">{pullMessage}</p>
-                                )}
+                                <p className="mt-1 text-slate-600">
+                                    These attempts show as <strong>NOT FINISHED</strong>. The exam window has ended and
+                                    there is no completed result from Solviq. Pulling results will not create a score
+                                    for these students.
+                                </p>
                             </div>
-                            <Button
-                                variant="secondary"
-                                className="shrink-0 border-amber-300 bg-white hover:bg-amber-50"
-                                onClick={handlePullSolviqResults}
-                                disabled={pullingResults}
-                            >
-                                {pullingResults ? (
-                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                ) : (
-                                    <RefreshCw className="h-4 w-4 mr-2" />
-                                )}
-                                Pull results from Solviq
-                            </Button>
-                        </div>
+                        )}
+                        {inProgressCount > 0 && (
+                            <div className="rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+                                <p className="font-semibold">
+                                    {inProgressCount} student{inProgressCount === 1 ? '' : 's'} still in progress
+                                </p>
+                                <p className="mt-1 text-sky-800/90">
+                                    The exam window is still open. These students started but have not submitted a
+                                    finished result yet.
+                                </p>
+                            </div>
+                        )}
+                        {hasAwaitingResults && (
+                            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                                    <div className="flex-1">
+                                        <p className="font-semibold">
+                                            {awaitingCount} result{awaitingCount === 1 ? '' : 's'} still pending from Solviq
+                                        </p>
+                                        <p className="mt-1 text-amber-800/90">
+                                            These students appear to have progressed on Solviq, but scores have not
+                                            synced yet. Use the button to ask Solviq to send scores again.
+                                        </p>
+                                        {pullMessage && (
+                                            <p className="mt-2 text-amber-900">{pullMessage}</p>
+                                        )}
+                                    </div>
+                                    <Button
+                                        variant="secondary"
+                                        className="shrink-0 border-amber-300 bg-white hover:bg-amber-50"
+                                        onClick={handlePullSolviqResults}
+                                        disabled={pullingResults}
+                                    >
+                                        {pullingResults ? (
+                                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                        ) : (
+                                            <RefreshCw className="h-4 w-4 mr-2" />
+                                        )}
+                                        Pull results from Solviq
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+                        {!hasAwaitingResults && pullMessage && (
+                            <div className="rounded-lg border border-line bg-soft p-3 text-sm text-ink-secondary">
+                                {pullMessage}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -407,9 +464,23 @@ export function AssessmentAnalyticsPage({ role }: { role: DashboardRole }) {
 
                                             {/* Status */}
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`px-3 py-1 text-xs font-semibold rounded-full ${isAttemptEvaluated(attempt) ? 'bg-blue-600 text-white' : 'bg-amber-100 text-amber-800'}`}>
-                                                    {isAttemptEvaluated(attempt) ? 'EVALUATED' : 'AWAITING RESULTS'}
-                                                </span>
+                                                {(() => {
+                                                    const state = getAttemptResultState(attempt, assessmentDetails)
+                                                    return (
+                                                        <div className="max-w-[14rem]">
+                                                            <span
+                                                                className={`px-3 py-1 text-xs font-semibold rounded-full ${getAttemptResultBadgeClass(state)}`}
+                                                            >
+                                                                {getAttemptResultLabel(state)}
+                                                            </span>
+                                                            {state !== 'evaluated' && (
+                                                                <p className="mt-1 text-[11px] leading-snug text-gray-500">
+                                                                    {getAttemptResultHint(state)}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    )
+                                                })()}
                                             </td>
 
                                             {/* Score */}
@@ -539,6 +610,7 @@ function AttemptDetailsModal({
     if (!attempt) return null
 
     const evaluated = isAttemptEvaluated(attempt)
+    const resultState = getAttemptResultState(attempt, assessment)
     const totalMaxScore = getAttemptMaxScore(attempt, assessment)
     const passFail = getPassFailLabel(attempt, assessment)
     const rounds = attempt.result_data?.rounds || []
@@ -570,12 +642,34 @@ function AttemptDetailsModal({
                 {/* Content - Scrollable */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-gray-50/50">
 
-                    {!evaluated && (
-                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-                            <p className="font-semibold">Evaluation pending</p>
+                    {!evaluated && resultState === 'not_finished' && (
+                        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-800">
+                            <p className="font-semibold">Exam not finished</p>
+                            <p className="mt-1 text-slate-600">
+                                The exam window has ended and this student did not complete the assessment on Solviq
+                                (status: {attempt.status || 'unknown'}). There is no score to show. Pulling results
+                                will not create one.
+                            </p>
+                        </div>
+                    )}
+
+                    {!evaluated && resultState === 'in_progress' && (
+                        <div className="rounded-lg border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
+                            <p className="font-semibold">Exam in progress</p>
                             <p className="mt-1">
-                                Solviq has not sent results to DISHA for this attempt yet (status: {attempt.status}).
-                                Scores here are placeholders until the callback is received.
+                                This student started the assessment (status: {attempt.status || 'unknown'}). Scores
+                                will appear after they finish and Solviq sends results.
+                            </p>
+                        </div>
+                    )}
+
+                    {!evaluated && resultState === 'awaiting_results' && (
+                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                            <p className="font-semibold">Results pending from Solviq</p>
+                            <p className="mt-1">
+                                This attempt looks progressed on Solviq, but scores have not synced yet
+                                (status: {attempt.status}). Use <strong>Pull results from Solviq</strong> on the
+                                analytics page.
                             </p>
                         </div>
                     )}
