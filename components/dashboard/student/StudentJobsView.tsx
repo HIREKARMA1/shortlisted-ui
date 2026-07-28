@@ -9,14 +9,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
 import { normalizeApplication, normalizeJob } from '@/lib/jobUtils';
-import {
-  hasResume,
-  isResumeRequiredError,
-  showResumeRequiredToast,
-} from '@/lib/resumeRequiredToast';
-import { profileService } from '@/lib/services/profileService';
+import { isResumeRequiredError, showResumeRequiredToast } from '@/lib/resumeRequiredToast';
 import type { StudentJob } from '@/lib/types/studentJobs';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { ApplyWithResumeModal } from '@/components/dashboard/student/jobs/ApplyWithResumeModal';
 import { JobCard } from '@/components/dashboard/student/jobs/JobCard';
 import { JobDescriptionModal } from '@/components/dashboard/student/jobs/JobDescriptionModal';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -33,6 +29,7 @@ export function StudentJobsView() {
   const [appStatusByJob, setAppStatusByJob] = useState<Record<string, string>>({});
   const [applying, setApplying] = useState<string | null>(null);
   const [selectedJob, setSelectedJob] = useState<StudentJob | null>(null);
+  const [applyJobTarget, setApplyJobTarget] = useState<StudentJob | null>(null);
   const [search, setSearch] = useState('');
   const [ready, setReady] = useState(false);
   const autoApplyAttempted = useRef(false);
@@ -58,19 +55,14 @@ export function StudentJobsView() {
     }
   }, [t]);
 
-  const apply = useCallback(
+  const openApplyModal = useCallback((job: StudentJob) => {
+    setApplyJobTarget(job);
+  }, []);
+
+  const submitApplication = useCallback(
     async (jobId: string) => {
       setApplying(jobId);
       try {
-        const profile = await profileService.getProfile();
-        if (!hasResume(profile)) {
-          showResumeRequiredToast(
-            t('dashboard.jobs.resumeRequired'),
-            t('dashboard.jobs.uploadResumeLink')
-          );
-          return;
-        }
-
         await api.applyJob(jobId);
         toast.success(t('dashboard.jobs.applySuccess'));
         setAppStatusByJob((prev) => ({ ...prev, [jobId]: 'applied' }));
@@ -90,10 +82,11 @@ export function StudentJobsView() {
             t('dashboard.jobs.resumeRequired'),
             t('dashboard.jobs.uploadResumeLink')
           );
-          return;
+          throw err;
         }
         const msg = detail || t('common.errors.generic');
         toast.error(String(msg));
+        throw err;
       } finally {
         setApplying(null);
       }
@@ -122,9 +115,9 @@ export function StudentJobsView() {
       !autoApplyAttempted.current
     ) {
       autoApplyAttempted.current = true;
-      void apply(jobId);
+      openApplyModal(job);
     }
-  }, [ready, jobs, searchParams, appStatusByJob, apply]);
+  }, [ready, jobs, searchParams, appStatusByJob, openApplyModal]);
 
   const filteredJobs = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -175,7 +168,7 @@ export function StudentJobsView() {
               job={job}
               cardIndex={index}
               onViewDescription={() => setSelectedJob(job)}
-              onApply={() => apply(job.id)}
+              onApply={() => openApplyModal(job)}
               isApplying={applying === job.id}
             />
           ))}
@@ -187,8 +180,18 @@ export function StudentJobsView() {
           job={selectedJob}
           applicationStatus={appStatusByJob[selectedJob.id]}
           onClose={() => setSelectedJob(null)}
-          onApply={() => apply(selectedJob.id)}
+          onApply={() => openApplyModal(selectedJob)}
           isApplying={applying === selectedJob.id}
+        />
+      )}
+
+      {applyJobTarget && (
+        <ApplyWithResumeModal
+          job={applyJobTarget}
+          isOpen={Boolean(applyJobTarget)}
+          isApplying={applying === applyJobTarget.id}
+          onClose={() => setApplyJobTarget(null)}
+          onConfirmApply={() => submitApplication(applyJobTarget.id)}
         />
       )}
     </DashboardLayout>
