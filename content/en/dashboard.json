@@ -111,7 +111,26 @@
       "pending": "Under review"
     },
     "resumeRequired": "You need to upload your resume before applying to jobs.",
-    "uploadResumeLink": "Go to profile and upload resume"
+    "uploadResumeLink": "Go to profile and upload resume",
+    "applyModal": {
+      "title": "Apply to {{company}}",
+      "stepLabel": "Resume",
+      "resumeLabel": "Resume",
+      "resumeHint": "Be sure to include an updated resume. PDF only, max 5MB.",
+      "profileResume": "Saved on your profile",
+      "newUpload": "New upload for this application",
+      "uploadResume": "Upload resume",
+      "uploadHint": "Uploading a new resume replaces the one on your profile.",
+      "download": "Download resume",
+      "loading": "Loading your resume...",
+      "pdfOnly": "Please upload a PDF file only.",
+      "maxSize": "Resume must be less than 5MB.",
+      "resumeUpdated": "Resume updated on your profile.",
+      "submit": "Submit application",
+      "submitting": "Submitting...",
+      "cancel": "Cancel",
+      "close": "Close"
+    }
   },
   "applications": {
     "title": "My applications",
