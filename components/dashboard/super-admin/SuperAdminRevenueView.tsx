@@ -175,7 +175,7 @@ export function SuperAdminRevenueView() {
                   </td>
                   <td className="px-4 py-3 uppercase text-ink-muted">{String(row.payment_provider)}</td>
                   <td className="px-4 py-3 font-mono text-xs text-ink-muted">
-                    {String(row.gateway_payment_id || '-')}
+                    {String(row.utr || row.gateway_payment_id || '-')}
                   </td>
                 </tr>
               ))}

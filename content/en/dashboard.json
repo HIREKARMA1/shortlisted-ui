@@ -120,7 +120,7 @@
       "profileResume": "Saved on your profile",
       "newUpload": "New upload for this application",
       "uploadResume": "Upload resume",
-      "uploadHint": "Uploading a new resume replaces the one on your profile.",
+      "uploadHint": "Uploading a new resume updates your profile. Older applications keep their original resume link.",
       "download": "Download resume",
       "loading": "Loading your resume...",
       "pdfOnly": "Please upload a PDF file only.",
@@ -205,7 +205,8 @@
       "selected": "Selected",
       "offers": "Offer letters",
       "lastLogin": "Last login",
-      "status": "Access"
+      "status": "Access",
+      "actions": "Actions"
     }
   },
   "classes": {
@@ -416,7 +417,20 @@
     "allBatches": "All batches",
     "empty": "No students found for the selected batch.",
     "statusUpdated": "Student access status updated.",
-    "batchUpdated": "Student batch updated."
+    "batchUpdated": "Student batch updated.",
+    "editPayment": "Edit",
+    "editPaymentTitle": "Edit payment details",
+    "addPaymentTitle": "Add payment details",
+    "paymentUpdated": "Payment details updated.",
+    "paymentCreated": "Payment recorded and student activated.",
+    "savingPayment": "Saving...",
+    "savePayment": "Save changes",
+    "savePaymentCreate": "Save payment",
+    "noPaymentToEdit": "No payment recorded for this student yet.",
+    "viewReceipt": "View current receipt",
+    "columns": {
+      "actions": "Actions"
+    }
   },
   "superAdminBatches": {
     "title": "Batch management",
@@ -485,6 +499,8 @@
     "empty": "No unpaid signups right now.",
     "signupFrom": "Signed up from",
     "signupTo": "Signed up to",
+    "searchLabel": "Search leads",
+    "searchPlaceholder": "Search by name or contact number",
     "exportCsv": "Export CSV",
     "exporting": "Exporting...",
     "exportEmpty": "No leads to export for the selected filters.",
