@@ -191,7 +191,8 @@
       "selected": "चयनित",
       "offers": "ऑफर लेटर",
       "lastLogin": "अंतिम लॉगिन",
-      "status": "एक्सेस"
+      "status": "एक्सेस",
+      "actions": "कार्रवाई"
     }
   },
   "adminJobs": {
@@ -242,7 +243,17 @@
     "allBatches": "सभी बैच",
     "empty": "चयनित बैच में कोई छात्र नहीं।",
     "statusUpdated": "छात्र एक्सेस स्थिति अपडेट की गई।",
-    "batchUpdated": "छात्र का बैच अपडेट किया गया।"
+    "batchUpdated": "छात्र का बैच अपडेट किया गया।",
+    "editPayment": "संपादित करें",
+    "editPaymentTitle": "भुगतान विवरण संपादित करें",
+    "paymentUpdated": "भुगतान विवरण अपडेट किए गए।",
+    "savingPayment": "सहेजा जा रहा है...",
+    "savePayment": "परिवर्तन सहेजें",
+    "noPaymentToEdit": "इस छात्र के लिए अभी कोई भुगतान दर्ज नहीं है।",
+    "viewReceipt": "वर्तमान रसीद देखें",
+    "columns": {
+      "actions": "कार्रवाई"
+    }
   },
   "superAdminBatches": {
     "title": "बैच प्रबंधन",
@@ -301,7 +312,8 @@
       "amount": "राशि",
       "mode": "मोड",
       "provider": "प्रदाता",
-      "transaction": "लेनदेन ID"
+      "transaction": "लेनदेन ID",
+      "actions": "कार्रवाई"
     }
   },
   "superAdminLeads": {
@@ -311,6 +323,8 @@
     "empty": "अभी कोई अवैतनिक साइनअप नहीं।",
     "signupFrom": "साइन अप से",
     "signupTo": "साइन अप तक",
+    "searchLabel": "लीड खोजें",
+    "searchPlaceholder": "नाम या संपर्क नंबर से खोजें",
     "exportCsv": "CSV निर्यात",
     "exporting": "निर्यात हो रहा है...",
     "exportEmpty": "चयनित फ़िल्टर के लिए कोई लीड नहीं।",

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { GraduationCap, TrendingUp, Users } from 'lucide-react';
+import { GraduationCap, Pencil, TrendingUp, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
@@ -12,6 +12,10 @@ import type { DashboardRole } from '@/lib/dashboard-nav';
 import { exportCoordinatorStudentsToCSV, type CoordinatorStudentExport } from '@/utils/exportToExcel';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ManagementPageHeader } from '@/components/dashboard/shared/ManagementPageHeader';
+import {
+  EditPaymentModal,
+  type EditablePayment,
+} from '@/components/dashboard/shared/EditPaymentModal';
 import { ExportCsvButton } from '@/components/dashboard/shared/management/ExportCsvButton';
 import { ManagementSearchInput } from '@/components/dashboard/shared/management/ManagementSearchInput';
 import {
@@ -21,6 +25,7 @@ import {
   StudentAvatar,
 } from '@/components/dashboard/shared/management/ManagementPagination';
 import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LoadingState } from '@/components/ui/LoadingState';
@@ -39,6 +44,20 @@ function formatAmount(paise: unknown, currency: unknown): string {
   const amount = Number(paise) / 100;
   const code = String(currency || 'INR');
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: code }).format(amount);
+}
+
+function toEditablePayment(row: StudentRow): EditablePayment {
+  return {
+    payment_id: String(row.payment_id || ''),
+    student_name: String(row.name || ''),
+    student_email: String(row.email || ''),
+    amount_paise: row.payment_amount_paise != null ? Number(row.payment_amount_paise) : null,
+    paid_at: row.payment_date ? String(row.payment_date) : null,
+    utr: row.payment_utr ? String(row.payment_utr) : null,
+    collected_by: row.payment_collected_by ? String(row.payment_collected_by) : null,
+    note: row.payment_note ? String(row.payment_note) : null,
+    receipt_url: row.payment_receipt_url ? String(row.payment_receipt_url) : null,
+  };
 }
 
 function mapStudentRow(row: StudentRow): CoordinatorStudentExport {
@@ -78,6 +97,7 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
   const [exporting, setExporting] = useState(false);
   const [updatingStudentId, setUpdatingStudentId] = useState<string | null>(null);
   const [reassigningStudentId, setReassigningStudentId] = useState<string | null>(null);
+  const [editingPayment, setEditingPayment] = useState<EditablePayment | null>(null);
 
   const loadStudents = useCallback(() => {
     setLoadingStudents(true);
@@ -295,6 +315,11 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.offers')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.lastLogin')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.status')}</th>
+                  {role === 'super_admin' ? (
+                    <th className="px-4 py-3 text-right">
+                      {t('dashboard.adminStudents.columns.actions')}
+                    </th>
+                  ) : null}
                 </tr>
               </thead>
               <tbody>
@@ -389,6 +414,22 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                           </Badge>
                         )}
                       </td>
+                      {role === 'super_admin' ? (
+                        <td className="px-4 py-3 text-right">
+                          {row.payment_id ? (
+                            <Button
+                              variant="secondary"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
+                              onClick={() => setEditingPayment(toEditablePayment(row))}
+                            >
+                              <Pencil className="h-3.5 w-3.5" />
+                              {t('dashboard.superAdminStudents.editPayment')}
+                            </Button>
+                          ) : (
+                            <span className="text-xs text-ink-muted">-</span>
+                          )}
+                        </td>
+                      ) : null}
                     </tr>
                   );
                 })}
@@ -409,6 +450,14 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
             />
           </div>
         )}
+
+        {editingPayment ? (
+          <EditPaymentModal
+            payment={editingPayment}
+            onClose={() => setEditingPayment(null)}
+            onSaved={loadStudents}
+          />
+        ) : null}
       </div>
     </DashboardLayout>
   );

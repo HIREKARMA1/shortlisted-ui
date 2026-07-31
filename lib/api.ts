@@ -359,9 +359,17 @@ class ApiClient {
     return res.data;
   }
 
+  async updateOfflinePayment(paymentId: string, data: FormData) {
+    const res = await this.client.put(`/payments/offline-record/${paymentId}`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return res.data;
+  }
+
   async listLeads(params?: {
     date_from?: string;
     date_to?: string;
+    search?: string;
     page?: number;
     page_size?: number;
   }) {

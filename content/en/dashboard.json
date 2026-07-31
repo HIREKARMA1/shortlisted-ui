@@ -205,7 +205,8 @@
       "selected": "Selected",
       "offers": "Offer letters",
       "lastLogin": "Last login",
-      "status": "Access"
+      "status": "Access",
+      "actions": "Actions"
     }
   },
   "classes": {
@@ -416,7 +417,17 @@
     "allBatches": "All batches",
     "empty": "No students found for the selected batch.",
     "statusUpdated": "Student access status updated.",
-    "batchUpdated": "Student batch updated."
+    "batchUpdated": "Student batch updated.",
+    "editPayment": "Edit",
+    "editPaymentTitle": "Edit payment details",
+    "paymentUpdated": "Payment details updated.",
+    "savingPayment": "Saving...",
+    "savePayment": "Save changes",
+    "noPaymentToEdit": "No payment recorded for this student yet.",
+    "viewReceipt": "View current receipt",
+    "columns": {
+      "actions": "Actions"
+    }
   },
   "superAdminBatches": {
     "title": "Batch management",
@@ -475,7 +486,8 @@
       "amount": "Amount",
       "mode": "Mode",
       "provider": "Provider",
-      "transaction": "Transaction ID"
+      "transaction": "Transaction ID",
+      "actions": "Actions"
     }
   },
   "superAdminLeads": {
@@ -485,6 +497,8 @@
     "empty": "No unpaid signups right now.",
     "signupFrom": "Signed up from",
     "signupTo": "Signed up to",
+    "searchLabel": "Search leads",
+    "searchPlaceholder": "Search by name or contact number",
     "exportCsv": "Export CSV",
     "exporting": "Exporting...",
     "exportEmpty": "No leads to export for the selected filters.",
