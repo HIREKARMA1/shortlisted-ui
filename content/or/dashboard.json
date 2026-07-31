@@ -246,9 +246,12 @@
     "batchUpdated": "ଛାତ୍ରର ବ୍ୟାଚ୍ ଅପଡେଟ୍ ହେଲା।",
     "editPayment": "ସମ୍ପାଦନା",
     "editPaymentTitle": "ପେମେଣ୍ଟ ବିବରଣୀ ସମ୍ପାଦନା",
+    "addPaymentTitle": "ପେମେଣ୍ଟ ବିବରଣୀ ଯୋଡନ୍ତୁ",
     "paymentUpdated": "ପେମେଣ୍ଟ ବିବରଣୀ ଅପଡେଟ୍ ହେଲା।",
+    "paymentCreated": "ପେମେଣ୍ଟ ରେକର୍ଡ ହେଲା ଏବଂ ଛାତ୍ର ସକ୍ରିୟ ହେଲା।",
     "savingPayment": "ସେଭ୍ ହେଉଛି...",
     "savePayment": "ପରିବର୍ତ୍ତନ ସେଭ୍ କରନ୍ତୁ",
+    "savePaymentCreate": "ପେମେଣ୍ଟ ସେଭ୍ କରନ୍ତୁ",
     "noPaymentToEdit": "ଏହି ଛାତ୍ର ପାଇଁ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ପେମେଣ୍ଟ ନାହିଁ।",
     "viewReceipt": "ବର୍ତ୍ତମାନର ରସିଦ ଦେଖନ୍ତୁ",
     "columns": {
@@ -312,8 +315,7 @@
       "amount": "ରାଶି",
       "mode": "ମୋଡ୍",
       "provider": "ପ୍ରଦାତା",
-      "transaction": "ଟ୍ରାନ୍ଜାକ୍ସନ୍ ID",
-      "actions": "କାର୍ଯ୍ୟ"
+      "transaction": "ଟ୍ରାନ୍ଜାକ୍ସନ୍ ID"
     }
   },
   "superAdminLeads": {

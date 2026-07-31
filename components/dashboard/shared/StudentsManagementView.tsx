@@ -48,7 +48,8 @@ function formatAmount(paise: unknown, currency: unknown): string {
 
 function toEditablePayment(row: StudentRow): EditablePayment {
   return {
-    payment_id: String(row.payment_id || ''),
+    student_id: String(row.student_id || ''),
+    payment_id: row.payment_id ? String(row.payment_id) : null,
     student_name: String(row.name || ''),
     student_email: String(row.email || ''),
     amount_paise: row.payment_amount_paise != null ? Number(row.payment_amount_paise) : null,
@@ -416,18 +417,14 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                       </td>
                       {role === 'super_admin' ? (
                         <td className="px-4 py-3 text-right">
-                          {row.payment_id ? (
-                            <Button
-                              variant="secondary"
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
-                              onClick={() => setEditingPayment(toEditablePayment(row))}
-                            >
-                              <Pencil className="h-3.5 w-3.5" />
-                              {t('dashboard.superAdminStudents.editPayment')}
-                            </Button>
-                          ) : (
-                            <span className="text-xs text-ink-muted">-</span>
-                          )}
+                          <Button
+                            variant="secondary"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
+                            onClick={() => setEditingPayment(toEditablePayment(row))}
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                            {t('dashboard.superAdminStudents.editPayment')}
+                          </Button>
                         </td>
                       ) : null}
                     </tr>

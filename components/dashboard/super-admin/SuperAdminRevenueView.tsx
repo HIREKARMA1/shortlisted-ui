@@ -2,19 +2,14 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { IndianRupee, Pencil, Receipt } from 'lucide-react';
+import { IndianRupee, Receipt } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
 import { api } from '@/lib/api';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import {
-  EditPaymentModal,
-  type EditablePayment,
-} from '@/components/dashboard/shared/EditPaymentModal';
 import { Select } from '@/components/ui/Select';
 import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
 import { StatCard } from '@/components/ui/StatCard';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LoadingState } from '@/components/ui/LoadingState';
@@ -38,20 +33,6 @@ function formatAmount(paise: unknown, currency: unknown): string {
   }).format(amount);
 }
 
-function toEditablePayment(row: PaymentRow): EditablePayment {
-  return {
-    payment_id: String(row.payment_id || ''),
-    student_name: String(row.student_name || ''),
-    student_email: String(row.student_email || ''),
-    amount_paise: row.amount_paise != null ? Number(row.amount_paise) : null,
-    paid_at: row.paid_at ? String(row.paid_at) : null,
-    utr: row.utr ? String(row.utr) : null,
-    collected_by: row.collected_by_name ? String(row.collected_by_name) : null,
-    note: row.notes ? String(row.notes) : null,
-    receipt_url: row.receipt_url ? String(row.receipt_url) : null,
-  };
-}
-
 export function SuperAdminRevenueView() {
   const { t } = useTranslation();
   const { logout } = useAuth();
@@ -63,7 +44,6 @@ export function SuperAdminRevenueView() {
   const [dateTo, setDateTo] = useState('');
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [editingPayment, setEditingPayment] = useState<EditablePayment | null>(null);
 
   useEffect(() => {
     api
@@ -174,9 +154,6 @@ export function SuperAdminRevenueView() {
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.mode')}</th>
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.provider')}</th>
                 <th className="px-4 py-3">{t('dashboard.superAdminRevenue.columns.transaction')}</th>
-                <th className="px-4 py-3 text-right">
-                  {t('dashboard.superAdminRevenue.columns.actions')}
-                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-line-default">
@@ -200,30 +177,12 @@ export function SuperAdminRevenueView() {
                   <td className="px-4 py-3 font-mono text-xs text-ink-muted">
                     {String(row.utr || row.gateway_payment_id || '-')}
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <Button
-                      variant="secondary"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs"
-                      onClick={() => setEditingPayment(toEditablePayment(row))}
-                    >
-                      <Pencil className="h-3.5 w-3.5" />
-                      {t('dashboard.superAdminStudents.editPayment')}
-                    </Button>
-                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-
-      {editingPayment ? (
-        <EditPaymentModal
-          payment={editingPayment}
-          onClose={() => setEditingPayment(null)}
-          onSaved={loadReport}
-        />
-      ) : null}
     </DashboardLayout>
   );
 }

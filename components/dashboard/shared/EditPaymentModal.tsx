@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
 export type EditablePayment = {
-  payment_id: string;
+  student_id: string;
+  payment_id?: string | null;
   student_name: string;
   student_email: string;
   amount_paise?: number | null;
@@ -37,6 +38,7 @@ export function EditPaymentModal({
   onSaved: () => void;
 }) {
   const { t } = useTranslation();
+  const isCreate = !payment.payment_id;
   const [amount, setAmount] = useState(
     payment.amount_paise != null ? String(Number(payment.amount_paise) / 100) : '',
   );
@@ -47,9 +49,19 @@ export function EditPaymentModal({
   const [receipt, setReceipt] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
 
+  useEffect(() => {
+    if (!isCreate || payment.amount_paise != null) return;
+    api
+      .getPaymentConfig()
+      .then((config) => {
+        if (config.amount_inr) setAmount(String(config.amount_inr));
+      })
+      .catch(() => undefined);
+  }, [isCreate, payment.amount_paise]);
+
   const submit = async () => {
-    if (!payment.payment_id) {
-      toast.error(t('dashboard.superAdminStudents.noPaymentToEdit'));
+    if (!payment.student_id) {
+      toast.error(t('common.errors.generic'));
       return;
     }
     const amountNum = Number(amount);
@@ -72,8 +84,14 @@ export function EditPaymentModal({
 
     setSaving(true);
     try {
-      await api.updateOfflinePayment(payment.payment_id, form);
-      toast.success(t('dashboard.superAdminStudents.paymentUpdated'));
+      if (isCreate) {
+        form.append('student_id', payment.student_id);
+        await api.recordOfflinePayment(form);
+        toast.success(t('dashboard.superAdminStudents.paymentCreated'));
+      } else {
+        await api.updateOfflinePayment(String(payment.payment_id), form);
+        toast.success(t('dashboard.superAdminStudents.paymentUpdated'));
+      }
       onSaved();
       onClose();
     } catch (err: unknown) {
@@ -92,7 +110,9 @@ export function EditPaymentModal({
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             <h3 className="font-semibold text-ink-primary">
-              {t('dashboard.superAdminStudents.editPaymentTitle')}
+              {isCreate
+                ? t('dashboard.superAdminStudents.addPaymentTitle')
+                : t('dashboard.superAdminStudents.editPaymentTitle')}
             </h3>
             <p className="mt-1 text-sm text-ink-muted">
               {payment.student_name} · {payment.student_email}
@@ -164,7 +184,9 @@ export function EditPaymentModal({
           <Button variant="accent" onClick={submit} disabled={saving}>
             {saving
               ? t('dashboard.superAdminStudents.savingPayment')
-              : t('dashboard.superAdminStudents.savePayment')}
+              : isCreate
+                ? t('dashboard.superAdminStudents.savePaymentCreate')
+                : t('dashboard.superAdminStudents.savePayment')}
           </Button>
         </div>
       </div>
