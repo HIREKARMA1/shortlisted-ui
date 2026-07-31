@@ -1,14 +1,11 @@
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
+const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001').replace(/\/$/, '');
 const apiVersion = process.env.NEXT_PUBLIC_API_VERSION ?? 'v1';
-
-if (!apiBaseUrl && typeof window !== 'undefined') {
-  console.error('NEXT_PUBLIC_API_BASE_URL is not set. Copy .env.example to .env.local');
-}
 
 export const config = {
   api: {
     baseUrl: apiBaseUrl,
     version: apiVersion,
+    // Absolute FastAPI origin (preferred). next.config.js also rewrites /api/* as a fallback.
     fullUrl: `${apiBaseUrl}/api/${apiVersion}`,
   },
   app: {

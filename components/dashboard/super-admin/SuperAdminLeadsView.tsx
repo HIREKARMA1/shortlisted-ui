@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
 import { api } from '@/lib/api';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { ManagementSearchInput } from '@/components/dashboard/shared/management/ManagementSearchInput';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -220,9 +221,16 @@ export function SuperAdminLeadsView() {
   const [defaultAmount, setDefaultAmount] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeLead, setActiveLead] = useState<LeadRow | null>(null);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(searchTerm.trim()), 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   const loadLeads = useCallback(() => {
     setLoading(true);
@@ -230,6 +238,7 @@ export function SuperAdminLeadsView() {
       .listLeads({
         date_from: dateFrom || undefined,
         date_to: dateTo || undefined,
+        search: debouncedSearch || undefined,
         page,
         page_size: PAGE_SIZE,
       })
@@ -239,7 +248,7 @@ export function SuperAdminLeadsView() {
       })
       .catch(() => toast.error(t('common.errors.network')))
       .finally(() => setLoading(false));
-  }, [dateFrom, dateTo, page, t]);
+  }, [dateFrom, dateTo, debouncedSearch, page, t]);
 
   useEffect(() => {
     api
@@ -256,7 +265,7 @@ export function SuperAdminLeadsView() {
 
   useEffect(() => {
     setPage(1);
-  }, [dateFrom, dateTo]);
+  }, [dateFrom, dateTo, debouncedSearch]);
 
   const gradLabel = useCallback(
     (year: string) => t('dashboard.superAdminLeads.gradYear', { year }),
@@ -277,6 +286,7 @@ export function SuperAdminLeadsView() {
       const data = await api.listLeads({
         date_from: dateFrom || undefined,
         date_to: dateTo || undefined,
+        search: debouncedSearch || undefined,
         page: 1,
         page_size: Math.max(total, 1),
       });
@@ -312,7 +322,13 @@ export function SuperAdminLeadsView() {
       </div>
 
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="grid gap-4 sm:grid-cols-2 lg:max-w-xl">
+        <div className="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:max-w-4xl">
+          <ManagementSearchInput
+            label={t('dashboard.superAdminLeads.searchLabel')}
+            value={searchTerm}
+            onChange={setSearchTerm}
+            placeholder={t('dashboard.superAdminLeads.searchPlaceholder')}
+          />
           <Input
             label={t('dashboard.superAdminLeads.signupFrom')}
             type="date"
