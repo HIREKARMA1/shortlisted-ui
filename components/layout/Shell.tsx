@@ -35,8 +35,9 @@ export function SiteHeader() {
   const pathname = usePathname() ?? '/';
   const profilePath = session ? getPostLoginPath(session) : '/auth/login';
 
-  const links = [
+  const links: { k: string; href: string; external?: boolean }[] = [
     { k: 'about', href: '/about' },
+    { k: 'successStories', href: 'https://www.hirekarma.in/impact', external: true },
     { k: 'contact', href: '/contact' },
   ];
 
@@ -83,19 +84,36 @@ export function SiteHeader() {
         <BrandLogo />
 
         <nav className="hidden items-center gap-7 lg:flex">
-          {links.map((l) => (
-            <Link
-              key={l.k}
-              href={l.href}
-              className={`text-sm font-medium transition hover:text-primary ${
-                pathname === l.href || (l.href !== '/' && pathname.startsWith(l.href.split('#')[0]))
-                  ? 'text-primary'
-                  : 'text-ink/80'
-              }`}
-            >
-              {t(`common.nav.${l.k}`)}
-            </Link>
-          ))}
+          {links.map((l) => {
+            if (l.external) {
+              return (
+                <a
+                  key={l.k}
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-ink/80 transition hover:text-primary"
+                >
+                  {t(`common.nav.${l.k}`)}
+                </a>
+              );
+            }
+
+            const path = l.href.split('#')[0];
+            const active = pathname === path || pathname.startsWith(`${path}/`);
+
+            return (
+              <Link
+                key={l.k}
+                href={l.href}
+                className={`text-sm font-medium transition hover:text-primary ${
+                  active ? 'text-primary' : 'text-ink/80'
+                }`}
+              >
+                {t(`common.nav.${l.k}`)}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
@@ -120,16 +138,29 @@ export function SiteHeader() {
       {open && (
         <div className="overflow-visible border-t border-line bg-white md:hidden">
           <div className="mx-auto flex max-w-7xl flex-col overflow-visible px-4 py-3">
-            {links.map((l) => (
-              <Link
-                key={l.k}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="border-b border-line/60 py-3 text-sm font-medium text-ink"
-              >
-                {t(`common.nav.${l.k}`)}
-              </Link>
-            ))}
+            {links.map((l) =>
+              l.external ? (
+                <a
+                  key={l.k}
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="border-b border-line/60 py-3 text-sm font-medium text-ink"
+                >
+                  {t(`common.nav.${l.k}`)}
+                </a>
+              ) : (
+                <Link
+                  key={l.k}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="border-b border-line/60 py-3 text-sm font-medium text-ink"
+                >
+                  {t(`common.nav.${l.k}`)}
+                </Link>
+              )
+            )}
             <div className="mt-3 flex flex-col gap-2">
               <LanguageSwitcher variant="menu" />
               {session ? (
