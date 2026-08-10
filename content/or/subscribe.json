@@ -4,6 +4,13 @@
   "seatsLabel": "ବାକି ସିଟ୍",
   "amountLabel": "ସବସ୍କ୍ରିପ୍ସନ୍ ଶୁଳ୍କ",
   "currency": "₹{{amount}}",
+  "promo": {
+    "badge": "Independence Day Special Offer",
+    "title": "Independence Day Special Offer",
+    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+    "exclusive": "Exclusively available for the first 12 students in each batch.",
+    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+  },
   "cta": "ସବସ୍କ୍ରାଇବ୍ କରି ସକ୍ରିୟ କରନ୍ତୁ",
   "ctaOnline": "ଅନଲାଇନ୍ ପେମେଣ୍ଟ କରି ସକ୍ରିୟ କରନ୍ତୁ",
   "processing": "ପେମେଣ୍ଟ ପ୍ରକ୍ରିୟାରେ...",
