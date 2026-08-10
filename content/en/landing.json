@@ -20,21 +20,52 @@
       "coordinator": { "value": "1:1", "label": "Human coordinator per batch" },
       "matching": { "value": "AI", "label": "Virtual placement engine" }
     },
-    "skills": {
-      "title": "An AI placement cell built for real hiring outcomes",
-      "subtitle": "Intelligent job matching, live application tracking, and coordinator-led interview prep - not another certificate course.",
-      "tags": {
-        "jobs": "AI-matched job feed",
-        "interviews": "Interview prep",
-        "tracking": "Real-time tracking",
-        "resume": "Profile & resume support",
-        "coaching": "Batch coaching",
-        "network": "DISHA corporate network"
+    "comparison": {
+      "title": "Your College Placement Cell vs Our Shortlisted",
+      "collegeHeader": "College Placement Cell",
+      "shortlistedHeader": "Shortlisted",
+      "rows": {
+        "pool": {
+          "college": "Large student pool",
+          "shortlisted": "Only 12 students per batch"
+        },
+        "competition": {
+          "college": "High competition for limited opportunities",
+          "shortlisted": "Lower competition within a curated cohort"
+        },
+        "support": {
+          "college": "Generic placement support",
+          "shortlisted": "Personalized placement roadmap"
+        },
+        "attention": {
+          "college": "Limited individual attention",
+          "shortlisted": "Dedicated Placement Coordinator"
+        },
+        "opportunities": {
+          "college": "Opportunities may not match your career goals",
+          "shortlisted": "Role-focused opportunities aligned to your interests"
+        },
+        "timing": {
+          "college": "Placement activities often start late",
+          "shortlisted": "Structured 60-day placement journey"
+        },
+        "process": {
+          "college": "Manual processes and tracking",
+          "shortlisted": "AI-powered tracking and insights"
+        },
+        "resources": {
+          "college": "Shared placement resources",
+          "shortlisted": "Human + AI support system"
+        },
+        "visibility": {
+          "college": "Limited application visibility",
+          "shortlisted": "Real-time application tracking"
+        },
+        "schedule": {
+          "college": "Support depends on campus schedules",
+          "shortlisted": "Continuous guidance and accountability"
+        }
       }
-    },
-    "mission": {
-      "title": "Your college placement cell - reimagined with AI",
-      "subtitle": "Small cohorts, smart automation, and a real coordinator on every batch. Outcomes over attendance, available anytime you need it."
     }
   },
   "whyShortlisted": {
@@ -170,7 +201,14 @@
       "dashboard": "AI placement command centre"
     },
     "cta": "Get Started",
-    "note": "Seats are limited per batch. Subscribe to secure your spot in India's first AI virtual placement cell."
+    "note": "Seats are limited per batch. Subscribe to secure your spot in India's first AI virtual placement cell.",
+    "promo": {
+      "title": "Independence Day Special Offer",
+      "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+      "exclusive": "Exclusively available for the first 12 students in each batch.",
+      "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential",
+      "badge": "Independence Day Special Offer"
+    }
   },
   "testimonials": {
     "eyebrow": "Success stories",

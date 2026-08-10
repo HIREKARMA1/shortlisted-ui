@@ -12,15 +12,22 @@ import { AuthLayout } from '@/components/layout/AuthLayout';
 import { Button } from '@/components/ui/Button';
 import { Text } from '@/components/ui/Text';
 import { cn } from '@/lib/utils';
+import { formatAmountINR } from '@/lib/currency';
 
 type BatchInfo = {
   seats_remaining?: number;
   subscription_amount_inr?: number;
+  regular_amount_inr?: number;
+  offer_active?: boolean;
+  savings_inr?: number;
 };
 
 type PaymentConfig = {
   provider: string;
   amount_inr: number;
+  regular_amount_inr?: number;
+  offer_active?: boolean;
+  savings_inr?: number;
   sales_contact_email?: string;
   sales_contact_phone?: string;
 };
@@ -78,6 +85,22 @@ export function SubscribePageView() {
   const seatsFull = (batchInfo?.seats_remaining ?? 1) === 0;
   const amountInr =
     batchInfo?.subscription_amount_inr ?? paymentConfig?.amount_inr ?? null;
+  const regularAmountInr =
+    batchInfo?.regular_amount_inr ?? paymentConfig?.regular_amount_inr ?? null;
+  const offerActive = Boolean(
+    batchInfo?.offer_active ?? paymentConfig?.offer_active,
+  );
+  const savingsInr =
+    batchInfo?.savings_inr ??
+    paymentConfig?.savings_inr ??
+    (regularAmountInr != null && amountInr != null
+      ? regularAmountInr - amountInr
+      : 0);
+  const showPromo =
+    offerActive &&
+    amountInr != null &&
+    regularAmountInr != null &&
+    regularAmountInr > amountInr;
   const provider = paymentConfig?.provider ?? 'payu';
 
   if (!ready || !session || accessStatus === 'active') {
@@ -89,10 +112,40 @@ export function SubscribePageView() {
       <div className="space-y-6">
         {(batchInfo || amountInr != null) && (
           <div className="rounded-xl border border-line-default bg-surface-muted p-5 text-center">
-            <Text variant="muted">{t('subscribe.amountLabel')}</Text>
-            <p className="mt-1 font-display text-4xl font-bold text-brand-sky">
-              {amountInr != null ? t('subscribe.currency', { amount: amountInr }) : '-'}
-            </p>
+            {showPromo ? (
+              <div className="mx-auto max-w-xs text-left">
+                <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-brand-orange sm:text-[10px]">
+                  {t('subscribe.promo.badge')}
+                </p>
+                <p className="mt-2 font-display text-lg font-semibold text-ink-muted line-through decoration-brand-red/50">
+                  {formatAmountINR(regularAmountInr)}
+                </p>
+                <p className="mt-0.5 font-display text-4xl font-bold text-brand-sky">
+                  {formatAmountINR(amountInr)}
+                </p>
+                <p className="mt-3 text-sm font-bold text-ink-primary">
+                  {t('subscribe.promo.title')}
+                </p>
+                <p className="mt-1 text-sm text-ink-secondary">
+                  {t('subscribe.promo.saveLine', {
+                    savings: savingsInr.toLocaleString('en-IN'),
+                  })}
+                </p>
+                <p className="mt-1 text-xs italic text-ink-muted">
+                  {t('subscribe.promo.exclusive')}
+                </p>
+                <p className="mt-2 text-xs font-bold uppercase tracking-wide text-brand-blue">
+                  {t('subscribe.promo.tagline')}
+                </p>
+              </div>
+            ) : (
+              <>
+                <Text variant="muted">{t('subscribe.amountLabel')}</Text>
+                <p className="mt-1 font-display text-4xl font-bold text-brand-sky">
+                  {amountInr != null ? t('subscribe.currency', { amount: amountInr }) : '-'}
+                </p>
+              </>
+            )}
             {batchInfo && (
               <p className="mt-3 text-lg font-semibold text-brand-blue">
                 {t('subscribe.seatsLabel')}: {batchInfo.seats_remaining ?? 0}

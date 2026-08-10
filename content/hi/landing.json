@@ -20,21 +20,52 @@
       "coordinator": { "value": "1:1", "label": "प्रति बैच मानव कोऑर्डिनेटर" },
       "matching": { "value": "AI", "label": "वर्चुअल प्लेसमेंट इंजन" }
     },
-    "skills": {
-      "title": "वास्तविक नौकरी परिणामों के लिए AI प्लेसमेंट सेल",
-      "subtitle": "इंटेलिजेंट जॉब मैचिंग, लाइव ट्रैकिंग और कोऑर्डिनेटर-नेतृत्व में इंटरव्यू तैयारी - कोर्स नहीं।",
-      "tags": {
-        "jobs": "AI-मैच जॉब फीड",
-        "interviews": "इंटरव्यू तैयारी",
-        "tracking": "आवेदन ट्रैकिंग",
-        "resume": "प्रोफ़ाइल और रिज़्यूमे",
-        "coaching": "बैच कोचिंग",
-        "network": "DISHA कॉर्पोरेट नेटवर्क"
+    "comparison": {
+      "title": "आपका कॉलेज प्लेसमेंट सेल vs हमारा Shortlisted",
+      "collegeHeader": "कॉलेज प्लेसमेंट सेल",
+      "shortlistedHeader": "Shortlisted",
+      "rows": {
+        "pool": {
+          "college": "बड़ा छात्र पूल",
+          "shortlisted": "प्रति बैच केवल 12 छात्र"
+        },
+        "competition": {
+          "college": "सीमित अवसरों के लिए उच्च प्रतिस्पर्धा",
+          "shortlisted": "क्यूरेटेड कोहॉर्ट में कम प्रतिस्पर्धा"
+        },
+        "support": {
+          "college": "सामान्य प्लेसमेंट सहायता",
+          "shortlisted": "व्यक्तिगत प्लेसमेंट रोडमैप"
+        },
+        "attention": {
+          "college": "सीमित व्यक्तिगत ध्यान",
+          "shortlisted": "समर्पित प्लेसमेंट कोऑर्डिनेटर"
+        },
+        "opportunities": {
+          "college": "अवसर आपके करियर लक्ष्यों से मेल नहीं खा सकते",
+          "shortlisted": "आपकी रुचियों से जुड़े रोल-फोकस्ड अवसर"
+        },
+        "timing": {
+          "college": "प्लेसमेंट गतिविधियाँ अक्सर देर से शुरू होती हैं",
+          "shortlisted": "संरचित 60-दिन का प्लेसमेंट सफर"
+        },
+        "process": {
+          "college": "मैन्युअल प्रक्रियाएँ और ट्रैकिंग",
+          "shortlisted": "AI-संचालित ट्रैकिंग और इनसाइट्स"
+        },
+        "resources": {
+          "college": "साझा प्लेसमेंट संसाधन",
+          "shortlisted": "मानव + AI सपोर्ट सिस्टम"
+        },
+        "visibility": {
+          "college": "सीमित आवेदन दृश्यता",
+          "shortlisted": "रियल-टाइम आवेदन ट्रैकिंग"
+        },
+        "schedule": {
+          "college": "सहायता कैंपस शेड्यूल पर निर्भर",
+          "shortlisted": "निरंतर मार्गदर्शन और जवाबदेही"
+        }
       }
-    },
-    "mission": {
-      "title": "आपका कॉलेज प्लेसमेंट सेल - AI के साथ नया रूप",
-      "subtitle": "छोटे समूह, स्मार्ट ऑटोमेशन, और हर बैच पर वास्तविक कोऑर्डिनेटर। परिणाम पहले, उपस्थिति बाद में - जब भी आपको ज़रूरत हो।"
     }
   },
   "whyShortlisted": {
@@ -166,7 +197,14 @@
       "dashboard": "AI प्लेसमेंट कमांड सेंटर"
     },
     "cta": "शुरू करें",
-    "note": "प्रति बैच सीमित सीटें। भारत के पहले AI वर्चुअल प्लेसमेंट सेल में अपनी जगह सुरक्षित करें।"
+    "note": "प्रति बैच सीमित सीटें। भारत के पहले AI वर्चुअल प्लेसमेंट सेल में अपनी जगह सुरक्षित करें।",
+    "promo": {
+      "title": "Independence Day Special Offer",
+      "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+      "exclusive": "Exclusively available for the first 12 students in each batch.",
+      "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential",
+      "badge": "Independence Day Special Offer"
+    }
   },
   "testimonials": {
     "eyebrow": "सफलता की कहानियां",

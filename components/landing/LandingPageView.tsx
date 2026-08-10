@@ -22,6 +22,11 @@ type BatchInfo = {
   max_seats?: number;
   batch_name?: string;
   subscription_amount_inr?: number;
+  regular_amount_inr?: number;
+  offer_active?: boolean;
+  offer_name?: string | null;
+  offer_end_date?: string | null;
+  savings_inr?: number;
   has_open_batch?: boolean;
 };
 
@@ -167,6 +172,9 @@ export function LandingPageView() {
         maxSeats={maxSeats}
         loading={loadingBatch}
         amountInr={batchInfo?.subscription_amount_inr}
+        regularAmountInr={batchInfo?.regular_amount_inr}
+        offerActive={Boolean(batchInfo?.offer_active)}
+        savingsInr={batchInfo?.savings_inr}
       />
       <TestimonialsSection testimonials={testimonials} />
       <SuccessStoriesSection stories={successStories} />

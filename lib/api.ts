@@ -196,6 +196,12 @@ class ApiClient {
       provider: string;
       amount_paise: number;
       amount_inr: number;
+      regular_amount_paise?: number;
+      regular_amount_inr?: number;
+      offer_active?: boolean;
+      offer_name?: string | null;
+      offer_end_date?: string | null;
+      savings_inr?: number;
       sales_contact_email?: string;
       sales_contact_phone?: string;
     };

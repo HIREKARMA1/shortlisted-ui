@@ -1,15 +1,25 @@
 'use client';
 
-import { Briefcase, Trophy, Users } from 'lucide-react';
+import { Briefcase, Trophy, Users, Check, Minus } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { PageContainer } from '@/components/layout/Shell';
-// Texture handled by `sl-brick-pattern` utility in globals.css
 
 const STAT_KEYS = ['batch', 'coordinator', 'matching'] as const;
 const STAT_ICONS = { batch: Users, coordinator: Trophy, matching: Briefcase } as const;
-const TAG_KEYS = ['jobs', 'interviews', 'tracking', 'resume', 'coaching', 'network'] as const;
+const COMPARISON_ROW_KEYS = [
+  'pool',
+  'competition',
+  'support',
+  'attention',
+  'opportunities',
+  'timing',
+  'process',
+  'resources',
+  'visibility',
+  'schedule',
+] as const;
 
-/** 100xdevs.com impact bento - same layout, Shortlisted content */
+/** 100xdevs.com impact bento - stats bar + college vs Shortlisted comparison */
 export function ImpactSection() {
   const { t } = useTranslation();
 
@@ -42,36 +52,56 @@ export function ImpactSection() {
             </div>
           </div>
 
-          {/* Bottom row - sm:grid-cols-5, 3 + 2 */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-5">
-            <div className="relative col-span-1 flex flex-col gap-4 overflow-hidden rounded-lg rounded-bl-[44px] rounded-tr-[44px] bg-brand-green sl-brick-pattern p-6 sm:col-span-3 lg:p-8">
-              <div className="relative z-10 flex flex-col gap-2">
-                <h3 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                  {t('landing.impact.skills.title')}
-                </h3>
-                <p className="text-lg tracking-tight text-white">{t('landing.impact.skills.subtitle')}</p>
-              </div>
-              <div className="relative z-10 flex flex-wrap gap-2">
-                {TAG_KEYS.map((key) => (
-                  <div
-                    key={key}
-                    className="max-md:text-sm rounded-full bg-white px-4 py-2 text-brand-green"
-                  >
-                    <h4 className="text-sm font-medium leading-none md:text-base">
-                      {t(`landing.impact.skills.tags.${key}`)}
-                    </h4>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* College Placement Cell vs Shortlisted */}
+          <div className="w-full">
+            <h3 className="text-center text-2xl font-bold tracking-tight text-brand-blue sm:text-3xl md:text-4xl">
+              {t('landing.impact.comparison.title')}
+            </h3>
 
-            <div className="relative col-span-1 flex flex-col rounded-lg rounded-bl-[44px] rounded-tr-[44px] bg-brand-blue p-8 sm:col-span-2">
-              <div className="relative z-10 flex flex-col gap-2">
-                <h3 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                  {t('landing.impact.mission.title')}
-                </h3>
-                <p className="text-lg tracking-tight text-white">{t('landing.impact.mission.subtitle')}</p>
+            <div className="mt-5 overflow-hidden rounded-lg rounded-bl-[44px] rounded-tr-[44px] border border-line-default bg-white shadow-sm sm:mt-6">
+              <div
+                className="grid grid-cols-2 border-b border-line-default"
+                role="row"
+              >
+                <div className="border-r border-line-default bg-soft px-3 py-3.5 sm:px-5 sm:py-4">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-ink-muted sm:text-xs">
+                    {t('landing.impact.comparison.collegeHeader')}
+                  </p>
+                </div>
+                <div className="bg-brand-blue px-3 py-3.5 sm:px-5 sm:py-4">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-white sm:text-xs">
+                    {t('landing.impact.comparison.shortlistedHeader')}
+                  </p>
+                </div>
               </div>
+
+              {COMPARISON_ROW_KEYS.map((key, index) => (
+                <div
+                  key={key}
+                  className={[
+                    'grid grid-cols-2',
+                    index < COMPARISON_ROW_KEYS.length - 1 ? 'border-b border-line-default' : '',
+                  ].join(' ')}
+                  role="row"
+                >
+                  <div className="flex items-start gap-2 border-r border-line-default px-3 py-3 sm:gap-3 sm:px-5 sm:py-3.5">
+                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-neutral-200/80 text-ink-muted sm:h-5 sm:w-5">
+                      <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" strokeWidth={2.5} />
+                    </span>
+                    <p className="text-[13px] leading-snug text-ink-muted sm:text-sm sm:leading-relaxed">
+                      {t(`landing.impact.comparison.rows.${key}.college`)}
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2 bg-brand-blue/[0.03] px-3 py-3 sm:gap-3 sm:px-5 sm:py-3.5">
+                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green sm:h-5 sm:w-5">
+                      <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3" strokeWidth={2.5} />
+                    </span>
+                    <p className="text-[13px] font-medium leading-snug text-ink-secondary sm:text-sm sm:leading-relaxed">
+                      {t(`landing.impact.comparison.rows.${key}.shortlisted`)}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
