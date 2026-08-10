@@ -4,6 +4,13 @@
   "seatsLabel": "शेष सीटें",
   "amountLabel": "सब्सक्रिप्शन शुल्क",
   "currency": "₹{{amount}}",
+  "promo": {
+    "badge": "Independence Day Special Offer",
+    "title": "Independence Day Special Offer",
+    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+    "exclusive": "Exclusively available for the first 12 students in each batch.",
+    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+  },
   "cta": "सब्सक्राइब और सक्रिय करें",
   "ctaOnline": "ऑनलाइन भुगतान करें और सक्रिय करें",
   "processing": "भुगतान प्रक्रिया में...",

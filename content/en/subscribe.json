@@ -4,6 +4,13 @@
   "seatsLabel": "Seats remaining",
   "amountLabel": "Subscription fee",
   "currency": "₹{{amount}}",
+  "promo": {
+    "badge": "Independence Day Special Offer",
+    "title": "Independence Day Special Offer",
+    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+    "exclusive": "Exclusively available for the first 12 students in each batch.",
+    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+  },
   "cta": "Subscribe & Activate",
   "ctaOnline": "Pay online & activate",
   "processing": "Processing payment...",

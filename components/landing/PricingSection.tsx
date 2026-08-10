@@ -5,6 +5,7 @@ import { ChevronRight, Zap } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { PageContainer } from '@/components/layout/Shell';
 import { Button } from '@/components/ui/Button';
+import { formatAmountINR } from '@/lib/currency';
 
 const pricingIncludes = ['batch', 'jobs', 'coordinator', 'tracking', 'dashboard'] as const;
 
@@ -13,11 +14,27 @@ type PricingSectionProps = {
   maxSeats: number;
   loading: boolean;
   amountInr?: number;
+  regularAmountInr?: number;
+  offerActive?: boolean;
+  savingsInr?: number;
 };
 
-export function PricingSection({ seats, maxSeats, loading, amountInr }: PricingSectionProps) {
+export function PricingSection({
+  seats,
+  maxSeats,
+  loading,
+  amountInr,
+  regularAmountInr,
+  offerActive = false,
+  savingsInr = 0,
+}: PricingSectionProps) {
   const { t } = useTranslation();
   const enrollmentOpen = seats > 0;
+  const showPromo =
+    offerActive &&
+    amountInr != null &&
+    regularAmountInr != null &&
+    regularAmountInr > amountInr;
 
   return (
     <section id="pricing" className="relative overflow-hidden border-t border-line-default bg-gradient-to-br from-brand-blue via-primary-700 to-brand-blue py-14 sm:py-16">
@@ -67,16 +84,48 @@ export function PricingSection({ seats, maxSeats, loading, amountInr }: PricingS
             <div className="grid md:grid-cols-5">
               <div className="flex flex-col items-center justify-center border-b border-line-default bg-gradient-to-br from-brand-blue/[0.06] via-white to-brand-sky/[0.08] px-6 py-8 text-center md:col-span-2 md:border-b-0 md:border-r">
                 {amountInr != null && (
-                  <>
-                    <p className="font-display text-5xl font-extrabold leading-none text-brand-blue sm:text-6xl">
-                      {t('landing.seats.currency', { amount: amountInr })}
-                    </p>
-                    <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-ink-muted">
-                      {t('landing.pricing.oneTime')}
-                    </p>
-                  </>
+                  showPromo ? (
+                    <div className="w-full max-w-[240px]">
+                      <p className="text-left text-xs font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-sm">
+                        {t('landing.pricing.promo.badge')}
+                      </p>
+                      <p className="mt-2 text-left font-display text-lg font-semibold text-ink-muted line-through decoration-brand-red/50 sm:text-xl">
+                        {formatAmountINR(regularAmountInr)}
+                      </p>
+                      <p className="mt-0.5 text-left font-display text-5xl font-extrabold leading-none text-brand-blue sm:text-6xl">
+                        {formatAmountINR(amountInr)}
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="font-display text-5xl font-extrabold leading-none text-brand-blue sm:text-6xl">
+                        {t('landing.seats.currency', { amount: amountInr })}
+                      </p>
+                      <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-ink-muted">
+                        {t('landing.pricing.oneTime')}
+                      </p>
+                    </>
+                  )
                 )}
-                <p className="mt-4 max-w-[220px] text-sm leading-relaxed text-ink-muted">{t('landing.pricing.note')}</p>
+                {showPromo ? (
+                  <div className="mt-4 max-w-[240px] space-y-2 text-left">
+                    <p className="text-sm leading-relaxed text-ink-secondary">
+                      {t('landing.pricing.promo.saveLine', {
+                        savings: (savingsInr || regularAmountInr! - amountInr!).toLocaleString('en-IN'),
+                      })}
+                    </p>
+                    <p className="text-xs italic leading-relaxed text-ink-muted">
+                      {t('landing.pricing.promo.exclusive')}
+                    </p>
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand-blue">
+                      {t('landing.pricing.promo.tagline')}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="mt-4 max-w-[220px] text-sm leading-relaxed text-ink-muted">
+                    {t('landing.pricing.note')}
+                  </p>
+                )}
                 <Link href="/auth/register" className="mt-6 w-full max-w-[240px]">
                   <Button variant="accent" fullWidth className="rounded-full py-3.5 text-sm shadow-lg">
                     {t('landing.pricing.cta')}

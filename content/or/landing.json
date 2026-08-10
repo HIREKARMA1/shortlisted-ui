@@ -20,21 +20,52 @@
       "coordinator": { "value": "1:1", "label": "ପ୍ରତି ବ୍ୟାଚ୍ ମାନବ କୋଅର୍ଡିନେଟର" },
       "matching": { "value": "AI", "label": "ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ଇଞ୍ଜିନ" }
     },
-    "skills": {
-      "title": "ପ୍ରକୃତ ନିଯୁକ୍ତି ଫଳାଫଳ ପାଇଁ AI ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
-      "subtitle": "ବୁଦ୍ଧିମାନ ଜବ୍ ମ୍ୟାଚିଂ, ଲାଇଭ୍ ଟ୍ରାକିଂ ଏବଂ କୋଅର୍ଡିନେଟର-ନେତୃତ୍ୱରେ ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରସ୍ତୁତି - କୋର୍ସ ନୁହେଁ।",
-      "tags": {
-        "jobs": "ବ୍ୟବସ୍ଥିତ ଚାକିରି ଫିଡ୍",
-        "interviews": "ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରସ୍ତୁତି",
-        "tracking": "ଆବେଦନ ଟ୍ରାକିଂ",
-        "resume": "ପ୍ରୋଫାଇଲ୍ ଏବଂ ରେଜ୍ୟୁମେ",
-        "coaching": "ବ୍ୟାଚ୍ କୋଚିଂ",
-        "network": "DISHA କର୍ପୋରେଟ୍ ନେଟୱାର୍କ"
+    "comparison": {
+      "title": "ଆପଣଙ୍କ କଲେଜ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ vs ଆମର Shortlisted",
+      "collegeHeader": "କଲେଜ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
+      "shortlistedHeader": "Shortlisted",
+      "rows": {
+        "pool": {
+          "college": "ବଡ଼ ଛାତ୍ର ପୁଲ୍",
+          "shortlisted": "ପ୍ରତି ବ୍ୟାଚ୍ କେବଳ 12 ଛାତ୍ର"
+        },
+        "competition": {
+          "college": "ସୀମିତ ସୁଯୋଗ ପାଇଁ ଅଧିକ ପ୍ରତିଯୋଗିତା",
+          "shortlisted": "କ୍ୟୁରେଟେଡ୍ କୋହର୍ଟରେ କମ୍ ପ୍ରତିଯୋଗିତା"
+        },
+        "support": {
+          "college": "ସାଧାରଣ ପ୍ଲେସମେଣ୍ଟ ସହାୟତା",
+          "shortlisted": "ବ୍ୟକ୍ତିଗତ ପ୍ଲେସମେଣ୍ଟ ରୋଡମ୍ୟାପ୍"
+        },
+        "attention": {
+          "college": "ସୀମିତ ବ୍ୟକ୍ତିଗତ ଧ୍ୟାନ",
+          "shortlisted": "ସମର୍ପିତ ପ୍ଲେସମେଣ୍ଟ କୋଅର୍ଡିନେଟର"
+        },
+        "opportunities": {
+          "college": "ସୁଯୋଗ ଆପଣଙ୍କ କ୍ୟାରିୟର ଲକ୍ଷ୍ୟ ସହ ମେଳ ନହୋଇପାରେ",
+          "shortlisted": "ଆପଣଙ୍କ ରୁଚି ସହ ସଂଯୁକ୍ତ ରୋଲ୍-ଫୋକସ୍ଡ ସୁଯୋଗ"
+        },
+        "timing": {
+          "college": "ପ୍ଲେସମେଣ୍ଟ କାର୍ଯ୍ୟକଳାପ ପ୍ରାୟତଃ ବିଳମ୍ବରେ ଆରମ୍ଭ ହୁଏ",
+          "shortlisted": "ସଂରଚିତ 60-ଦିନିଆ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା"
+        },
+        "process": {
+          "college": "ମାନୁଆଲ୍ ପ୍ରକ୍ରିୟା ଏବଂ ଟ୍ରାକିଂ",
+          "shortlisted": "AI-ଚାଳିତ ଟ୍ରାକିଂ ଏବଂ ଇନସାଇଟ୍ସ"
+        },
+        "resources": {
+          "college": "ସାଝା ପ୍ଲେସମେଣ୍ଟ ସମ୍ବଳ",
+          "shortlisted": "ମାନବ + AI ସପୋର୍ଟ ସିଷ୍ଟମ୍"
+        },
+        "visibility": {
+          "college": "ସୀମିତ ଆବେଦନ ଦୃଶ୍ୟତା",
+          "shortlisted": "ରିଅଲ୍-ଟାଇମ୍ ଆବେଦନ ଟ୍ରାକିଂ"
+        },
+        "schedule": {
+          "college": "ସହାୟତା କ୍ୟାମ୍ପସ୍ ସିଡ୍ୟୁଲ୍ ଉପରେ ନିର୍ଭର",
+          "shortlisted": "ନିରନ୍ତର ମାର୍ଗଦର୍ଶନ ଏବଂ ଉତ୍ତରଦାୟିତ୍ୱ"
+        }
       }
-    },
-    "mission": {
-      "title": "ଆପଣଙ୍କ କଲେଜ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ - AI ସହିତ ନୂଆ ରୂପ",
-      "subtitle": "ଛୋଟ ବ୍ୟାଚ୍, ସ୍ମାର୍ଟ ଅଟୋମେସନ୍, ଏବଂ ପ୍ରତ୍ୟେକ ବ୍ୟାଚ୍‌ରେ ପ୍ରକୃତ କୋଅର୍ଡିନେଟର। ଫଳାଫଳ ପ୍ରଥମ, ଉପସ୍ଥିତି ପରେ।"
     }
   },
   "whyShortlisted": {
@@ -166,7 +197,14 @@
       "dashboard": "ଛାତ୍ର କମାଣ୍ଡ ସେଣ୍ଟର"
     },
     "cta": "ଆରମ୍ଭ କରନ୍ତୁ",
-    "note": "ସୀମିତ ସିଟ୍। ଆପଣଙ୍କ ସ୍ଥାନ ସୁରକ୍ଷିତ କରନ୍ତୁ।"
+    "note": "ସୀମିତ ସିଟ୍। ଆପଣଙ୍କ ସ୍ଥାନ ସୁରକ୍ଷିତ କରନ୍ତୁ।",
+    "promo": {
+      "title": "Independence Day Special Offer",
+      "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+      "exclusive": "Exclusively available for the first 12 students in each batch.",
+      "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential",
+      "badge": "Independence Day Special Offer"
+    }
   },
   "testimonials": {
     "eyebrow": "ସଫଳତା କାହାଣୀ",
