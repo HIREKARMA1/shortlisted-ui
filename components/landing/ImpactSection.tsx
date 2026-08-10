@@ -1,6 +1,6 @@
 'use client';
 
-import { Briefcase, Trophy, Users, Check, Minus } from 'lucide-react';
+import { Briefcase, Trophy, Users, Check, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { PageContainer } from '@/components/layout/Shell';
 
@@ -85,8 +85,8 @@ export function ImpactSection() {
                   role="row"
                 >
                   <div className="flex items-start gap-2 border-r border-line-default px-3 py-3 sm:gap-3 sm:px-5 sm:py-3.5">
-                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-neutral-200/80 text-ink-muted sm:h-5 sm:w-5">
-                      <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" strokeWidth={2.5} />
+                    <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-red/10 text-brand-red sm:h-5 sm:w-5">
+                      <X className="h-2.5 w-2.5 sm:h-3 sm:w-3" strokeWidth={2.5} />
                     </span>
                     <p className="text-[13px] leading-snug text-ink-muted sm:text-sm sm:leading-relaxed">
                       {t(`landing.impact.comparison.rows.${key}.college`)}
