@@ -23,7 +23,7 @@ type Testimonial = {
   is_active: boolean;
 };
 
-const MAX_FEEDBACK_LENGTH = 200;
+const MAX_FEEDBACK_LENGTH = 1000;
 
 const EMPTY_FORM = {
   name: '',
