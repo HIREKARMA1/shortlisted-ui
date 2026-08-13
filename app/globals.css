@@ -155,4 +155,9 @@
   .animate-sl-marquee {
     animation: sl-marquee 35s linear infinite;
   }
+
+  /* Knock out near-black backgrounds on cutout product photos */
+  .ft-cutout {
+    filter: url(#ft-remove-black);
+  }
 }

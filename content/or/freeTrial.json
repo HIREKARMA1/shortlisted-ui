@@ -1,0 +1,364 @@
+{
+  "meta": {
+    "title": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ | Shortlisted"
+  },
+  "hero": {
+    "badge": "Shortlisted — ଆପଣଙ୍କ 60-ଦିନିଆ ଯାତ୍ରା",
+    "titleBefore": "",
+    "titleHighlight1": "ପ୍ରସ୍ତୁତି",
+    "titleMiddle": "ରୁ",
+    "titleHighlight2": "ପ୍ଲେସମେଣ୍ଟ ପର୍ଯ୍ୟନ୍ତ",
+    "subtitle": "ବିଶେଷଜ୍ଞ-ନେତୃତ୍ୱ ପ୍ରଶିକ୍ଷଣ, AI-ଚାଳିତ ମୂଲ୍ୟାଙ୍କନ ଏବଂ ପ୍ରଥମ ଦିନରୁ ପ୍ଲେସମେଣ୍ଟ ପର୍ଯ୍ୟନ୍ତ ନିରନ୍ତର ସମର୍ଥନ ସହିତ ଏକ ସଂରଚିତ 60-ଦିନିଆ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା।",
+    "cta": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ",
+    "ctaHref": "/auth/register",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_hero_students.png",
+    "imageAlt": "ଲ୍ୟାପଟପରେ ଏକାଠି ପ୍ରସ୍ତୁତି କରୁଥିବା ଛାତ୍ରଛାତ୍ରୀ",
+    "features": [
+      {
+        "id": "human",
+        "label": "ମାନବ-ନେତୃତ୍ୱ ପ୍ରଶିକ୍ଷଣ",
+        "accent": "blue",
+        "icon": "User"
+      },
+      {
+        "id": "ai",
+        "label": "AI-ଚାଳିତ ମୂଲ୍ୟାଙ୍କନ",
+        "accent": "yellow",
+        "icon": "Brain"
+      },
+      {
+        "id": "analysis",
+        "label": "ପ୍ରଦର୍ଶନ ବିଶ୍ଳେଷଣ",
+        "accent": "green",
+        "icon": "BarChart3"
+      },
+      {
+        "id": "placement",
+        "label": "ପ୍ଲେସମେଣ୍ଟ ସମର୍ଥନ",
+        "accent": "red",
+        "icon": "Briefcase"
+      }
+    ],
+    "titleLine1": "ପ୍ରସ୍ତୁତି ରୁ",
+    "titleLine2": "ପ୍ଲେସମେଣ୍ଟ ପର୍ଯ୍ୟନ୍ତ"
+  },
+  "classes": {
+    "number": "1",
+    "title": "ଆମ କ୍ଲାସ୍ ଦେଖନ୍ତୁ",
+    "subtitle": "ରେକର୍ଡ କ୍ଲାସ୍ ଗୁଡ଼ିକ ଅନୁସନ୍ଧାନ କରନ୍ତୁ ଏବଂ ନିଜ ଗତିରେ ଶିଖିବା ଆରମ୍ଭ କରନ୍ତୁ।",
+    "cta": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ",
+    "ctaHref": "/auth/register",
+    "playAria": "କ୍ଲାସ୍ ରେକର୍ଡିଂ ଚଲାନ୍ତୁ",
+    "items": [
+      {
+        "id": "aptitude-basics",
+        "title": "ଆପ୍ଟିଚୁଡ୍ ବେସିକ୍ସ",
+        "duration": "45 ମିନିଟ୍",
+        "level": "ବିଗିନର୍",
+        "thumbnailUrl": "",
+        "accent": "blue",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      },
+      {
+        "id": "logical-reasoning",
+        "title": "ଲଜିକାଲ୍ ରିଜନିଂ",
+        "duration": "52 ମିନିଟ୍",
+        "level": "ବିଗିନର୍",
+        "thumbnailUrl": "",
+        "accent": "sky",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      },
+      {
+        "id": "communication-skills",
+        "title": "କମ୍ୟୁନିକେସନ୍ ସ୍କିଲ୍ସ",
+        "duration": "38 ମିନିଟ୍",
+        "level": "ବିଗିନର୍",
+        "thumbnailUrl": "",
+        "accent": "yellow",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+      },
+      {
+        "id": "technical-fundamentals",
+        "title": "ଟେକ୍ନିକାଲ୍ ଫଣ୍ଡାମେଣ୍ଟାଲ୍ସ",
+        "duration": "1ଘ 02ମି",
+        "level": "ଇଣ୍ଟରମିଡିଏଟ୍",
+        "thumbnailUrl": "",
+        "accent": "orange",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+      },
+      {
+        "id": "interview-preparation",
+        "title": "ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରିପାରେସନ୍",
+        "duration": "55 ମିନିଟ୍",
+        "level": "ସମସ୍ତ ସ୍ତର",
+        "thumbnailUrl": "",
+        "accent": "green",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+      }
+    ],
+    "player": {
+      "close": "ଭିଡିଓ ବନ୍ଦ କରନ୍ତୁ",
+      "play": "ଚଲାନ୍ତୁ",
+      "pause": "ବନ୍ଦ କରନ୍ତୁ",
+      "mute": "ମ୍ୟୁଟ୍",
+      "unmute": "ଅନମ୍ୟୁଟ୍",
+      "fullscreen": "ଫୁଲ୍ ସ୍କ୍ରିନ୍",
+      "exitFullscreen": "ଫୁଲ୍ ସ୍କ୍ରିନ୍ ରୁ ବାହାର",
+      "pip": "ପିକଚର୍ ଇନ୍ ପିକଚର୍",
+      "settings": "ସେଟିଂସ୍",
+      "speed": "ପ୍ଲେବ୍ୟାକ୍ ସ୍ପିଡ୍",
+      "quality": "କ୍ୱାଲିଟି",
+      "unavailable": "ଭିଡିଓ ଶୀଘ୍ର ଉପଲବ୍ଧ ହେବ"
+    }
+  },
+  "trainers": {
+    "number": "2",
+    "title": "ଆମ ଟ୍ରେନର୍ମାନେ",
+    "subtitle": "ଅନୁଭବୀ ଟ୍ରେନର୍ମାନଙ୍କଠାରୁ ଶିଖନ୍ତୁ ଯେଉଁମାନେ ପ୍ରସ୍ତୁତିର ପ୍ରତ୍ୟେକ ପର୍ଯ୍ୟାୟରେ ଆପଣଙ୍କୁ ମାର୍ଗଦର୍ଶନ କରନ୍ତି।",
+    "linkedinAria": "LinkedIn ପ୍ରୋଫାଇଲ୍ ଦେଖନ୍ତୁ",
+    "youtubeAria": "YouTube ଚ୍ୟାନେଲ୍ ଦେଖନ୍ତୁ",
+    "items": [
+      {
+        "id": "shiladitya",
+        "name": "ଶିଲାଦିତ୍ୟ ସିନ୍ହା ସାର୍",
+        "role": "ସଫ୍ଟ ସ୍କିଲ୍ସ ଓ ଯୋଗାଯୋଗ ଟ୍ରେନର୍",
+        "bio": "ଇଣ୍ଟରାକ୍ଟିଭ୍, ମାନବ-ନେତୃତ୍ୱ ସେସନ୍ ମାଧ୍ୟମରେ ଯୋଗାଯୋଗ, ଆତ୍ମବିଶ୍ୱାସ, ଇଣ୍ଟରଭ୍ୟୁ ଉପସ୍ଥିତି ଓ ପେଶାଦାର ବ୍ୟବହାର ଗଠନରେ ସାହାଯ୍ୟ କରନ୍ତି।",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_shiladitya.png",
+        "accent": "blue",
+        "linkedinUrl": "",
+        "youtubeUrl": "",
+        "highlights": [
+          "ଯୋଗାଯୋଗ ଓ ଆତ୍ମବିଶ୍ୱାସ ଗଠନ",
+          "ଇଣ୍ଟରଭ୍ୟୁ ଉପସ୍ଥିତି ଓ ପେଶାଦାର ବ୍ୟବହାର",
+          "ଇଣ୍ଟରାକ୍ଟିଭ୍, ମାନବ-ନେତୃତ୍ୱ ସଫ୍ଟ ସ୍କିଲ୍ସ ସେସନ୍"
+        ]
+      },
+      {
+        "id": "dhananjay",
+        "name": "ଧନଞ୍ଜୟ",
+        "role": "ଆପ୍ଟିଚୁଡ୍ ଓ ଟେକ୍ନିକାଲ୍ ଟ୍ରେନର୍",
+        "bio": "କ୍ୱାଣ୍ଟିଟେଟିଭ୍ ଏବିଲିଟି, ଲଜିକାଲ୍ ରିଜନିଂ ଓ ରୋଲ୍-ସମ୍ବନ୍ଧୀୟ ଟେକ୍ନିକାଲ୍ ଧାରଣାରେ ଅଭ୍ୟାସ ଓ ସନ୍ଦେହ ନିରାକରଣ ସହ ମାର୍ଗଦର୍ଶନ କରନ୍ତି।",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_dhananjay.png",
+        "accent": "orange",
+        "linkedinUrl": "",
+        "youtubeUrl": "",
+        "highlights": [
+          "କ୍ୱାଣ୍ଟିଟେଟିଭ୍ ଏବିଲିଟି ଓ ଲଜିକାଲ୍ ରିଜନିଂ",
+          "ରୋଲ୍-ସମ୍ବନ୍ଧୀୟ ଟେକ୍ନିକାଲ୍ ଧାରଣା",
+          "କେନ୍ଦ୍ରିତ ଅଭ୍ୟାସ ଓ ସନ୍ଦେହ ନିରାକରଣ"
+        ]
+      }
+    ]
+  },
+  "journey": {
+    "number": "3",
+    "title": "ଆମେ ଛାତ୍ରଛାତ୍ରୀଙ୍କୁ କିପରି ସାହାଯ୍ୟ କରୁ",
+    "subtitle": "ପ୍ରସ୍ତୁତିରୁ ପ୍ରକୃତ ଚାକିରି ସୁଯୋଗ ପର୍ଯ୍ୟନ୍ତ ନେଇଯିବା ପାଇଁ ଏକ ସଂରଚିତ 60-ଦିନିଆ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା।",
+    "cta": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ",
+    "ctaHref": "/auth/register",
+    "steps": [
+      {
+        "id": "start",
+        "title": "ଆପଣଙ୍କ ଯାତ୍ରା ଆରମ୍ଭ କରନ୍ତୁ",
+        "accent": "blue",
+        "icon": "Flag",
+        "bullets": [
+          "ସଫ୍ଟ ସ୍କିଲ୍ସ ପ୍ରଶିକ୍ଷଣ",
+          "ଆପ୍ଟିଚୁଡ୍ ପ୍ରଶିକ୍ଷଣ",
+          "ଟେକ୍ନିକାଲ୍ ସ୍କିଲ୍ସ ପ୍ରଶିକ୍ଷଣ"
+        ]
+      },
+      {
+        "id": "practice",
+        "title": "ଅଭ୍ୟାସ ଓ ମୂଲ୍ୟାଙ୍କନ",
+        "accent": "sky",
+        "icon": "BookOpen",
+        "bullets": [
+          "ନିରନ୍ତର ଅଭ୍ୟାସ",
+          "AI-ଚାଳିତ ମୂଲ୍ୟାଙ୍କନ",
+          "ପ୍ରଗତି ମାପ"
+        ]
+      },
+      {
+        "id": "improve",
+        "title": "ଉନ୍ନତି ଓ ପ୍ରସ୍ତୁତି",
+        "accent": "yellow",
+        "icon": "TrendingUp",
+        "bullets": [
+          "ସ୍କିଲ୍-ଗ୍ୟାପ୍ ଉନ୍ନତି",
+          "ଟ୍ରେନର୍ ମାର୍ଗଦର୍ଶନ",
+          "ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରସ୍ତୁତି"
+        ]
+      },
+      {
+        "id": "opportunities",
+        "title": "ସୁଯୋଗ",
+        "accent": "orange",
+        "icon": "Briefcase",
+        "bullets": [
+          "ପ୍ରାସଙ୍ଗିକ ଚାକିରି ରୋଲ୍",
+          "ଲକ୍ଷ୍ୟିତ ଆବେଦନ",
+          "ରୋଲ୍ ସମନ୍ୱୟ"
+        ]
+      },
+      {
+        "id": "interviews",
+        "title": "ଇଣ୍ଟରଭ୍ୟୁ",
+        "accent": "red",
+        "icon": "Users",
+        "bullets": [
+          "ଇଣ୍ଟରଭ୍ୟୁ ସୁଯୋଗ",
+          "ପ୍ରସ୍ତୁତି ସମର୍ଥନ",
+          "ଆତ୍ମବିଶ୍ୱାସ ଗଠନ"
+        ]
+      },
+      {
+        "id": "placed",
+        "title": "ପ୍ଲେସ୍ ହୁଅନ୍ତୁ",
+        "accent": "green",
+        "icon": "Trophy",
+        "bullets": [
+          "ଚୂଡ଼ାନ୍ତ ଚୟନ ସମର୍ଥନ",
+          "ନିରନ୍ତର ମାର୍ଗଦର୍ଶନ",
+          "ପ୍ଲେସମେଣ୍ଟ-ପ୍ରସ୍ତୁତ ଫଳାଫଳ"
+        ]
+      }
+    ]
+  },
+  "approach": {
+    "number": "4",
+    "title": "ଆମେ ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା କିପରି ସହଜ କରୁ",
+    "subtitle": "ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତିର ଏକ ସ୍ମାର୍ଟ ଉପାୟ",
+    "resultLabel": "ଫଳାଫଳ",
+    "resultFlow": "ମାନବ ଶିଖାନ୍ତି → AI ମୂଲ୍ୟାଙ୍କନ କରେ → AI ଗ୍ୟାପ୍ ଚିହ୍ନିତ କରେ → ଛାତ୍ର ଉନ୍ନତି କରନ୍ତି → ଟ୍ରେନର୍ ମାର୍ଗଦର୍ଶନ କରନ୍ତି → ଛାତ୍ର ପ୍ଲେସମେଣ୍ଟ-ପ୍ରସ୍ତୁତ ହୁଅନ୍ତି",
+    "human": {
+      "title": "ମାନବ-ନେତୃତ୍ୱ ପ୍ରଶିକ୍ଷଣ",
+      "accent": "blue",
+      "items": [
+        {
+          "id": "soft",
+          "title": "ସଫ୍ଟ ସ୍କିଲ୍ସ ପ୍ରଶିକ୍ଷଣ",
+          "desc": "ଯୋଗାଯୋଗ, ଆତ୍ମବିଶ୍ୱାସ, ଇଣ୍ଟରଭ୍ୟୁ ଦକ୍ଷତା ଓ ପେଶାଦାର ବ୍ୟବହାର",
+          "icon": "MessageCircle"
+        },
+        {
+          "id": "aptitude",
+          "title": "ଆପ୍ଟିଚୁଡ୍ ପ୍ରଶିକ୍ଷଣ",
+          "desc": "କ୍ୱାଣ୍ଟିଟେଟିଭ୍ ଏବିଲିଟି, ଲଜିକାଲ୍ ରିଜନିଂ ଓ ସମସ୍ୟା ସମାଧାନ",
+          "icon": "Calculator"
+        },
+        {
+          "id": "technical",
+          "title": "ଟେକ୍ନିକାଲ୍ ପ୍ରଶିକ୍ଷଣ",
+          "desc": "ରୋଲ୍-ସମ୍ବନ୍ଧୀୟ ଟେକ୍ନିକାଲ୍ ଧାରଣା ଓ ପ୍ରସ୍ତୁତି",
+          "icon": "Code2"
+        },
+        {
+          "id": "interactive",
+          "title": "ଇଣ୍ଟରାକ୍ଟିଭ୍ ଶିକ୍ଷା",
+          "desc": "ଟ୍ରେନର୍ ଧାରଣା ବୁଝାନ୍ତି ଓ ଛାତ୍ରଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତି",
+          "icon": "Presentation"
+        },
+        {
+          "id": "doubt",
+          "title": "ସନ୍ଦେହ ନିରାକରଣ",
+          "desc": "ଛାତ୍ରଛାତ୍ରୀ ଟ୍ରେନର୍ଙ୍କଠାରୁ ସିଧା ମାର୍ଗଦର୍ଶନ ପାଆନ୍ତି",
+          "icon": "HelpCircle"
+        },
+        {
+          "id": "guidance",
+          "title": "ବ୍ୟକ୍ତିଗତ ମାର୍ଗଦର୍ଶନ",
+          "desc": "ପ୍ରସ୍ତୁତି ସମୟରେ ଟ୍ରେନର୍ମାନେ ଛାତ୍ରଙ୍କୁ ସମର୍ଥନ କରନ୍ତି",
+          "icon": "HeartHandshake"
+        }
+      ]
+    },
+    "ai": {
+      "title": "Generative AI-ଚାଳିତ ମୂଲ୍ୟାଙ୍କନ",
+      "accent": "green",
+      "items": [
+        {
+          "id": "questions",
+          "title": "AI ପ୍ରଶ୍ନ ସୃଷ୍ଟି",
+          "desc": "ଦକ୍ଷତା ଓ ମୂଲ୍ୟାଙ୍କନ ଆବଶ୍ୟକତା ଅନୁସାରେ ପ୍ରାସଙ୍ଗିକ ପ୍ରଶ୍ନ ତିଆରି କରେ",
+          "icon": "Sparkles"
+        },
+        {
+          "id": "assess",
+          "title": "AI-ଚାଳିତ ମୂଲ୍ୟାଙ୍କନ",
+          "desc": "ପ୍ରାସଙ୍ଗିକ ଦକ୍ଷତା କ୍ଷେତ୍ରରେ ଛାତ୍ରଙ୍କୁ ମୂଲ୍ୟାଙ୍କନ କରେ",
+          "icon": "ClipboardCheck"
+        },
+        {
+          "id": "evaluate",
+          "title": "ସ୍ୱୟଂଚାଳିତ ମୂଲ୍ୟାଙ୍କନ",
+          "desc": "ଉତ୍ତର ବିଶ୍ଳେଷଣ କରି ମୂଲ୍ୟାଙ୍କନ ଫଳାଫଳ ତିଆରି କରେ",
+          "icon": "FileCheck"
+        },
+        {
+          "id": "analysis",
+          "title": "ପ୍ରଦର୍ଶନ ବିଶ୍ଳେଷଣ",
+          "desc": "ଶକ୍ତି, ଦୁର୍ବଳତା ଓ ପ୍ରଦର୍ଶନ ପାଟର୍ନ ଚିହ୍ନିତ କରେ",
+          "icon": "BarChart3"
+        },
+        {
+          "id": "gaps",
+          "title": "ସ୍କିଲ୍-ଗ୍ୟାପ୍ ଚିହ୍ନଟ",
+          "desc": "ଯେଉଁ କ୍ଷେତ୍ରରେ ଅଭାବ ଅଛି ସେଗୁଡ଼ିକୁ ଉଜାଗର କରେ",
+          "icon": "Target"
+        },
+        {
+          "id": "insights",
+          "title": "ଉନ୍ନତି ଇନସାଇଟ୍",
+          "desc": "ଅଧିକ ଅଭ୍ୟାସ ଓ ଉନ୍ନତି ଆବଶ୍ୟକ କ୍ଷେତ୍ର ସୁପାରିଶ କରେ",
+          "icon": "Lightbulb"
+        }
+      ]
+    },
+    "resultSteps": [
+      "ମାନବ ଶିଖାନ୍ତି →",
+      "AI ମୂଲ୍ୟାଙ୍କନ କରେ →",
+      "AI ଗ୍ୟାପ୍ ଚିହ୍ନିତ କରେ →",
+      "ଛାତ୍ର ଉନ୍ନତି କରନ୍ତି →",
+      "ଟ୍ରେନର୍ ମାର୍ଗଦର୍ଶନ କରନ୍ତି →",
+      "ଛାତ୍ର ପ୍ଲେସମେଣ୍ଟ-ପ୍ରସ୍ତୁତ ହୁଅନ୍ତି"
+    ]
+  },
+  "cta": {
+    "titleBefore": "ଏହା ଆପଣଙ୍କ ସୁଯୋଗ",
+    "titleHighlight": "ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପ ନେବାର",
+    "body": "ବର୍ତ୍ତମାନ ବ୍ୟାଚ୍ ପାଇଁ ଆପଣଙ୍କ ସିଟ୍ ବୁକ୍ କରନ୍ତୁ ଏବଂ ପ୍ଲେସମେଣ୍ଟ-ପ୍ରସ୍ତୁତ ହେବାର ଯାତ୍ରା ଆରମ୍ଭ କରନ୍ତୁ।",
+    "button": "ବର୍ତ୍ତମାନ ଯୋଗ ଦିଅନ୍ତୁ",
+    "buttonHref": "/auth/register",
+    "redirectHint": "ରିଡାଇରେକ୍ଟ: ଆପଣଙ୍କ ସିଟ୍ ବୁକ୍ କରନ୍ତୁ",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_student.png",
+    "imageAlt": "Shortlisted ଯାତ୍ରା ଆରମ୍ଭ କରିବାକୁ ପ୍ରସ୍ତୁତ ଛାତ୍ର"
+  },
+  "nav": {
+    "cta": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ",
+    "ctaHref": "/auth/register",
+    "menuAria": "ମେନୁ ଖୋଲନ୍ତୁ",
+    "links": [
+      {
+        "id": "home",
+        "label": "ହୋମ୍",
+        "href": "/"
+      },
+      {
+        "id": "courses",
+        "label": "କୋର୍ସ",
+        "href": "/free-trial#courses"
+      },
+      {
+        "id": "about",
+        "label": "ଆମ ବିଷୟରେ",
+        "href": "/about"
+      },
+      {
+        "id": "contact",
+        "label": "ଯୋଗାଯୋଗ",
+        "href": "/contact"
+      }
+    ]
+  }
+}
