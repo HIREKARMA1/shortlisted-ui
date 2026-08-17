@@ -1,10 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { getLucideIcon } from '@/lib/icons';
-import {
-  BrandAccent,
-  accentBgClass,
-  isBrandAccent,
-} from '@/lib/brand-accent';
+import { BrandAccent, isBrandAccent } from '@/lib/brand-accent';
 import { cn } from '@/lib/utils';
 
 export type JourneyStepData = {
@@ -15,51 +11,113 @@ export type JourneyStepData = {
   bullets?: string[];
 };
 
-type JourneyStepProps = {
-  item: JourneyStepData;
-  showConnector?: boolean;
+type JourneyTone = {
+  surface: string;
+  border: string;
+  text: string;
+  circle: string;
+  iconText: string;
 };
 
-export function JourneyStep({ item, showConnector = false }: JourneyStepProps) {
-  const accent: BrandAccent = isBrandAccent(item.accent) ? item.accent : 'blue';
+const TONES: Record<BrandAccent, JourneyTone> = {
+  blue: {
+    surface: '#f4f9ff',
+    border: '#dce9fb',
+    text: '#1b52a4',
+    circle: '#1b52a4',
+    iconText: '#ffffff',
+  },
+  sky: {
+    surface: '#f2f9ff',
+    border: '#d4e9fa',
+    text: '#0b6fb4',
+    circle: '#00a2e5',
+    iconText: '#ffffff',
+  },
+  yellow: {
+    surface: '#fdf9ef',
+    border: '#f7e6bd',
+    text: '#c99200',
+    circle: '#fec40d',
+    iconText: '#ffffff',
+  },
+  orange: {
+    surface: '#fef7ef',
+    border: '#fadfc4',
+    text: '#f58020',
+    circle: '#f58020',
+    iconText: '#ffffff',
+  },
+  red: {
+    surface: '#fdf4f4',
+    border: '#f7d7d7',
+    text: '#d64246',
+    circle: '#d64246',
+    iconText: '#ffffff',
+  },
+  green: {
+    surface: '#f4faf7',
+    border: '#cfe9dd',
+    text: '#098855',
+    circle: '#098855',
+    iconText: '#ffffff',
+  },
+};
+
+export function journeyToneOf(accent?: string): JourneyTone {
+  return TONES[isBrandAccent(accent) ? accent : 'blue'];
+}
+
+type JourneyStepProps = {
+  item: JourneyStepData;
+  className?: string;
+};
+
+export function JourneyStep({ item, className }: JourneyStepProps) {
+  const tone = journeyToneOf(item.accent);
   const Icon = getLucideIcon(item.icon);
   const bullets = Array.isArray(item.bullets) ? item.bullets : [];
 
   return (
-    <li className="relative flex min-w-0 flex-1 flex-col items-center">
-      <div className="flex w-full flex-col items-center text-center">
-        <div className="relative flex items-center justify-center">
-          <div className="grid h-[4.75rem] w-[4.75rem] place-items-center rounded-2xl border border-[#e5eaf0] bg-[#f7f9fc]">
+    <li
+      className={cn('flex min-w-0 flex-col rounded-[12px] border px-4 pb-[18px] pt-[18px]', className)}
+      style={{ backgroundColor: tone.surface, borderColor: tone.border }}
+    >
+      <span
+        className="mx-auto grid h-12 w-12 place-items-center rounded-full"
+        style={{ backgroundColor: tone.circle, color: tone.iconText }}
+      >
+        <Icon className="h-6 w-6" strokeWidth={2.25} aria-hidden />
+      </span>
+
+      <h3
+        className="mt-3.5 text-center font-serif text-[15px] font-bold leading-snug"
+        style={{ color: tone.text }}
+      >
+        {item.title}
+      </h3>
+
+      <ul className="mt-3.5 space-y-2.5">
+        {bullets.map((bullet) => (
+          <li key={bullet} className="flex gap-2 text-left text-[12.5px] leading-[1.35] text-[#4b5563]">
             <span
-              className={cn(
-                'grid h-12 w-12 place-items-center rounded-full text-white shadow-sm',
-                accentBgClass(accent),
-                accent === 'yellow' && 'text-ink-primary',
-              )}
-            >
-              <Icon className="h-5 w-5" strokeWidth={2.25} />
-            </span>
-          </div>
+              className="mt-[6px] h-[3.5px] w-[3.5px] shrink-0 rounded-full"
+              style={{ backgroundColor: tone.text }}
+            />
+            <span>{bullet}</span>
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+}
 
-          {showConnector ? (
-            <span className="absolute left-[calc(100%+0.35rem)] top-1/2 hidden -translate-y-1/2 text-brand-blue xl:inline-flex">
-              <ArrowRight className="h-4 w-4" strokeWidth={2.5} aria-hidden />
-            </span>
-          ) : null}
-        </div>
+export function JourneyArrow({ accent }: { accent?: string }) {
+  const tone = journeyToneOf(accent);
 
-        <h3 className="mt-3.5 font-serif text-sm font-bold text-ink-primary">
-          {item.title}
-        </h3>
-        <ul className="mt-2 w-full space-y-1 px-1 text-left">
-          {bullets.map((bullet) => (
-            <li key={bullet} className="flex gap-1.5 text-[11px] leading-snug text-ink-muted sm:text-xs">
-              <span className="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-ink-muted/60" />
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+  return (
+    <li className="flex shrink-0 items-start px-1.5 pt-[32px]" aria-hidden>
+      <ArrowRight className="h-[19px] w-[19px]" strokeWidth={2.5} style={{ color: tone.text }} />
     </li>
   );
 }

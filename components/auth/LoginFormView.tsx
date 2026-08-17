@@ -58,7 +58,8 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password, fixedRole ?? 'student');
+      const redirectTo = new URLSearchParams(window.location.search).get('redirect');
+      await login(email, password, fixedRole ?? 'student', redirectTo);
       toast.success(t('auth.login.success'));
     } catch (err: unknown) {
       const msg =

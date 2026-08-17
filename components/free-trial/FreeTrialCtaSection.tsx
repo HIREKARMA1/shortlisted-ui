@@ -27,7 +27,7 @@ export function FreeTrialCtaSection() {
                 <img
                   src={imageUrl}
                   alt={t('freeTrial.cta.imageAlt')}
-                  className="ft-cutout relative z-10 h-full max-h-full w-auto max-w-[92%] object-contain object-bottom"
+                  className="relative z-10 h-full max-h-full w-auto max-w-[92%] object-contain object-bottom"
                 />
               ) : null}
             </div>
