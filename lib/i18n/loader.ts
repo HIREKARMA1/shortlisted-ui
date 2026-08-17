@@ -7,6 +7,7 @@ import enSubscribe from '@/content/en/subscribe.json';
 import enDashboard from '@/content/en/dashboard.json';
 import enPages from '@/content/en/pages.json';
 import enLegal from '@/content/en/legal.json';
+import enFreeTrial from '@/content/en/freeTrial.json';
 
 import hiCommon from '@/content/hi/common.json';
 import hiLanding from '@/content/hi/landing.json';
@@ -15,6 +16,7 @@ import hiSubscribe from '@/content/hi/subscribe.json';
 import hiDashboard from '@/content/hi/dashboard.json';
 import hiPages from '@/content/hi/pages.json';
 import hiLegal from '@/content/hi/legal.json';
+import hiFreeTrial from '@/content/hi/freeTrial.json';
 
 import orCommon from '@/content/or/common.json';
 import orLanding from '@/content/or/landing.json';
@@ -23,6 +25,7 @@ import orSubscribe from '@/content/or/subscribe.json';
 import orDashboard from '@/content/or/dashboard.json';
 import orPages from '@/content/or/pages.json';
 import orLegal from '@/content/or/legal.json';
+import orFreeTrial from '@/content/or/freeTrial.json';
 
 const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
   en: {
@@ -32,6 +35,7 @@ const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
     subscribe: enSubscribe,
     dashboard: enDashboard,
     pages: { ...enPages, ...enLegal },
+    freeTrial: enFreeTrial,
   },
   hi: {
     common: hiCommon,
@@ -40,6 +44,7 @@ const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
     subscribe: hiSubscribe,
     dashboard: hiDashboard,
     pages: { ...hiPages, ...hiLegal },
+    freeTrial: hiFreeTrial,
   },
   or: {
     common: orCommon,
@@ -48,6 +53,7 @@ const bundles: Record<Locale, Record<ContentNamespace, ContentTree>> = {
     subscribe: orSubscribe,
     dashboard: orDashboard,
     pages: { ...orPages, ...orLegal },
+    freeTrial: orFreeTrial,
   },
 };
 
@@ -63,5 +69,6 @@ export function getMergedContent(locale: Locale): ContentTree {
     subscribe: bundles[locale].subscribe,
     dashboard: bundles[locale].dashboard,
     pages: bundles[locale].pages,
+    freeTrial: bundles[locale].freeTrial,
   };
 }

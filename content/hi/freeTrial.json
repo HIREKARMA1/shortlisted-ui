@@ -1,0 +1,358 @@
+{
+  "meta": {
+    "title": "फ्री ट्रायल जॉइन करें | Shortlisted"
+  },
+  "hero": {
+    "badge": "Shortlisted — आपकी 60-दिन की यात्रा",
+    "titleBefore": "",
+    "titleHighlight1": "तैयारी",
+    "titleMiddle": "से",
+    "titleHighlight2": "प्लेसमेंट तक",
+    "subtitle": "विशेषज्ञ-नेतृत्व प्रशिक्षण, एआई-संचालित असेसमेंट और पहले दिन से प्लेसमेंट तक निरंतर समर्थन के साथ एक संरचित 60-दिन का प्लेसमेंट जर्नी।",
+    "cta": "Shortlisted से जुड़ें",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_hero_students.png",
+    "imageAlt": "लैपटॉप पर साथ मिलकर तैयारी करते छात्र",
+    "features": [
+      {
+        "id": "human",
+        "label": "मानव-नेतृत्व प्रशिक्षण",
+        "accent": "blue",
+        "icon": "User"
+      },
+      {
+        "id": "ai",
+        "label": "एआई-संचालित असेसमेंट",
+        "accent": "yellow",
+        "icon": "Brain"
+      },
+      {
+        "id": "analysis",
+        "label": "प्रदर्शन विश्लेषण",
+        "accent": "green",
+        "icon": "BarChart3"
+      },
+      {
+        "id": "placement",
+        "label": "प्लेसमेंट सपोर्ट",
+        "accent": "red",
+        "icon": "Briefcase"
+      }
+    ],
+    "titleLine1": "तैयारी से",
+    "titleLine2": "प्लेसमेंट तक"
+  },
+  "classes": {
+    "number": "1",
+    "title": "हमारी कक्षाएँ देखें",
+    "subtitle": "रिकॉर्डेड कक्षाएँ देखें और अपनी गति से सीखना शुरू करें।",
+    "cta": "फ्री ट्रायल जॉइन करें",
+    "ctaHref": "/auth/register",
+    "playAria": "क्लास रिकॉर्डिंग चलाएँ",
+    "items": [
+      {
+        "id": "aptitude-basics",
+        "title": "एप्टीट्यूड बेसिक्स",
+        "duration": "45 मिनट",
+        "level": "बिगिनर",
+        "thumbnailUrl": "",
+        "accent": "blue",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      },
+      {
+        "id": "logical-reasoning",
+        "title": "लॉजिकल रीज़निंग",
+        "duration": "52 मिनट",
+        "level": "बिगिनर",
+        "thumbnailUrl": "",
+        "accent": "sky",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      },
+      {
+        "id": "communication-skills",
+        "title": "कम्युनिकेशन स्किल्स",
+        "duration": "38 मिनट",
+        "level": "बिगिनर",
+        "thumbnailUrl": "",
+        "accent": "yellow",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+      },
+      {
+        "id": "technical-fundamentals",
+        "title": "टेक्निकल फंडामेंटल्स",
+        "duration": "1घं 02मि",
+        "level": "इंटरमीडिएट",
+        "thumbnailUrl": "",
+        "accent": "orange",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+      },
+      {
+        "id": "interview-preparation",
+        "title": "इंटरव्यू प्रेपरेशन",
+        "duration": "55 मिनट",
+        "level": "सभी स्तर",
+        "thumbnailUrl": "",
+        "accent": "green",
+        "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+      }
+    ],
+    "player": {
+      "close": "वीडियो बंद करें",
+      "play": "चलाएँ",
+      "pause": "रोकें",
+      "mute": "म्यूट",
+      "unmute": "अनम्यूट",
+      "fullscreen": "फुल स्क्रीन",
+      "exitFullscreen": "फुल स्क्रीन से बाहर",
+      "pip": "पिक्चर इन पिक्चर",
+      "settings": "सेटिंग्स",
+      "speed": "प्लेबैक स्पीड",
+      "quality": "क्वालिटी",
+      "unavailable": "वीडियो जल्द उपलब्ध होगा"
+    }
+  },
+  "trainers": {
+    "number": "2",
+    "title": "हमारे ट्रेनर",
+    "subtitle": "अनुभवी ट्रेनर्स से सीखें जो तैयारी के हर चरण में आपका मार्गदर्शन करते हैं।",
+    "items": [
+      {
+        "id": "shiladitya",
+        "name": "शिलादित्य सिन्हा सर",
+        "role": "सॉफ्ट स्किल्स और कम्युनिकेशन ट्रेनर",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_shiladitya.png",
+        "accent": "blue"
+      },
+      {
+        "id": "dhananjay",
+        "name": "धनंजय",
+        "role": "एप्टीट्यूड और टेक्निकल ट्रेनर",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_dhananjay.png",
+        "accent": "orange"
+      },
+      {
+        "id": "rahul",
+        "name": "राहुल",
+        "role": "टेक्निकल ट्रेनर",
+        "imageUrl": "",
+        "accent": "green"
+      }
+    ]
+  },
+  "journey": {
+    "number": "3",
+    "title": "हम छात्रों की कैसे मदद करते हैं",
+    "subtitle": "Shortlisted एक संरचित 60-दिन का प्लेसमेंट सफर देता है, हर चरण पर लगातार सहयोग के साथ।",
+    "cta": "फ्री ट्रायल जॉइन करें",
+    "ctaHref": "/auth/register",
+    "steps": [
+      {
+        "id": "start",
+        "title": "अपनी यात्रा शुरू करें",
+        "accent": "blue",
+        "icon": "Flag",
+        "bullets": [
+          "सॉफ्ट स्किल्स ट्रेनिंग",
+          "एप्टीट्यूड ट्रेनिंग",
+          "टेक्निकल स्किल्स ट्रेनिंग"
+        ]
+      },
+      {
+        "id": "practice",
+        "title": "अभ्यास और असेसमेंट",
+        "accent": "blue",
+        "icon": "BookOpen",
+        "bullets": [
+          "नियमित अभ्यास",
+          "असेसमेंट दें",
+          "अपनी प्रगति ट्रैक करें"
+        ]
+      },
+      {
+        "id": "improve",
+        "title": "सुधार और तैयारी",
+        "accent": "yellow",
+        "icon": "BarChart3",
+        "bullets": [
+          "ट्रेनर से मार्गदर्शन",
+          "स्किल गैप सुधारें",
+          "इंटरव्यू के लिए तैयारी"
+        ]
+      },
+      {
+        "id": "opportunities",
+        "title": "अवसर",
+        "accent": "orange",
+        "icon": "Briefcase",
+        "bullets": [
+          "प्रासंगिक जॉब अवसर",
+          "एप्लिकेशन",
+          "इंटरव्यू अवसर"
+        ]
+      },
+      {
+        "id": "interviews",
+        "title": "इंटरव्यू",
+        "accent": "red",
+        "icon": "Users",
+        "bullets": [
+          "इंटरव्यू सहयोग",
+          "मॉक इंटरव्यू",
+          "फीडबैक व मार्गदर्शन"
+        ]
+      },
+      {
+        "id": "placed",
+        "title": "प्लेस हो जाएँ",
+        "accent": "green",
+        "icon": "Trophy",
+        "bullets": [
+          "फाइनल सेलेक्शन",
+          "ड्रीम जॉब",
+          "करियर ग्रोथ"
+        ]
+      }
+    ]
+  },
+  "approach": {
+    "number": "4",
+    "title": "हम आपकी प्लेसमेंट यात्रा कैसे आसान बनाते हैं",
+    "subtitle": "प्लेसमेंट तैयारी का एक स्मार्ट तरीका",
+    "intro": {
+      "brand": "शॉर्टलिस्टेड में",
+      "middle": " ट्रेनिंग पूरी तरह ",
+      "highlight": "मानव-नेतृत्व वाली",
+      "tail": " रहती है, जबकि जेनरेटिव AI असेसमेंट और परफ़ॉर्मेंस-एनालिसिस प्रक्रिया को मज़बूत बनाता है।"
+    },
+    "resultLabel": "परिणाम",
+    "resultFlow": "मानव सिखाते हैं → AI असेस करता है → AI गैप पहचानता है → छात्र सुधारते हैं → ट्रेनर मार्गदर्शन करते हैं → छात्र प्लेसमेंट-रेडी बनते हैं",
+    "human": {
+      "title": "मानव-नेतृत्व प्रशिक्षण",
+      "accent": "blue",
+      "items": [
+        {
+          "id": "soft",
+          "title": "सॉफ्ट स्किल्स प्रशिक्षण",
+          "desc": "संचार, आत्मविश्वास, इंटरव्यू स्किल्स और पेशेवर व्यवहार",
+          "icon": "User"
+        },
+        {
+          "id": "aptitude",
+          "title": "एप्टीट्यूड प्रशिक्षण",
+          "desc": "क्वांटिटेटिव एबिलिटी, लॉजिकल रीज़निंग और प्रॉब्लम-सॉल्विंग",
+          "icon": "BarChart3"
+        },
+        {
+          "id": "technical",
+          "title": "टेक्निकल प्रशिक्षण",
+          "desc": "रोल-संबंधित टेक्निकल कॉन्सेप्ट्स और तैयारी",
+          "icon": "Code2"
+        },
+        {
+          "id": "interactive",
+          "title": "इंटरैक्टिव लर्निंग",
+          "desc": "ट्रेनर कॉन्सेप्ट समझाते हैं और छात्रों से जुड़ते हैं",
+          "icon": "Presentation"
+        },
+        {
+          "id": "doubt",
+          "title": "डाउट रेज़ोल्यूशन",
+          "desc": "छात्रों को ट्रेनर्स से सीधा मार्गदर्शन मिलता है",
+          "icon": "HelpCircle"
+        },
+        {
+          "id": "guidance",
+          "title": "व्यक्तिगत मार्गदर्शन",
+          "desc": "तैयारी के दौरान ट्रेनर छात्रों का समर्थन करते हैं",
+          "icon": "Users"
+        }
+      ]
+    },
+    "ai": {
+      "title": "Generative AI-संचालित असेसमेंट",
+      "accent": "green",
+      "items": [
+        {
+          "id": "questions",
+          "title": "AI प्रश्न निर्माण",
+          "desc": "स्किल्स और असेसमेंट आवश्यकताओं के आधार पर प्रासंगिक प्रश्न बनाता है",
+          "icon": "Sparkles"
+        },
+        {
+          "id": "assess",
+          "title": "AI-संचालित असेसमेंट",
+          "desc": "प्रासंगिक स्किल क्षेत्रों में छात्रों का मूल्यांकन करता है",
+          "icon": "ClipboardCheck"
+        },
+        {
+          "id": "evaluate",
+          "title": "स्वचालित मूल्यांकन",
+          "desc": "उत्तरों का विश्लेषण कर असेसमेंट परिणाम बनाता है",
+          "icon": "FileCheck"
+        },
+        {
+          "id": "analysis",
+          "title": "प्रदर्शन विश्लेषण",
+          "desc": "ताकत, कमज़ोरी और प्रदर्शन पैटर्न पहचानता है",
+          "icon": "BarChart3"
+        },
+        {
+          "id": "gaps",
+          "title": "स्किल-गैप पहचान",
+          "desc": "जिन क्षेत्रों में कमी है उन्हें उजागर करता है",
+          "icon": "Target"
+        },
+        {
+          "id": "insights",
+          "title": "सुधार इनसाइट्स",
+          "desc": "अधिक अभ्यास और सुधार की ज़रूरत वाले क्षेत्रों का सुझाव देता है",
+          "icon": "Lightbulb"
+        }
+      ]
+    },
+    "resultSteps": [
+      "मानव सिखाते हैं →",
+      "AI असेस करता है →",
+      "AI गैप पहचानता है →",
+      "छात्र सुधारते हैं →",
+      "ट्रेनर मार्गदर्शन करते हैं →",
+      "छात्र प्लेसमेंट-रेडी बनते हैं"
+    ]
+  },
+  "cta": {
+    "titleBefore": "यह आपका मौका है",
+    "titleHighlight": "अगला कदम बढ़ाने का",
+    "body": "वर्तमान बैच के लिए अभी अपनी सीट बुक करें और प्लेसमेंट-रेडी बनने की यात्रा शुरू करें।",
+    "button": "अभी जॉइन करें",
+    "buttonHref": "/auth/register",
+    "redirectHint": "रीडायरेक्ट: अपनी सीट बुक करें",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_student.png",
+    "imageAlt": "Shortlisted यात्रा शुरू करने के लिए तैयार छात्र"
+  },
+  "nav": {
+    "cta": "फ्री ट्रायल जॉइन करें",
+    "ctaHref": "/auth/register",
+    "menuAria": "मेनू खोलें",
+    "links": [
+      {
+        "id": "home",
+        "label": "होम",
+        "href": "/"
+      },
+      {
+        "id": "courses",
+        "label": "कोर्सेस",
+        "href": "/free-trial#courses"
+      },
+      {
+        "id": "about",
+        "label": "हमारे बारे में",
+        "href": "/about"
+      },
+      {
+        "id": "contact",
+        "label": "संपर्क करें",
+        "href": "/contact"
+      }
+    ]
+  }
+}

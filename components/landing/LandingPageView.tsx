@@ -117,6 +117,11 @@ export function LandingPageView() {
               <Link href="/auth/register" className={`${navRegisterClass} px-5 py-2.5`}>
                 {t('landing.hero.ctaPrimary')}
               </Link>
+              {/* Temporarily hidden — free trial CTA
+              <Link href="/free-trial" className={`${navLoginClass} px-5 py-2.5`}>
+                {t('landing.hero.ctaFreeTrial')}
+              </Link>
+              */}
               <Link
                 href="/auth/login"
                 className="inline-flex items-center justify-center rounded-md border-2 border-primary bg-white px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-primary shadow-sm"

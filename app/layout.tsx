@@ -3,12 +3,17 @@ import { DM_Sans, Inter, Newsreader } from 'next/font/google';
 import { AppProviders } from '@/components/providers/AppProviders';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-display',
 });
+
 const newsreader = Newsreader({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],

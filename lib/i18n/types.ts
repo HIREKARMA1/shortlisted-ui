@@ -14,7 +14,8 @@ export type ContentNamespace =
   | 'auth'
   | 'subscribe'
   | 'dashboard'
-  | 'pages';
+  | 'pages'
+  | 'freeTrial';
 
 export const LOCALE_OPTIONS = [
   { code: 'en' as Locale, label: 'English', native: 'ENGLISH' },
