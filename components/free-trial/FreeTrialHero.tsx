@@ -4,6 +4,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { PageContainer } from '@/components/layout/Shell';
 import { CtaLink } from '@/components/ui/CtaLink';
 import { FeatureFloatCard } from '@/components/free-trial/FeatureFloatCard';
+import { getPostLoginPath, type Session } from '@/lib/auth/session';
 
 type FeatureItem = {
   id: string;
@@ -37,10 +38,15 @@ function DottedRing() {
   );
 }
 
-export function FreeTrialHero() {
+type FreeTrialHeroProps = {
+  session: Session;
+};
+
+export function FreeTrialHero({ session }: FreeTrialHeroProps) {
   const { t, tRaw } = useTranslation();
   const features = readFeatures(tRaw('freeTrial.hero.features'));
   const imageUrl = t('freeTrial.hero.imageUrl').trim();
+  const ctaHref = getPostLoginPath(session);
 
   return (
     <section className="relative overflow-hidden bg-white">
@@ -62,7 +68,7 @@ export function FreeTrialHero() {
 
           <div className="mt-6 sm:mt-8">
             <CtaLink
-              href={t('freeTrial.hero.ctaHref')}
+              href={ctaHref}
               size="lg"
               className="h-[46px] w-full gap-2.5 rounded-[7px] bg-[#1b52a4] px-6 text-[14px] font-semibold shadow-none transition-none hover:translate-y-0 hover:bg-[#1b52a4] hover:shadow-none sm:w-auto sm:px-10"
             >

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { getPostLoginPath } from '@/lib/auth/session';
+import { getPostLoginPath, getSafeRedirectPath } from '@/lib/auth/session';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
 import { clearSession } from '@/lib/auth/logout';
 import { api, TokenResponse, UserType } from '@/lib/api';
@@ -23,16 +23,22 @@ export function useAuth() {
     router.push(loginPath);
   };
 
-  const login = async (email: string, password: string, user_type: UserType) => {
+  const login = async (
+    email: string,
+    password: string,
+    user_type: UserType,
+    redirectTo?: string | null,
+  ) => {
     const data = await api.login(email, password, user_type);
     saveSession(data);
     router.push(
-      getPostLoginPath({
-        accessToken: data.access_token,
-        userType: data.user_type,
-        userName: data.name,
-        accessStatus: data.access_status || '',
-      }),
+      getSafeRedirectPath(redirectTo) ??
+        getPostLoginPath({
+          accessToken: data.access_token,
+          userType: data.user_type,
+          userName: data.name,
+          accessStatus: data.access_status || '',
+        }),
     );
   };
 

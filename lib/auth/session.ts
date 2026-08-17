@@ -27,3 +27,14 @@ export function getPostLoginPath(session: Session): string {
   if (session.accessStatus === 'active') return '/dashboard/student';
   return '/subscribe';
 }
+
+export function getSafeRedirectPath(value: string | null | undefined): string | null {
+  if (!value || !value.startsWith('/') || value.startsWith('//')) return null;
+
+  try {
+    const url = new URL(value, 'http://localhost');
+    return url.origin === 'http://localhost' ? `${url.pathname}${url.search}${url.hash}` : null;
+  } catch {
+    return null;
+  }
+}

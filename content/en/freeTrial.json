@@ -4,7 +4,6 @@
   },
   "nav": {
     "cta": "Join a Free Trial",
-    "ctaHref": "/auth/register",
     "menuAria": "Open menu",
     "links": [
       { "id": "home", "label": "Home", "href": "/" },
@@ -22,8 +21,7 @@
     "titleMiddle": "to",
     "titleHighlight2": "Placement",
     "subtitle": "A structured 60-day placement journey with expert-led training, AI-powered assessments and continuous support from Day 1 to placement.",
-    "cta": "Join a Free Trial",
-    "ctaHref": "/auth/register",
+    "cta": "Join Shortlisted",
     "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_hero_students.png",
     "imageAlt": "Students preparing together on a laptop",
     "features": [
@@ -140,45 +138,34 @@
     "number": "2",
     "title": "Our Trainers",
     "subtitle": "Learn from experienced trainers who guide you through every stage of preparation.",
-    "linkedinAria": "View LinkedIn profile",
-    "youtubeAria": "View YouTube channel",
     "items": [
       {
         "id": "shiladitya",
         "name": "Shiladitya Sinha Sir",
         "role": "Soft Skills & Communication Trainer",
-        "bio": "Helps students build communication, confidence, interview presence and professional behaviour through interactive, human-led sessions.",
-        "highlights": [
-          "Communication & confidence building",
-          "Interview presence & professional behaviour",
-          "Interactive, human-led soft skills sessions"
-        ],
         "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_shiladitya.png",
-        "accent": "blue",
-        "linkedinUrl": "",
-        "youtubeUrl": ""
+        "accent": "blue"
       },
       {
         "id": "dhananjay",
         "name": "Dhananjay",
         "role": "Aptitude & Technical Trainer",
-        "bio": "Guides students through quantitative ability, logical reasoning and role-relevant technical concepts with focused practice and doubt resolution.",
-        "highlights": [
-          "Quantitative ability & logical reasoning",
-          "Role-relevant technical concepts",
-          "Focused practice and doubt resolution"
-        ],
         "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_dhananjay.png",
-        "accent": "orange",
-        "linkedinUrl": "",
-        "youtubeUrl": ""
+        "accent": "orange"
+      },
+      {
+        "id": "rahul",
+        "name": "Rahul",
+        "role": "Technical Trainer",
+        "imageUrl": "",
+        "accent": "green"
       }
     ]
   },
   "journey": {
     "number": "3",
     "title": "How We Help Students",
-    "subtitle": "A structured 60-day placement journey designed to take students from preparation to real job opportunities.",
+    "subtitle": "Shortlisted provides a structured 60-day placement journey with continuous support at every stage.",
     "cta": "Join a Free Trial",
     "ctaHref": "/auth/register",
     "steps": [
@@ -196,23 +183,23 @@
       {
         "id": "practice",
         "title": "Practice & Assess",
-        "accent": "sky",
+        "accent": "blue",
         "icon": "BookOpen",
         "bullets": [
-          "Continuous practice",
-          "AI-powered assessments",
-          "Progress measurement"
+          "Practice regularly",
+          "Take assessments",
+          "Track your progress"
         ]
       },
       {
         "id": "improve",
         "title": "Improve & Prepare",
         "accent": "yellow",
-        "icon": "TrendingUp",
+        "icon": "BarChart3",
         "bullets": [
-          "Skill-gap improvement",
-          "Trainer guidance",
-          "Interview readiness"
+          "Get trainer guidance",
+          "Improve skill gaps",
+          "Build interview readiness"
         ]
       },
       {
@@ -221,9 +208,9 @@
         "accent": "orange",
         "icon": "Briefcase",
         "bullets": [
-          "Relevant job roles",
-          "Targeted applications",
-          "Role alignment"
+          "Relevant job opportunities",
+          "Applications",
+          "Interview opportunities"
         ]
       },
       {
@@ -232,9 +219,9 @@
         "accent": "red",
         "icon": "Users",
         "bullets": [
-          "Interview opportunities",
-          "Preparation support",
-          "Confidence building"
+          "Interview support",
+          "Mock interviews",
+          "Feedback & guidance"
         ]
       },
       {
@@ -243,9 +230,9 @@
         "accent": "green",
         "icon": "Trophy",
         "bullets": [
-          "Final selection support",
-          "Continuous guidance",
-          "Placement-ready outcomes"
+          "Final selection",
+          "Dream job",
+          "Career growth"
         ]
       }
     ]
@@ -254,6 +241,12 @@
     "number": "4",
     "title": "How We Make Your Placement Journey Easier",
     "subtitle": "A Smarter Approach to Placement Preparation",
+    "intro": {
+      "brand": "At Shortlisted",
+      "middle": ", training remains completely ",
+      "highlight": "human-led,",
+      "tail": " while Generative AI strengthens the assessment and performance-analysis process."
+    },
     "resultLabel": "The Result",
     "resultFlow": "Humans Teach → AI Assesses → AI Identifies Gaps → Students Improve → Trainers Guide → Students Become Placement-Ready",
     "resultSteps": [
@@ -272,13 +265,13 @@
           "id": "soft",
           "title": "Soft Skills Training",
           "desc": "Communication, confidence, interview skills and professional behaviour",
-          "icon": "MessageCircle"
+          "icon": "User"
         },
         {
           "id": "aptitude",
           "title": "Aptitude Training",
           "desc": "Quantitative ability, logical reasoning and problem-solving",
-          "icon": "Calculator"
+          "icon": "BarChart3"
         },
         {
           "id": "technical",
@@ -302,7 +295,7 @@
           "id": "guidance",
           "title": "Personal Guidance",
           "desc": "Trainers support students throughout their preparation",
-          "icon": "HeartHandshake"
+          "icon": "Users"
         }
       ]
     },

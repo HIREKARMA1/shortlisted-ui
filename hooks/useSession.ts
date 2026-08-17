@@ -4,7 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { api } from '@/lib/api';
-import { getPostLoginPath, readSession, Session } from '@/lib/auth/session';
+import {
+  getPostLoginPath,
+  getSafeRedirectPath,
+  readSession,
+  Session,
+} from '@/lib/auth/session';
 
 export function useSession() {
   const [session, setSession] = useState<Session | null>(null);
@@ -24,8 +29,23 @@ export function useGuestOnly() {
 
   useEffect(() => {
     if (!ready || !session) return;
-    router.replace(getPostLoginPath(session));
+    const redirectTo = getSafeRedirectPath(
+      new URLSearchParams(window.location.search).get('redirect'),
+    );
+    router.replace(redirectTo ?? getPostLoginPath(session));
   }, [ready, session, router]);
+}
+
+export function useAuthenticatedGate(returnTo: string) {
+  const router = useRouter();
+  const { session, ready } = useSession();
+
+  useEffect(() => {
+    if (!ready || session) return;
+    router.replace(`/auth/login?redirect=${encodeURIComponent(returnTo)}`);
+  }, [ready, session, router, returnTo]);
+
+  return { session, ready, canAccess: ready && !!session };
 }
 
 export function useStudentSubscribeGate() {

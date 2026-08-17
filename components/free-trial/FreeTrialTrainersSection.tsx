@@ -22,14 +22,9 @@ export function FreeTrialTrainersSection() {
           align="center"
         />
 
-        <div className="mt-8 grid gap-5 lg:grid-cols-2 lg:gap-6">
+        <div className="mx-auto mt-8 grid max-w-[980px] gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {items.map((item) => (
-            <TrainerCard
-              key={item.id}
-              item={item}
-              linkedinAria={t('freeTrial.trainers.linkedinAria')}
-              youtubeAria={t('freeTrial.trainers.youtubeAria')}
-            />
+            <TrainerCard key={item.id} item={item} />
           ))}
         </div>
       </PageContainer>
