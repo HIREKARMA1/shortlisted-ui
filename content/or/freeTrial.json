@@ -54,7 +54,7 @@
         "title": "ଆପ୍ଟିଚୁଡ୍ ବେସିକ୍ସ",
         "duration": "45 ମିନିଟ୍",
         "level": "ବିଗିନର୍",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/aptitudeBasics.png",
         "accent": "blue",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
       },
@@ -63,7 +63,7 @@
         "title": "ଲଜିକାଲ୍ ରିଜନିଂ",
         "duration": "52 ମିନିଟ୍",
         "level": "ବିଗିନର୍",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/logicalReasoning.png",
         "accent": "sky",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
       },
@@ -72,7 +72,7 @@
         "title": "କମ୍ୟୁନିକେସନ୍ ସ୍କିଲ୍ସ",
         "duration": "38 ମିନିଟ୍",
         "level": "ବିଗିନର୍",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/communication.png",
         "accent": "yellow",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
       },
@@ -81,7 +81,7 @@
         "title": "ଟେକ୍ନିକାଲ୍ ଫଣ୍ଡାମେଣ୍ଟାଲ୍ସ",
         "duration": "1ଘ 02ମି",
         "level": "ଇଣ୍ଟରମିଡିଏଟ୍",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/technical.png",
         "accent": "orange",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
       },
@@ -90,7 +90,7 @@
         "title": "ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରିପାରେସନ୍",
         "duration": "55 ମିନିଟ୍",
         "level": "ସମସ୍ତ ସ୍ତର",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/interview.png",
         "accent": "green",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
       }

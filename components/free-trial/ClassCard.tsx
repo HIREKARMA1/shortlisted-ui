@@ -49,13 +49,18 @@ export function ClassCard({ item, playAria, className, onPlay }: ClassCardProps)
         className,
       )}
     >
-      <div className={cn('relative aspect-[5/4] overflow-hidden', accentBgClass(accent))}>
+      <div
+        className={cn(
+          'relative aspect-[5/4] overflow-hidden',
+          hasThumb ? 'bg-white' : accentBgClass(accent),
+        )}
+      >
         {hasThumb ? (
           <MediaImage
             src={item.thumbnailUrl}
             alt={item.title}
             className="absolute inset-0 h-full w-full"
-            imgClassName="object-cover object-center"
+            imgClassName="object-contain object-center p-3"
             rounded="rounded-none"
           />
         ) : (
