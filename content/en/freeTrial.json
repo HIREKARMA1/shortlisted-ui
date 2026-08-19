@@ -78,7 +78,7 @@
         "title": "Aptitude Basics",
         "duration": "45 mins",
         "level": "Beginner",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/aptitudeBasics.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
         "videoSources": [
           {
@@ -101,7 +101,7 @@
         "title": "Logical Reasoning",
         "duration": "52 mins",
         "level": "Beginner",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/logicalReasoning.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "accent": "sky"
       },
@@ -110,7 +110,7 @@
         "title": "Communication Skills",
         "duration": "38 mins",
         "level": "Beginner",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/communication.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
         "accent": "yellow"
       },
@@ -119,7 +119,7 @@
         "title": "Technical Fundamentals",
         "duration": "1h 02m",
         "level": "Intermediate",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/technical.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
         "accent": "orange"
       },
@@ -128,7 +128,7 @@
         "title": "Interview Preparation",
         "duration": "55 mins",
         "level": "All Levels",
-        "thumbnailUrl": "",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/interview.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
         "accent": "green"
       }

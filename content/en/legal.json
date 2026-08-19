@@ -4,68 +4,119 @@
     "terms": {
       "eyebrow": "Legal",
       "title": "Terms & Conditions",
-      "intro": "Welcome to Shortlisted. If you continue to browse and use this website or register for our placement program, you agree to comply with and be bound by the following terms and conditions, which together with our Privacy Policy govern HireKarma Private Limited's relationship with you in relation to this platform.",
+      "intro": "By enrolling in the HireKarma Shortlisted Program, candidates agree to comply with the following Terms & Conditions. These conditions are designed to ensure consistent participation, professional conduct, training completion, and fair access to placement opportunities.",
       "sections": [
         {
-          "title": "Definitions",
+          "title": "1. Program Eligibility and Continuation",
           "paragraphs": [
-            "\"Shortlisted\", \"we\", \"us\" or \"our\" refers to the Shortlisted placement program operated by HireKarma Private Limited.",
-            "\"You\" refers to the student, coordinator, or visitor using our website or services."
+            "A candidate's participation in the Shortlisted Program may be reviewed, suspended, cancelled, or terminated in cases of prolonged non-responsiveness to official communication, insufficient attendance, repeated absence from scheduled interviews, failure to participate in mandatory assessments or training activities, or non-compliance with the program requirements."
           ]
         },
         {
-          "title": "Use of This Website",
-          "bullets": [
-            "The content of this website is for general information and use only and is subject to change without notice.",
-            "Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials on this website for any particular purpose.",
-            "You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.",
-            "Your use of any information or materials on this website is entirely at your own risk, for which we shall not be liable.",
-            "It shall be your own responsibility to ensure that any products, services or information available through this website meet your specific requirements."
-          ]
-        },
-        {
-          "title": "Program & Subscription",
-          "bullets": [
-            "Shortlisted is a subscription-based placement program - not a training course or degree program.",
-            "Access to batch assignment, curated jobs, coordinator support, and the student dashboard requires an active subscription unless otherwise approved by HireKarma.",
-            "Batch seats are limited (maximum 12 students per batch) and are assigned on a first-subscribe basis while seats remain available.",
-            "You agree to provide accurate registration details including name, email, phone number, and academic profile information."
-          ]
-        },
-        {
-          "title": "Copyright & Trademarks",
-          "bullets": [
-            "This website contains material which is owned by or licensed to HireKarma Private Limited, including design, layout, graphics and appearance.",
-            "Reproduction is prohibited other than in accordance with the copyright notice.",
-            "All trademarks that are not the property of or licensed to the operator are acknowledged on the website."
-          ]
-        },
-        {
-          "title": "Unauthorized Use & External Links",
-          "bullets": [
-            "Unauthorized use of this website may give rise to a claim for damages and/or may be a criminal offense.",
-            "This website may include links to other websites for additional information. These links do not signify endorsement, and we are not responsible for their content.",
-            "You may not create a link to this website from another website or document without prior written consent from HireKarma Private Limited."
-          ]
-        },
-        {
-          "title": "Payments, Usage & Liability",
-          "bullets": [
-            "Online payments commence after authorization or confirmation from the respective payment gateway.",
-            "Placement support only: The platform is designed to help students access placement opportunities. We do not guarantee any specific job, salary, or offer outcome.",
-            "No placement assurance: We do not promise jobs, interview shortlists, or earnings. Hiring decisions are made solely by employers.",
-            "User responsibility: You are solely responsible for your applications, interview preparation, and conduct during the placement process.",
-            "Refund terms are governed by our Refund & Cancellation Policy."
-          ]
-        },
-        {
-          "title": "Legal Jurisdiction",
+          "title": "2. Salary Expectations",
           "paragraphs": [
-            "Your use of this website and any dispute arising out of such use is subject to the laws of India. Courts at Bhubaneswar, Odisha shall have exclusive jurisdiction, subject to applicable law."
+            "Candidates are expected to maintain realistic and reasonable salary expectations based on their skills, qualifications, experience, performance, market conditions, and the compensation standards of the recruiting organization."
+          ]
+        },
+        {
+          "title": "3. Interview Participation",
+          "paragraphs": [
+            "Candidates must not skip, reject, or withdraw from a scheduled interview solely because the offered or expected compensation does not meet their personal salary expectations."
+          ]
+        },
+        {
+          "title": "4. Mandatory Interview Participation",
+          "paragraphs": [
+            "Candidates are expected to attend all interviews and recruitment opportunities scheduled or assigned to them through HireKarma and participate in the recruitment process professionally and responsibly."
+          ]
+        },
+        {
+          "title": "5. Number of Interview Opportunities",
+          "paragraphs": [
+            "Eligible candidates may receive a limited number of interview opportunities during the program. The number of opportunities may vary based on candidate performance, eligibility, recruiter requirements, interview outcomes, and the availability of suitable recruitment opportunities."
+          ]
+        },
+        {
+          "title": "6. Repeated Absence from Interviews",
+          "paragraphs": [
+            "Candidates who repeatedly miss scheduled interviews without a valid and approved reason may lose eligibility for future interview opportunities and placement support."
+          ]
+        },
+        {
+          "title": "7. Official Communication",
+          "paragraphs": [
+            "Candidates must use the official communication channels designated by HireKarma for all program, training, assessment, and placement-related communication. Creating or using unauthorized individual groups for official placement-related communication is not permitted."
+          ]
+        },
+        {
+          "title": "8. Mandatory Training Participation",
+          "paragraphs": [
+            "Candidates are required to attend and actively participate in the prescribed training schedule throughout the program. This may include technical training, soft skills, aptitude, reasoning, employability skills, assessments, workshops, and other activities as determined by HireKarma."
+          ]
+        },
+        {
+          "title": "9. Minimum Attendance Requirement",
+          "paragraphs": [
+            "Candidates must maintain the minimum attendance percentage prescribed for the program. The standard minimum attendance requirement is 75%, unless otherwise communicated by HireKarma. Candidates falling below the required attendance level may receive fewer interview opportunities, additional training requirements, or may become ineligible for further placement support."
+          ]
+        },
+        {
+          "title": "10. Mandatory Assessments",
+          "paragraphs": [
+            "Candidates must participate in all mandatory assessments conducted as part of the program and meet the prescribed performance requirements. Assessment participation and performance may be considered while determining continued eligibility for placement opportunities."
+          ]
+        },
+        {
+          "title": "11. Final Assessment and Placement Eligibility",
+          "paragraphs": [
+            "Candidates who achieve 60% or above in the final assessment will become eligible to proceed to the placement phase, subject to other program requirements and the availability of suitable opportunities.",
+            "Candidates who score below 60% in the final assessment may be required to undergo an additional round of training, remedial sessions, or a further assessment before being considered for placement opportunities."
+          ]
+        },
+        {
+          "title": "12. Job-Ready Certificate",
+          "paragraphs": [
+            "Candidates who achieve 60% or above in the final assessment may be awarded a Job-Ready Certificate, subject to successful completion of the applicable program requirements."
+          ]
+        },
+        {
+          "title": "13. Professional Conduct",
+          "paragraphs": [
+            "Candidates are expected to maintain professional and respectful communication throughout the program and recruitment process. This includes appropriate communication with HireKarma representatives, trainers, recruiters, HR personnel, companies, and other stakeholders."
+          ]
+        },
+        {
+          "title": "14. Leave and Absence",
+          "paragraphs": [
+            "Leave or absence may be approved only for valid reasons and subject to the program requirements. Candidates should inform HireKarma in advance, wherever reasonably possible, through the prescribed official communication channel and provide appropriate justification when required."
+          ]
+        },
+        {
+          "title": "15. Placement Support and Opportunity Allocation",
+          "paragraphs": [
+            "Placement opportunities are not guaranteed and are subject to candidate eligibility, performance, attendance, assessment results, recruiter requirements, company selection criteria, and availability of suitable opportunities. HireKarma may determine the suitability and allocation of opportunities based on these factors."
+          ]
+        },
+        {
+          "title": "16. Right to Review Eligibility",
+          "paragraphs": [
+            "HireKarma reserves the right to periodically review a candidate's eligibility for continued training, assessments, interviews, and placement support based on attendance, participation, assessment performance, interview participation, professional conduct, responsiveness, and compliance with these Terms & Conditions."
+          ]
+        },
+        {
+          "title": "17. Modification of Program Requirements",
+          "paragraphs": [
+            "HireKarma reserves the right to modify, update, or introduce program requirements, training schedules, assessment criteria, communication processes, or placement procedures when reasonably required for effective program administration."
+          ]
+        },
+        {
+          "title": "18. Acceptance of Terms",
+          "paragraphs": [
+            "By enrolling in or continuing to participate in the Shortlisted Program, the candidate acknowledges that they have read, understood, and agreed to comply with these Terms & Conditions and any additional program guidelines communicated by HireKarma from time to time."
           ]
         }
       ],
-      "closing": "By continuing to use the Shortlisted website and services, you fully accept and agree to these terms and conditions."
+      "closing": "Note: Participation in the Shortlisted Program provides access to training and eligible placement opportunities but does not constitute a guarantee of employment or selection by any recruiting organization."
     },
     "privacy": {
       "eyebrow": "Legal",
