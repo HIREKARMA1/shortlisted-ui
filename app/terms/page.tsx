@@ -3,7 +3,7 @@ import { LegalPageView } from '@/components/pages/LegalPageView';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | Shortlisted',
-  description: 'Terms and conditions for using the Shortlisted placement program by HireKarma.',
+  description: 'Terms and conditions for the HireKarma Shortlisted Program, covering training, attendance, assessments, and placement support.',
 };
 
 export default function Page() {
