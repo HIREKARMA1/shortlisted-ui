@@ -10,8 +10,8 @@
     "titleHighlight2": "ପ୍ଲେସମେଣ୍ଟ ପର୍ଯ୍ୟନ୍ତ",
     "subtitle": "ବିଶେଷଜ୍ଞ-ନେତୃତ୍ୱ ପ୍ରଶିକ୍ଷଣ, AI-ଚାଳିତ ମୂଲ୍ୟାଙ୍କନ ଏବଂ ପ୍ରଥମ ଦିନରୁ ପ୍ଲେସମେଣ୍ଟ ପର୍ଯ୍ୟନ୍ତ ନିରନ୍ତର ସମର୍ଥନ ସହିତ ଏକ ସଂରଚିତ 60-ଦିନିଆ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା।",
     "cta": "Shortlistedରେ ଯୋଗ ଦିଅନ୍ତୁ",
-    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_hero_students.png",
-    "imageAlt": "ଲ୍ୟାପଟପରେ ଏକାଠି ପ୍ରସ୍ତୁତି କରୁଥିବା ଛାତ୍ରଛାତ୍ରୀ",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/Picture2.png",
+    "imageAlt": "ଛାତ୍ର ଶର୍ଟଲିଷ୍ଟେଡ୍ ପ୍ରୋଗ୍ରାମ୍ ଆଡକୁ ଇଙ୍ଗିତ କରୁଛନ୍ତି",
     "features": [
       {
         "id": "human",
@@ -54,7 +54,7 @@
         "title": "ଆପ୍ଟିଚୁଡ୍ ବେସିକ୍ସ",
         "duration": "45 ମିନିଟ୍",
         "level": "ବିଗିନର୍",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/aptitudeBasics.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/apttitude.png",
         "accent": "blue",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
       },
@@ -63,7 +63,7 @@
         "title": "ଲଜିକାଲ୍ ରିଜନିଂ",
         "duration": "52 ମିନିଟ୍",
         "level": "ବିଗିନର୍",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/logicalReasoning.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/logical.png",
         "accent": "sky",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
       },
@@ -72,7 +72,7 @@
         "title": "କମ୍ୟୁନିକେସନ୍ ସ୍କିଲ୍ସ",
         "duration": "38 ମିନିଟ୍",
         "level": "ବିଗିନର୍",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/communication.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/communication+skil.png",
         "accent": "yellow",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
       },
@@ -90,7 +90,7 @@
         "title": "ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରିପାରେସନ୍",
         "duration": "55 ମିନିଟ୍",
         "level": "ସମସ୍ତ ସ୍ତର",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/interview.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/interview+preparation.png",
         "accent": "green",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
       }
@@ -119,21 +119,21 @@
         "id": "shiladitya",
         "name": "ଶିଲାଦିତ୍ୟ ସିନ୍ହା",
         "role": "ସଫ୍ଟ ସ୍କିଲ୍ସ ଓ ଯୋଗାଯୋଗ ଟ୍ରେନର୍",
-        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_shiladitya.png",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shiladitya.png",
         "accent": "blue"
       },
       {
         "id": "dhananjay",
         "name": "ଧନଞ୍ଜୟ",
         "role": "ଆପ୍ଟିଚୁଡ୍ ଓ ଟେକ୍ନିକାଲ୍ ଟ୍ରେନର୍",
-        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_dhananjay.png",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/dhanjaya.png",
         "accent": "orange"
       },
       {
         "id": "rahul",
         "name": "ରାହୁଲ",
         "role": "ଟେକ୍ନିକାଲ୍ ଟ୍ରେନର୍",
-        "imageUrl": "",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/rahul.png",
         "accent": "green"
       }
     ]
