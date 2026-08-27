@@ -22,8 +22,8 @@
     "titleHighlight2": "Placement",
     "subtitle": "A structured 60-day placement journey with expert-led training, AI-powered assessments and continuous support from Day 1 to placement.",
     "cta": "Join Shortlisted",
-    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_hero_students.png",
-    "imageAlt": "Students preparing together on a laptop",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/Picture2.png",
+    "imageAlt": "Student pointing toward the Shortlisted program",
     "features": [
       {
         "id": "human",
@@ -78,7 +78,7 @@
         "title": "Aptitude Basics",
         "duration": "45 mins",
         "level": "Beginner",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/aptitudeBasics.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/apttitude.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
         "videoSources": [
           {
@@ -101,7 +101,7 @@
         "title": "Logical Reasoning",
         "duration": "52 mins",
         "level": "Beginner",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/logicalReasoning.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/logical.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
         "accent": "sky"
       },
@@ -110,7 +110,7 @@
         "title": "Communication Skills",
         "duration": "38 mins",
         "level": "Beginner",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/communication.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/communication+skil.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
         "accent": "yellow"
       },
@@ -128,7 +128,7 @@
         "title": "Interview Preparation",
         "duration": "55 mins",
         "level": "All Levels",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/interview.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/interview+preparation.png",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
         "accent": "green"
       }
@@ -143,21 +143,21 @@
         "id": "shiladitya",
         "name": "Shiladitya Sinha",
         "role": "Soft Skills & Communication Trainer",
-        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_shiladitya.png",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shiladitya.png",
         "accent": "blue"
       },
       {
         "id": "dhananjay",
         "name": "Dhananjay",
         "role": "Aptitude & Technical Trainer",
-        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_dhananjay.png",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/dhanjaya.png",
         "accent": "orange"
       },
       {
         "id": "rahul",
         "name": "Rahul",
         "role": "Technical Trainer",
-        "imageUrl": "",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/rahul.png",
         "accent": "green"
       }
     ]

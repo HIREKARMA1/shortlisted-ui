@@ -50,7 +50,7 @@ export function FreeTrialHero({ session }: FreeTrialHeroProps) {
 
   return (
     <section className="relative overflow-hidden bg-white">
-      <PageContainer className="relative grid items-center gap-6 py-6 sm:gap-8 sm:py-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-4 lg:py-10 xl:grid-cols-[0.9fr_1.1fr]">
+      <PageContainer className="relative grid items-center gap-6 py-6 sm:gap-8 sm:py-8 lg:grid-cols-[0.85fr_1.2fr] lg:gap-3 lg:py-10 xl:grid-cols-[0.8fr_1.25fr]">
         {/* Left content */}
         <div className="relative z-10 w-full max-w-[560px]">
           <span className="inline-flex max-w-full items-center rounded-lg border border-[#67c5ff] bg-[#f3faff] px-3.5 py-2 text-[12px] font-semibold leading-snug text-[#1b52a4] sm:px-7 sm:py-3 sm:text-[15px] sm:leading-none">
@@ -78,17 +78,17 @@ export function FreeTrialHero({ session }: FreeTrialHeroProps) {
         </div>
 
         {/* Right visual — column on mobile so image stacks above cards */}
-        <div className="relative mx-auto flex w-full max-w-[620px] flex-col items-center lg:max-w-none">
-          <div className="relative aspect-[1.12/1] w-full max-w-[610px]">
+        <div className="relative mx-auto flex w-full max-w-[720px] flex-col items-center lg:max-w-none">
+          <div className="relative aspect-[3/2] w-full max-w-[760px] sm:max-w-[820px] lg:max-w-none">
             <DottedRing />
 
-            <div className="absolute inset-x-[5%] bottom-[1%] top-[5%] z-10 flex items-end justify-center">
+            <div className="absolute inset-x-[2%] bottom-0 top-[2%] z-10 flex items-end justify-center lg:justify-end">
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={imageUrl}
                   alt={t('freeTrial.hero.imageAlt')}
-                  className="h-full w-full object-contain object-bottom"
+                  className="h-full w-full max-h-full object-contain object-bottom lg:object-right"
                 />
               ) : (
                 <div className="h-full w-full animate-pulse rounded-3xl bg-[#f5f7fa]" />

@@ -10,8 +10,8 @@
     "titleHighlight2": "प्लेसमेंट तक",
     "subtitle": "विशेषज्ञ-नेतृत्व प्रशिक्षण, एआई-संचालित असेसमेंट और पहले दिन से प्लेसमेंट तक निरंतर समर्थन के साथ एक संरचित 60-दिन का प्लेसमेंट जर्नी।",
     "cta": "Shortlisted से जुड़ें",
-    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shortlisted_hero_students.png",
-    "imageAlt": "लैपटॉप पर साथ मिलकर तैयारी करते छात्र",
+    "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/Picture2.png",
+    "imageAlt": "छात्र शॉर्टलिस्टेड प्रोग्राम की ओर इशारा करते हुए",
     "features": [
       {
         "id": "human",
@@ -54,7 +54,7 @@
         "title": "एप्टीट्यूड बेसिक्स",
         "duration": "45 मिनट",
         "level": "बिगिनर",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/aptitudeBasics.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/apttitude.png",
         "accent": "blue",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
       },
@@ -63,7 +63,7 @@
         "title": "लॉजिकल रीज़निंग",
         "duration": "52 मिनट",
         "level": "बिगिनर",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/logicalReasoning.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/logical.png",
         "accent": "sky",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
       },
@@ -72,7 +72,7 @@
         "title": "कम्युनिकेशन स्किल्स",
         "duration": "38 मिनट",
         "level": "बिगिनर",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/communication.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/communication+skil.png",
         "accent": "yellow",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
       },
@@ -90,7 +90,7 @@
         "title": "इंटरव्यू प्रेपरेशन",
         "duration": "55 मिनट",
         "level": "सभी स्तर",
-        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/videocards/interview.png",
+        "thumbnailUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/interview+preparation.png",
         "accent": "green",
         "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
       }
@@ -119,21 +119,21 @@
         "id": "shiladitya",
         "name": "शिलादित्य सिन्हा",
         "role": "सॉफ्ट स्किल्स और कम्युनिकेशन ट्रेनर",
-        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_shiladitya.png",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/shiladitya.png",
         "accent": "blue"
       },
       {
         "id": "dhananjay",
         "name": "धनंजय",
         "role": "एप्टीट्यूड और टेक्निकल ट्रेनर",
-        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/trainer_dhananjay.png",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/dhanjaya.png",
         "accent": "orange"
       },
       {
         "id": "rahul",
         "name": "राहुल",
         "role": "टेक्निकल ट्रेनर",
-        "imageUrl": "",
+        "imageUrl": "https://shortlisted.s3.us-east-1.amazonaws.com/freeTrial/rahul.png",
         "accent": "green"
       }
     ]

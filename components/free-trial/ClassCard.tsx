@@ -58,9 +58,9 @@ export function ClassCard({ item, playAria, className, onPlay }: ClassCardProps)
         {hasThumb ? (
           <MediaImage
             src={item.thumbnailUrl}
-            alt={item.title}
+            alt=""
             className="absolute inset-0 h-full w-full"
-            imgClassName="object-contain object-center p-3"
+            imgClassName="object-cover object-center"
             rounded="rounded-none"
           />
         ) : (
@@ -70,30 +70,25 @@ export function ClassCard({ item, playAria, className, onPlay }: ClassCardProps)
           </div>
         )}
 
-        <span className="absolute bottom-[14%] left-3.5 z-10" aria-hidden>
+        <span className="absolute bottom-[14%] right-3.5 z-10" aria-hidden>
           <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white shadow-[0_6px_18px_rgba(15,23,42,0.16)] sm:h-[42px] sm:w-[42px]">
             <svg viewBox="0 0 24 24" className="h-8 w-8" style={{ fill: playColor }}>
               <path d="M8 5.5v13l11-6.5L8 5.5z" />
             </svg>
           </span>
         </span>
-        <span className="sr-only">{playAria}</span>
+        <span className="sr-only">{playAria}: {item.title}</span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2.5 px-3.5 py-3.5">
-        <h3 className="font-serif text-[13px] font-bold leading-snug text-[#172033] sm:text-sm">
-          {item.title}
-        </h3>
-        <div className="mt-auto flex w-full items-center justify-between gap-2 text-[11px] leading-none text-[#6b7280]">
-          <span className="inline-flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 shrink-0 text-[#9ca3af]" strokeWidth={1.75} aria-hidden />
-            <span className="font-sans tabular-nums lining-nums">{item.duration}</span>
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <User className="h-3.5 w-3.5 shrink-0 text-[#9ca3af]" strokeWidth={1.75} aria-hidden />
-            <span className="font-sans">{item.level}</span>
-          </span>
-        </div>
+      <div className="mt-auto flex w-full items-center justify-between gap-2 px-3.5 py-3.5 text-[11px] leading-none text-[#6b7280]">
+        <span className="inline-flex items-center gap-1.5">
+          <Clock className="h-3.5 w-3.5 shrink-0 text-[#9ca3af]" strokeWidth={1.75} aria-hidden />
+          <span className="font-sans tabular-nums lining-nums">{item.duration}</span>
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <User className="h-3.5 w-3.5 shrink-0 text-[#9ca3af]" strokeWidth={1.75} aria-hidden />
+          <span className="font-sans">{item.level}</span>
+        </span>
       </div>
     </button>
   );
