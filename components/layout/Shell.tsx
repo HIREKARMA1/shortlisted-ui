@@ -9,7 +9,7 @@ import { getPostLoginPath } from '@/lib/auth/session';
 import { config } from '@/lib/config';
 import { useSession } from '@/hooks/useSession';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
-import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
+import { navExploreClass, navLoginClass } from '@/components/ui/nav-cta';
 
 export function BrandLogo({ className = '', showBadge = false }: { className?: string; showBadge?: boolean }) {
   const { t } = useTranslation();
@@ -61,21 +61,21 @@ export function SiteHeader() {
     </Link>
   );
 
-  const RegisterBtn = (
-    <Link href="/auth/register" className={navRegisterClass}>
-      {t('common.nav.register')}
-    </Link>
+  const ExploreUsBtn = (
+    <a
+      href="https://www.hirekarma.in/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className={navExploreClass}
+    >
+      {t('common.nav.exploreUs')}
+    </a>
   );
 
   const RightActions = () => {
     if (!ready) return null;
     if (session) return UserChip;
-    return (
-      <>
-        {RegisterBtn}
-        {LoginBtn}
-      </>
-    );
+    return LoginBtn;
   };
 
   return (
@@ -118,6 +118,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
+          {ExploreUsBtn}
           <RightActions />
         </div>
 
@@ -163,28 +164,28 @@ export function SiteHeader() {
             )}
             <div className="mt-3 flex flex-col gap-2">
               <LanguageSwitcher variant="menu" />
+              <a
+                href="https://www.hirekarma.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className={`${navExploreClass} text-center`}
+              >
+                {t('common.nav.exploreUs')}
+              </a>
               {session ? (
                 <Link href={profilePath} onClick={() => setOpen(false)} className="flex justify-center py-2">
                   {UserChip}
                 </Link>
               ) : (
                 ready && (
-                  <>
-                    <Link
-                      href="/auth/register"
-                      onClick={() => setOpen(false)}
-                      className={`${navRegisterClass} text-center`}
-                    >
-                      {t('common.nav.register')}
-                    </Link>
-                    <Link
-                      href="/auth/login"
-                      onClick={() => setOpen(false)}
-                      className={`${navLoginClass} text-center`}
-                    >
-                      {t('common.nav.login')}
-                    </Link>
-                  </>
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setOpen(false)}
+                    className={`${navLoginClass} text-center`}
+                  >
+                    {t('common.nav.login')}
+                  </Link>
                 )
               )}
             </div>
