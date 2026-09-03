@@ -3,7 +3,8 @@
 import { SiteHeader } from '@/components/layout/Shell';
 import { SiteFooter } from '@/components/layout/Footer';
 import { FreeTrialHero } from '@/components/free-trial/FreeTrialHero';
-import { FreeTrialClassesSection } from '@/components/free-trial/FreeTrialClassesSection';
+// Temporarily hidden — restore with <FreeTrialClassesSection /> below
+// import { FreeTrialClassesSection } from '@/components/free-trial/FreeTrialClassesSection';
 import { FreeTrialTrainersSection } from '@/components/free-trial/FreeTrialTrainersSection';
 import { FreeTrialJourneySection } from '@/components/free-trial/FreeTrialJourneySection';
 import { FreeTrialApproachSection } from '@/components/free-trial/FreeTrialApproachSection';
@@ -20,7 +21,9 @@ export function FreeTrialPageView() {
       <SiteHeader />
       <div className="font-serif">
         <FreeTrialHero session={session} />
+        {/* Temporarily hidden — restore by uncommenting:
         <FreeTrialClassesSection />
+        */}
         <FreeTrialTrainersSection />
         <FreeTrialJourneySection />
         <FreeTrialApproachSection />
