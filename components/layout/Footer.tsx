@@ -2,12 +2,29 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, MapPin, type LucideProps } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
 import { PRIVACY_URL, REFUND_URL, TERMS_URL } from '@/lib/legal-links';
 import { BrandLogo } from './Shell';
 import { BrandStripe } from '@/components/ui/BrandStripe';
+
+const OFFICE_MAPS_URL =
+  'https://www.google.com/maps/place/HireKarma+Private+Limited/@20.383776281109,85.82036437501301,17z/data=!3m1!4b1!4m6!3m5!1s0x3a19096e0259fc7f:0x7ad66a4df8112eda!8m2!3d20.3837763!4d85.8229393!16s%2Fg%2F11s';
+
+function XLogo({ className, ...props }: LucideProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+      {...props}
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.227-8.451L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 const LEGAL_LINKS = [
   { href: TERMS_URL, labelKey: 'landing.footer.legal.terms' },
@@ -16,7 +33,7 @@ const LEGAL_LINKS = [
 ] as const;
 
 const SOCIAL_LINKS = [
-  { href: 'https://twitter.com/hirekarma', label: 'Twitter', icon: Twitter },
+  { href: 'https://x.com/hirekarma', label: 'X', icon: XLogo },
   { href: 'https://www.linkedin.com/company/hirekarma-pvt-ltd', label: 'LinkedIn', icon: Linkedin },
   { href: 'https://facebook.com/hirekarma', label: 'Facebook', icon: Facebook },
   { href: 'https://instagram.com/hirekarma', label: 'Instagram', icon: Instagram },
@@ -48,9 +65,9 @@ export function SiteFooter() {
     <footer className="bg-white">
       <BrandStripe />
       <div className="page-container py-12 sm:py-14">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_auto] lg:items-start lg:gap-12">
-          <div className="max-w-md">
-            <BrandLogo />
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+          <div className="max-w-md lg:max-w-sm xl:max-w-md">
+            <BrandLogo className="min-h-[1.75rem] sm:min-h-8" />
             <p className="mt-4 text-sm leading-relaxed text-ink-muted sm:text-base">
               {t('landing.footer.description')}
             </p>
@@ -74,19 +91,32 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="space-y-2 text-sm leading-relaxed text-ink-muted sm:text-base">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-primary">
+          <nav aria-label="Legal" className="shrink-0">
+            <h3 className="mb-4 flex min-h-[1.75rem] items-center text-sm font-semibold uppercase tracking-wide text-ink-primary sm:min-h-8">
+              {t('landing.footer.policyTitle')}
+            </h3>
+            <ul className="flex flex-col gap-2.5 text-sm leading-relaxed sm:text-base">
+              {LEGAL_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="font-medium text-ink-secondary transition hover:text-brand-blue"
+                  >
+                    {t(item.labelKey)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="max-w-xs shrink-0 space-y-2.5 text-sm leading-relaxed text-ink-muted sm:text-base">
+            <h3 className="mb-4 flex min-h-[1.75rem] items-center text-sm font-semibold uppercase tracking-wide text-ink-primary sm:min-h-8">
               {t('landing.footer.contactTitle')}
             </h3>
 
-            <p>
-              <span className="font-medium text-ink-secondary">{t('landing.footer.officeLabel')}:</span>{' '}
-              {officeAddress}
-            </p>
-
             {contactEmail && (
-              <p>
-                <span className="font-medium text-ink-secondary">{t('landing.footer.emailLabel')}:</span>{' '}
+              <p className="grid grid-cols-[5.5rem_1fr] items-start gap-x-2">
+                <span className="font-medium text-ink-secondary">{t('landing.footer.emailLabel')}:</span>
                 <a href={`mailto:${contactEmail}`} className="transition hover:text-brand-blue">
                   {contactEmail}
                 </a>
@@ -94,8 +124,8 @@ export function SiteFooter() {
             )}
 
             {contactPhone && (
-              <p>
-                <span className="font-medium text-ink-secondary">{t('landing.footer.contactLabel')}:</span>{' '}
+              <p className="grid grid-cols-[5.5rem_1fr] items-start gap-x-2">
+                <span className="font-medium text-ink-secondary">{t('landing.footer.contactLabel')}:</span>
                 <a
                   href={`tel:${contactPhone.replace(/\s/g, '')}`}
                   className="transition hover:text-brand-blue"
@@ -104,25 +134,20 @@ export function SiteFooter() {
                 </a>
               </p>
             )}
-          </div>
 
-          <nav aria-label="Legal">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-primary">
-              {t('landing.footer.policyTitle')}
-            </h3>
-            <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3 lg:flex-col">
-              {LEGAL_LINKS.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-base font-medium text-ink-secondary transition hover:text-brand-blue sm:text-[1.05rem]"
-                  >
-                    {t(item.labelKey)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+            <p className="grid grid-cols-[5.5rem_1fr] items-start gap-x-2">
+              <a
+                href={OFFICE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View office location on Google Maps"
+                className="mt-0.5 w-fit text-ink-secondary transition hover:text-brand-blue"
+              >
+                <MapPin className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]" />
+              </a>
+              <span>{officeAddress}</span>
+            </p>
+          </div>
         </div>
 
         <div className="mt-10 border-t border-line-default pt-6 text-sm text-ink-muted sm:text-base">
