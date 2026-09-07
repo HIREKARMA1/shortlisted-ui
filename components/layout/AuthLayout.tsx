@@ -73,7 +73,7 @@ export function AuthLayout({
           <p className="relative text-xs text-white/60">{t('landing.footer.poweredBy')}</p>
         </div>
 
-        <div className={cn('relative flex min-w-0 flex-col overflow-x-hidden', fitViewport && 'h-full overflow-hidden')}>
+        <div className={cn('relative flex min-w-0 flex-col overflow-x-clip', fitViewport && 'h-full overflow-hidden')}>
           <AuthDecor />
 
           <div className="flex h-1 w-full shrink-0 lg:hidden" aria-hidden>
@@ -85,14 +85,14 @@ export function AuthLayout({
 
           <div
             className={cn(
-              'relative z-10 flex shrink-0 items-center justify-between gap-4 px-4 sm:px-8',
+              'relative z-30 flex shrink-0 items-center justify-between gap-4 px-4 sm:px-8',
               fitViewport ? 'py-3' : 'py-4'
             )}
           >
             <div className="lg:hidden">
               <BrandLogo />
             </div>
-            <div className="ml-auto w-36">
+            <div className="relative z-30 ml-auto w-36 overflow-visible">
               <LanguageSwitcher />
             </div>
           </div>
