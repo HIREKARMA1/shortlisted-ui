@@ -26,15 +26,6 @@ const steps: {
   { id: 'grow', icon: Settings2 },
 ];
 
-const journeyKeys = [
-  'talent',
-  'skills',
-  'readiness',
-  'industry',
-  'opportunity',
-  'growth',
-] as const;
-
 function StepConnector() {
   return (
     <div
@@ -87,38 +78,6 @@ function EcosystemStep({
   );
 }
 
-function JourneyBar() {
-  const { t } = useTranslation();
-
-  return (
-    <div className="mx-auto mt-8 w-full max-w-4xl overflow-x-auto overscroll-x-contain pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div
-        className={[
-          'mx-auto flex w-max min-w-full items-center justify-center gap-2 rounded-full px-5 py-3.5 sm:gap-3 sm:px-8 sm:py-4',
-          'bg-gradient-to-r from-brand-sky/25 via-secondary-100 to-brand-sky/30',
-          'shadow-[0_0_0_1px_rgba(0,162,229,0.18),0_10px_40px_rgba(0,162,229,0.28)]',
-          'transition-shadow duration-500 hover:shadow-[0_0_0_1px_rgba(0,162,229,0.28),0_14px_48px_rgba(0,162,229,0.38)]',
-        ].join(' ')}
-      >
-        {journeyKeys.map((key, index) => (
-          <Fragment key={key}>
-            <span className="whitespace-nowrap font-display text-[11px] font-extrabold uppercase tracking-[0.12em] text-brand-blue sm:text-xs lg:text-sm">
-              {t(`landing.connectedEcosystem.journey.${key}`)}
-            </span>
-            {index < journeyKeys.length - 1 && (
-              <ChevronRight
-                className="h-3.5 w-3.5 shrink-0 text-brand-blue/55 sm:h-4 sm:w-4"
-                strokeWidth={2.75}
-                aria-hidden
-              />
-            )}
-          </Fragment>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function ConnectedEcosystemSection() {
   const { t } = useTranslation();
 
@@ -152,24 +111,6 @@ export function ConnectedEcosystemSection() {
               </Fragment>
             ))}
           </ol>
-        </div>
-
-        <div className="mx-auto mt-14 max-w-3xl text-center sm:mt-16">
-          <h3 className="font-display text-xl font-extrabold uppercase tracking-[0.08em] text-brand-blue sm:text-2xl lg:text-[1.75rem]">
-            {t('landing.connectedEcosystem.different.title')}
-          </h3>
-          <p className="mt-4 text-[0.9375rem] font-medium leading-relaxed text-ink-primary sm:text-base">
-            {t('landing.connectedEcosystem.different.paragraph1')}
-          </p>
-          <p className="mt-3 text-[0.9375rem] font-medium leading-relaxed text-ink-primary sm:text-base">
-            {t('landing.connectedEcosystem.different.paragraph2')}
-          </p>
-
-          <JourneyBar />
-
-          <p className="mx-auto mt-6 max-w-2xl text-[0.9375rem] font-medium leading-relaxed text-ink-primary sm:text-base">
-            {t('landing.connectedEcosystem.different.closing')}
-          </p>
         </div>
       </PageContainer>
     </section>

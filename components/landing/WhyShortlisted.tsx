@@ -1,18 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import {
-  ArrowLeft,
-  ArrowRight,
-  Bot,
-  UserRound,
-  ClipboardCheck,
-  Crosshair,
-  FileText,
-  GraduationCap,
-  Users,
-  type LucideIcon,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 
 const cards: {
@@ -20,72 +9,48 @@ const cards: {
   titleKey: string;
   descKey: string;
   number: string;
-  icon: LucideIcon;
-  iconBg: string;
-  iconColor: string;
 }[] = [
   {
     id: 'agent',
     titleKey: 'landing.whyShortlisted.cards.agent.title',
     descKey: 'landing.whyShortlisted.cards.agent.desc',
     number: '01',
-    icon: Bot,
-    iconBg: 'bg-[#f0e8ff]',
-    iconColor: 'text-[#7c5cbf]',
   },
   {
     id: 'coordinator',
     titleKey: 'landing.whyShortlisted.cards.coordinator.title',
     descKey: 'landing.whyShortlisted.cards.coordinator.desc',
     number: '02',
-    icon: UserRound,
-    iconBg: 'bg-[#e4f7e8]',
-    iconColor: 'text-[#3d9b55]',
   },
   {
     id: 'assessments',
     titleKey: 'landing.whyShortlisted.cards.assessments.title',
     descKey: 'landing.whyShortlisted.cards.assessments.desc',
     number: '03',
-    icon: ClipboardCheck,
-    iconBg: 'bg-[#fff0e0]',
-    iconColor: 'text-[#e07a2f]',
   },
   {
     id: 'matching',
     titleKey: 'landing.whyShortlisted.cards.matching.title',
     descKey: 'landing.whyShortlisted.cards.matching.desc',
     number: '04',
-    icon: Crosshair,
-    iconBg: 'bg-[#e4f0ff]',
-    iconColor: 'text-[#3b7dd8]',
   },
   {
     id: 'tracking',
     titleKey: 'landing.whyShortlisted.cards.tracking.title',
     descKey: 'landing.whyShortlisted.cards.tracking.desc',
     number: '05',
-    icon: FileText,
-    iconBg: 'bg-[#ffe8f0]',
-    iconColor: 'text-[#d45a8a]',
   },
   {
     id: 'prep',
     titleKey: 'landing.whyShortlisted.cards.prep.title',
     descKey: 'landing.whyShortlisted.cards.prep.desc',
     number: '06',
-    icon: GraduationCap,
-    iconBg: 'bg-[#efe8ff]',
-    iconColor: 'text-[#6b4fc4]',
   },
   {
     id: 'batch',
     titleKey: 'landing.whyShortlisted.cards.batch.title',
     descKey: 'landing.whyShortlisted.cards.batch.desc',
     number: '07',
-    icon: Users,
-    iconBg: 'bg-[#e0f7f4]',
-    iconColor: 'text-[#2a9b8f]',
   },
 ];
 
@@ -103,21 +68,18 @@ function HeadingSparkle({ className }: { className?: string }) {
 
 function FeatureCard({ card }: { card: (typeof cards)[number] }) {
   const { t } = useTranslation();
-  const Icon = card.icon;
 
   return (
     <article className="group flex w-[300px] shrink-0 flex-col rounded-2xl bg-white p-7 shadow-[0_4px_24px_rgba(15,23,42,0.06)] transition-all duration-300 ease-out hover:-translate-y-2.5 hover:shadow-[0_16px_40px_rgba(15,23,42,0.12)] sm:w-[320px] sm:p-8">
-      <div className={`flex h-16 w-16 items-center justify-center rounded-full ${card.iconBg}`}>
-        <Icon className={`h-8 w-8 ${card.iconColor}`} strokeWidth={1.75} />
+      <div className="flex items-start gap-3">
+        <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#25d0ba] text-xs font-bold tracking-wide text-white">
+          {card.number}
+        </span>
+
+        <h3 className="font-display text-lg font-bold leading-snug text-brand-blue sm:text-xl">
+          {t(card.titleKey)}
+        </h3>
       </div>
-
-      <span className="mt-5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#25d0ba] text-xs font-bold tracking-wide text-white">
-        {card.number}
-      </span>
-
-      <h3 className="mt-3 font-display text-lg font-bold leading-snug text-brand-blue sm:text-xl">
-        {t(card.titleKey)}
-      </h3>
 
       <p className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-[0.9375rem]">
         {t(card.descKey)}
