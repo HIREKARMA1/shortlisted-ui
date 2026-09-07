@@ -1,29 +1,16 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useRef } from 'react';
 import {
-  ArrowDown,
-  BarChart3,
-  Bot,
   Briefcase,
-  Building2,
-  CalendarClock,
-  ClipboardCheck,
-  Compass,
-  Crosshair,
-  FileStack,
-  GraduationCap,
+  Check,
   Landmark,
-  LineChart,
-  ListChecks,
-  Search,
-  Target,
   Trophy,
-  UserPlus,
-  UserRound,
   Users,
+  X,
   type LucideIcon,
 } from 'lucide-react';
+import { motion, useInView, type Variants } from 'framer-motion';
 import { useTranslation } from '@/lib/i18n/context';
 import { PageContainer } from '@/components/layout/Shell';
 import { cn } from '@/lib/utils';
@@ -31,11 +18,13 @@ import { cn } from '@/lib/utils';
 const STAT_KEYS = ['batch', 'coordinator', 'matching'] as const;
 const STAT_ICONS = { batch: Users, coordinator: Trophy, matching: Briefcase } as const;
 
-const COLLEGE_FEATURE_KEYS = [
+/** Aligned 1:1 comparison steps (college ↔ shortlisted) */
+const COMPARISON_STEPS = [
   'registration',
   'assessment',
   'discovery',
   'alignment',
+  'applications',
   'shortlisting',
   'drives',
   'interviews',
@@ -43,98 +32,156 @@ const COLLEGE_FEATURE_KEYS = [
   'reports',
 ] as const;
 
-const COLLEGE_FEATURE_ICONS: Record<(typeof COLLEGE_FEATURE_KEYS)[number], LucideIcon> = {
-  registration: UserPlus,
-  assessment: ClipboardCheck,
-  discovery: Search,
-  alignment: Target,
-  shortlisting: ListChecks,
-  drives: Building2,
-  interviews: CalendarClock,
-  tracking: LineChart,
-  reports: BarChart3,
+type StepKey = (typeof COMPARISON_STEPS)[number];
+
+const BLUE = '#1b52a4';
+const PURPLE = '#7C3AED';
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: Math.min(i * 0.03, 0.28) },
+  }),
 };
 
-const SHORTLISTED_FEATURE_KEYS = [
-  'agent',
-  'coordinator',
-  'assessment',
-  'alignment',
-  'applications',
-  'matching',
-  'prep',
-  'tracking',
-  'offers',
-] as const;
-
-const SHORTLISTED_FEATURE_ICONS: Record<(typeof SHORTLISTED_FEATURE_KEYS)[number], LucideIcon> = {
-  agent: Bot,
-  coordinator: UserRound,
-  assessment: ClipboardCheck,
-  alignment: Compass,
-  applications: FileStack,
-  matching: Crosshair,
-  prep: GraduationCap,
-  tracking: ListChecks,
-  offers: Trophy,
-};
-
-const BLUE = {
-  base: '#1b52a4',
-  soft: '#E8EEF8',
-  line: '#93B4E0',
-  text: '#1b52a4',
-};
-
-const PURPLE = {
-  base: '#7C3AED',
-  soft: '#F3EEFF',
-  line: '#C4B5FD',
-  text: '#6D28D9',
-};
-
-function useFadeUpOnScroll<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('is-visible');
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return ref;
-}
-
-function FadeUp({
-  children,
-  className,
-  delayMs = 0,
+function ComparisonCard({
+  title,
+  desc,
+  tone,
+  step,
 }: {
-  children: ReactNode;
-  className?: string;
-  delayMs?: number;
+  title: string;
+  desc: string;
+  tone: 'blue' | 'purple';
+  step: number;
 }) {
-  const ref = useFadeUpOnScroll<HTMLDivElement>();
+  const isRight = tone === 'purple';
+  const label = String(step).padStart(2, '0');
 
   return (
-    <div
-      ref={ref}
-      className={cn('sl-fade-up', className)}
-      style={delayMs ? { transitionDelay: `${delayMs}ms` } : undefined}
+    <article
+      className={cn(
+        'group flex h-full flex-col rounded-xl border bg-white px-3 py-2.5 transition-colors duration-200 sm:px-3.5 sm:py-3',
+        isRight
+          ? 'border-violet-100 hover:border-violet-200'
+          : 'border-slate-200/90 hover:border-brand-blue/25'
+      )}
     >
-      {children}
+      <div className="flex items-start gap-2">
+        <span
+          className={cn(
+            'mt-0.5 shrink-0 font-display text-[11px] font-bold tabular-nums leading-none',
+            isRight
+              ? 'bg-gradient-to-r from-[#1b52a4] to-[#7C3AED] bg-clip-text text-transparent'
+              : 'text-slate-400'
+          )}
+        >
+          {label}
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-2">
+            <h4
+              className={cn(
+                'font-display text-[12.5px] font-bold leading-snug tracking-tight sm:text-[13px]',
+                isRight ? 'text-[#3B0764]' : 'text-ink-primary'
+              )}
+            >
+              {title}
+            </h4>
+            {isRight ? (
+              <span
+                className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-white"
+                style={{ background: `linear-gradient(135deg, ${BLUE}, ${PURPLE})` }}
+              >
+                <Check className="h-2.5 w-2.5" strokeWidth={3} />
+              </span>
+            ) : (
+              <span
+                className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-400"
+                aria-hidden
+              >
+                <X className="h-2.5 w-2.5" strokeWidth={3} />
+              </span>
+            )}
+          </div>
+          <p
+            className={cn(
+              'mt-1 line-clamp-2 text-[11.5px] leading-snug sm:text-[12px]',
+              isRight ? 'text-[#5B21B6]/75' : 'text-ink-muted'
+            )}
+          >
+            {desc}
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function ColumnHeader({
+  label,
+  title,
+  subtitle,
+  icon: Icon,
+  tone,
+}: {
+  label: string;
+  title: string;
+  subtitle: string;
+  icon: LucideIcon;
+  tone: 'blue' | 'purple';
+}) {
+  const isRight = tone === 'purple';
+
+  return (
+    <div className="flex flex-col">
+      <span
+        className={cn(
+          'inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em]',
+          isRight
+            ? 'bg-gradient-to-r from-[#1b52a4] to-[#7C3AED] text-white'
+            : 'bg-slate-100 text-slate-500'
+        )}
+      >
+        {label}
+      </span>
+
+      <div className="mt-2.5 flex items-start gap-2.5 sm:mt-3 sm:gap-3">
+        <div
+          className={cn(
+            'flex h-9 w-9 shrink-0 items-center justify-center sm:h-10 sm:w-10',
+            isRight ? 'rounded-full' : 'rounded-xl'
+          )}
+          style={{
+            background: isRight ? `linear-gradient(135deg, ${BLUE}, ${PURPLE})` : BLUE,
+          }}
+        >
+          <Icon className="h-4 w-4 text-white" strokeWidth={1.75} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="font-display text-[15px] font-bold leading-snug tracking-tight text-ink-primary sm:text-base md:text-lg">
+            {title}
+            {isRight && (
+              <span
+                className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 align-middle"
+                title="Active"
+                aria-label="Active"
+              />
+            )}
+          </h3>
+          <p
+            className={cn(
+              'mt-0.5 text-[11.5px] leading-snug sm:text-[12.5px]',
+              isRight ? 'text-[#5B21B6]/70' : 'text-ink-muted'
+            )}
+          >
+            {subtitle}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -142,6 +189,8 @@ function FadeUp({
 /** Stats bar + college placement vs Shortlisted placement cell */
 export function ImpactSection() {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { once: true, amount: 0.08, margin: '0px 0px -32px 0px' });
 
   return (
     <section className="relative pt-8 pb-2 sm:pt-10 sm:pb-3">
@@ -172,179 +221,94 @@ export function ImpactSection() {
             </div>
           </div>
 
-          {/* Two-column placement comparison */}
-          <div className="w-full rounded-[20px] bg-[#F8FAFC] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-8 xl:gap-12">
-              {/* LEFT — College Placement */}
-              <FadeUp>
-                <div className="flex h-full flex-col">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-blue sm:text-xs">
-                    {t('landing.impact.comparison.college.label')}
-                  </p>
+          {/* Two-column placement comparison — no paper-like wrapper */}
+          <div ref={sectionRef} className="relative w-full py-2 sm:py-4">
+            {/* Header */}
+            <motion.div
+              className="mx-auto max-w-3xl text-center"
+              initial="hidden"
+              animate={inView ? 'visible' : 'hidden'}
+              variants={fadeUp}
+              custom={0}
+            >
+              <h2 className="font-display text-[1.5rem] font-extrabold leading-[1.25] tracking-tight text-ink-primary sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] lg:leading-[1.2]">
+                {t('landing.impact.comparison.titleBefore')}
+                <span className="bg-gradient-to-r from-[#1b52a4] via-[#5B6FE8] to-[#7C3AED] bg-clip-text text-transparent">
+                  {t('landing.impact.comparison.titleHighlight')}
+                </span>
+              </h2>
 
-                  <div className="mt-4 flex min-h-[4.5rem] items-start gap-3 sm:min-h-[5rem] sm:gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-blue shadow-sm sm:h-14 sm:w-14">
-                      <Landmark className="h-6 w-6 text-white sm:h-7 sm:w-7" strokeWidth={1.75} />
-                    </div>
-                    <h3 className="max-w-[22ch] font-display text-lg font-bold leading-snug tracking-tight text-ink-primary sm:max-w-[26ch] sm:text-xl lg:text-[1.45rem] lg:leading-snug">
-                      {t('landing.impact.comparison.college.headingBefore')}
-                      <span className="block text-brand-blue">
-                        {t('landing.impact.comparison.college.headingHighlight')}
-                      </span>
-                    </h3>
-                  </div>
+              <p className="mx-auto mt-2.5 max-w-xl text-[13px] leading-relaxed text-ink-muted sm:mt-3 sm:max-w-2xl sm:text-[15px] md:text-base">
+                {t('landing.impact.comparison.subtitle')}
+              </p>
+            </motion.div>
 
-                  <ol className="relative mt-7 flex-1 space-y-0 pl-1">
-                    {COLLEGE_FEATURE_KEYS.map((key, index) => {
-                      const Icon = COLLEGE_FEATURE_ICONS[key];
-                      const isLast = index === COLLEGE_FEATURE_KEYS.length - 1;
-                      const step = index + 1;
-
-                      return (
-                        <li key={key} className="relative">
-                          <FadeUp delayMs={index * 40}>
-                            <div className="relative flex gap-3 sm:gap-3.5">
-                              <div className="relative flex w-8 shrink-0 flex-col items-center sm:w-9">
-                                <span
-                                  className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-bold text-white shadow-sm sm:h-9 sm:w-9 sm:text-sm"
-                                  style={{ backgroundColor: BLUE.base }}
-                                >
-                                  {step}
-                                </span>
-                                {!isLast && (
-                                  <span
-                                    className="absolute bottom-0 left-1/2 top-8 w-[2px] -translate-x-1/2 sm:top-9"
-                                    style={{ backgroundColor: BLUE.line }}
-                                    aria-hidden
-                                  />
-                                )}
-                              </div>
-
-                              <article className="group mb-1 flex min-h-[5.5rem] min-w-0 flex-1 items-start rounded-[16px] border border-slate-200/80 bg-white p-3 shadow-[0_4px_18px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-blue/25 hover:shadow-[0_10px_28px_rgba(27,82,164,0.12)] sm:min-h-[5.75rem] sm:p-3.5">
-                                <div className="flex w-full items-start gap-2.5 sm:gap-3">
-                                  <div
-                                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors duration-300 group-hover:bg-brand-blue group-hover:text-white"
-                                    style={{ backgroundColor: BLUE.soft, color: BLUE.base }}
-                                  >
-                                    <Icon className="h-4 w-4" strokeWidth={2} />
-                                  </div>
-                                  <div className="min-w-0 flex-1">
-                                    <h4 className="text-[14px] font-bold leading-snug text-ink-primary sm:text-[15px]">
-                                      {t(`landing.impact.comparison.college.features.${key}.title`)}
-                                    </h4>
-                                    <p className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-ink-muted sm:text-[13px]">
-                                      {t(`landing.impact.comparison.college.features.${key}.desc`)}
-                                    </p>
-                                  </div>
-                                </div>
-                              </article>
-                            </div>
-                          </FadeUp>
-
-                          {!isLast && (
-                            <div className="flex justify-center py-1 pl-10 sm:pl-12" aria-hidden>
-                              <ArrowDown
-                                className="h-3.5 w-3.5"
-                                style={{ color: BLUE.base }}
-                                strokeWidth={2.5}
-                              />
-                            </div>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ol>
+            {/* Comparison grid — flat, no outer card */}
+            <motion.div
+              className="relative mx-auto mt-6 w-full max-w-6xl sm:mt-8"
+              initial="hidden"
+              animate={inView ? 'visible' : 'hidden'}
+              variants={fadeUp}
+              custom={1}
+            >
+              {/* Column headers */}
+              <div className="grid grid-cols-1 gap-4 border-b border-slate-200/80 pb-4 md:grid-cols-2 md:items-stretch md:gap-0 md:pb-5">
+                <div className="md:border-r md:border-slate-200/80 md:pr-5 lg:pr-6">
+                  <ColumnHeader
+                    label={t('landing.impact.comparison.college.badge')}
+                    title={t('landing.impact.comparison.college.title')}
+                    subtitle={t('landing.impact.comparison.college.subtitle')}
+                    icon={Landmark}
+                    tone="blue"
+                  />
                 </div>
-              </FadeUp>
+                <div className="relative md:pl-5 lg:pl-6">
+                  <div
+                    className="pointer-events-none absolute left-0 top-0 hidden h-full w-0.5 bg-gradient-to-b from-[#1b52a4] to-[#7C3AED] md:block"
+                    aria-hidden
+                  />
+                  <ColumnHeader
+                    label={t('landing.impact.comparison.shortlisted.badge')}
+                    title={t('landing.impact.comparison.shortlisted.title')}
+                    subtitle={t('landing.impact.comparison.shortlisted.subtitle')}
+                    icon={Users}
+                    tone="purple"
+                  />
+                </div>
+              </div>
 
-              {/* RIGHT — Shortlisted Placement Cell */}
-              <FadeUp delayMs={80}>
-                <div className="flex h-full flex-col">
-                  <p
-                    className="text-[11px] font-bold uppercase tracking-[0.18em] sm:text-xs"
-                    style={{ color: PURPLE.text }}
-                  >
-                    {t('landing.impact.comparison.shortlisted.label')}
-                  </p>
+              {/* Compact step rows */}
+              <ol className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
+                {COMPARISON_STEPS.map((key: StepKey, index) => {
+                  const step = index + 1;
 
-                  <div className="mt-4 flex min-h-[4.5rem] items-start gap-3 sm:min-h-[5rem] sm:gap-4">
-                    <div
-                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full shadow-sm sm:h-14 sm:w-14"
-                      style={{ backgroundColor: PURPLE.base }}
+                  return (
+                    <motion.li
+                      key={key}
+                      custom={index + 2}
+                      variants={fadeUp}
+                      initial="hidden"
+                      animate={inView ? 'visible' : 'hidden'}
                     >
-                      <Users className="h-6 w-6 text-white sm:h-7 sm:w-7" strokeWidth={1.75} />
-                    </div>
-                    <h3 className="max-w-[22ch] font-display text-lg font-bold leading-snug tracking-tight text-ink-primary sm:max-w-[26ch] sm:text-xl lg:text-[1.45rem] lg:leading-snug">
-                      {t('landing.impact.comparison.shortlisted.headingBefore')}
-                      <span className="block text-brand-orange">
-                        {t('landing.impact.comparison.shortlisted.headingHighlight')}
-                      </span>
-                    </h3>
-                  </div>
-
-                  <ol className="relative mt-7 flex-1 space-y-0 pl-1">
-                    {SHORTLISTED_FEATURE_KEYS.map((key, index) => {
-                      const Icon = SHORTLISTED_FEATURE_ICONS[key];
-                      const isLast = index === SHORTLISTED_FEATURE_KEYS.length - 1;
-                      const step = index + 1;
-
-                      return (
-                        <li key={key} className="relative">
-                          <FadeUp delayMs={index * 45}>
-                            <div className="relative flex gap-3 sm:gap-3.5">
-                              <div className="relative flex w-8 shrink-0 flex-col items-center sm:w-9">
-                                <span
-                                  className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-bold text-white shadow-sm sm:h-9 sm:w-9 sm:text-sm"
-                                  style={{ backgroundColor: PURPLE.base }}
-                                >
-                                  {step}
-                                </span>
-                                {!isLast && (
-                                  <span
-                                    className="absolute bottom-0 left-1/2 top-8 w-[2px] -translate-x-1/2 sm:top-9"
-                                    style={{ backgroundColor: PURPLE.line }}
-                                    aria-hidden
-                                  />
-                                )}
-                              </div>
-
-                              <article className="group mb-1 flex min-h-[5.5rem] min-w-0 flex-1 items-start rounded-[16px] border border-slate-200/80 bg-white p-3 shadow-[0_4px_18px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(124,58,237,0.12)] sm:min-h-[5.75rem] sm:p-3.5">
-                                <div className="flex w-full items-start gap-2.5 sm:gap-3">
-                                  <div
-                                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-105"
-                                    style={{ backgroundColor: PURPLE.soft, color: PURPLE.base }}
-                                  >
-                                    <Icon className="h-4 w-4" strokeWidth={2} />
-                                  </div>
-                                  <div className="min-w-0 flex-1">
-                                    <h4 className="text-[14px] font-bold leading-snug text-ink-primary sm:text-[15px]">
-                                      {t(`landing.impact.comparison.shortlisted.features.${key}.title`)}
-                                    </h4>
-                                    <p className="mt-0.5 line-clamp-2 text-[12px] leading-snug text-ink-muted sm:text-[13px]">
-                                      {t(`landing.impact.comparison.shortlisted.features.${key}.desc`)}
-                                    </p>
-                                  </div>
-                                </div>
-                              </article>
-                            </div>
-                          </FadeUp>
-
-                          {!isLast && (
-                            <div className="flex justify-center py-1 pl-10 sm:pl-12" aria-hidden>
-                              <ArrowDown
-                                className="h-3.5 w-3.5"
-                                style={{ color: PURPLE.base }}
-                                strokeWidth={2.5}
-                              />
-                            </div>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </div>
-              </FadeUp>
-            </div>
+                      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:items-stretch md:gap-3 lg:gap-4">
+                        <ComparisonCard
+                          step={step}
+                          tone="blue"
+                          title={t(`landing.impact.comparison.college.features.${key}.title`)}
+                          desc={t(`landing.impact.comparison.college.features.${key}.desc`)}
+                        />
+                        <ComparisonCard
+                          step={step}
+                          tone="purple"
+                          title={t(`landing.impact.comparison.shortlisted.features.${key}.title`)}
+                          desc={t(`landing.impact.comparison.shortlisted.features.${key}.desc`)}
+                        />
+                      </div>
+                    </motion.li>
+                  );
+                })}
+              </ol>
+            </motion.div>
           </div>
         </div>
       </PageContainer>
