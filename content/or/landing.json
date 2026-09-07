@@ -22,72 +22,132 @@
       "matching": { "value": "AI", "label": "ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ଇଞ୍ଜିନ" }
     },
     "comparison": {
-      "title": "ଆପଣଙ୍କ କଲେଜ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ vs ଆମର Shortlisted",
-      "collegeHeader": "କଲେଜ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
-      "shortlistedHeader": "Shortlisted",
-      "rows": {
-        "pool": {
-          "college": "ବଡ଼ ଛାତ୍ର ପୁଲ୍",
-          "shortlisted": "ପ୍ରତି ବ୍ୟାଚ୍ କେବଳ 12 ଛାତ୍ର"
-        },
-        "competition": {
-          "college": "ସୀମିତ ସୁଯୋଗ ପାଇଁ ଅଧିକ ପ୍ରତିଯୋଗିତା",
-          "shortlisted": "କ୍ୟୁରେଟେଡ୍ କୋହର୍ଟରେ କମ୍ ପ୍ରତିଯୋଗିତା"
-        },
-        "support": {
-          "college": "ସାଧାରଣ ପ୍ଲେସମେଣ୍ଟ ସହାୟତା",
-          "shortlisted": "ବ୍ୟକ୍ତିଗତ ପ୍ଲେସମେଣ୍ଟ ରୋଡମ୍ୟାପ୍"
-        },
-        "attention": {
-          "college": "ସୀମିତ ବ୍ୟକ୍ତିଗତ ଧ୍ୟାନ",
-          "shortlisted": "ସମର୍ପିତ ପ୍ଲେସମେଣ୍ଟ କୋଅର୍ଡିନେଟର"
-        },
-        "opportunities": {
-          "college": "ସୁଯୋଗ ଆପଣଙ୍କ କ୍ୟାରିୟର ଲକ୍ଷ୍ୟ ସହ ମେଳ ନହୋଇପାରେ",
-          "shortlisted": "ଆପଣଙ୍କ ରୁଚି ସହ ସଂଯୁକ୍ତ ରୋଲ୍-ଫୋକସ୍ଡ ସୁଯୋଗ"
-        },
-        "timing": {
-          "college": "ପ୍ଲେସମେଣ୍ଟ କାର୍ଯ୍ୟକଳାପ ପ୍ରାୟତଃ ବିଳମ୍ବରେ ଆରମ୍ଭ ହୁଏ",
-          "shortlisted": "ସଂରଚିତ 60-ଦିନିଆ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା"
-        },
-        "process": {
-          "college": "ମାନୁଆଲ୍ ପ୍ରକ୍ରିୟା ଏବଂ ଟ୍ରାକିଂ",
-          "shortlisted": "AI-ଚାଳିତ ଟ୍ରାକିଂ ଏବଂ ଇନସାଇଟ୍ସ"
-        },
-        "resources": {
-          "college": "ସାଝା ପ୍ଲେସମେଣ୍ଟ ସମ୍ବଳ",
-          "shortlisted": "ମାନବ + AI ସପୋର୍ଟ ସିଷ୍ଟମ୍"
-        },
-        "visibility": {
-          "college": "ସୀମିତ ଆବେଦନ ଦୃଶ୍ୟତା",
-          "shortlisted": "ରିଅଲ୍-ଟାଇମ୍ ଆବେଦନ ଟ୍ରାକିଂ"
-        },
-        "schedule": {
-          "college": "ସହାୟତା କ୍ୟାମ୍ପସ୍ ସିଡ୍ୟୁଲ୍ ଉପରେ ନିର୍ଭର",
-          "shortlisted": "ନିରନ୍ତର ମାର୍ଗଦର୍ଶନ ଏବଂ ଉତ୍ତରଦାୟିତ୍ୱ"
+      "college": {
+        "label": "YOUR COLLEGE PLACEMENT",
+        "headingBefore": "Moving Colleges from Placement Administration to ",
+        "headingHighlight": "Placement Management",
+        "description": "College placement is more than conducting recruitment drives. It involves preparing students, identifying suitable opportunities, managing applications, coordinating recruiters, tracking progress, and maintaining visibility throughout the hiring cycle.\nHireKarma supports colleges through a structured, technology-enabled placement ecosystem.",
+        "features": {
+          "registration": {
+            "title": "Student Registration & Profile Building",
+            "desc": "Creates structured student profiles containing academic information, skills, interests, eligibility, and career preferences."
+          },
+          "assessment": {
+            "title": "Student Assessment & Readiness",
+            "desc": "Helps institutions evaluate student capabilities and understand placement readiness before recruitment begins."
+          },
+          "discovery": {
+            "title": "Recruiter & Job Discovery",
+            "desc": "Connects colleges and students with relevant employers and opportunities through the hiring ecosystem."
+          },
+          "alignment": {
+            "title": "Career & Role Alignment",
+            "desc": "Helps identify opportunities that align with student skills, interests, eligibility, and recruiter requirements."
+          },
+          "applications": {
+            "title": "Application Management",
+            "desc": "Organizes student applications and provides better visibility into participation and recruitment activity."
+          },
+          "shortlisting": {
+            "title": "Assessment & Shortlisting",
+            "desc": "Supports structured evaluation to help identify candidates who are suitable for specific roles and hiring requirements."
+          },
+          "drives": {
+            "title": "Campus Hiring Drives",
+            "desc": "Supports institutions in planning, coordinating, and executing recruitment drives with employers."
+          },
+          "interviews": {
+            "title": "Interview Coordination",
+            "desc": "Streamlines communication, scheduling, participation, and candidate progression during the interview process."
+          },
+          "tracking": {
+            "title": "Placement Tracking",
+            "desc": "Enables placement teams to monitor applications, shortlists, interviews, offers, and overall recruitment progress."
+          },
+          "reports": {
+            "title": "Reports & Placement Visibility",
+            "desc": "Helps institutions understand student participation, recruitment performance, and placement outcomes through structured information."
+          }
+        }
+      },
+      "shortlisted": {
+        "label": "OUR SHORTLISTED PLACEMENT CELL",
+        "headingBefore": "Your Virtual Placement Cell for ",
+        "headingHighlight": "Student-Level Placement Execution",
+        "description1": "A traditional college placement cell manages recruitment activities at the institutional level. Shortlisted extends that support directly to students, helping them move from placement readiness to relevant opportunities, applications, interviews, and hiring.",
+        "description2": "It combines AI-powered placement assistance, structured assessments, job matching, application tracking, and dedicated human coordination to give students continuous support throughout their placement journey.",
+        "features": {
+          "agent": {
+            "title": "AI Placement Agent",
+            "desc": "Helps students discover relevant opportunities, organize applications, monitor progress, and take the right next step throughout their placement journey."
+          },
+          "coordinator": {
+            "title": "Human Placement Coordinator",
+            "desc": "Provides personalized guidance on applications, interview preparation, follow-ups, placement activities, and recruitment-related decisions."
+          },
+          "assessment": {
+            "title": "AI Assessment & Readiness Testing",
+            "desc": "Evaluates student capabilities, placement readiness, strengths, and improvement areas through structured and AI-enabled assessments."
+          },
+          "alignment": {
+            "title": "Career & Job Alignment",
+            "desc": "Helps students identify opportunities that align with their skills, eligibility, interests, qualifications, and career direction."
+          },
+          "matching": {
+            "title": "AI Job Matching through DISHA",
+            "desc": "Connects students with relevant live job opportunities based on their profile and hiring requirements, helping them focus on suitable opportunities rather than applying randomly."
+          },
+          "applications": {
+            "title": "Application Management",
+            "desc": "Helps students organize and monitor their applications while maintaining visibility across the recruitment journey."
+          },
+          "prep": {
+            "title": "Interview Preparation",
+            "desc": "Supports students with AI-powered practice, assessment, preparation, and human guidance to improve their readiness for real interviews."
+          },
+          "tracking": {
+            "title": "Shortlist & Interview Tracking",
+            "desc": "Helps students stay informed about application outcomes, shortlists, interviews, and the next stages of the hiring process."
+          },
+          "offers": {
+            "title": "Offer & Placement Progress",
+            "desc": "Provides continued visibility into recruitment progress from application and shortlisting through interviews and final selection."
+          }
         }
       }
     }
   },
   "whyShortlisted": {
-    "title": "AI ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ କାହିଁକି?",
-    "subtitle": "Shortlisted AI-ଚାଳିତ ମ୍ୟାଚିଂ ଏବଂ ଟ୍ରାକିଂକୁ ପ୍ରକୃତ ପ୍ଲେସମେଣ୍ଟ ସେଲର ବ୍ୟକ୍ତିଗତ ଯତ୍ନ ସହିତ ମିଶାଏ।",
+    "title": "SHORTLISTED",
+    "subtitle": "ଆପଣଙ୍କ AI-ଚାଳିତ ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
     "cards": {
-      "cohorts": {
-        "title": "ଛୋଟ ବ୍ୟାଚ୍ ଲାଭ",
-        "desc": "ପ୍ରତି ବ୍ୟାଚ୍ କେବଳ 12 ସିଟ୍ - AI ଅପରେସନ୍ ବଢ଼ାଏ, ମଣିଷ ଏହାକୁ ବ୍ୟକ୍ତିଗତ ରଖନ୍ତି।"
+      "agent": {
+        "title": "AI ପ୍ଲେସମେଣ୍ଟ ଏଜେଣ୍ଟ",
+        "desc": "ଛାତ୍ରମାନଙ୍କୁ ଉପଯୁକ୍ତ ସୁଯୋଗ ଖୋଜିବା, ଆବେଦନ ସଂଗଠିତ କରିବା, ପ୍ରଗତି ନିରୀକ୍ଷଣ କରିବା ଏବଂ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରାରେ ଧ୍ୟାନ ରଖିବାରେ ସାହାଯ୍ୟ କରେ।"
       },
-      "support": {
-        "title": "AI + ମାନବ ମାର୍ଗଦର୍ଶନ",
-        "desc": "ସ୍ମାର୍ଟ ଡ୍ୟାସବୋର୍ଡ ଭୂମିକା ମ୍ୟାଚ୍ କରେ; କୋଅର୍ଡିନେଟର ଆବେଦନ ସଂଭାଳନ୍ତି।"
+      "coordinator": {
+        "title": "ସମର୍ପିତ ମାନବ ପ୍ଲେସମେଣ୍ଟ କୋଅର୍ଡିନେଟର",
+        "desc": "ପ୍ରଯୁକ୍ତି ଏକା ଦେଇ ନପାରୁଥିବା ବ୍ୟକ୍ତିଗତ ସମର୍ଥନ ପ୍ରଦାନ କରେ—ଆବେଦନ, ଇଣ୍ଟରଭ୍ୟୁ, ଫଲୋ-ଅପ୍, ପ୍ଲେସମେଣ୍ଟ କାର୍ଯ୍ୟକଳାପ ଏବଂ ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପରେ ମାର୍ଗଦର୍ଶନ।"
+      },
+      "assessments": {
+        "title": "AI ମୂଲ୍ୟାଙ୍କନ ଏବଂ ପ୍ରସ୍ତୁତି ପରୀକ୍ଷା",
+        "desc": "ସଂରଚିତ ମୂଲ୍ୟାଙ୍କନ ଏବଂ AI-ସକ୍ଷମ ମୂଲ୍ୟାୟନ ଦ୍ୱାରା ଛାତ୍ରଙ୍କ ଦକ୍ଷତା, ପ୍ରସ୍ତୁତି, ଶକ୍ତି ଏବଂ ଉନ୍ନତି ଆବଶ୍ୟକ କ୍ଷେତ୍ର ବୁଝେ।"
       },
       "matching": {
-        "title": "AI ଜବ୍ ମ୍ୟାଚିଂ",
-        "desc": "DISHA ମାଧ୍ୟମରେ ଶୀର୍ଷ କମ୍ପାନୀର ଭୂମିକା - ଆମ ପ୍ଲେସମେଣ୍ଟ ଇଞ୍ଜିନ୍ ଦ୍ୱାରା ଆସାଇନ୍।"
+        "title": "DISHA ମାଧ୍ୟମରେ AI ଜବ୍ ମ୍ୟାଚିଂ",
+        "desc": "ପ୍ରୋଫାଇଲ୍, ଦକ୍ଷତା, ଯୋଗ୍ୟତା, ପସନ୍ଦ ଏବଂ ପ୍ରସ୍ତୁତି ଆଧାରରେ ଛାତ୍ରମାନଙ୍କୁ ପ୍ରାସଙ୍ଗିକ ଲାଇଭ୍ ସୁଯୋଗ ସହ ମ୍ୟାଚ୍ କରେ।"
       },
       "tracking": {
-        "title": "ରିଆଲ୍-ଟାଇମ୍ AI ଟ୍ରାକିଂ",
-        "desc": "ପ୍ରତ୍ୟେକ ଶର୍ଟଲିଷ୍ଟ ଏବଂ ଅଫର ଲାଇଭ୍ ଡ୍ୟାସବୋର୍ଡରେ ଅପଡେଟ୍।"
+        "title": "ରିଆଲ୍-ଟାଇମ୍ ଆବେଦନ ଟ୍ରାକିଂ",
+        "desc": "ଆବେଦନ, ଶର୍ଟଲିଷ୍ଟ, ଇଣ୍ଟରଭ୍ୟୁ ଏବଂ ଅଫର ପ୍ରଗତିର ଦୃଶ୍ୟତା ଦେଇ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ସୁଯୋଗ ଅଟ୍ରାକ୍ଡ ନରହିବା ନିଶ୍ଚିତ କରେ।"
+      },
+      "prep": {
+        "title": "ଇଣ୍ଟରଭ୍ୟୁ ଏବଂ ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତି",
+        "desc": "ସଂରଚିତ ପ୍ରସ୍ତୁତିକୁ AI-ଚାଳିତ ଅଭ୍ୟାସ ଏବଂ ମାନବ ମାର୍ଗଦର୍ଶନ ସହ ମିଶାଇ ବାସ୍ତବ ନିଯୁକ୍ତି ପରିସ୍ଥିତି ପାଇଁ ପ୍ରସ୍ତୁତ କରେ।"
+      },
+      "batch": {
+        "title": "କ୍ୟୁରେଟେଡ୍ ସ୍ମଲ୍-ବ୍ୟାଚ୍ ମଡେଲ୍ (ସର୍ବାଧିକ 12)",
+        "desc": "ସମର୍ପିତ ସମନ୍ୱୟ ଏବଂ ପ୍ରତି ବ୍ୟାଚ୍ ସର୍ବାଧିକ 12 ଛାତ୍ର ସହ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରାକୁ ଧ୍ୟାନ ଏବଂ ବ୍ୟକ୍ତିଗତ ରଖେ।"
       }
     }
   },
@@ -205,6 +265,105 @@
       "exclusive": "Exclusively available for the first 12 students in each batch.",
       "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential",
       "badge": "Independence Day Special Offer"
+    }
+  },
+  "careerConsultations": {
+    "title": "ଅନ୍ୟ ପରାମର୍ଶ କଣ କରନ୍ତି",
+    "subtitle": "ଚାକିରି ମ୍ୟାଚିଂ ବାହାରେ ବ୍ୟକ୍ତିଗତ ମାର୍ଗଦର୍ଶନ",
+    "steps": {
+      "guidance": {
+        "title": "କ୍ୟାରିୟର ମାର୍ଗଦର୍ଶନ ଓ କାଉନସେଲିଂ",
+        "desc": "ରୁଚି, ଦକ୍ଷତା, ଯୋଗ୍ୟତା, ଶକ୍ତି ଏବଂ ଦୀର୍ଘକାଳୀନ ଲକ୍ଷ୍ୟ ଆଧାରରେ କ୍ୟାରିୟର ବିକଳ୍ପ ବୁଝନ୍ତୁ।"
+      },
+      "resume": {
+        "title": "ରିଜ୍ୟୁମ୍ ଓ ପ୍ରୋଫାଇଲ୍ ପରାମର୍ଶ",
+        "desc": "ପ୍ରାସଙ୍ଗିକ ସୁଯୋଗ ପାଇଁ ରିଜ୍ୟୁମ୍, ପେସାଦାର ପ୍ରୋଫାଇଲ୍ ଏବଂ ସମଗ୍ର ଉପସ୍ଥାପନା ଉନ୍ନତ କରନ୍ତୁ।"
+      },
+      "interview": {
+        "title": "ଇଣ୍ଟରଭ୍ୟୁ ଓ ଯୋଗାଯୋଗ ମାର୍ଗଦର୍ଶନ",
+        "desc": "ପ୍ରକୃତ ନିଯୁକ୍ତି ପରିସ୍ଥିତି ପାଇଁ ଯୋଗାଯୋଗ, ଆତ୍ମବିଶ୍ୱାସ, ଇଣ୍ଟରଭ୍ୟୁ ପଦ୍ଧତି ଏବଂ ପେସାଦାର ଉପସ୍ଥାପନା ଉନ୍ନତ କରନ୍ତୁ।"
+      },
+      "careerPath": {
+        "title": "ଚାକିରି ଓ କ୍ୟାରିୟର ପଥ ପରାମର୍ଶ",
+        "desc": "ଉପଯୁକ୍ତ ଭୂମିକା, କ୍ୟାରିୟର ପଥ, ଶିଳ୍ପ ଆଶା ଏବଂ ଉପଲବ୍ଧ ସୁଯୋଗ ବୁଝନ୍ତୁ।"
+      },
+      "readiness": {
+        "title": "ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତି ପରାମର୍ଶ",
+        "desc": "ଆପଣଙ୍କ ବର୍ତ୍ତମାନ ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତି ଏବଂ ଭଲ ପ୍ରସ୍ତୁତି ପାଇଁ ଆବଶ୍ୟକ ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପ ବୁଝନ୍ତୁ।"
+      }
+    }
+  },
+  "whatWeDo": {
+    "title": "ଆମେ କଣ କରୁ",
+    "subtitle": "ପ୍ରତିଭା, ଅନୁଷ୍ଠାନ ଏବଂ ଶିଳ୍ପ ମଧ୍ୟରେ ପରିସର ନିର୍ମାଣ",
+    "features": {
+      "skillDevelopment": {
+        "title": "ସ୍କିଲ୍ ଡେଭଲପମେଣ୍ଟ",
+        "desc": "ବଦଳୁଥିବା କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଆବଶ୍ୟକତା ଅନୁଯାୟୀ ଦକ୍ଷତା ବିକାଶ ପାଇଁ ବ୍ୟବହାରିକ, ଶିଳ୍ପ-ସମନ୍ୱିତ ଶିକ୍ଷଣ ସୁଯୋଗ।"
+      },
+      "prePlacement": {
+        "title": "ପ୍ରି-ପ୍ଲେସମେଣ୍ଟ ଟ୍ରେନିଂ",
+        "desc": "ରୋଜଗାର ଯୋଗ୍ୟତା, ପେସାଦାର ଦକ୍ଷତା, ବୈଷୟିକ ପ୍ରସ୍ତୁତି ଏବଂ ନିଯୁକ୍ତି ଆଶା ଉପରେ କେନ୍ଦ୍ରିତ ସଂରଚିତ ପ୍ରଶିକ୍ଷଣ।"
+      },
+      "employability": {
+        "title": "କ୍ୟାରିୟର ଓ ରୋଜଗାର ସହାୟତା",
+        "desc": "ଶିକ୍ଷାର୍ଥୀମାନଙ୍କୁ କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଆଶା ବୁଝିବା ଏବଂ ପେସାଦାର କ୍ଷମତା ସୁଦୃଢ଼ କରିବାରେ ସାହାଯ୍ୟ କରେ।"
+      },
+      "employerConnect": {
+        "title": "ଶିଳ୍ପ ଓ ନିଯୁକ୍ତିଦାତା କନେକ୍ଟ",
+        "desc": "ପ୍ରାସଙ୍ଗିକ ସୁଯୋଗ ଏବଂ ଶିଳ୍ପ ଆବଶ୍ୟକତାକୁ ନିକଟ ଆଣି ପ୍ରତିଭାକୁ ସଂଗଠନ ସହିତ ସଂଯୋଗ କରେ।"
+      },
+      "campusEngagement": {
+        "title": "କ୍ୟାମ୍ପସ୍ ଓ ଅନୁଷ୍ଠାନିକ ସଂଯୋଗ",
+        "desc": "ଛାତ୍ରମାନଙ୍କ ପାଇଁ ସଂରଚିତ କ୍ୟାରିୟର ବିକାଶ ଏବଂ ନିଯୁକ୍ତି ସୁଯୋଗ ସୃଷ୍ଟିରେ ଅନୁଷ୍ଠାନକୁ ସହାୟତା କରେ।"
+      },
+      "techHiring": {
+        "title": "ପ୍ରଯୁକ୍ତି-ସକ୍ଷମ ନିଯୁକ୍ତି",
+        "desc": "ପ୍ରତିଭା ଆବିଷ୍କାର, ମୂଲ୍ୟାଙ୍କନ, ସୁଯୋଗ ଚିହ୍ନଟ ଏବଂ ନିଯୁକ୍ତି ପ୍ରକ୍ରିୟା ପାଇଁ AI-ଚାଳିତ ଉପକରଣ।"
+      }
+    }
+  },
+  "connectedEcosystem": {
+    "title": "ଏକ ସଂଯୁକ୍ତ ପରିସର",
+    "steps": {
+      "learn": {
+        "title": "ଶିଖନ୍ତୁ",
+        "desc": "ପ୍ରାସଙ୍ଗିକ ଦକ୍ଷତା ଏବଂ କ୍ଷମତା ଗଢ଼ନ୍ତୁ।"
+      },
+      "prepare": {
+        "title": "ପ୍ରସ୍ତୁତି",
+        "desc": "ପେସାଦାର ଏବଂ ନିଯୁକ୍ତି ପ୍ରସ୍ତୁତି ବିକାଶ କରନ୍ତୁ।"
+      },
+      "connect": {
+        "title": "ସଂଯୋଗ",
+        "desc": "ଛାତ୍ର, ଅନୁଷ୍ଠାନ ଏବଂ ଶିଳ୍ପକୁ ନିକଟ ଆଣନ୍ତୁ।"
+      },
+      "discover": {
+        "title": "ଆବିଷ୍କାର",
+        "desc": "ପ୍ରାସଙ୍ଗିକ କ୍ୟାରିୟର ଏବଂ ନିଯୁକ୍ତି ସୁଯୋଗ ଚିହ୍ନଟ କରନ୍ତୁ।"
+      },
+      "engage": {
+        "title": "ସଂଲଗ୍ନତା",
+        "desc": "ପ୍ରତିଭା ଏବଂ ନିଯୁକ୍ତିଦାତା ମଧ୍ୟରେ ସଂରଚିତ ସଂଳାପ ସକ୍ଷମ କରନ୍ତୁ।"
+      },
+      "grow": {
+        "title": "ବିକାଶ",
+        "desc": "ନିରନ୍ତର ପେସାଦାର ଏବଂ ସଂଗଠନାତ୍ମକ ବିକାଶକୁ ସମର୍ଥନ କରନ୍ତୁ।"
+      }
+    },
+    "different": {
+      "title": "ପରିସରକୁ ଅଲଗା କଣ କରେ",
+      "paragraph1": "Shortlisted ଶିକ୍ଷା, ପ୍ରତିଭା ବିକାଶ, ପ୍ରଯୁକ୍ତି, ଶିଳ୍ପ ସଂଯୋଗ ଏବଂ କ୍ୟାରିୟର ସୁଯୋଗକୁ ଏକ ଏକୀକୃତ ବ୍ୟବସ୍ଥାରେ ଯୋଡ଼େ — ସେଗୁଡ଼ିକୁ ଅଲଗା କାର୍ଯ୍ୟ ଭାବରେ ଦେଖେ ନାହିଁ।",
+      "paragraph2": "ଯାତ୍ରାର ପ୍ରତ୍ୟେକ ପର୍ଯ୍ୟାୟ ପରବର୍ତ୍ତୀକୁ ସୁଦୃଢ଼ କରେ, ଯାହାଦ୍ୱାରା ଶିକ୍ଷାର୍ଥୀ, ଅନୁଷ୍ଠାନ ଏବଂ ନିଯୁକ୍ତିଦାତା ଅଲଗା ନୁହେଁ ବରଂ ଏକାଠି ଆଗକୁ ବଢ଼ନ୍ତି।",
+      "closing": "ଏହା ଛାତ୍ର ଏବଂ ପେସାଦାରମାନଙ୍କ ପାଇଁ ଏକ ଅଧିକ ସଂଯୁକ୍ତ ପଥ ସୃଷ୍ଟି କରେ, ସାଥେ ଅନୁଷ୍ଠାନ ଏବଂ ସଂଗଠନକୁ ପ୍ରାସଙ୍ଗିକ ପ୍ରତିଭା ଏବଂ କ୍ଷମତା ପ୍ରାପ୍ତ କରିବାରେ ସାହାଯ୍ୟ କରେ।"
+    },
+    "journey": {
+      "talent": "ପ୍ରତିଭା",
+      "skills": "ଦକ୍ଷତା",
+      "readiness": "ପ୍ରସ୍ତୁତି",
+      "industry": "ଶିଳ୍ପ",
+      "opportunity": "ସୁଯୋଗ",
+      "growth": "ବିକାଶ"
     }
   },
   "testimonials": {
