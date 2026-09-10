@@ -39,11 +39,11 @@ export function SuperAdminDashboardView() {
         setStudents(s);
         setCoordinators(a);
       })
-      .catch(() => router.push('/auth/login/internal'))
+      .catch(() => router.replace('/auth/login/internal'))
       .finally(() => setReady(true));
 
   useEffect(() => {
-    if (!localStorage.getItem('access_token')) router.push('/auth/login/internal');
+    if (!localStorage.getItem('access_token')) router.replace('/auth/login/internal');
     load();
   }, [router]);
 

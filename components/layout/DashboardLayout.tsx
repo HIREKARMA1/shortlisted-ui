@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import { useTranslation } from '@/lib/i18n/context';
 import { cn } from '@/lib/utils';
 import { BrandStripe } from '@/components/ui/BrandStripe';
@@ -51,43 +52,46 @@ export function DashboardLayout({
 }) {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { logout } = useAuth();
+  const handleLogout = onLogout ?? logout;
   const [mobileOpen, setMobileOpen] = useState(false);
   const nav = getNavForRole(role);
 
   const sidebar = (
-    <div className="flex h-full flex-col">
-      <div className="border-b border-line-default px-4 py-5">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0 border-b border-line-default px-4 py-5">
         <BrandLogo />
         <p className="mt-1 text-xs font-medium uppercase tracking-wide text-ink-muted">
           {t(`dashboard.roles.${role}`)}
         </p>
       </div>
-      <nav className="flex-1 space-y-1 p-3">
+      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto p-3">
         {nav.map((item) => (
           <NavLink key={item.href} item={item} pathname={pathname} onNavigate={() => setMobileOpen(false)} />
         ))}
       </nav>
-      {onLogout && (
-        <div className="border-t border-line-default p-3">
-          <button
-            type="button"
-            onClick={onLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-secondary hover:bg-surface-muted hover:text-brand-red"
-          >
-            <LogOut className="h-4 w-4" />
-            {t('common.nav.logout')}
-          </button>
-        </div>
-      )}
+      <div className="shrink-0 border-t border-line-default p-3">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-secondary hover:bg-surface-muted hover:text-brand-red"
+        >
+          <LogOut className="h-4 w-4" />
+          {t('common.nav.logout')}
+        </button>
+      </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-surface-page">
+    <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-surface-page">
       {role === 'student' && <StudentResumePrompt />}
       <BrandStripe />
-      <div className="flex min-h-[calc(100vh-4px)]">
-        <aside className="hidden w-64 shrink-0 border-r border-line-default bg-white lg:block">{sidebar}</aside>
+      <div className="flex min-h-0 flex-1">
+        {/* Desktop sidebar: full viewport height, Logout always pinned */}
+        <aside className="hidden h-full w-64 shrink-0 border-r border-line-default bg-white lg:block">
+          {sidebar}
+        </aside>
 
         {mobileOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
@@ -97,12 +101,14 @@ export function DashboardLayout({
               aria-label="Close menu"
               onClick={() => setMobileOpen(false)}
             />
-            <aside className="relative h-full w-72 max-w-[85vw] bg-white shadow-elevated">{sidebar}</aside>
+            <aside className="relative flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-elevated">
+              {sidebar}
+            </aside>
           </div>
         )}
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-40 border-b border-line-default bg-white/95 backdrop-blur">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <header className="z-40 shrink-0 border-b border-line-default bg-white/95 backdrop-blur">
             <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
               <div className="flex items-center gap-3">
                 <button
@@ -126,7 +132,7 @@ export function DashboardLayout({
             </div>
           </header>
 
-          <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <main className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-6xl">
               {(title || subtitle) && (
                 <div className="mb-8 border-b border-line-default pb-6">

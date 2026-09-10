@@ -2,8 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { getPostLoginPath, getSafeRedirectPath } from '@/lib/auth/session';
-import { getLoginPathForRole } from '@/lib/auth/login-routes';
-import { clearSession } from '@/lib/auth/logout';
+import { logoutToLogin } from '@/lib/auth/logout';
 import { api, TokenResponse, UserType } from '@/lib/api';
 
 export function useAuth() {
@@ -18,9 +17,7 @@ export function useAuth() {
   };
 
   const logout = () => {
-    const loginPath = getLoginPathForRole(localStorage.getItem('user_type'));
-    clearSession();
-    router.push(loginPath);
+    logoutToLogin({ flashSuccess: true });
   };
 
   const login = async (

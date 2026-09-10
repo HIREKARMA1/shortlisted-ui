@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { CheckCircle2, Mail, Phone, Shield } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 import { useStudentSubscribeGate } from '@/hooks/useSession';
 import { startCheckout } from '@/lib/payments/checkout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
@@ -40,6 +41,7 @@ export function SubscribePageView() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
+  const { logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
   const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
@@ -108,7 +110,19 @@ export function SubscribePageView() {
   }
 
   return (
-    <AuthLayout title={t('subscribe.title')} subtitle={t('subscribe.subtitle')}>
+    <AuthLayout
+      title={t('subscribe.title')}
+      subtitle={t('subscribe.subtitle')}
+      footer={
+        <button
+          type="button"
+          onClick={logout}
+          className="font-semibold text-brand-blue hover:underline"
+        >
+          {t('common.nav.logout')}
+        </button>
+      }
+    >
       <div className="space-y-6">
         {(batchInfo || amountInr != null) && (
           <div className="rounded-xl border border-line-default bg-surface-muted p-5 text-center">

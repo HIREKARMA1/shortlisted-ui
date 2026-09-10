@@ -41,8 +41,21 @@ export function useAuthenticatedGate(returnTo: string) {
   const { session, ready } = useSession();
 
   useEffect(() => {
-    if (!ready || session) return;
-    router.replace(`/auth/login?redirect=${encodeURIComponent(returnTo)}`);
+    const enforce = () => {
+      const current = readSession();
+      if (!current) {
+        router.replace(`/auth/login?redirect=${encodeURIComponent(returnTo)}`);
+      }
+    };
+
+    if (!ready) return;
+    if (!session) enforce();
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) enforce();
+    };
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
   }, [ready, session, router, returnTo]);
 
   return { session, ready, canAccess: ready && !!session };
@@ -55,28 +68,40 @@ export function useStudentSubscribeGate() {
 
   useEffect(() => {
     if (!ready) return;
-    if (!session) {
-      router.replace('/auth/login');
-      return;
-    }
-    if (session.userType !== 'student') {
-      router.replace(getPostLoginPath(session));
-      return;
-    }
 
-    // Always validate with the API. Do not trust stale localStorage access_status —
-    // that caused a dashboard ↔ subscribe redirect loop when the access token expired.
-    api
-      .getDashboard()
-      .then((data) => {
-        const status = String((data.student as { access_status?: string })?.access_status || '');
-        localStorage.setItem('access_status', status);
-        setAccessStatus(status);
-        if (status === 'active') {
-          router.replace('/dashboard/student');
-        }
-      })
-      .catch(() => undefined);
+    const enforce = () => {
+      const current = readSession();
+      if (!current) {
+        router.replace('/auth/login');
+        return;
+      }
+      if (current.userType !== 'student') {
+        router.replace(getPostLoginPath(current));
+        return;
+      }
+
+      // Always validate with the API. Do not trust stale localStorage access_status —
+      // that caused a dashboard ↔ subscribe redirect loop when the access token expired.
+      api
+        .getDashboard()
+        .then((data) => {
+          const status = String((data.student as { access_status?: string })?.access_status || '');
+          localStorage.setItem('access_status', status);
+          setAccessStatus(status);
+          if (status === 'active') {
+            router.replace('/dashboard/student');
+          }
+        })
+        .catch(() => undefined);
+    };
+
+    enforce();
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) enforce();
+    };
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
   }, [ready, session, router]);
 
   return { session, ready, accessStatus: accessStatus || session?.accessStatus };
