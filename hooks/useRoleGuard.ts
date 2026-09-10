@@ -10,13 +10,25 @@ export function useRoleGuard(role: DashboardRole) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userType = localStorage.getItem('user_type');
-    if (!token || userType !== role) {
-      router.push(getLoginPathForRole(role));
-    } else {
-      setReady(true);
-    }
+    const enforce = () => {
+      const token = localStorage.getItem('access_token');
+      const userType = localStorage.getItem('user_type');
+      if (!token || userType !== role) {
+        setReady(false);
+        router.replace(getLoginPathForRole(role));
+      } else {
+        setReady(true);
+      }
+    };
+
+    enforce();
+
+    // Re-check when the page is restored from bfcache (browser back/forward).
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) enforce();
+    };
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
   }, [router, role]);
 
   return { ready };

@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Loader2, Lock, Mail } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useGuestOnly, useSession } from '@/hooks/useSession';
+import { consumeLogoutFlash } from '@/lib/auth/logout';
 import { UserType } from '@/lib/api';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
@@ -27,6 +28,12 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  useEffect(() => {
+    if (consumeLogoutFlash()) {
+      toast.success(t('auth.login.logoutSuccess'));
+    }
+  }, [t]);
 
   if (!ready || session) return null;
 

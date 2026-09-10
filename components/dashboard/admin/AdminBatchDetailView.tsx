@@ -32,10 +32,10 @@ export function AdminBatchDetailView() {
 
   useEffect(() => {
     if (!localStorage.getItem('access_token') || localStorage.getItem('user_type') !== 'admin') {
-      router.push(getLoginPathForRole('admin'));
+      router.replace(getLoginPathForRole('admin'));
       return;
     }
-    api.getBatchDetail(id).then(setBatch).catch(() => router.push('/dashboard/admin'));
+    api.getBatchDetail(id).then(setBatch).catch(() => router.replace('/dashboard/admin'));
   }, [id, router]);
 
   if (!batch) return <LoadingState />;

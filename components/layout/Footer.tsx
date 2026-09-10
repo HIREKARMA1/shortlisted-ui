@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Facebook, Instagram, Linkedin, MapPin, type LucideProps } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, type LucideProps } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
 import { PRIVACY_URL, REFUND_URL, TERMS_URL } from '@/lib/legal-links';
@@ -11,6 +11,9 @@ import { BrandStripe } from '@/components/ui/BrandStripe';
 
 const OFFICE_MAPS_URL =
   'https://www.google.com/maps/place/HireKarma+Private+Limited/@20.383776281109,85.82036437501301,17z/data=!3m1!4b1!4m6!3m5!1s0x3a19096e0259fc7f:0x7ad66a4df8112eda!8m2!3d20.3837763!4d85.8229393!16s%2Fg%2F11s';
+
+const OFFICE_MAPS_EMBED_URL =
+  'https://www.google.com/maps?q=HireKarma+Private+Limited,+Raghunathpur,+Bhubaneswar&hl=en&z=16&output=embed';
 
 function XLogo({ className, ...props }: LucideProps) {
   return (
@@ -64,18 +67,15 @@ export function SiteFooter() {
   return (
     <footer className="bg-white">
       <BrandStripe />
-      <div className="page-container py-12 sm:py-14">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
-          <div className="max-w-md lg:max-w-sm xl:max-w-md">
-            <BrandLogo className="min-h-[1.75rem] sm:min-h-8" />
-            <p className="mt-4 text-sm leading-relaxed text-ink-muted sm:text-base">
-              {t('landing.footer.description')}
+      <div className="page-container py-8 sm:py-9">
+        <div className="grid grid-cols-1 items-start gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-12 xl:gap-x-16">
+          {/* Column 1 — Company */}
+          <div className="min-w-0">
+            <BrandLogo className="flex min-h-[1.75rem] items-center sm:min-h-8" />
+            <p className="mt-2.5 text-sm leading-relaxed text-ink-muted sm:text-base">
+              {t('landing.footer.tagline')}
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted sm:text-base">
-              {t('landing.footer.poweredBy')}
-            </p>
-
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-4 flex items-center gap-3">
               {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
                 <a
                   key={href}
@@ -91,11 +91,12 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <nav aria-label="Legal" className="shrink-0">
-            <h3 className="mb-4 flex min-h-[1.75rem] items-center text-sm font-semibold uppercase tracking-wide text-ink-primary sm:min-h-8">
+          {/* Column 2 — Policy */}
+          <nav aria-label="Legal" className="min-w-0">
+            <h3 className="mb-2.5 flex min-h-[1.75rem] items-center text-sm font-semibold uppercase tracking-wide text-ink-primary sm:min-h-8">
               {t('landing.footer.policyTitle')}
             </h3>
-            <ul className="flex flex-col gap-2.5 text-sm leading-relaxed sm:text-base">
+            <ul className="flex flex-col gap-2 text-sm leading-relaxed sm:text-base">
               {LEGAL_LINKS.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -109,48 +110,68 @@ export function SiteFooter() {
             </ul>
           </nav>
 
-          <div className="max-w-xs shrink-0 space-y-2.5 text-sm leading-relaxed text-ink-muted sm:text-base">
-            <h3 className="mb-4 flex min-h-[1.75rem] items-center text-sm font-semibold uppercase tracking-wide text-ink-primary sm:min-h-8">
+          {/* Column 3 — Contact Us */}
+          <div className="min-w-0 text-sm leading-relaxed text-ink-muted sm:text-base">
+            <h3 className="mb-2.5 flex min-h-[1.75rem] items-center text-sm font-semibold uppercase tracking-wide text-ink-primary sm:min-h-8">
               {t('landing.footer.contactTitle')}
             </h3>
+            <div className="flex flex-col gap-2">
+              {contactEmail && (
+                <p className="grid grid-cols-[4.75rem_1fr] items-start gap-x-2">
+                  <span className="font-medium text-ink-secondary">{t('landing.footer.emailLabel')}:</span>
+                  <a href={`mailto:${contactEmail}`} className="break-words transition hover:text-brand-blue">
+                    {contactEmail}
+                  </a>
+                </p>
+              )}
 
-            {contactEmail && (
-              <p className="grid grid-cols-[5.5rem_1fr] items-start gap-x-2">
-                <span className="font-medium text-ink-secondary">{t('landing.footer.emailLabel')}:</span>
-                <a href={`mailto:${contactEmail}`} className="transition hover:text-brand-blue">
-                  {contactEmail}
-                </a>
+              {contactPhone && (
+                <p className="grid grid-cols-[4.75rem_1fr] items-start gap-x-2">
+                  <span className="font-medium text-ink-secondary">{t('landing.footer.contactLabel')}:</span>
+                  <a
+                    href={`tel:${contactPhone.replace(/\s/g, '')}`}
+                    className="transition hover:text-brand-blue"
+                  >
+                    {contactPhone}
+                  </a>
+                </p>
+              )}
+
+              <p className="grid grid-cols-[4.75rem_1fr] items-start gap-x-2">
+                <span className="font-medium text-ink-secondary">{t('landing.footer.locationLabel')}:</span>
+                <span className="break-words">{officeAddress}</span>
               </p>
-            )}
+            </div>
+          </div>
 
-            {contactPhone && (
-              <p className="grid grid-cols-[5.5rem_1fr] items-start gap-x-2">
-                <span className="font-medium text-ink-secondary">{t('landing.footer.contactLabel')}:</span>
-                <a
-                  href={`tel:${contactPhone.replace(/\s/g, '')}`}
-                  className="transition hover:text-brand-blue"
-                >
-                  {contactPhone}
-                </a>
-              </p>
-            )}
-
-            <p className="grid grid-cols-[5.5rem_1fr] items-start gap-x-2">
+          {/* Column 4 — Map */}
+          <div className="min-w-0">
+            <div
+              className="mb-2.5 hidden min-h-[1.75rem] sm:block sm:min-h-8"
+              aria-hidden="true"
+            />
+            <div className="w-full max-w-[240px] overflow-hidden rounded-lg border border-line-default bg-white sm:max-w-[260px]">
+              <iframe
+                title={t('landing.footer.mapTitle')}
+                src={OFFICE_MAPS_EMBED_URL}
+                className="h-36 w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
               <a
                 href={OFFICE_MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="View office location on Google Maps"
-                className="mt-0.5 w-fit text-ink-secondary transition hover:text-brand-blue"
+                className="flex items-center justify-center border-t border-line-default px-3 py-2 text-xs font-medium text-ink-secondary transition hover:bg-surface-muted hover:text-brand-blue sm:text-sm"
               >
-                <MapPin className="h-4 w-4 sm:h-[1.125rem] sm:w-[1.125rem]" />
+                {t('landing.footer.openInMaps')}
               </a>
-              <span>{officeAddress}</span>
-            </p>
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-line-default pt-6 text-sm text-ink-muted sm:text-base">
+        <div className="mt-8 border-t border-line-default pt-4 text-sm text-ink-muted sm:text-base">
           <span>
             © {year}{' '}
             <a

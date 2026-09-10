@@ -22,13 +22,13 @@ export function AdminDashboardView() {
 
   useEffect(() => {
     if (!localStorage.getItem('access_token') || localStorage.getItem('user_type') !== 'admin') {
-      router.push(getLoginPathForRole('admin'));
+      router.replace(getLoginPathForRole('admin'));
       return;
     }
     api
       .listMyBatches()
       .then(setBatches)
-      .catch(() => router.push(getLoginPathForRole('admin')))
+      .catch(() => router.replace(getLoginPathForRole('admin')))
       .finally(() => setReady(true));
   }, [router]);
 
