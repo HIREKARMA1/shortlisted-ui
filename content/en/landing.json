@@ -22,72 +22,139 @@
       "matching": { "value": "AI", "label": "Virtual placement engine" }
     },
     "comparison": {
-      "title": "Your College Placement Cell vs Our Shortlisted",
-      "collegeHeader": "College Placement Cell",
-      "shortlistedHeader": "Shortlisted",
-      "rows": {
-        "pool": {
-          "college": "Large student pool",
-          "shortlisted": "Only 12 students per batch"
-        },
-        "competition": {
-          "college": "High competition for limited opportunities",
-          "shortlisted": "Lower competition within a curated cohort"
-        },
-        "support": {
-          "college": "Generic placement support",
-          "shortlisted": "Personalized placement roadmap"
-        },
-        "attention": {
-          "college": "Limited individual attention",
-          "shortlisted": "Dedicated Placement Coordinator"
-        },
-        "opportunities": {
-          "college": "Opportunities may not match your career goals",
-          "shortlisted": "Role-focused opportunities aligned to your interests"
-        },
-        "timing": {
-          "college": "Placement activities often start late",
-          "shortlisted": "Structured 60-day placement journey"
-        },
-        "process": {
-          "college": "Manual processes and tracking",
-          "shortlisted": "AI-powered tracking and insights"
-        },
-        "resources": {
-          "college": "Shared placement resources",
-          "shortlisted": "Human + AI support system"
-        },
-        "visibility": {
-          "college": "Limited application visibility",
-          "shortlisted": "Real-time application tracking"
-        },
-        "schedule": {
-          "college": "Support depends on campus schedules",
-          "shortlisted": "Continuous guidance and accountability"
+      "badge": "The Difference",
+      "titleBefore": "Smarter Placement. ",
+      "titleHighlight": "Stronger Outcomes.",
+      "subtitle": "See how a traditional college placement workflow compares with Shortlisted's AI-powered placement cell—aligned step by step.",
+      "footerLeft": "Enterprise Ready",
+      "footerRight": "Better Students, Brighter Futures.",
+      "college": {
+        "badge": "Manual & Siloed",
+        "title": "Your College Placement",
+        "subtitle": "Structured placement administration across the campus hiring cycle",
+        "features": {
+          "registration": {
+            "title": "Student Registration & Profile Building",
+            "desc": "Creates structured student profiles with academic information, skills, interests, eligibility, and career preferences."
+          },
+          "assessment": {
+            "title": "Student Assessment & Readiness",
+            "desc": "Evaluates student capabilities and placement readiness before recruitment begins."
+          },
+          "discovery": {
+            "title": "Recruiter & Job Discovery",
+            "desc": "Connects students with relevant employers and available opportunities through the hiring ecosystem."
+          },
+          "alignment": {
+            "title": "Career & Role Alignment",
+            "desc": "Helps identify opportunities matching student skills, interests, eligibility, and recruiter requirements."
+          },
+          "applications": {
+            "title": "Application Management",
+            "desc": "Organizes applications and provides visibility into student participation and recruitment activity."
+          },
+          "shortlisting": {
+            "title": "Assessment & Shortlisting",
+            "desc": "Supports structured evaluation to identify candidates suitable for specific roles and hiring requirements."
+          },
+          "drives": {
+            "title": "Campus Hiring Drives",
+            "desc": "Supports institutions in planning, coordinating, and executing recruitment drives with employers."
+          },
+          "interviews": {
+            "title": "Interview Coordination",
+            "desc": "Streamlines communication, scheduling, participation, and candidate progression during interviews."
+          },
+          "tracking": {
+            "title": "Placement Tracking",
+            "desc": "Monitors applications, shortlists, interviews, offers, and overall recruitment progress."
+          },
+          "reports": {
+            "title": "Reports & Placement Visibility",
+            "desc": "Provides institutions with structured information on participation, recruitment performance, and placement outcomes."
+          }
+        }
+      },
+      "shortlisted": {
+        "badge": "Intelligent Standard",
+        "title": "Our Shortlisted Placement Cell",
+        "subtitle": "AI-powered, student-level placement execution with human guidance",
+        "features": {
+          "registration": {
+            "title": "AI-Powered Student Profile & Career Readiness",
+            "desc": "Builds a structured student profile while using AI-driven insights to understand skills, interests, eligibility, career preferences, and readiness."
+          },
+          "assessment": {
+            "title": "AI Assessment & Readiness Testing",
+            "desc": "Assesses capabilities, strengths, skill gaps, and placement readiness through structured and AI-enabled assessments—helping students understand where they stand and what they need to improve."
+          },
+          "discovery": {
+            "title": "AI Job Discovery through DISHA",
+            "desc": "Surfaces relevant live opportunities from the hiring ecosystem based on student profiles, eligibility, skills, and recruiter requirements—reducing random applications."
+          },
+          "alignment": {
+            "title": "AI Career & Job Alignment",
+            "desc": "Intelligently connects student capabilities and career interests with suitable roles, helping students understand which opportunities are actually relevant to them."
+          },
+          "applications": {
+            "title": "Application Management & Guidance",
+            "desc": "Helps students organize applications, track progress, and understand the next action required throughout their recruitment journey."
+          },
+          "shortlisting": {
+            "title": "AI-Assisted Assessment & Shortlisting",
+            "desc": "Combines structured assessments, AI-enabled evaluation, and hiring requirements to help identify stronger role-fit candidates and improve shortlisting decisions."
+          },
+          "drives": {
+            "title": "Hiring Drive Execution & Student Readiness",
+            "desc": "Supports hiring activities while ensuring students are better prepared, informed, and aligned with the requirements of each recruitment opportunity."
+          },
+          "interviews": {
+            "title": "Interview Preparation & Coordination",
+            "desc": "Goes beyond scheduling by combining interview coordination with AI-powered practice, preparation, assessments, and human guidance."
+          },
+          "tracking": {
+            "title": "End-to-End Placement Journey Tracking",
+            "desc": "Gives students visibility across applications, shortlists, interviews, offers, and selection—so they know where they stand and what comes next."
+          },
+          "reports": {
+            "title": "Real-Time Placement Progress & Insights",
+            "desc": "Transforms recruitment activity into actionable visibility across student progress, applications, assessments, interviews, shortlists, and placement outcomes."
+          }
         }
       }
     }
   },
   "whyShortlisted": {
-    "title": "Why an AI virtual placement cell?",
-    "subtitle": "Shortlisted combines AI-powered matching and tracking with the personal care of a real placement cell - built to get you hired, not just trained.",
+    "title": "SHORTLISTED",
+    "subtitle": "Your AI-Powered Virtual Placement Cell",
     "cards": {
-      "cohorts": {
-        "title": "Small batch advantage",
-        "desc": "Only 12 seats per batch - AI scales the ops, humans keep it personal."
+      "agent": {
+        "title": "AI Placement Agent",
+        "desc": "Helps students discover suitable opportunities, organize applications, monitor progress, and stay focused throughout their placement journey."
       },
-      "support": {
-        "title": "AI + human guidance",
-        "desc": "An intelligent dashboard matches roles to your profile while your coordinator handles applications and interview prep."
+      "coordinator": {
+        "title": "Dedicated Human Placement Coordinator",
+        "desc": "Provides personal support that technology alone cannot deliver—guiding students on applications, interviews, follow-ups, placement activities and next steps."
+      },
+      "assessments": {
+        "title": "AI Assessments & Readiness Testing",
+        "desc": "Uses structured assessments and AI-enabled evaluation to understand a student's skills, readiness, strengths and areas requiring improvement."
       },
       "matching": {
-        "title": "AI job matching",
-        "desc": "Roles from top companies via DISHA - ranked and assigned to your batch by our placement engine."
+        "title": "AI Job Matching through DISHA",
+        "desc": "Matches students with relevant live opportunities based on profile, skills, eligibility, preferences and readiness to improve targeting and outcomes."
       },
       "tracking": {
-        "title": "Real-time AI tracking",
-        "desc": "Every shortlist, interview, and offer updates live in your dashboard - nothing falls through the cracks."
+        "title": "Real-Time Application Tracking",
+        "desc": "Gives visibility into applications, shortlists, interviews and offer progress so important opportunities don't disappear into an untracked process."
+      },
+      "prep": {
+        "title": "Interview & Placement Preparation",
+        "desc": "Combines structured preparation with AI-powered practice and human guidance for real hiring situations, not just learning content."
+      },
+      "batch": {
+        "title": "Curated Small-Batch Model (Max 12)",
+        "desc": "Keeps the placement journey focused and personalized with dedicated coordination and a maximum of 12 students per batch."
       }
     }
   },
@@ -211,6 +278,91 @@
       "badge": "Independence Day Special Offer"
     }
   },
+  "careerConsultations": {
+    "title": "What Other Consultations Do",
+    "subtitle": "Personalized Guidance Beyond Job Matching",
+    "steps": {
+      "guidance": {
+        "title": "Career Guidance & Counselling",
+        "desc": "Understand career options based on interests, skills, qualifications, strengths and long-term goals."
+      },
+      "resume": {
+        "title": "Resume & Profile Consultation",
+        "desc": "Improve resumes, professional profiles and overall candidate presentation for relevant opportunities."
+      },
+      "interview": {
+        "title": "Interview & Communication Guidance",
+        "desc": "Improve communication, confidence, interview approach and professional presentation for real hiring situations."
+      },
+      "careerPath": {
+        "title": "Job & Career Path Consultation",
+        "desc": "Understand suitable roles, career paths, industry expectations and available opportunities."
+      },
+      "readiness": {
+        "title": "Placement Readiness Consultation",
+        "desc": "Understand your current placement readiness and the next steps required to get better prepared."
+      }
+    }
+  },
+  "whatWeDo": {
+    "title": "What We Do",
+    "subtitle": "Building the Ecosystem Between Talent, Institutions & Industry",
+    "features": {
+      "skillDevelopment": {
+        "title": "Skill Development",
+        "desc": "Practical, industry-aligned learning opportunities to develop skills relevant to evolving workplace requirements."
+      },
+      "prePlacement": {
+        "title": "Pre-Placement Training",
+        "desc": "Structured training focused on employability, professional skills, technical readiness and hiring expectations."
+      },
+      "employability": {
+        "title": "Career & Employability Support",
+        "desc": "Helps learners understand workplace expectations and strengthen professional capabilities."
+      },
+      "employerConnect": {
+        "title": "Industry & Employer Connect",
+        "desc": "Connects talent with organizations by bringing relevant opportunities and industry requirements closer together."
+      },
+      "campusEngagement": {
+        "title": "Campus & Institutional Engagement",
+        "desc": "Supports institutions in creating structured career development and recruitment opportunities for students."
+      },
+      "techHiring": {
+        "title": "Technology-Enabled Hiring",
+        "desc": "AI-powered tools for talent discovery, assessment, opportunity identification and recruitment processes."
+      }
+    }
+  },
+  "connectedEcosystem": {
+    "title": "A Connected Ecosystem",
+    "steps": {
+      "learn": {
+        "title": "Learn",
+        "desc": "Build relevant skills and capabilities."
+      },
+      "prepare": {
+        "title": "Prepare",
+        "desc": "Develop professional and recruitment readiness."
+      },
+      "connect": {
+        "title": "Connect",
+        "desc": "Bring students, institutions, and industry closer together."
+      },
+      "discover": {
+        "title": "Discover",
+        "desc": "Identify relevant career and employment opportunities."
+      },
+      "engage": {
+        "title": "Engage",
+        "desc": "Enable structured interaction between talent and employers."
+      },
+      "grow": {
+        "title": "Grow",
+        "desc": "Support continuous professional and organizational development."
+      }
+    }
+  },
   "testimonials": {
     "eyebrow": "Success stories",
     "title": "What our students say",
@@ -276,13 +428,17 @@
     "rights": "All rights reserved.",
     "contactTitle": "Contact us",
     "policyTitle": "Policy",
-    "description": "Shortlisted is India's first AI virtual placement cell - built to get you hired, not just trained. Subscribe once, join a curated batch of 12, and get AI-matched jobs, application tracking, and a dedicated coordinator focused on your placement every day.",
-    "officeLabel": "office",
-    "emailLabel": "email",
-    "contactLabel": "contact",
+    "description": "An AI-powered placement support that matches you with the right jobs, tracks your applications, and guides you to get hired.",
+    "tagline": "One platform. Expert guidance. A smarter path to your next career opportunity.",
+    "officeLabel": "Office",
+    "locationLabel": "Address",
+    "emailLabel": "Email",
+    "contactLabel": "Contact",
     "officeAddress": "2nd Floor, SS Niwas, Hirekarma Private Limited, Raghunathpur, Bhubaneswar, Raghunathpurjali, Odisha 751024",
     "contactEmail": "info@hirekarma.in",
     "contactPhone": "+919124364764",
+    "mapTitle": "Hirekarma office location map",
+    "openInMaps": "Open in Maps",
     "legal": {
       "terms": "Terms & Conditions",
       "privacy": "Privacy Policy",

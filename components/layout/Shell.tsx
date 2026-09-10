@@ -37,7 +37,6 @@ export function SiteHeader() {
 
   const links: { k: string; href: string; external?: boolean }[] = [
     { k: 'about', href: '/about' },
-    { k: 'successStories', href: 'https://www.hirekarma.in/impact', external: true },
     { k: 'contact', href: '/contact' },
   ];
 
@@ -59,6 +58,17 @@ export function SiteHeader() {
     <Link href="/auth/login" className={navLoginClass}>
       {t('common.nav.login')}
     </Link>
+  );
+
+  const SuccessStoriesBtn = (
+    <a
+      href="https://www.hirekarma.in/impact"
+      target="_blank"
+      rel="noopener noreferrer"
+      className={navLoginClass}
+    >
+      {t('common.nav.successStories')}
+    </a>
   );
 
   const ExploreUsBtn = (
@@ -118,6 +128,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
+          {SuccessStoriesBtn}
           {ExploreUsBtn}
           <RightActions />
         </div>
@@ -164,6 +175,15 @@ export function SiteHeader() {
             )}
             <div className="mt-3 flex flex-col gap-2">
               <LanguageSwitcher variant="menu" />
+              <a
+                href="https://www.hirekarma.in/impact"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className={`${navLoginClass} text-center`}
+              >
+                {t('common.nav.successStories')}
+              </a>
               <a
                 href="https://www.hirekarma.in/"
                 target="_blank"

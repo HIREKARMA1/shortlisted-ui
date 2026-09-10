@@ -11,6 +11,9 @@ import { BatchCohortVisual } from '@/components/landing/BatchCohortVisual';
 import { ImpactSection } from '@/components/landing/ImpactSection';
 import { WhyShortlisted } from '@/components/landing/WhyShortlisted';
 import { PricingSection } from '@/components/landing/PricingSection';
+import { CareerConsultationsSection } from '@/components/landing/CareerConsultationsSection';
+import { WhatWeDoSection } from '@/components/landing/WhatWeDoSection';
+import { ConnectedEcosystemSection } from '@/components/landing/ConnectedEcosystemSection';
 import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSection';
 import { CommunitySection } from '@/components/landing/CommunitySection';
@@ -178,6 +181,9 @@ export function LandingPageView() {
         offerActive={Boolean(batchInfo?.offer_active)}
         savingsInr={batchInfo?.savings_inr}
       />
+      <CareerConsultationsSection />
+      <WhatWeDoSection />
+      <ConnectedEcosystemSection />
       <TestimonialsSection testimonials={testimonials} />
       <SuccessStoriesSection stories={successStories} />
       <CommunitySection content={community} />
