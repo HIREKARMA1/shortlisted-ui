@@ -9,6 +9,7 @@ export interface TokenResponse {
   refresh_token: string;
   user_type: UserType;
   access_status?: string;
+  signup_channel?: string;
   user_id: string;
   name: string;
   email: string;
@@ -36,6 +37,7 @@ function persistTokenResponse(data: TokenResponse) {
   localStorage.setItem('user_type', data.user_type);
   localStorage.setItem('user_name', data.name);
   localStorage.setItem('access_status', data.access_status || '');
+  localStorage.setItem('signup_channel', data.signup_channel || 'web');
 }
 
 function isAuthEndpoint(url?: string) {
@@ -351,6 +353,23 @@ class ApiClient {
   async listStudents() {
     const res = await this.client.get('/admin/students');
     return res.data;
+  }
+
+  async lookupStudent(params: { email?: string; phone?: string }) {
+    const res = await this.client.get('/admin/students/lookup', {
+      params: {
+        email: params.email || undefined,
+        phone: params.phone || undefined,
+      },
+    });
+    return res.data as {
+      id: string;
+      name: string;
+      email: string;
+      phone?: string | null;
+      access_status: string;
+      signup_channel?: string;
+    };
   }
 
   async manualGrant(studentId: string) {

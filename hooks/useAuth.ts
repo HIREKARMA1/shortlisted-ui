@@ -14,6 +14,7 @@ export function useAuth() {
     localStorage.setItem('user_type', data.user_type);
     localStorage.setItem('user_name', data.name);
     localStorage.setItem('access_status', data.access_status || '');
+    localStorage.setItem('signup_channel', data.signup_channel || 'web');
   };
 
   const logout = () => {
@@ -35,6 +36,7 @@ export function useAuth() {
           userType: data.user_type,
           userName: data.name,
           accessStatus: data.access_status || '',
+          signupChannel: data.signup_channel || 'web',
         }),
     );
   };

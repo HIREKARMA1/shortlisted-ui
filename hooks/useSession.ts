@@ -61,10 +61,12 @@ export function useAuthenticatedGate(returnTo: string) {
   return { session, ready, canAccess: ready && !!session };
 }
 
-export function useStudentSubscribeGate() {
+export function useStudentSubscribeGate(options?: { reviewOnly?: boolean }) {
   const router = useRouter();
   const { session, ready } = useSession();
   const [accessStatus, setAccessStatus] = useState(session?.accessStatus ?? '');
+  const [signupChannel, setSignupChannel] = useState(session?.signupChannel ?? 'web');
+  const reviewOnly = options?.reviewOnly === true;
 
   useEffect(() => {
     if (!ready) return;
@@ -85,11 +87,26 @@ export function useStudentSubscribeGate() {
       api
         .getDashboard()
         .then((data) => {
-          const status = String((data.student as { access_status?: string })?.access_status || '');
+          const student = data.student as {
+            access_status?: string;
+            signup_channel?: string;
+          };
+          const status = String(student?.access_status || '');
+          const channel = String(student?.signup_channel || current.signupChannel || 'web');
           localStorage.setItem('access_status', status);
+          localStorage.setItem('signup_channel', channel);
           setAccessStatus(status);
+          setSignupChannel(channel);
           if (status === 'active') {
             router.replace('/dashboard/student');
+            return;
+          }
+          if (reviewOnly && channel !== 'whatsapp') {
+            router.replace('/subscribe');
+            return;
+          }
+          if (!reviewOnly && channel === 'whatsapp') {
+            router.replace('/subscribe/review');
           }
         })
         .catch(() => undefined);
@@ -102,7 +119,12 @@ export function useStudentSubscribeGate() {
     };
     window.addEventListener('pageshow', onPageShow);
     return () => window.removeEventListener('pageshow', onPageShow);
-  }, [ready, session, router]);
+  }, [ready, session, router, reviewOnly]);
 
-  return { session, ready, accessStatus: accessStatus || session?.accessStatus };
+  return {
+    session,
+    ready,
+    accessStatus: accessStatus || session?.accessStatus,
+    signupChannel: signupChannel || session?.signupChannel || 'web',
+  };
 }

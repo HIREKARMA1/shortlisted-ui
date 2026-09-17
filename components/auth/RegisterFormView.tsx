@@ -38,6 +38,14 @@ export function RegisterFormView() {
     return () => window.clearTimeout(timer);
   }, [resendIn]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const type = new URLSearchParams(window.location.search).get('type');
+    if ((type || '').toLowerCase() === 'whatsapp') {
+      sessionStorage.setItem('signup_channel', 'whatsapp');
+    }
+  }, []);
+
   if (!ready || session) return null;
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
@@ -82,12 +90,17 @@ export function RegisterFormView() {
     }
     setLoading(true);
     try {
+      const channel =
+        typeof window !== 'undefined' && sessionStorage.getItem('signup_channel') === 'whatsapp'
+          ? 'whatsapp'
+          : 'web';
       await api.register({
         name: form.name,
         email: form.email.trim(),
         otp: form.otp.trim(),
         password: form.password,
         phone: form.phone,
+        signup_channel: channel,
       });
       toast.success(t('auth.register.success'));
       await login(form.email.trim(), form.password, 'student');
