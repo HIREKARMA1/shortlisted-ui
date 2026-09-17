@@ -7,7 +7,6 @@ import {
   Landmark,
   Trophy,
   Users,
-  X,
   type LucideIcon,
 } from 'lucide-react';
 import { motion, useInView, type Variants } from 'framer-motion';
@@ -35,7 +34,6 @@ const COMPARISON_STEPS = [
 type StepKey = (typeof COMPARISON_STEPS)[number];
 
 const BLUE = '#1b52a4';
-const PURPLE = '#7C3AED';
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 12 },
@@ -65,7 +63,7 @@ function ComparisonCard({
       className={cn(
         'group flex h-full flex-col rounded-xl border bg-white px-3 py-2.5 transition-colors duration-200 sm:px-3.5 sm:py-3',
         isRight
-          ? 'border-violet-100 hover:border-violet-200'
+          ? 'border-brand-blue/15 hover:border-brand-blue/30'
           : 'border-slate-200/90 hover:border-brand-blue/25'
       )}
     >
@@ -73,9 +71,7 @@ function ComparisonCard({
         <span
           className={cn(
             'mt-0.5 shrink-0 font-display text-[11px] font-bold tabular-nums leading-none',
-            isRight
-              ? 'bg-gradient-to-r from-[#1b52a4] to-[#7C3AED] bg-clip-text text-transparent'
-              : 'text-slate-400'
+            isRight ? 'text-brand-blue' : 'text-slate-400'
           )}
         >
           {label}
@@ -83,36 +79,16 @@ function ComparisonCard({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            <h4
-              className={cn(
-                'font-display text-[12.5px] font-bold leading-snug tracking-tight sm:text-[13px]',
-                isRight ? 'text-[#3B0764]' : 'text-ink-primary'
-              )}
-            >
+            <h4 className="font-display text-[12.5px] font-bold leading-snug tracking-tight text-ink-primary sm:text-[13px]">
               {title}
             </h4>
             {isRight ? (
-              <span
-                className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-white"
-                style={{ background: `linear-gradient(135deg, ${BLUE}, ${PURPLE})` }}
-              >
+              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand-blue text-white">
                 <Check className="h-2.5 w-2.5" strokeWidth={3} />
               </span>
-            ) : (
-              <span
-                className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-400"
-                aria-hidden
-              >
-                <X className="h-2.5 w-2.5" strokeWidth={3} />
-              </span>
-            )}
+            ) : null}
           </div>
-          <p
-            className={cn(
-              'mt-1 line-clamp-2 text-[11.5px] leading-snug sm:text-[12px]',
-              isRight ? 'text-[#5B21B6]/75' : 'text-ink-muted'
-            )}
-          >
+          <p className="mt-1 line-clamp-2 text-[11.5px] leading-snug text-ink-muted sm:text-[12px]">
             {desc}
           </p>
         </div>
@@ -122,13 +98,11 @@ function ComparisonCard({
 }
 
 function ColumnHeader({
-  label,
   title,
   subtitle,
   icon: Icon,
   tone,
 }: {
-  label: string;
   title: string;
   subtitle: string;
   icon: LucideIcon;
@@ -138,46 +112,26 @@ function ColumnHeader({
 
   return (
     <div className="flex flex-col">
-      <span
-        className={cn(
-          'inline-flex w-fit items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em]',
-          isRight
-            ? 'bg-gradient-to-r from-[#1b52a4] to-[#7C3AED] text-white'
-            : 'bg-slate-100 text-slate-500'
-        )}
-      >
-        {label}
-      </span>
-
-      <div className="mt-2.5 flex items-start gap-2.5 sm:mt-3 sm:gap-3">
+      <div className="flex items-start gap-2.5 sm:gap-3">
         <div
           className={cn(
             'flex h-9 w-9 shrink-0 items-center justify-center sm:h-10 sm:w-10',
             isRight ? 'rounded-full' : 'rounded-xl'
           )}
-          style={{
-            background: isRight ? `linear-gradient(135deg, ${BLUE}, ${PURPLE})` : BLUE,
-          }}
+          style={{ background: BLUE }}
         >
           <Icon className="h-4 w-4 text-white" strokeWidth={1.75} />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="font-display text-[15px] font-bold leading-snug tracking-tight text-ink-primary sm:text-base md:text-lg">
-            {title}
-            {isRight && (
-              <span
-                className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 align-middle"
-                title="Active"
-                aria-label="Active"
-              />
-            )}
-          </h3>
-          <p
+          <h3
             className={cn(
-              'mt-0.5 text-[11.5px] leading-snug sm:text-[12.5px]',
-              isRight ? 'text-[#5B21B6]/70' : 'text-ink-muted'
+              'font-display text-[15px] font-bold leading-snug tracking-tight sm:text-base md:text-lg',
+              isRight ? 'text-brand-blue' : 'text-ink-primary'
             )}
           >
+            {title}
+          </h3>
+          <p className="mt-0.5 text-[11.5px] leading-snug text-ink-muted sm:text-[12.5px]">
             {subtitle}
           </p>
         </div>
@@ -233,7 +187,7 @@ export function ImpactSection() {
             >
               <h2 className="font-display text-[1.5rem] font-extrabold leading-[1.25] tracking-tight text-ink-primary sm:text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] lg:leading-[1.2]">
                 {t('landing.impact.comparison.titleBefore')}
-                <span className="bg-gradient-to-r from-[#1b52a4] via-[#5B6FE8] to-[#7C3AED] bg-clip-text text-transparent">
+                <span className="text-brand-blue">
                   {t('landing.impact.comparison.titleHighlight')}
                 </span>
               </h2>
@@ -255,7 +209,6 @@ export function ImpactSection() {
               <div className="grid grid-cols-1 gap-4 border-b border-slate-200/80 pb-4 md:grid-cols-2 md:items-stretch md:gap-0 md:pb-5">
                 <div className="md:border-r md:border-slate-200/80 md:pr-5 lg:pr-6">
                   <ColumnHeader
-                    label={t('landing.impact.comparison.college.badge')}
                     title={t('landing.impact.comparison.college.title')}
                     subtitle={t('landing.impact.comparison.college.subtitle')}
                     icon={Landmark}
@@ -264,11 +217,10 @@ export function ImpactSection() {
                 </div>
                 <div className="relative md:pl-5 lg:pl-6">
                   <div
-                    className="pointer-events-none absolute left-0 top-0 hidden h-full w-0.5 bg-gradient-to-b from-[#1b52a4] to-[#7C3AED] md:block"
+                    className="pointer-events-none absolute left-0 top-0 hidden h-full w-0.5 bg-brand-blue md:block"
                     aria-hidden
                   />
                   <ColumnHeader
-                    label={t('landing.impact.comparison.shortlisted.badge')}
                     title={t('landing.impact.comparison.shortlisted.title')}
                     subtitle={t('landing.impact.comparison.shortlisted.subtitle')}
                     icon={Users}

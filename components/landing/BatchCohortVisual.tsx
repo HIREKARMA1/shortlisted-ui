@@ -40,7 +40,7 @@ export function BatchCohortVisual({
   const enrollmentOpen = seatsRemaining > 0;
 
   return (
-    <div className="relative mx-auto w-full max-w-md pl-1 sm:pl-2">
+    <div className="relative mx-auto w-full max-w-md min-w-0 pl-1 sm:pl-2 lg:ml-auto lg:mr-0">
       <div className="relative rounded-2xl border border-brand-blue/15 bg-white/90 p-4 pb-8 shadow-lg shadow-brand-blue/10 backdrop-blur-sm sm:p-5 sm:pb-9">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
