@@ -9,15 +9,36 @@ import { getPostLoginPath } from '@/lib/auth/session';
 import { config } from '@/lib/config';
 import { useSession } from '@/hooks/useSession';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
-import { navExploreClass, navLoginClass } from '@/components/ui/nav-cta';
+import { navExploreClass, navHeaderExploreClass, navHeaderLoginClass, navLoginClass } from '@/components/ui/nav-cta';
 
-export function BrandLogo({ className = '', showBadge = false }: { className?: string; showBadge?: boolean }) {
+export function BrandLogo({
+  className = '',
+  showBadge = false,
+  variant = 'default',
+  size = 'default',
+}: {
+  className?: string;
+  showBadge?: boolean;
+  variant?: 'default' | 'onDark';
+  size?: 'default' | 'header';
+}) {
   const { t } = useTranslation();
+  const onDark = variant === 'onDark';
+  const headerSize = size === 'header';
+
   return (
-    <Link href="/" className={`flex items-center gap-2.5 ${className}`}>
-      <span className="font-display text-xl font-extrabold tracking-tight text-ink sm:text-2xl">
-        SHORT<span className="text-primary">LISTED</span>
-      </span>
+    <Link href="/" className={`flex items-center gap-2.5 ${className}`} aria-label="Shortlisted">
+      <img
+        src="/images/shortlisted-logo.png"
+        alt="Shortlisted"
+        className={
+          onDark
+            ? 'h-11 w-auto rounded-md bg-white px-2 py-1 sm:h-12'
+            : headerSize
+              ? 'h-11 w-auto origin-left scale-[1.18] object-contain object-left sm:h-12'
+              : 'h-11 w-auto sm:h-12'
+        }
+      />
       {showBadge && (
         <span className="hidden rounded-md bg-brand-orange/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-orange sm:inline">
           {t('common.brand.badge')}
@@ -55,7 +76,7 @@ export function SiteHeader() {
   );
 
   const LoginBtn = (
-    <Link href="/auth/login" className={navLoginClass}>
+    <Link href="/auth/login" className={navHeaderLoginClass}>
       {t('common.nav.login')}
     </Link>
   );
@@ -65,7 +86,7 @@ export function SiteHeader() {
       href="https://www.hirekarma.in/impact"
       target="_blank"
       rel="noopener noreferrer"
-      className={navLoginClass}
+      className={navHeaderLoginClass}
     >
       {t('common.nav.successStories')}
     </a>
@@ -76,7 +97,7 @@ export function SiteHeader() {
       href="https://www.hirekarma.in/"
       target="_blank"
       rel="noopener noreferrer"
-      className={navExploreClass}
+      className={navHeaderExploreClass}
     >
       {t('common.nav.exploreUs')}
     </a>
@@ -90,43 +111,45 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-30 w-full border-b border-line bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:py-3.5">
-        <BrandLogo />
+      <div className="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6 sm:py-3.5 lg:px-8">
+        <BrandLogo className="shrink-0 self-center" size="header" />
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {links.map((l) => {
-            if (l.external) {
+        <nav className="hidden min-w-0 flex-1 items-center justify-center lg:flex">
+          <div className="flex items-center gap-7">
+            {links.map((l) => {
+              if (l.external) {
+                return (
+                  <a
+                    key={l.k}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-ink/70 transition hover:text-primary"
+                  >
+                    {t(`common.nav.${l.k}`)}
+                  </a>
+                );
+              }
+
+              const path = l.href.split('#')[0];
+              const active = pathname === path || pathname.startsWith(`${path}/`);
+
               return (
-                <a
+                <Link
                   key={l.k}
                   href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-ink/80 transition hover:text-primary"
+                  className={`text-sm font-medium transition hover:text-primary ${
+                    active ? 'text-primary' : 'text-ink/70'
+                  }`}
                 >
                   {t(`common.nav.${l.k}`)}
-                </a>
+                </Link>
               );
-            }
-
-            const path = l.href.split('#')[0];
-            const active = pathname === path || pathname.startsWith(`${path}/`);
-
-            return (
-              <Link
-                key={l.k}
-                href={l.href}
-                className={`text-sm font-medium transition hover:text-primary ${
-                  active ? 'text-primary' : 'text-ink/80'
-                }`}
-              >
-                {t(`common.nav.${l.k}`)}
-              </Link>
-            );
-          })}
+            })}
+          </div>
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="ml-auto hidden shrink-0 items-center justify-end gap-3 md:flex">
           <LanguageSwitcher />
           {SuccessStoriesBtn}
           {ExploreUsBtn}
@@ -136,7 +159,7 @@ export function SiteHeader() {
         <button
           type="button"
           aria-label="Menu"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-line md:hidden"
+          className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-md border border-line md:hidden"
           onClick={() => setOpen((v) => !v)}
         >
           <span className="flex flex-col gap-1">
