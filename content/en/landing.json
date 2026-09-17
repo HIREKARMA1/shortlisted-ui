@@ -1,14 +1,20 @@
 {
   "hero": {
     "eyebrow": "HireKarma Placement Program",
+    "badgeBefore": "India's first",
+    "badgeHighlight": "AI",
+    "badgeAfter": "virtual placement cell",
     "title1": "India's first",
-    "title2": "AI virtual placement cell.",
+    "titleHighlight": "AI virtual",
+    "title2": "placement cell.",
     "title3": "Get shortlisted.",
-    "subtitle": "Subscribe once. Join a curated batch of 12 - get AI-matched jobs from top companies, 24/7 application tracking, and a human coordinator focused on your placement every day.",
+    "subtitle": "Subscribe once. Join a curated batch of 12 – get AI-matched jobs from top companies, 24/7 application tracking, and a human coordinator focused on your placement every day.",
     "ctaPrimary": "Claim Your Seat",
     "ctaSecondary": "Student Login",
     "ctaFreeTrial": "Try for Free",
-    "trust": "Built by HireKarma - trusted by students across India"
+    "trust": "Built by",
+    "trustBrand": "HireKarma",
+    "trustAfter": "Trusted by students across India"
   },
   "stats": {
     "batchSize": { "value": "12", "label": "Students per batch" },
@@ -164,6 +170,7 @@
     "coordinatorRole": "Placement coordinator",
     "coordinator": "Your coordinator",
     "seatsOpen": "Seats open",
+    "supportBadge": "24/7 Support",
     "manifest": "Certified recruitment manifest",
     "statusLabel": "Batch status",
     "statusOpen": "Enrollment open",
