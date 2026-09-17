@@ -15,13 +15,16 @@ export function BrandLogo({
   className = '',
   showBadge = false,
   variant = 'default',
+  size = 'default',
 }: {
   className?: string;
   showBadge?: boolean;
   variant?: 'default' | 'onDark';
+  size?: 'default' | 'header';
 }) {
   const { t } = useTranslation();
   const onDark = variant === 'onDark';
+  const headerSize = size === 'header';
 
   return (
     <Link href="/" className={`flex items-center gap-2.5 ${className}`} aria-label="Shortlisted">
@@ -31,7 +34,9 @@ export function BrandLogo({
         className={
           onDark
             ? 'h-11 w-auto rounded-md bg-white px-2 py-1 sm:h-12'
-            : 'h-11 w-auto sm:h-12'
+            : headerSize
+              ? 'h-11 w-auto origin-left scale-[1.18] object-contain object-left sm:h-12'
+              : 'h-11 w-auto sm:h-12'
         }
       />
       {showBadge && (
@@ -107,7 +112,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 w-full border-b border-line bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6 sm:py-3.5 lg:px-8">
-        <BrandLogo className="shrink-0" />
+        <BrandLogo className="shrink-0 self-center" size="header" />
 
         <nav className="hidden min-w-0 flex-1 items-center justify-center lg:flex">
           <div className="flex items-center gap-7">

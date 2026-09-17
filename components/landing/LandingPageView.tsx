@@ -19,7 +19,7 @@ import { SuccessStoriesSection } from '@/components/landing/SuccessStoriesSectio
 import { CommunitySection } from '@/components/landing/CommunitySection';
 import { FaqSection } from '@/components/landing/FaqSection';
 import { ContactSupportSection } from '@/components/landing/ContactSupportSection';
-import { navLoginClass, navRegisterClass } from '@/components/ui/nav-cta';
+import { ArrowRight, Star } from 'lucide-react';
 
 type BatchInfo = {
   seats_remaining?: number;
@@ -98,53 +98,77 @@ export function LandingPageView() {
     <main className="min-h-screen bg-white">
       <SiteHeader />
 
-      {/* Hero + Impact - one continuous background (no seam) */}
-      <div className="relative bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-          <div className="absolute -right-24 top-8 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl" />
-        </div>
+      {/* Hero + Impact */}
+      <div>
+        <section className="relative flex items-center bg-[#04142e]">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <img
+              src="https://shortlisted.s3.us-east-1.amazonaws.com/HeroSection/hero-bg.jpg"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#04142e]/70 via-[#04142e]/30 to-transparent" />
+          </div>
 
-        <section className="relative flex items-center">
-          <PageContainer className="relative grid w-full min-w-0 items-center gap-8 py-8 sm:gap-10 sm:py-10 lg:grid-cols-2 lg:gap-8 lg:py-10 xl:gap-12 xl:py-12 [@media(max-height:760px)]:py-6 [@media(max-height:760px)]:lg:py-7">
+          <PageContainer className="relative z-10 grid w-full min-w-0 items-center gap-8 py-8 pb-12 sm:gap-10 sm:py-9 sm:pb-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:py-10 lg:pb-14 xl:gap-10">
           <div className="min-w-0">
-            <h1 className="hero-heading font-serif font-bold tracking-tight text-ink-primary">
-              <span className="block">{t('landing.hero.title1')}</span>
-              <span className="mt-1 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
-            </h1>
-            <p className="mt-3 font-display text-base font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-lg xl:text-xl">
-              {t('landing.hero.title3')}
-            </p>
+            <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] text-white/90 backdrop-blur-sm sm:px-3.5 sm:text-[12px]">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#f15a2b]">
+                <Star className="h-3 w-3 fill-white text-white" />
+              </span>
+              <span className="truncate">
+                {t('landing.hero.badgeBefore')}{' '}
+                <span className="font-semibold text-[#f15a2b]">{t('landing.hero.badgeHighlight')}</span>{' '}
+                {t('landing.hero.badgeAfter')}
+              </span>
+            </span>
 
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink-secondary sm:text-base">
+            <h1 className="hero-heading mt-3.5 font-display font-extrabold text-white">
+              <span className="block">{t('landing.hero.title1')}</span>
+              <span className="block text-[#f15a2b]">{t('landing.hero.titleHighlight')}</span>
+              <span className="block">{t('landing.hero.title2')}</span>
+            </h1>
+
+            <p className="mt-3 max-w-[32rem] text-[13px] leading-relaxed text-white/75 sm:text-[14.5px] sm:leading-6">
               {t('landing.hero.subtitle')}
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-2.5">
-              <Link href="/auth/register" className={`${navRegisterClass} whitespace-nowrap`}>
+            <div className="mt-5 flex flex-wrap items-center gap-2.5">
+              <Link
+                href="/auth/register"
+                className="inline-flex items-center gap-2 rounded-full bg-[#f15a2b] px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.08em] text-white shadow-[0_8px_24px_rgba(241,90,43,0.35)] transition hover:bg-[#dc4e22] sm:px-6 sm:text-[12px]"
+              >
                 {t('landing.hero.ctaPrimary')}
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
-              <Link href={freeTrialHref} className={`${navLoginClass} whitespace-nowrap`}>
+              <Link
+                href={freeTrialHref}
+                className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-[#04142e]/40 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.08em] text-white backdrop-blur-sm transition hover:border-white/60 hover:bg-white/10 sm:px-6 sm:text-[12px]"
+              >
                 {t('landing.hero.ctaFreeTrial')}
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
 
-            <div className="mt-6 border-t border-brand-blue/15 pt-4 [@media(max-height:760px)]:mt-4 [@media(max-height:760px)]:pt-3">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-blue/70">
-                {t('landing.hero.trust')}
-              </p>
-              <dl className="mt-3 grid grid-cols-3 gap-3">
-                {(['batchSize', 'support', 'access'] as const).map((key) => (
-                  <div key={key}>
-                    <dt className="font-display text-3xl font-extrabold text-brand-blue sm:text-4xl">
-                      {t(`landing.stats.${key}.value`)}
-                    </dt>
-                    <dd className="mt-1 text-[10px] font-semibold uppercase leading-snug tracking-wider text-ink-muted sm:text-xs">
-                      {t(`landing.stats.${key}.label`)}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
+            <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/55 sm:text-[11px]">
+              {t('landing.hero.trust')}{' '}
+              <span className="text-[#f15a2b]">{t('landing.hero.trustBrand')}</span>
+              {' • '}
+              {t('landing.hero.trustAfter')}
+            </p>
+
+            <dl className="mt-4 grid max-w-md grid-cols-3 gap-3 sm:max-w-lg sm:gap-5">
+              {(['batchSize', 'support', 'access'] as const).map((key) => (
+                <div key={key}>
+                  <dt className="font-display text-xl font-extrabold leading-none text-white sm:text-2xl">
+                    {t(`landing.stats.${key}.value`)}
+                  </dt>
+                  <dd className="mt-1.5 text-[9px] font-semibold uppercase tracking-wider text-white/55 sm:text-[10px]">
+                    {t(`landing.stats.${key}.label`)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
           <BatchCohortVisual
@@ -156,6 +180,7 @@ export function LandingPageView() {
             primaryLeadLabel={t('landing.cohort.primaryLead')}
             coordinatorRoleLabel={t('landing.cohort.coordinatorRole')}
             seatsLabel={t('landing.cohort.seatsOpen')}
+            supportBadgeLabel={t('landing.cohort.supportBadge')}
             manifestLabel={t('landing.cohort.manifest')}
             statusLabel={t('landing.cohort.statusLabel')}
             statusOpenLabel={t('landing.cohort.statusOpen')}
@@ -165,7 +190,9 @@ export function LandingPageView() {
           </PageContainer>
         </section>
 
-        <ImpactSection />
+        <div className="relative bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
+          <ImpactSection />
+        </div>
       </div>
 
       <WhyShortlisted />
