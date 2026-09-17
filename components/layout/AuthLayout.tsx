@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useTranslation } from '@/lib/i18n/context';
 import { cn } from '@/lib/utils';
 import { BrandLogo } from './Shell';
@@ -40,12 +39,7 @@ export function AuthLayout({
           <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-brand-yellow/20 blur-2xl" aria-hidden />
 
           <div className="relative">
-            <Link
-              href="/"
-              className="inline-block font-display text-2xl font-extrabold tracking-tight text-white"
-            >
-              SHORT<span className="text-brand-yellow">LISTED</span>
-            </Link>
+            <BrandLogo variant="onDark" />
             <p className="mt-2 text-sm text-white/80">{t('common.brand.tagline')}</p>
           </div>
 

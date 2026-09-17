@@ -49,6 +49,19 @@
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
+  .hero-heading {
+    font-size: clamp(2.35rem, 1.15rem + 3.15vw, 4.25rem);
+    line-height: 1.12;
+    overflow: visible;
+    padding-block: 0.06em 0.02em;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-heading {
+      font-size: clamp(3.15rem, 1.6rem + 2.2vw, 4.35rem);
+    }
+  }
+
   .brand-stripe {
     @apply h-1.5 w-full;
   }

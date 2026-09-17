@@ -88,7 +88,7 @@ export function LanguageSwitcher({ variant = 'default' }: LanguageSwitcherProps)
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={`inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink hover:border-primary/40 hover:bg-soft ${
-          isMenu ? 'w-full justify-center' : ''
+          isMenu ? 'w-full justify-center' : 'shrink-0'
         }`}
         aria-haspopup="listbox"
         aria-expanded={open}

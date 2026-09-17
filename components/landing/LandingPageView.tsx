@@ -99,48 +99,46 @@ export function LandingPageView() {
       <SiteHeader />
 
       {/* Hero + Impact - one continuous background (no seam) */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
-        <div
-          className="pointer-events-none absolute -right-24 top-8 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl"
-          aria-hidden
-        />
+      <div className="relative bg-gradient-to-br from-brand-blue/[0.04] via-white to-brand-orange/[0.05]">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          <div className="absolute -right-24 top-8 h-64 w-64 rounded-full bg-brand-sky/10 blur-3xl" />
+        </div>
 
-        {/* Hero - keep a bit shorter so Impact peeks in first screen */}
-        <section className="relative flex lg:h-[calc(100dvh-10rem)] lg:items-center">
-          <PageContainer className="relative grid w-full items-center gap-8 py-6 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:py-8">
-          <div>
-            <h1 className="font-serif text-[2.35rem] font-bold leading-[1.06] tracking-tight text-ink-primary sm:text-[3.4rem] lg:text-[4rem]">
+        <section className="relative flex items-center">
+          <PageContainer className="relative grid w-full min-w-0 items-center gap-8 py-8 sm:gap-10 sm:py-10 lg:grid-cols-2 lg:gap-8 lg:py-10 xl:gap-12 xl:py-12 [@media(max-height:760px)]:py-6 [@media(max-height:760px)]:lg:py-7">
+          <div className="min-w-0">
+            <h1 className="hero-heading font-serif font-bold tracking-tight text-ink-primary">
               <span className="block">{t('landing.hero.title1')}</span>
-              <span className="mt-0.5 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
+              <span className="mt-1 block font-serif text-brand-blue">{t('landing.hero.title2')}</span>
             </h1>
-            <p className="mt-2 font-display text-base font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-lg">
+            <p className="mt-3 font-display text-base font-bold uppercase tracking-[0.14em] text-brand-orange sm:text-lg xl:text-xl">
               {t('landing.hero.title3')}
             </p>
 
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-secondary sm:text-[0.95rem]">
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink-secondary sm:text-base">
               {t('landing.hero.subtitle')}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2.5">
-              <Link href="/auth/register" className={`${navRegisterClass} px-5 py-2.5`}>
+              <Link href="/auth/register" className={`${navRegisterClass} whitespace-nowrap`}>
                 {t('landing.hero.ctaPrimary')}
               </Link>
-              <Link href={freeTrialHref} className={`${navLoginClass} px-5 py-2.5`}>
+              <Link href={freeTrialHref} className={`${navLoginClass} whitespace-nowrap`}>
                 {t('landing.hero.ctaFreeTrial')}
               </Link>
             </div>
 
-            <div className="mt-6 border-t border-brand-blue/15 pt-4">
+            <div className="mt-6 border-t border-brand-blue/15 pt-4 [@media(max-height:760px)]:mt-4 [@media(max-height:760px)]:pt-3">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-blue/70">
                 {t('landing.hero.trust')}
               </p>
               <dl className="mt-3 grid grid-cols-3 gap-3">
                 {(['batchSize', 'support', 'access'] as const).map((key) => (
                   <div key={key}>
-                    <dt className="font-display text-2xl font-extrabold text-brand-blue sm:text-3xl">
+                    <dt className="font-display text-3xl font-extrabold text-brand-blue sm:text-4xl">
                       {t(`landing.stats.${key}.value`)}
                     </dt>
-                    <dd className="mt-1 text-[9px] font-semibold uppercase leading-snug tracking-wider text-ink-muted sm:text-[10px]">
+                    <dd className="mt-1 text-[10px] font-semibold uppercase leading-snug tracking-wider text-ink-muted sm:text-xs">
                       {t(`landing.stats.${key}.label`)}
                     </dd>
                   </div>
