@@ -6,6 +6,7 @@ const SESSION_KEYS = [
   'user_type',
   'user_name',
   'access_status',
+  'signup_channel',
 ] as const;
 
 const LOGOUT_FLASH_KEY = 'auth_logout_flash';

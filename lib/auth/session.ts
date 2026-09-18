@@ -5,6 +5,7 @@ export type Session = {
   userType: UserType;
   userName: string;
   accessStatus: string;
+  signupChannel: string;
 };
 
 export function readSession(): Session | null {
@@ -18,14 +19,19 @@ export function readSession(): Session | null {
     userType: (localStorage.getItem('user_type') as UserType) || 'student',
     userName: localStorage.getItem('user_name') || '',
     accessStatus: localStorage.getItem('access_status') || '',
+    signupChannel: localStorage.getItem('signup_channel') || 'web',
   };
+}
+
+export function getLockedStudentPath(session: Pick<Session, 'signupChannel'>): string {
+  return session.signupChannel === 'whatsapp' ? '/subscribe/review' : '/subscribe';
 }
 
 export function getPostLoginPath(session: Session): string {
   if (session.userType === 'super_admin') return '/dashboard/super-admin';
   if (session.userType === 'admin') return '/dashboard/admin';
   if (session.accessStatus === 'active') return '/dashboard/student';
-  return '/subscribe';
+  return getLockedStudentPath(session);
 }
 
 export function getSafeRedirectPath(value: string | null | undefined): string | null {

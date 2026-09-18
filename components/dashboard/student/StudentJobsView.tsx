@@ -2,22 +2,34 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Search } from 'lucide-react';
+import { ChevronDown, Filter, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
-import { normalizeApplication, normalizeJob } from '@/lib/jobUtils';
+import { getJobListingStatus, normalizeApplication, normalizeJob } from '@/lib/jobUtils';
 import { isResumeRequiredError, showResumeRequiredToast } from '@/lib/resumeRequiredToast';
 import type { StudentJob } from '@/lib/types/studentJobs';
+import { cn } from '@/lib/utils';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { ApplyWithResumeModal } from '@/components/dashboard/student/jobs/ApplyWithResumeModal';
 import { JobCard } from '@/components/dashboard/student/jobs/JobCard';
 import { JobDescriptionModal } from '@/components/dashboard/student/jobs/JobDescriptionModal';
+import {
+  ManagementPagination,
+  getTotalPages,
+  paginateItems,
+} from '@/components/dashboard/shared/management/ManagementPagination';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Input } from '@/components/ui/Input';
 import { LoadingState } from '@/components/ui/LoadingState';
+
+type StatusFilter = 'all' | 'open' | 'expired';
+
+const STATUS_FILTERS: StatusFilter[] = ['all', 'open', 'expired'];
+const PAGE_SIZE_OPTIONS = [20, 30, 50] as const;
+const DEFAULT_PAGE_SIZE = 20;
 
 export function StudentJobsView() {
   const router = useRouter();
@@ -31,8 +43,13 @@ export function StudentJobsView() {
   const [selectedJob, setSelectedJob] = useState<StudentJob | null>(null);
   const [applyJobTarget, setApplyJobTarget] = useState<StudentJob | null>(null);
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [ready, setReady] = useState(false);
   const autoApplyAttempted = useRef(false);
+  const filterRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
     try {
@@ -119,18 +136,55 @@ export function StudentJobsView() {
     }
   }, [ready, jobs, searchParams, appStatusByJob, openApplyModal]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setFilterOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter, pageSize]);
+
   const filteredJobs = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return jobs;
-    return jobs.filter((job) => {
-      const company = (job.company_name || job.corporate_name || '').toLowerCase();
-      return (
-        job.title.toLowerCase().includes(q) ||
-        company.includes(q) ||
-        String(job.location || '').toLowerCase().includes(q)
-      );
+    const searched = !q
+      ? jobs
+      : jobs.filter((job) => {
+          const company = (job.company_name || job.corporate_name || '').toLowerCase();
+          return (
+            job.title.toLowerCase().includes(q) ||
+            company.includes(q) ||
+            String(job.location || '').toLowerCase().includes(q)
+          );
+        });
+
+    const byStatus =
+      statusFilter === 'all'
+        ? searched
+        : searched.filter((job) => getJobListingStatus(job) === statusFilter);
+
+    return [...byStatus].sort((a, b) => {
+      const aOpen = getJobListingStatus(a) === 'open' ? 0 : 1;
+      const bOpen = getJobListingStatus(b) === 'open' ? 0 : 1;
+      return aOpen - bOpen;
     });
-  }, [jobs, search]);
+  }, [jobs, search, statusFilter]);
+
+  const totalPages = getTotalPages(filteredJobs.length, pageSize);
+  const safePage = Math.min(page, totalPages);
+  const pageJobs = paginateItems(filteredJobs, safePage, pageSize);
+
+  const statusFilterLabel =
+    statusFilter === 'open'
+      ? t('dashboard.jobs.filterOpen')
+      : statusFilter === 'expired'
+        ? t('dashboard.jobs.filterExpired')
+        : t('dashboard.jobs.filterAll');
 
   if (!ready) return <LoadingState />;
 
@@ -148,31 +202,110 @@ export function StudentJobsView() {
         </p>
       </div>
 
-      <div className="mb-5 relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={t('dashboard.jobs.searchPlaceholder')}
-          className="pl-10"
-        />
+      <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center">
+        <div className="relative min-w-0 flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t('dashboard.jobs.searchPlaceholder')}
+            className="pl-10"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative" ref={filterRef}>
+            <button
+              type="button"
+              onClick={() => setFilterOpen((open) => !open)}
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:border-gray-300"
+            >
+              <Filter className="h-4 w-4" />
+              {t('dashboard.jobs.filter')}
+              <span className="text-brand-blue">{statusFilterLabel}</span>
+              <ChevronDown className={cn('h-4 w-4 transition-transform', filterOpen && 'rotate-180')} />
+            </button>
+
+            {filterOpen && (
+              <div className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+                {STATUS_FILTERS.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => {
+                      setStatusFilter(option);
+                      setFilterOpen(false);
+                    }}
+                    className={cn(
+                      'w-full px-4 py-2.5 text-left text-sm transition-colors',
+                      statusFilter === option
+                        ? 'bg-blue-50 font-semibold text-brand-blue'
+                        : 'text-gray-700 hover:bg-gray-50'
+                    )}
+                  >
+                    {option === 'open'
+                      ? t('dashboard.jobs.filterOpen')
+                      : option === 'expired'
+                        ? t('dashboard.jobs.filterExpired')
+                        : t('dashboard.jobs.filterAll')}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <label className="inline-flex items-center gap-2 text-sm text-ink-secondary">
+            <span className="whitespace-nowrap font-medium">{t('dashboard.jobs.pageSize')}</span>
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm outline-none transition-colors hover:border-gray-300 focus:border-brand-blue"
+            >
+              {PAGE_SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       {filteredJobs.length === 0 ? (
         <EmptyState message={t('dashboard.jobs.empty')} />
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {filteredJobs.map((job, index) => (
-            <JobCard
-              key={job.id}
-              job={job}
-              cardIndex={index}
-              onViewDescription={() => setSelectedJob(job)}
-              onApply={() => openApplyModal(job)}
-              isApplying={applying === job.id}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {pageJobs.map((job, index) => (
+              <JobCard
+                key={job.id}
+                job={job}
+                cardIndex={index}
+                onViewDescription={() => setSelectedJob(job)}
+                onApply={() => openApplyModal(job)}
+                isApplying={applying === job.id}
+              />
+            ))}
+          </div>
+
+          {filteredJobs.length > pageSize && (
+            <div className="mt-4 overflow-hidden rounded-xl border border-line-default bg-white">
+              <ManagementPagination
+                page={safePage}
+                total={filteredJobs.length}
+                pageSize={pageSize}
+                onPageChange={setPage}
+                summary={t('dashboard.jobs.pagination', {
+                  from: String((safePage - 1) * pageSize + 1),
+                  to: String(Math.min(safePage * pageSize, filteredJobs.length)),
+                  total: String(filteredJobs.length),
+                })}
+                prevLabel={t('dashboard.jobs.prev')}
+                nextLabel={t('dashboard.jobs.next')}
+              />
+            </div>
+          )}
+        </>
       )}
 
       {selectedJob && (
