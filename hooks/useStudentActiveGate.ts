@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { api } from '@/lib/api';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
+import { getLockedStudentPath } from '@/lib/auth/session';
 
 export function useStudentActiveGate() {
   const router = useRouter();
@@ -23,16 +24,25 @@ export function useStudentActiveGate() {
       api
         .getDashboard()
         .then((data) => {
-          const status = String((data.student as { access_status?: string })?.access_status || '');
+          const student = data.student as {
+            access_status?: string;
+            signup_channel?: string;
+          };
+          const status = String(student?.access_status || '');
+          const channel = String(
+            student?.signup_channel || localStorage.getItem('signup_channel') || 'web',
+          );
           localStorage.setItem('access_status', status);
+          localStorage.setItem('signup_channel', channel);
           if (status !== 'active') {
-            router.replace('/subscribe');
+            router.replace(getLockedStudentPath({ signupChannel: channel }));
           }
         })
         .catch((err) => {
           // 401 is handled by the API interceptor (refresh or force logout).
           if (axios.isAxiosError(err) && err.response?.status === 401) return;
-          router.replace('/subscribe');
+          const channel = localStorage.getItem('signup_channel') || 'web';
+          router.replace(getLockedStudentPath({ signupChannel: channel }));
         });
     };
 
