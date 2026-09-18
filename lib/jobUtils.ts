@@ -120,6 +120,12 @@ export function isDeadlineExpired(deadline?: string | null): boolean {
   return !Number.isNaN(d.getTime()) && d < new Date();
 }
 
+export type JobListingStatus = 'open' | 'expired';
+
+export function getJobListingStatus(job: Pick<StudentJob, 'application_deadline'>): JobListingStatus {
+  return isDeadlineExpired(job.application_deadline) ? 'expired' : 'open';
+}
+
 export function isDeadlineNear(deadline?: string | null): boolean {
   if (!deadline) return false;
   const d = new Date(deadline);
