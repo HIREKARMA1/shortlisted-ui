@@ -148,6 +148,8 @@ export function JobDescriptionModal({
                 industry: job.industry ?? undefined,
                 selection_process: job.selection_process ?? undefined,
                 campus_drive_date: job.campus_drive_date ?? undefined,
+                company_name: job.company_name ?? undefined,
+                company_logo: job.company_logo ?? undefined,
                 corporate_name: job.corporate_name ?? undefined,
                 corporate_id: job.corporate_id || undefined,
                 created_at: job.created_at ?? undefined,

@@ -195,13 +195,6 @@ export function StudentJobsView() {
       subtitle={t('dashboard.jobs.subtitle')}
       onLogout={logout}
     >
-      <div className="mb-6 rounded-xl border border-primary-100 bg-gradient-to-r from-primary-50 to-secondary-50 p-5">
-        <p className="text-sm text-ink-secondary">{t('dashboard.jobs.headerHint')}</p>
-        <p className="mt-1 text-lg font-semibold text-ink-primary">
-          {t('dashboard.jobs.resultsCount', { count: String(filteredJobs.length) })}
-        </p>
-      </div>
-
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
