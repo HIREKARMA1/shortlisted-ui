@@ -1,8 +1,24 @@
 import React from 'react'
-import { Document, Page, Text, View, Image, StyleSheet, pdf } from '@react-pdf/renderer'
+import { Document, Page, Text, View, Image, StyleSheet, pdf, Font } from '@react-pdf/renderer'
 import { config } from './config'
 import { formatEducationFieldForDisplay, parseEducationField } from './parseEducationField'
 import { formatSalaryRange } from './currency'
+
+// Unicode font so ₹ renders correctly (Helvetica maps it to ¹).
+let pdfFontsRegistered = false
+function ensurePdfFontsRegistered() {
+  if (pdfFontsRegistered) return
+  const base =
+    typeof window !== 'undefined' ? `${window.location.origin}/fonts` : '/fonts'
+  Font.register({
+    family: 'NotoSans',
+    fonts: [
+      { src: `${base}/NotoSans-Regular.ttf`, fontWeight: 'normal' },
+      { src: `${base}/NotoSans-Bold.ttf`, fontWeight: 'bold' },
+    ],
+  })
+  pdfFontsRegistered = true
+}
 
 interface JobData {
   id: string
@@ -29,6 +45,8 @@ interface JobData {
   selection_process?: string
   campus_drive_date?: string
   corporate_name?: string
+  company_name?: string
+  company_logo?: string
   corporate_id?: string
   created_at?: string
   number_of_openings?: number
@@ -65,7 +83,7 @@ const styles = StyleSheet.create({
     paddingBottom: 60, // Space for footer + extra space before page break
     paddingHorizontal: 25,
     fontSize: 12,
-    fontFamily: 'Helvetica',
+    fontFamily: 'NotoSans',
   },
   header: {
     position: 'absolute',
@@ -85,6 +103,12 @@ const styles = StyleSheet.create({
     width: 140,
     height: 40,
     objectFit: 'contain',
+  },
+  headerCompany: {
+    marginLeft: 12,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#0f172a',
   },
   footerLogo: {
     width: 70,
@@ -214,15 +238,16 @@ const styles = StyleSheet.create({
 })
 
 // Header Component - appears on every page
-const PDFHeader = ({ logoUrl }: { logoUrl?: string | null }) => (
+const PDFHeader = ({
+  logoUrl,
+  companyName,
+}: {
+  logoUrl?: string | null
+  companyName?: string | null
+}) => (
   <View style={styles.header} fixed>
-    {logoUrl ? (
-      <Image src={logoUrl} style={styles.logo} />
-    ) : (
-      <View style={{ width: 140, height: 40, backgroundColor: '#e2e8f0', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ fontSize: 10, color: '#718096' }}>LOGO</Text>
-      </View>
-    )}
+    {logoUrl ? <Image src={logoUrl} style={styles.logo} /> : null}
+    {companyName ? <Text style={styles.headerCompany}>{companyName}</Text> : null}
   </View>
 )
 
@@ -301,12 +326,14 @@ const JobDescriptionDocument = ({
   job, 
   corporateProfile, 
   logoUrl,
-  hirekarmaLogoUrl 
+  hirekarmaLogoUrl,
+  companyName,
 }: { 
   job: JobData
   corporateProfile?: CorporateProfile
   logoUrl?: string | null
   hirekarmaLogoUrl?: string | null
+  companyName?: string | null
 }) => {
   // Split requirements/responsibilities into lines
   const requirementsList = job.requirements
@@ -336,7 +363,7 @@ const JobDescriptionDocument = ({
     <Document>
       {/* Single Page component - react-pdf will automatically create new pages when content overflows */}
       <Page size="A4" style={styles.page}>
-        <PDFHeader logoUrl={logoUrl} />
+        <PDFHeader logoUrl={logoUrl} companyName={companyName} />
         <PDFFooter hirekarmaLogoUrl={hirekarmaLogoUrl} />
         
         {/* About Company Section */}
@@ -653,11 +680,16 @@ const JobDescriptionDocument = ({
 export class JobDescriptionPDFGenerator {
   async generatePDF(job: JobData, corporateProfile?: CorporateProfile): Promise<Blob> {
     try {
-      // Load company logo if available
-      let logoDataUrl: string | null = null
-      if (corporateProfile?.company_logo) {
+      ensurePdfFontsRegistered()
+
+      const companyName =
+        corporateProfile?.company_name || job.company_name || job.corporate_name || null
+      const companyLogoSource = corporateProfile?.company_logo || job.company_logo
+
+      let companyLogoDataUrl: string | null = null
+      if (companyLogoSource) {
         try {
-          logoDataUrl = await this.loadImageAsDataUrl(corporateProfile.company_logo)
+          companyLogoDataUrl = await this.loadImageAsDataUrl(companyLogoSource)
         } catch (error) {
           console.warn('Could not load company logo:', error)
         }
@@ -684,8 +716,9 @@ export class JobDescriptionPDFGenerator {
         <JobDescriptionDocument
           job={job}
           corporateProfile={corporateProfile}
-          logoUrl={logoDataUrl}
+          logoUrl={companyLogoDataUrl || hirekarmaLogoDataUrl}
           hirekarmaLogoUrl={hirekarmaLogoDataUrl}
+          companyName={companyName}
         />
       )
 
