@@ -716,7 +716,7 @@ export class JobDescriptionPDFGenerator {
         <JobDescriptionDocument
           job={job}
           corporateProfile={corporateProfile}
-          logoUrl={companyLogoDataUrl || hirekarmaLogoDataUrl}
+          logoUrl={companyLogoDataUrl}
           hirekarmaLogoUrl={hirekarmaLogoDataUrl}
           companyName={companyName}
         />
@@ -733,88 +733,90 @@ export class JobDescriptionPDFGenerator {
   }
 
   private async loadImageAsDataUrl(imageUrl: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      console.log('🖼️ Attempting to load image:', imageUrl)
+    console.log('🖼️ Attempting to load image:', imageUrl)
 
-      // Check if it's already a data URL
-      if (imageUrl.startsWith('data:')) {
-        console.log('✅ Image is already a data URL')
-        resolve(imageUrl)
-        return
-      }
+    if (imageUrl.startsWith('data:')) {
+      console.log('✅ Image is already a data URL')
+      return imageUrl
+    }
 
-      // Try fetching the image through fetch API to bypass CORS
-      const fetchImageAsBlob = async (url: string): Promise<string> => {
-        try {
-          console.log('🌐 Fetching image via fetch API...')
-
-          let response = await fetch(url, {
-            mode: 'cors',
-            credentials: 'omit'
-          })
-
-          if (!response.ok) {
-            console.log('🔄 Direct fetch failed, trying no-cors mode...')
-            response = await fetch(url, {
-              mode: 'no-cors',
-              credentials: 'omit'
-            })
-          }
-
-          const blob = await response.blob()
-          console.log('✅ Image fetched as blob successfully')
-
-          return new Promise((resolveBlob, rejectBlob) => {
-            const reader = new FileReader()
-            reader.onload = () => {
-              console.log('✅ Image converted to data URL via FileReader')
-              resolveBlob(reader.result as string)
-            }
-            reader.onerror = () => {
-              rejectBlob(new Error('Failed to convert blob to data URL'))
-            }
-            reader.readAsDataURL(blob)
-          })
-        } catch (error) {
-          console.warn('❌ Fetch approach failed:', error)
-          throw error
+    const tryServerProxy = async (): Promise<string> => {
+      console.log('🌐 Trying server-side proxy...')
+      const token =
+        typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
+      const response = await fetch(
+        `${config.api.fullUrl}/students/proxy-image?url=${encodeURIComponent(imageUrl)}`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
         }
+      )
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Proxy request failed: ${response.status} - ${errorText}`)
       }
 
-      fetchImageAsBlob(imageUrl)
-        .then((result) => {
-          resolve(result)
+      const data = await response.json()
+      if (!data?.data_url || typeof data.data_url !== 'string') {
+        throw new Error('Proxy returned no data URL')
+      }
+      console.log('✅ Image loaded via server proxy')
+      return data.data_url
+    }
+
+    const fetchImageAsBlob = async (url: string): Promise<string> => {
+      console.log('🌐 Fetching image via fetch API...')
+      let response = await fetch(url, {
+        mode: 'cors',
+        credentials: 'omit',
+      })
+
+      if (!response.ok) {
+        response = await fetch(url, {
+          mode: 'no-cors',
+          credentials: 'omit',
         })
-        .catch(() => {
-          const img = new window.Image()
-          img.crossOrigin = 'anonymous'
+      }
 
-          img.onload = () => {
-            try {
-              const canvas = document.createElement('canvas')
-              const ctx = canvas.getContext('2d')
+      const blob = await response.blob()
+      return new Promise((resolveBlob, rejectBlob) => {
+        const reader = new FileReader()
+        reader.onload = () => resolveBlob(reader.result as string)
+        reader.onerror = () => rejectBlob(new Error('Failed to convert blob to data URL'))
+        reader.readAsDataURL(blob)
+      })
+    }
 
-              if (!ctx) {
-                throw new Error('Could not get canvas context')
-              }
-
-              canvas.width = img.width
-              canvas.height = img.height
-              ctx.drawImage(img, 0, 0)
-
-              resolve(canvas.toDataURL('image/png'))
-            } catch (error) {
-              reject(error)
-            }
+    const loadViaImageElement = (): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const img = new window.Image()
+        img.crossOrigin = 'anonymous'
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+            if (!ctx) throw new Error('Could not get canvas context')
+            canvas.width = img.width
+            canvas.height = img.height
+            ctx.drawImage(img, 0, 0)
+            resolve(canvas.toDataURL('image/png'))
+          } catch (error) {
+            reject(error)
           }
+        }
+        img.onerror = () => reject(new Error(`Could not load image: ${imageUrl}`))
+        img.src = imageUrl
+      })
 
-          img.onerror = () => {
-            reject(new Error(`Could not load image: ${imageUrl}`))
-          }
-
-          img.src = imageUrl
-        })
-    })
+    try {
+      return await tryServerProxy()
+    } catch {
+      try {
+        return await fetchImageAsBlob(imageUrl)
+      } catch {
+        return await loadViaImageElement()
+      }
+    }
   }
 }
 
