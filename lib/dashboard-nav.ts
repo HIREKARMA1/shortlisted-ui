@@ -15,6 +15,7 @@ import {
   UsersRound,
   UserPlus,
   BadgeCheck,
+  Headphones,
 } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
@@ -33,6 +34,7 @@ export const studentNav: NavItem[] = [
   { href: '/dashboard/student/applications', labelKey: 'common.nav.applications', icon: ClipboardList },
   { href: '/dashboard/student/classes', labelKey: 'common.nav.classes', icon: Video },
   { href: '/dashboard/student/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
+  { href: '/dashboard/student/contact-support', labelKey: 'common.nav.support', icon: Headphones },
 ];
 
 export const adminNav: NavItem[] = [
@@ -44,6 +46,7 @@ export const adminNav: NavItem[] = [
   { href: '/dashboard/admin/support', labelKey: 'common.nav.verifyPayment', icon: BadgeCheck },
   { href: '/dashboard/admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
   { href: '/dashboard/admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
+  { href: '/dashboard/admin/contact-support', labelKey: 'common.nav.support', icon: Headphones },
 ];
 
 export const superAdminNav: NavItem[] = [
@@ -59,6 +62,7 @@ export const superAdminNav: NavItem[] = [
   { href: '/dashboard/super-admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
   { href: '/dashboard/super-admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
   { href: '/dashboard/super-admin/community', labelKey: 'common.nav.community', icon: UsersRound },
+  { href: '/dashboard/super-admin/contact-support', labelKey: 'common.nav.support', icon: Headphones },
 ];
 
 export function getNavForRole(role: DashboardRole): NavItem[] {

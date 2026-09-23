@@ -59,6 +59,7 @@ export function SiteHeader() {
   const links: { k: string; href: string; external?: boolean }[] = [
     { k: 'about', href: '/about' },
     { k: 'contact', href: '/contact' },
+    { k: 'support', href: '/support' },
   ];
 
   const UserChip = (
