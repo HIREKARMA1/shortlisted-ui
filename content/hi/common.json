@@ -54,6 +54,8 @@
   "status": {
     "active": "सक्रिय",
     "inactive": "निष्क्रिय",
+    "placed": "प्लेस्ड",
+    "notPlaced": "प्लेस्ड नहीं",
     "locked": "लॉक",
     "revoked": "रद्द"
   },

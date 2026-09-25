@@ -27,9 +27,14 @@ export function getLockedStudentPath(session: Pick<Session, 'signupChannel'>): s
   return session.signupChannel === 'whatsapp' ? '/subscribe/review' : '/subscribe';
 }
 
+export function getInactiveStudentPath(): string {
+  return '/dashboard/student/inactive';
+}
+
 export function getPostLoginPath(session: Session): string {
   if (session.userType === 'super_admin') return '/dashboard/super-admin';
   if (session.userType === 'admin') return '/dashboard/admin';
+  if (session.accessStatus === 'inactive') return getInactiveStudentPath();
   if (session.accessStatus === 'active') return '/dashboard/student';
   return getLockedStudentPath(session);
 }

@@ -9,6 +9,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
+import { getInactiveStudentPath, getLockedStudentPath } from '@/lib/auth/session';
 import { applicationBadgeTone } from '@/lib/status';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
@@ -32,10 +33,20 @@ export function StudentDashboardView() {
       .getDashboard()
       .then((dashboard) => {
         if (cancelled) return;
-        const status = String((dashboard.student as { access_status?: string })?.access_status || '');
+        const studentRecord = dashboard.student as {
+          access_status?: string;
+          signup_channel?: string;
+        };
+        const status = String(studentRecord?.access_status || '');
+        const channel = String(studentRecord?.signup_channel || localStorage.getItem('signup_channel') || 'web');
         localStorage.setItem('access_status', status);
+        localStorage.setItem('signup_channel', channel);
+        if (status === 'inactive') {
+          router.replace(getInactiveStudentPath());
+          return;
+        }
         if (status !== 'active') {
-          router.push('/subscribe');
+          router.replace(getLockedStudentPath({ signupChannel: channel }));
           return;
         }
         setData(dashboard);
@@ -44,7 +55,7 @@ export function StudentDashboardView() {
         if (cancelled) return;
         // 401 is handled by the API interceptor (refresh or force logout).
         if (axios.isAxiosError(err) && err.response?.status === 401) return;
-        router.push('/subscribe');
+        router.replace(getLockedStudentPath({ signupChannel: localStorage.getItem('signup_channel') || 'web' }));
       });
     return () => {
       cancelled = true;

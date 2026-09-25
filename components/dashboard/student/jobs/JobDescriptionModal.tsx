@@ -52,6 +52,7 @@ type JobDescriptionModalProps = {
   showApplyButton?: boolean;
   applicationStatus?: string | null;
   hideSensitiveInfo?: boolean;
+  isPlaced?: boolean;
 };
 
 export function JobDescriptionModal({
@@ -62,6 +63,7 @@ export function JobDescriptionModal({
   showApplyButton = true,
   applicationStatus,
   hideSensitiveInfo = true,
+  isPlaced = false,
 }: JobDescriptionModalProps) {
     const [corporateProfile, setCorporateProfile] = useState<CorporateProfile | null>(null)
     const [loadingCorporate, setLoadingCorporate] = useState(false)
@@ -217,6 +219,7 @@ export function JobDescriptionModal({
     }
 
     const canApply = () => {
+        if (isPlaced) return false;
         return applicationStatus !== 'applied' && !isDeadlineExpired() && job.can_apply !== false;
     };
 

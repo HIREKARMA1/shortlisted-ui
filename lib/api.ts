@@ -523,6 +523,13 @@ class ApiClient {
     return res.data;
   }
 
+  async updateStudentPlacement(studentId: string, is_placed: boolean) {
+    const res = await this.client.patch(`/admin/students/${studentId}/placement`, {
+      is_placed,
+    });
+    return res.data;
+  }
+
   async syncBatchToDisha(batchId: string, force = false) {
     const res = await this.client.post(`/admin/batches/${batchId}/sync-disha`, null, {
       params: force ? { force: true } : undefined,
