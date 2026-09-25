@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
+import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { profileService, type StudentProfile } from '@/lib/services/profileService';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
@@ -26,6 +27,7 @@ export function StudentProfileView() {
   const { t } = useTranslation();
   const { logout } = useAuth();
   useRoleGuard('student');
+  useStudentActiveGate();
 
   const [profile, setProfile] = useState<StudentProfile | null>(null);
   const [loading, setLoading] = useState(true);

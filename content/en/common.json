@@ -55,6 +55,8 @@
   "status": {
     "active": "Active",
     "inactive": "Inactive",
+    "placed": "Placed",
+    "notPlaced": "Not placed",
     "locked": "Locked",
     "revoked": "Revoked"
   },

@@ -48,12 +48,20 @@ export function StudentJobsView() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [ready, setReady] = useState(false);
+  const [isPlaced, setIsPlaced] = useState(false);
   const autoApplyAttempted = useRef(false);
   const filterRef = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
     try {
       const [jobsRaw, appsRaw] = await Promise.all([api.getJobs(), api.getApplications()]);
+      try {
+        const dashboard = await api.getDashboard();
+        const student = dashboard.student as { is_placed?: boolean } | undefined;
+        setIsPlaced(Boolean(student?.is_placed));
+      } catch {
+        setIsPlaced(false);
+      }
       const statusMap: Record<string, string> = {};
       (appsRaw as Record<string, unknown>[]).forEach((app) => {
         const normalized = normalizeApplication(app);
@@ -72,9 +80,13 @@ export function StudentJobsView() {
     }
   }, [t]);
 
-  const openApplyModal = useCallback((job: StudentJob) => {
-    setApplyJobTarget(job);
-  }, []);
+  const openApplyModal = useCallback(
+    (job: StudentJob) => {
+      if (isPlaced) return;
+      setApplyJobTarget(job);
+    },
+    [isPlaced],
+  );
 
   const submitApplication = useCallback(
     async (jobId: string) => {
@@ -128,13 +140,14 @@ export function StudentJobsView() {
     setSelectedJob(job);
     if (
       searchParams.get('apply') === '1' &&
+      !isPlaced &&
       !appStatusByJob[jobId] &&
       !autoApplyAttempted.current
     ) {
       autoApplyAttempted.current = true;
       openApplyModal(job);
     }
-  }, [ready, jobs, searchParams, appStatusByJob, openApplyModal]);
+  }, [ready, jobs, searchParams, appStatusByJob, openApplyModal, isPlaced]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -195,6 +208,12 @@ export function StudentJobsView() {
       subtitle={t('dashboard.jobs.subtitle')}
       onLogout={logout}
     >
+      {isPlaced ? (
+        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-900">
+          {t('dashboard.jobs.placedBanner')}
+        </div>
+      ) : null}
+
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
@@ -277,6 +296,7 @@ export function StudentJobsView() {
                 onViewDescription={() => setSelectedJob(job)}
                 onApply={() => openApplyModal(job)}
                 isApplying={applying === job.id}
+                placed={isPlaced}
               />
             ))}
           </div>
@@ -308,6 +328,8 @@ export function StudentJobsView() {
           onClose={() => setSelectedJob(null)}
           onApply={() => openApplyModal(selectedJob)}
           isApplying={applying === selectedJob.id}
+          isPlaced={isPlaced}
+          showApplyButton={!isPlaced}
         />
       )}
 

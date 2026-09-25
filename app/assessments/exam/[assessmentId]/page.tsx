@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Loader2, AlertCircle } from 'lucide-react';
 import {
@@ -11,9 +11,11 @@ import {
 import { SiteHeader } from '@/components/layout/Shell';
 import { useSession } from '@/hooks/useSession';
 import { api } from '@/lib/api';
+import { getInactiveStudentPath } from '@/lib/auth/session';
 
 export default function StudentExamEntryPage() {
   const params = useParams();
+  const router = useRouter();
   const assessmentId = params.assessmentId as string;
   const { session, ready: sessionReady } = useSession();
 
@@ -65,9 +67,31 @@ export default function StudentExamEntryPage() {
   }, [assessmentId, session?.userType]);
 
   useEffect(() => {
+    if (!sessionReady || !session || session.userType !== 'student') return;
+    if (session.accessStatus === 'inactive') {
+      router.replace(getInactiveStudentPath());
+      return;
+    }
+    let cancelled = false;
+    api
+      .getDashboard()
+      .then((data) => {
+        if (cancelled) return;
+        const status = String((data.student as { access_status?: string })?.access_status || '');
+        if (status) localStorage.setItem('access_status', status);
+        if (status === 'inactive') router.replace(getInactiveStudentPath());
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [router, session, sessionReady]);
+
+  useEffect(() => {
     if (!sessionReady) return;
+    if (session?.userType === 'student' && session.accessStatus === 'inactive') return;
     loadExam();
-  }, [loadExam, sessionReady]);
+  }, [loadExam, session?.accessStatus, session?.userType, sessionReady]);
 
   useEffect(() => {
     let cancelled = false;
