@@ -7,6 +7,8 @@
   "student": {
     "title": "Command Centre",
     "welcome": "Welcome back, {{name}}",
+    "inactiveTitle": "Profile inactive",
+    "inactiveMessage": "Your profile is marked as Inactive. Contact the admin for more updates.",
     "stats": {
       "access": "Access status",
       "batch": "Your batch",
@@ -71,6 +73,7 @@
     "subtitle": "Curated opportunities assigned to your batch",
     "empty": "No jobs assigned yet. DISHA admins assign jobs to your batch - check back soon.",
     "applySuccess": "Application submitted successfully.",
+    "placedBanner": "You are a placed student. You can no longer apply for jobs.",
     "company": "Company",
     "location": "Location",
     "headerHint": "Browse curated roles assigned to your batch. View the full job description before you apply.",
@@ -213,6 +216,7 @@
       "selected": "Selected",
       "offers": "Offer letters",
       "lastLogin": "Last login",
+      "placement": "Placement",
       "status": "Access",
       "actions": "Actions"
     }
@@ -425,6 +429,7 @@
     "allBatches": "All batches",
     "empty": "No students found for the selected batch.",
     "statusUpdated": "Student access status updated.",
+    "placementUpdated": "Student placement updated.",
     "batchUpdated": "Student batch updated.",
     "editPayment": "Edit",
     "editPaymentTitle": "Edit payment details",

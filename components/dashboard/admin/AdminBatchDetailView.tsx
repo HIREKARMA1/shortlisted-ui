@@ -114,10 +114,13 @@ export function AdminBatchDetailView() {
                   <p className="font-medium text-ink-primary">{String(s.name)}</p>
                 </div>
                 <p className="mt-2 text-sm text-ink-muted sm:mt-0">{String(s.email)}</p>
-                <div className="mt-2 sm:mt-0">
+                <div className="mt-2 flex flex-wrap gap-2 sm:mt-0">
                   <Badge tone={accessBadgeTone(String(s.access_status))}>
-                    {String(s.access_status)}
+                    {t(`common.status.${String(s.access_status)}`)}
                   </Badge>
+                  {s.is_placed ? (
+                    <Badge tone="success">{t('common.status.placed')}</Badge>
+                  ) : null}
                 </div>
               </div>
             ))}

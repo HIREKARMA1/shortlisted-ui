@@ -34,6 +34,7 @@ type JobCardProps = {
   onViewDescription: () => void;
   onApply: () => void;
   isApplying?: boolean;
+  placed?: boolean;
 };
 
 export function JobCard({
@@ -42,6 +43,7 @@ export function JobCard({
   onViewDescription,
   onApply,
   isApplying = false,
+  placed = false,
 }: JobCardProps) {
   const { t } = useTranslation();
   const scheme = getJobCardScheme(cardIndex);
@@ -50,7 +52,7 @@ export function JobCard({
 
   const status = job.application_status;
   const expired = isDeadlineExpired(job.application_deadline);
-  const applyDisabled = !canApplyToJob(job) || isApplying;
+  const applyDisabled = !canApplyToJob(job, { placed }) || isApplying;
 
   const applyLabel = (() => {
     if (isApplying) return t('common.actions.applying');
@@ -212,14 +214,16 @@ export function JobCard({
           <Button variant="secondary" className="flex-1 py-2 text-xs" onClick={onViewDescription}>
             {t('dashboard.jobs.viewJd')}
           </Button>
-          <Button
-            variant={applyDisabled ? 'ghost' : 'accent'}
-            className="flex-1 py-2 text-xs"
-            onClick={onApply}
-            disabled={applyDisabled}
-          >
-            {applyLabel}
-          </Button>
+          {placed ? null : (
+            <Button
+              variant={applyDisabled ? 'ghost' : 'accent'}
+              className="flex-1 py-2 text-xs"
+              onClick={onApply}
+              disabled={applyDisabled}
+            >
+              {applyLabel}
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>

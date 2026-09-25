@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { api } from '@/lib/api';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
-import { getLockedStudentPath } from '@/lib/auth/session';
+import { getInactiveStudentPath, getLockedStudentPath } from '@/lib/auth/session';
 
 export function useStudentActiveGate() {
   const router = useRouter();
@@ -34,6 +34,10 @@ export function useStudentActiveGate() {
           );
           localStorage.setItem('access_status', status);
           localStorage.setItem('signup_channel', channel);
+          if (status === 'inactive') {
+            router.replace(getInactiveStudentPath());
+            return;
+          }
           if (status !== 'active') {
             router.replace(getLockedStudentPath({ signupChannel: channel }));
           }

@@ -162,7 +162,8 @@ export function isDeadlineNear(deadline?: string | null): boolean {
   return diffDays <= 7 && diffDays > 0;
 }
 
-export function canApplyToJob(job: StudentJob): boolean {
+export function canApplyToJob(job: StudentJob, options?: { placed?: boolean }): boolean {
+  if (options?.placed) return false;
   if (job.application_status && job.application_status !== 'none') return false;
   if (isDeadlineExpired(job.application_deadline)) return false;
   return job.can_apply !== false;

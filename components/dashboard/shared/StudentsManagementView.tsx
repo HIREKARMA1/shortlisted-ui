@@ -97,6 +97,7 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [updatingStudentId, setUpdatingStudentId] = useState<string | null>(null);
+  const [placingStudentId, setPlacingStudentId] = useState<string | null>(null);
   const [reassigningStudentId, setReassigningStudentId] = useState<string | null>(null);
   const [editingPayment, setEditingPayment] = useState<EditablePayment | null>(null);
 
@@ -144,16 +145,41 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
     [filteredStudents, page],
   );
 
+  const reloadBatches = () => {
+    if (role !== 'super_admin') return;
+    api.listAllBatches().then(setBatches).catch(() => undefined);
+  };
+
   const updateAccessStatus = async (studentId: string, access_status: 'active' | 'inactive') => {
     setUpdatingStudentId(studentId);
     try {
       await api.updateStudentAccessStatus(studentId, access_status);
       toast.success(t('dashboard.superAdminStudents.statusUpdated'));
       loadStudents();
-    } catch {
-      toast.error(t('common.errors.generic'));
+      reloadBatches();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
+        t('common.errors.generic');
+      toast.error(String(msg));
     } finally {
       setUpdatingStudentId(null);
+    }
+  };
+
+  const updatePlacement = async (studentId: string, isPlaced: boolean) => {
+    setPlacingStudentId(studentId);
+    try {
+      await api.updateStudentPlacement(studentId, isPlaced);
+      toast.success(t('dashboard.superAdminStudents.placementUpdated'));
+      loadStudents();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
+        t('common.errors.generic');
+      toast.error(String(msg));
+    } finally {
+      setPlacingStudentId(null);
     }
   };
 
@@ -315,6 +341,7 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.selected')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.offers')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.lastLogin')}</th>
+                  <th className="px-4 py-3">{t('dashboard.adminStudents.columns.placement')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.status')}</th>
                   {role === 'super_admin' ? (
                     <th className="px-4 py-3 text-right">
@@ -392,6 +419,26 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                         )}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-ink-muted">{formatDate(row.last_login)}</td>
+                      <td className="px-4 py-3">
+                        {role === 'super_admin' ? (
+                          <Select
+                            value={row.is_placed ? 'placed' : 'not_placed'}
+                            onChange={(e) =>
+                              updatePlacement(String(row.student_id), e.target.value === 'placed')
+                            }
+                            disabled={placingStudentId === String(row.student_id)}
+                            options={[
+                              { value: 'not_placed', label: t('common.status.notPlaced') },
+                              { value: 'placed', label: t('common.status.placed') },
+                            ]}
+                            className="min-w-[130px] text-xs"
+                          />
+                        ) : (
+                          <Badge tone={row.is_placed ? 'success' : 'neutral'}>
+                            {row.is_placed ? t('common.status.placed') : t('common.status.notPlaced')}
+                          </Badge>
+                        )}
+                      </td>
                       <td className="px-4 py-3">
                         {role === 'super_admin' ? (
                           <Select

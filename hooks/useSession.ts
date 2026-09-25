@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { api } from '@/lib/api';
 import {
+  getInactiveStudentPath,
   getPostLoginPath,
   getSafeRedirectPath,
   readSession,
@@ -97,6 +98,10 @@ export function useStudentSubscribeGate(options?: { reviewOnly?: boolean }) {
           localStorage.setItem('signup_channel', channel);
           setAccessStatus(status);
           setSignupChannel(channel);
+          if (status === 'inactive') {
+            router.replace(getInactiveStudentPath());
+            return;
+          }
           if (status === 'active') {
             router.replace('/dashboard/student');
             return;

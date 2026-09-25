@@ -54,6 +54,8 @@
   "status": {
     "active": "ସକ୍ରିୟ",
     "inactive": "ନିଷ୍କ୍ରିୟ",
+    "placed": "ପ୍ଲେସ୍ଡ",
+    "notPlaced": "ପ୍ଲେସ୍ଡ ନୁହେଁ",
     "locked": "ଲକ୍",
     "revoked": "ବାତିଲ୍"
   },
