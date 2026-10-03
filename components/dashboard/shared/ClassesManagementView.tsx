@@ -311,12 +311,48 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
     setLoadingAttendance(true);
     try {
       const detail = await api.getAdminClassDetail(String(row.id));
-      setAttendances((detail.attendances as Record<string, unknown>[]) || []);
+      const allAttendances = (detail.attendances as Record<string, unknown>[]) || [];
+      setAttendances(allAttendances);
+      const presentIds = new Set(
+        allAttendances.filter((a) => a.attended_at).map((a) => String(a.student_id))
+      );
+      setPresentStudentIds(presentIds);
     } catch {
       toast.error(t('common.errors.generic'));
       setAttendances([]);
+      setPresentStudentIds(new Set());
     } finally {
       setLoadingAttendance(false);
+    }
+  };
+
+  const [presentStudentIds, setPresentStudentIds] = useState<Set<string>>(new Set());
+  const [savingAttendance, setSavingAttendance] = useState(false);
+
+  const toggleAttendance = (studentId: string) => {
+    setPresentStudentIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(studentId)) {
+        next.delete(studentId);
+      } else {
+        next.add(studentId);
+      }
+      return next;
+    });
+  };
+
+  const saveAttendance = async () => {
+    if (!attendanceClass) return;
+    setSavingAttendance(true);
+    try {
+      await api.updateClassAttendance(String(attendanceClass.id), Array.from(presentStudentIds));
+      toast.success(t('dashboard.classes.updateSuccess'));
+      setAttendanceClass(null);
+      loadClasses();
+    } catch {
+      toast.error(t('common.errors.generic'));
+    } finally {
+      setSavingAttendance(false);
     }
   };
 
@@ -556,12 +592,12 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
             <EmptyState message={t('dashboard.classes.noAttendance')} />
           ) : (
             <div className="space-y-4">
-              <div className="flex justify-end">
+              <div className="flex justify-between">
                 <Button
                   variant="secondary"
                   className="text-sm"
                   onClick={() =>
-                    downloadAttendanceCsv(attendanceClass, attendances, {
+                    downloadAttendanceCsv(attendanceClass, attendances.filter(a => presentStudentIds.has(String(a.student_id))), {
                       name: t('dashboard.classes.exportColumns.name'),
                       email: t('dashboard.classes.exportColumns.email'),
                       attendedAt: t('dashboard.classes.exportColumns.attendedAt'),
@@ -571,13 +607,31 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
                   <Download className="mr-2 h-4 w-4" />
                   {t('dashboard.classes.exportAttendance')}
                 </Button>
+                <Button
+                  variant="accent"
+                  className="text-sm"
+                  onClick={saveAttendance}
+                  disabled={savingAttendance}
+                >
+                  {savingAttendance ? 'Saving...' : t('common.actions.save')}
+                </Button>
               </div>
               <div className="space-y-2">
                 {attendances.map((a) => (
-                  <div key={String(a.student_id)} className="rounded-lg border border-line-default px-3 py-2">
-                    <p className="font-medium">{String(a.name)}</p>
-                    <p className="text-sm text-ink-muted">{String(a.email)}</p>
-                    <p className="text-xs text-ink-muted">{formatDate(a.attended_at)}</p>
+                  <div key={String(a.student_id)} className="rounded-lg border border-line-default px-3 py-2 flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{String(a.name)}</p>
+                      <p className="text-sm text-ink-muted">{String(a.email)}</p>
+                    </div>
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="mr-2 h-4 w-4 rounded border-gray-300 text-brand-blue focus:ring-brand-blue"
+                        checked={presentStudentIds.has(String(a.student_id))}
+                        onChange={() => toggleAttendance(String(a.student_id))}
+                      />
+                      <span className="text-sm font-medium">Present</span>
+                    </label>
                   </div>
                 ))}
               </div>
