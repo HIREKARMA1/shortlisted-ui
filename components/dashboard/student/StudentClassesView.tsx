@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Calendar, ExternalLink, Video } from 'lucide-react';
+import { Calendar, ExternalLink, Video, Percent, CheckCircle, XCircle, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
@@ -32,11 +32,23 @@ export function StudentClassesView() {
   const [loading, setLoading] = useState(false);
   const [joiningId, setJoiningId] = useState<string | null>(null);
 
+  const [summary, setSummary] = useState<{
+    average_attendance_percentage: number;
+    total_classes_done: number;
+    total_attended: number;
+    total_missed: number;
+  } | null>(null);
+
   const loadClasses = () => {
     setLoading(true);
-    api
-      .getStudentClasses(statusFilter)
-      .then(setClasses)
+    Promise.all([
+      api.getStudentClasses(statusFilter),
+      api.getStudentAttendanceSummary()
+    ])
+      .then(([classesData, summaryData]) => {
+        setClasses(classesData);
+        setSummary(summaryData);
+      })
       .catch(() => toast.error(t('common.errors.network')))
       .finally(() => setLoading(false));
   };
@@ -81,6 +93,47 @@ export function StudentClassesView() {
           ]}
         />
       </div>
+
+      {summary && (
+        <div className="mb-8 grid gap-4 md:grid-cols-4">
+          <div className="card-surface flex items-center gap-4 p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-blue/10 text-brand-blue">
+              <Percent className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-ink-muted">Avg. Attendance</p>
+              <p className="text-2xl font-bold">{summary.average_attendance_percentage}%</p>
+            </div>
+          </div>
+          <div className="card-surface flex items-center gap-4 p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-600">
+              <CheckCircle className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-ink-muted">Classes Done</p>
+              <p className="text-2xl font-bold">{summary.total_classes_done}</p>
+            </div>
+          </div>
+          <div className="card-surface flex items-center gap-4 p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+              <Users className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-ink-muted">Total Attended</p>
+              <p className="text-2xl font-bold">{summary.total_attended}</p>
+            </div>
+          </div>
+          <div className="card-surface flex items-center gap-4 p-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+              <XCircle className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-ink-muted">Total Missed</p>
+              <p className="text-2xl font-bold">{summary.total_missed}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <LoadingState />
