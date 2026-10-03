@@ -208,6 +208,7 @@
       "name": "Student",
       "email": "Contact",
       "batch": "Batch",
+      "attendance": "Attendance",
       "joined": "Joined batch",
       "payment": "Payment",
       "paymentMode": "Mode",
@@ -264,7 +265,7 @@
     "openLink": "Open meeting link",
     "recordingPlaceholder": "Paste recording URL",
     "attendanceTitle": "Attendance - {{title}}",
-    "noAttendance": "No students marked attendance for this class.",
+    "noAttendance": "No students are assigned to this batch.",
     "exportAttendance": "Export CSV",
     "exportColumns": {
       "name": "Student name",

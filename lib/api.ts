@@ -576,11 +576,40 @@ class ApiClient {
     return res.data;
   }
 
+  async getAttendanceSummary(batchId?: string) {
+    const res = await this.client.get('/admin/attendance/summary', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data as {
+      average_attendance_percentage: number;
+      total_classes_done: number;
+      total_attended: number;
+      total_missed: number;
+    };
+  }
+
+  async updateClassAttendance(classId: string, presentStudentIds: string[]) {
+    const res = await this.client.put(`/admin/classes/${classId}/attendance`, {
+      present_student_ids: presentStudentIds,
+    });
+    return res.data;
+  }
+
   async getStudentClasses(filter?: string) {
     const res = await this.client.get('/students/me/classes', {
       params: filter ? { filter } : undefined,
     });
     return res.data;
+  }
+
+  async getStudentAttendanceSummary() {
+    const res = await this.client.get('/students/me/attendance/summary');
+    return res.data as {
+      average_attendance_percentage: number;
+      total_classes_done: number;
+      total_attended: number;
+      total_missed: number;
+    };
   }
 
   async joinClass(classId: string) {

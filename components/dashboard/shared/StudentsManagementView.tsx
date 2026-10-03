@@ -333,6 +333,11 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.name')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.email')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.batch')}</th>
+                  {role === 'super_admin' ? (
+                    <th className="px-4 py-3 text-center">
+                      {t('dashboard.adminStudents.columns.attendance')}
+                    </th>
+                  ) : null}
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.joined')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.payment')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.paymentMode')}</th>
@@ -385,6 +390,11 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                           <span className="font-medium text-brand-blue">{String(row.batch_name)}</span>
                         )}
                       </td>
+                      {role === 'super_admin' ? (
+                        <td className="px-4 py-3 text-center font-medium text-ink-primary">
+                          {Number(row.attendance_percentage ?? 0).toFixed(1)}%
+                        </td>
+                      ) : null}
                       <td className="px-4 py-3 whitespace-nowrap text-ink-muted">{formatDate(row.joined_at)}</td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         {formatAmount(row.payment_amount_paise, row.payment_currency)}
