@@ -17,6 +17,7 @@ import {
   BadgeCheck,
   Headphones,
   ListChecks,
+  Mail,
 } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
@@ -41,6 +42,7 @@ export const studentNav: NavItem[] = [
 export const adminNav: NavItem[] = [
   { href: '/dashboard/admin', labelKey: 'common.nav.batches', icon: Users, exact: true },
   { href: '/dashboard/admin/students', labelKey: 'common.nav.students', icon: GraduationCap },
+  { href: '/dashboard/admin/bulk-email', labelKey: 'common.nav.bulkEmail', icon: Mail },
   { href: '/dashboard/admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/admin/classes', labelKey: 'common.nav.classes', icon: Video },
   { href: '/dashboard/admin/attendance', labelKey: 'common.nav.attendance', icon: ListChecks },
@@ -55,6 +57,7 @@ export const superAdminNav: NavItem[] = [
   { href: '/dashboard/super-admin/leads', labelKey: 'common.nav.leads', icon: UserPlus },
   { href: '/dashboard/super-admin/batches', labelKey: 'common.nav.batches', icon: Users },
   { href: '/dashboard/super-admin/students', labelKey: 'common.nav.students', icon: GraduationCap },
+  { href: '/dashboard/super-admin/bulk-email', labelKey: 'common.nav.bulkEmail', icon: Mail },
   { href: '/dashboard/super-admin/coordinators', labelKey: 'common.nav.coordinators', icon: UserCog },
   { href: '/dashboard/super-admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/super-admin/revenue', labelKey: 'common.nav.revenue', icon: IndianRupee },
