@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/FileUpload';
 import { Input } from '@/components/ui/Input';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { getPersonNameError, normalizePersonName } from '@/lib/validation/personName';
 
 function isProfileComplete(profile: StudentProfile): boolean {
   return Boolean(
@@ -37,6 +38,7 @@ export function StudentProfileView() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [nameTouched, setNameTouched] = useState(false);
 
   const loadProfile = useCallback(async () => {
     try {
@@ -77,9 +79,14 @@ export function StudentProfileView() {
 
   const validate = (currentProfile: StudentProfile | null): boolean => {
     const nextErrors: Record<string, string> = {};
-    if (!name.trim()) {
-      nextErrors.name = t('dashboard.profile.nameRequired');
+    const nameErr = getPersonNameError(name, {
+      required: true,
+      invalidMessage: t('dashboard.profile.nameInvalid'),
+    });
+    if (nameErr) {
+      nextErrors.name = nameErr;
     }
+    setNameTouched(true);
     if (!phone.trim()) {
       nextErrors.phone = t('dashboard.profile.phoneRequired');
     } else if (!/^\d{10}$/.test(phone.trim())) {
@@ -102,7 +109,7 @@ export function StudentProfileView() {
     setSaving(true);
     try {
       const updated = await profileService.updateProfile({
-        name: name.trim(),
+        name: normalizePersonName(name),
         phone: phone.trim(),
       });
       setProfile(updated);
@@ -187,7 +194,34 @@ export function StudentProfileView() {
             <Input
               label={`${t('dashboard.profile.name')} *`}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                if (nameTouched) {
+                  setErrors((prev) => {
+                    const next = { ...prev };
+                    const err = getPersonNameError(e.target.value, {
+                      required: true,
+                      invalidMessage: t('dashboard.profile.nameInvalid'),
+                    });
+                    if (err) next.name = err;
+                    else delete next.name;
+                    return next;
+                  });
+                }
+              }}
+              onBlur={() => {
+                setNameTouched(true);
+                const err = getPersonNameError(name, {
+                  required: true,
+                  invalidMessage: t('dashboard.profile.nameInvalid'),
+                });
+                setErrors((prev) => {
+                  const next = { ...prev };
+                  if (err) next.name = err;
+                  else delete next.name;
+                  return next;
+                });
+              }}
               required
               error={errors.name}
             />
@@ -196,7 +230,8 @@ export function StudentProfileView() {
               label={`${t('dashboard.profile.email')} *`}
               value={profile.email}
               readOnly
-              disabled
+              aria-readonly="true"
+              tabIndex={-1}
             />
 
             <Input

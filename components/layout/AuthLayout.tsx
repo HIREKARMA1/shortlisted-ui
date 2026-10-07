@@ -86,8 +86,8 @@ export function AuthLayout({
             <div className="lg:hidden">
               <BrandLogo />
             </div>
-            <div className="relative z-30 ml-auto w-36 overflow-visible">
-              <LanguageSwitcher />
+            <div className="relative z-30 ml-auto overflow-visible">
+              <LanguageSwitcher size="compact" />
             </div>
           </div>
 

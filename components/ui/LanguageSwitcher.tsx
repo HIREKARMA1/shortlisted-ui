@@ -8,14 +8,17 @@ import { LOCALE_OPTIONS, Locale } from '@/lib/i18n/types';
 type LanguageSwitcherProps = {
   /** Use inside mobile nav drawer - expands inline instead of absolute flyout */
   variant?: 'default' | 'menu';
+  /** Smaller trigger for auth pages */
+  size?: 'default' | 'compact';
 };
 
 /** Matches lakshya-ui/components/landing/LanguageSwitcher.tsx */
-export function LanguageSwitcher({ variant = 'default' }: LanguageSwitcherProps) {
+export function LanguageSwitcher({ variant = 'default', size = 'default' }: LanguageSwitcherProps) {
   const { locale, setLocale, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const isMenu = variant === 'menu';
+  const isCompact = size === 'compact';
 
   const active = LOCALE_OPTIONS.find((l) => l.code === locale) ?? LOCALE_OPTIONS[0];
 
@@ -87,15 +90,19 @@ export function LanguageSwitcher({ variant = 'default' }: LanguageSwitcherProps)
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-ink hover:border-primary/40 hover:bg-soft ${
-          isMenu ? 'w-full justify-center' : 'shrink-0'
-        }`}
+        className={`inline-flex items-center rounded-full border border-line bg-white font-semibold uppercase tracking-wider text-ink hover:border-primary/40 hover:bg-soft ${
+          isCompact ? 'gap-1.5 px-2.5 py-1 text-[10px]' : 'gap-2 px-4 py-2 text-xs'
+        } ${isMenu ? 'w-full justify-center' : 'shrink-0'}`}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
-        <Languages className="h-4 w-4 text-ink/70" />
+        <Languages className={isCompact ? 'h-3 w-3 text-ink/70' : 'h-4 w-4 text-ink/70'} />
         {active.native}
-        {open ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+        {open ? (
+          <ChevronUp className={isCompact ? 'h-3 w-3' : 'h-3.5 w-3.5'} />
+        ) : (
+          <ChevronDown className={isCompact ? 'h-3 w-3' : 'h-3.5 w-3.5'} />
+        )}
       </button>
 
       {open && isMenu && (

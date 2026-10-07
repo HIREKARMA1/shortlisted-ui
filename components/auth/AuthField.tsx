@@ -28,6 +28,7 @@ export function AuthField({ label, icon: Icon, error, className, compact, type, 
         )}
       >
         {label}
+        {props.required ? ' *' : null}
       </label>
       <div className="relative">
         <Icon

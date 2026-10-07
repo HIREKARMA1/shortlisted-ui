@@ -12,11 +12,13 @@ import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
 import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
 import { Button } from '@/components/ui/Button';
+import { getPersonNameError, normalizePersonName } from '@/lib/validation/personName';
 
 const FIELDS = ['name', 'email', 'password', 'confirmPassword', 'phone', 'otp'] as const;
 type FieldKey = (typeof FIELDS)[number];
 
 const OTP_COOLDOWN_SECONDS = 60;
+const REQUIRED_MESSAGE = 'This field is required.';
 
 export function RegisterFormView() {
   const { t } = useTranslation();
@@ -28,6 +30,8 @@ export function RegisterFormView() {
   const [otpSent, setOtpSent] = useState(false);
   const [resendIn, setResendIn] = useState(0);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldKey, string>>>({});
+  const [touched, setTouched] = useState<Partial<Record<FieldKey, boolean>>>({});
   const [form, setForm] = useState<Record<FieldKey, string>>(
     Object.fromEntries(FIELDS.map((k) => [k, ''])) as Record<FieldKey, string>
   );
@@ -48,23 +52,133 @@ export function RegisterFormView() {
 
   if (!ready || session) return null;
 
+  const nameInvalidMessage = t('auth.register.errors.invalidName');
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
   const otpValid = /^\d{6}$/.test(form.otp.trim());
   const passwordValid = form.password.trim().length >= 8;
   const passwordsMatch = form.password === form.confirmPassword && form.confirmPassword.length > 0;
-  const confirmPasswordError =
-    form.confirmPassword.length > 0 && !passwordsMatch ? t('auth.register.errors.passwordMismatch') : undefined;
   const phoneValid = /^\d{10}$/.test(form.phone);
-  const phoneError =
-    form.phone.length > 0 && !phoneValid ? t('auth.register.errors.invalidPhone') : undefined;
+
+  const validateField = (key: FieldKey, values: Record<FieldKey, string> = form): string | undefined => {
+    switch (key) {
+      case 'name':
+        return getPersonNameError(values.name, {
+          required: true,
+          invalidMessage: nameInvalidMessage,
+        });
+      case 'email':
+        if (!values.email.trim()) return REQUIRED_MESSAGE;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
+          return t('auth.register.otp.invalidEmail');
+        }
+        return undefined;
+      case 'password':
+        if (!values.password.trim()) return REQUIRED_MESSAGE;
+        if (values.password.trim().length < 8) {
+          return t('auth.register.errors.passwordTooShort');
+        }
+        return undefined;
+      case 'confirmPassword':
+        if (!values.confirmPassword.trim()) return REQUIRED_MESSAGE;
+        if (values.password !== values.confirmPassword) {
+          return t('auth.register.errors.passwordMismatch');
+        }
+        return undefined;
+      case 'phone':
+        if (!values.phone.trim()) return REQUIRED_MESSAGE;
+        if (!/^\d{10}$/.test(values.phone)) {
+          return t('auth.register.errors.invalidPhone');
+        }
+        return undefined;
+      case 'otp':
+        if (!otpSent) return undefined;
+        if (!values.otp.trim()) return REQUIRED_MESSAGE;
+        if (!/^\d{6}$/.test(values.otp.trim())) {
+          return t('auth.register.errors.invalidOtp');
+        }
+        return undefined;
+      default:
+        return undefined;
+    }
+  };
+
+  const validatePreOtpFields = (): boolean => {
+    const keys: FieldKey[] = ['name', 'email', 'password', 'confirmPassword', 'phone'];
+    const nextErrors: Partial<Record<FieldKey, string>> = {};
+    for (const key of keys) {
+      const err = validateField(key);
+      if (err) nextErrors[key] = err;
+    }
+    if (!agreedToTerms) {
+      toast.error(t('auth.register.errors.termsRequired'));
+    }
+    setFieldErrors((prev) => ({ ...prev, ...nextErrors }));
+    setTouched((prev) => ({
+      ...prev,
+      name: true,
+      email: true,
+      password: true,
+      confirmPassword: true,
+      phone: true,
+    }));
+    return Object.keys(nextErrors).length === 0 && agreedToTerms;
+  };
+
+  const validateAllForSubmit = (): boolean => {
+    const keys: FieldKey[] = ['name', 'email', 'password', 'confirmPassword', 'phone', 'otp'];
+    const nextErrors: Partial<Record<FieldKey, string>> = {};
+    for (const key of keys) {
+      const err = validateField(key);
+      if (err) nextErrors[key] = err;
+    }
+    setFieldErrors(nextErrors);
+    setTouched(Object.fromEntries(keys.map((k) => [k, true])) as Partial<Record<FieldKey, boolean>>);
+    return Object.keys(nextErrors).length === 0 && agreedToTerms;
+  };
+
+  const clearFieldErrorIfValid = (key: FieldKey, nextForm: Record<FieldKey, string>) => {
+    const err = validateField(key, nextForm);
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      if (err) next[key] = err;
+      else delete next[key];
+      return next;
+    });
+  };
+
+  const handleBlur = (key: FieldKey) => {
+    setTouched((prev) => ({ ...prev, [key]: true }));
+    const err = validateField(key);
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      if (err) next[key] = err;
+      else delete next[key];
+      return next;
+    });
+  };
+
+  const showError = (key: FieldKey) => (touched[key] ? fieldErrors[key] : undefined);
+
+  const canSendCode =
+    !validateField('name') &&
+    !validateField('email') &&
+    !validateField('password') &&
+    !validateField('confirmPassword') &&
+    !validateField('phone') &&
+    agreedToTerms;
+
   const canSubmit =
-    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch && phoneValid && agreedToTerms;
+    otpSent &&
+    otpValid &&
+    !validateField('name') &&
+    !validateField('email') &&
+    passwordValid &&
+    passwordsMatch &&
+    phoneValid &&
+    agreedToTerms;
 
   const handleSendOtp = async () => {
-    if (!emailValid) {
-      toast.error(t('auth.register.otp.invalidEmail'));
-      return;
-    }
+    if (!validatePreOtpFields()) return;
     setSendingOtp(true);
     try {
       await api.sendRegistrationOtp(form.email.trim());
@@ -83,11 +197,11 @@ export function RegisterFormView() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!canSubmit) return;
-    if (!passwordsMatch) {
-      toast.error(t('auth.register.errors.passwordMismatch'));
+    if (!otpSent) {
+      await handleSendOtp();
       return;
     }
+    if (!validateAllForSubmit()) return;
     setLoading(true);
     try {
       const channel =
@@ -95,7 +209,7 @@ export function RegisterFormView() {
           ? 'whatsapp'
           : 'web';
       await api.register({
-        name: form.name,
+        name: normalizePersonName(form.name),
         email: form.email.trim(),
         otp: form.otp.trim(),
         password: form.password,
@@ -129,65 +243,44 @@ export function RegisterFormView() {
         </>
       }
     >
-      <form onSubmit={onSubmit} className="space-y-2.5">
+      <form onSubmit={onSubmit} className="space-y-2.5" noValidate>
         <AuthField
           compact
           name="name"
           label={t('auth.register.fields.name')}
           icon={User}
           value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          onChange={(e) => {
+            const nextForm = { ...form, name: e.target.value };
+            setForm(nextForm);
+            if (touched.name) clearFieldErrorIfValid('name', nextForm);
+          }}
+          onBlur={() => handleBlur('name')}
           required
           autoComplete="name"
           placeholder={t('auth.register.placeholders.name')}
+          error={showError('name')}
         />
-        <div className="space-y-1">
-          <label htmlFor="email" className="text-[10px] font-semibold uppercase tracking-wider text-ink-muted">
-            {t('auth.register.fields.email')}
-          </label>
-          <div className="flex gap-2">
-            <div className="relative min-w-0 flex-1">
-              <Mail
-                className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-blue/45"
-                aria-hidden
-              />
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={(e) => {
-                  setForm({ ...form, email: e.target.value, otp: '' });
-                  setOtpSent(false);
-                }}
-                required
-                autoComplete="email"
-                placeholder={t('auth.register.placeholders.email')}
-                className="w-full rounded-xl border border-line-default bg-white py-2 pl-10 pr-3.5 text-sm text-ink-primary outline-none transition-shadow placeholder:text-ink-muted/60 focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/15"
-              />
-            </div>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={!emailValid || sendingOtp || resendIn > 0}
-              onClick={handleSendOtp}
-              className="h-[38px] shrink-0 rounded-xl px-3 text-xs sm:px-4"
-            >
-              {sendingOtp ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : resendIn > 0 ? (
-                t('auth.register.otp.resendIn', { seconds: resendIn })
-              ) : otpSent ? (
-                t('auth.register.otp.resend')
-              ) : (
-                t('auth.register.otp.send')
-              )}
-            </Button>
-          </div>
-          {otpSent && (
-            <p className="text-[10px] leading-relaxed text-ink-muted">{t('auth.register.otp.hint')}</p>
-          )}
-        </div>
+        <AuthField
+          compact
+          name="email"
+          label={t('auth.register.fields.email')}
+          icon={Mail}
+          type="email"
+          value={form.email}
+          onChange={(e) => {
+            const nextForm = { ...form, email: e.target.value, otp: '' };
+            setForm(nextForm);
+            setOtpSent(false);
+            setResendIn(0);
+            if (touched.email) clearFieldErrorIfValid('email', nextForm);
+          }}
+          onBlur={() => handleBlur('email')}
+          required
+          autoComplete="email"
+          placeholder={t('auth.register.placeholders.email')}
+          error={showError('email')}
+        />
         {otpSent && (
           <AuthField
             compact
@@ -199,10 +292,33 @@ export function RegisterFormView() {
             autoComplete="one-time-code"
             maxLength={6}
             value={form.otp}
-            onChange={(e) => setForm({ ...form, otp: e.target.value.replace(/\D/g, '').slice(0, 6) })}
+            onChange={(e) => {
+              const nextForm = { ...form, otp: e.target.value.replace(/\D/g, '').slice(0, 6) };
+              setForm(nextForm);
+              if (touched.otp) clearFieldErrorIfValid('otp', nextForm);
+            }}
+            onBlur={() => handleBlur('otp')}
             required
             placeholder={t('auth.register.placeholders.otp')}
+            error={showError('otp')}
           />
+        )}
+        {otpSent && (
+          <p className="text-[10px] leading-relaxed text-ink-muted">
+            {t('auth.register.otp.hint')}{' '}
+            <button
+              type="button"
+              disabled={!canSendCode || sendingOtp || resendIn > 0}
+              onClick={handleSendOtp}
+              className="font-semibold text-brand-blue underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:text-ink-muted disabled:no-underline"
+            >
+              {sendingOtp
+                ? t('auth.register.otp.sending')
+                : resendIn > 0
+                  ? t('auth.register.otp.resendIn', { seconds: resendIn })
+                  : t('auth.register.otp.resend')}
+            </button>
+          </p>
         )}
         <div className="grid gap-2.5 sm:grid-cols-2">
           <AuthField
@@ -214,11 +330,16 @@ export function RegisterFormView() {
             inputMode="numeric"
             maxLength={10}
             value={form.phone}
-            onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+            onChange={(e) => {
+              const nextForm = { ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) };
+              setForm(nextForm);
+              if (touched.phone) clearFieldErrorIfValid('phone', nextForm);
+            }}
+            onBlur={() => handleBlur('phone')}
             required
             autoComplete="tel"
             placeholder={t('auth.register.placeholders.phone')}
-            error={phoneError}
+            error={showError('phone')}
           />
           <AuthField
             compact
@@ -227,10 +348,17 @@ export function RegisterFormView() {
             icon={Lock}
             type="password"
             value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            onChange={(e) => {
+              const nextForm = { ...form, password: e.target.value };
+              setForm(nextForm);
+              if (touched.password) clearFieldErrorIfValid('password', nextForm);
+              if (touched.confirmPassword) clearFieldErrorIfValid('confirmPassword', nextForm);
+            }}
+            onBlur={() => handleBlur('password')}
             required
             autoComplete="new-password"
             placeholder={t('auth.register.placeholders.password')}
+            error={showError('password')}
           />
         </div>
         <AuthField
@@ -240,25 +368,43 @@ export function RegisterFormView() {
           icon={Lock}
           type="password"
           value={form.confirmPassword}
-          onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+          onChange={(e) => {
+            const nextForm = { ...form, confirmPassword: e.target.value };
+            setForm(nextForm);
+            if (touched.confirmPassword) clearFieldErrorIfValid('confirmPassword', nextForm);
+          }}
+          onBlur={() => handleBlur('confirmPassword')}
           required
           autoComplete="new-password"
           placeholder={t('auth.register.placeholders.confirmPassword')}
-          error={confirmPasswordError}
+          error={showError('confirmPassword')}
         />
         <LegalConsentCheckbox
           id="register-legal-consent"
           checked={agreedToTerms}
           onCheckedChange={setAgreedToTerms}
         />
-        <Button type="submit" fullWidth variant="accent" disabled={loading || !canSubmit} className="h-10 rounded-xl">
+        <Button
+          type="submit"
+          fullWidth
+          variant="accent"
+          disabled={loading || sendingOtp || (otpSent ? !canSubmit : !canSendCode)}
+          className="h-10 rounded-xl"
+        >
           {loading ? (
             <span className="inline-flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
               {t('auth.register.submitting')}
             </span>
-          ) : (
+          ) : sendingOtp ? (
+            <span className="inline-flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {t('auth.register.otp.sending')}
+            </span>
+          ) : otpSent ? (
             t('auth.register.submit')
+          ) : (
+            t('auth.register.sendCode')
           )}
         </Button>
       </form>
