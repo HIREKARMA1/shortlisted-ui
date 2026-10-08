@@ -67,7 +67,25 @@
     "phoneInvalid": "Enter a valid 10-digit contact number",
     "resumeRequired": "Resume is required",
     "incompleteHint": "Complete your name, contact number, and resume to apply for jobs.",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "edit": "Edit Profile",
+    "cancel": "Cancel",
+    "viewResume": "View resume",
+    "resumeUploaded": "Resume uploaded",
+    "resumeMissing": "No resume uploaded",
+    "photo": {
+      "change": "Change Photo",
+      "modalTitle": "Change profile photo",
+      "modalHint": "Upload a photo from your device or take one with your camera.",
+      "upload": "Upload Photo",
+      "take": "Take Photo",
+      "capture": "Capture",
+      "usePhoto": "Use Photo",
+      "retake": "Retake",
+      "previewAlt": "Captured profile photo preview",
+      "cameraPreview": "Camera preview",
+      "cameraUnavailable": "Camera access is not available on this device/browser. Please upload a photo instead."
+    }
   },
   "jobs": {
     "title": "Jobs for your batch",
