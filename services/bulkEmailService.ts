@@ -5,6 +5,7 @@ import type {
   BulkEmailCohort,
   BulkEmailLogsResponse,
   BulkEmailRecipientsResponse,
+  BulkEmailAttachmentPolicy,
   BulkEmailSendRequest,
   BulkEmailSendResponse,
   BulkEmailUploadResponse,
@@ -81,8 +82,36 @@ export class BulkEmailService {
     return res.data;
   }
 
-  async sendBulkEmail(payload: BulkEmailSendRequest): Promise<BulkEmailSendResponse> {
-    const res = await api.client.post<BulkEmailSendResponse>('/admin/bulk-email/send', payload);
+  async getAttachmentPolicy(): Promise<BulkEmailAttachmentPolicy> {
+    const res = await api.client.get<BulkEmailAttachmentPolicy>('/admin/bulk-email/attachment-policy');
+    return res.data;
+  }
+
+  async previewEmail(payload: { subject: string; body: string }): Promise<string> {
+    const res = await api.client.post<{ html: string }>('/admin/bulk-email/preview', payload);
+    return res.data.html;
+  }
+
+  async sendBulkEmail(
+    payload: BulkEmailSendRequest,
+    files: File[] = [],
+    onUploadProgress?: (percent: number) => void
+  ): Promise<BulkEmailSendResponse> {
+    const formData = new FormData();
+    formData.append('subject', payload.subject);
+    formData.append('body', payload.body);
+    formData.append('emails', JSON.stringify(payload.emails ?? []));
+    formData.append('student_ids', JSON.stringify(payload.student_ids ?? []));
+    if (payload.category) formData.append('category', payload.category);
+    if (payload.cohort_filter) formData.append('cohort_filter', payload.cohort_filter);
+    files.forEach((file) => formData.append('files', file, file.name));
+    const res = await api.client.post<BulkEmailSendResponse>('/admin/bulk-email/send', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: (event) => {
+        if (!onUploadProgress || !event.total) return;
+        onUploadProgress(Math.min(100, Math.round((event.loaded / event.total) * 100)));
+      },
+    });
     return res.data;
   }
 

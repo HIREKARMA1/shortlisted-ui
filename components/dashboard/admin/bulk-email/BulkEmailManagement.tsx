@@ -11,6 +11,7 @@ import {
   Search,
   Send,
   Trash2,
+  Paperclip,
   Upload,
   Users,
   X,
@@ -24,6 +25,16 @@ import { Modal } from '@/components/ui/Modal';
 import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { StatCard } from '@/components/ui/StatCard';
+import {
+  DEFAULT_ATTACHMENT_POLICY,
+  acceptAttribute,
+  addAttachmentFiles,
+  filesFromClipboard,
+  formatFileSize,
+  removeSelectedAttachment,
+  type AttachmentPolicy,
+  type SelectedAttachment,
+} from '@/lib/bulkEmailAttachments';
 import { bulkEmailErrorMessage, bulkEmailService } from '@/services/bulkEmailService';
 import type {
   BulkEmailCategory,
@@ -45,6 +56,10 @@ function isValidEmail(email: string) {
 
 function stripHtml(html: string) {
   return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+}
+
+function hasMessageContent(html: string) {
+  return Boolean(stripHtml(html) || /<img\b/i.test(html));
 }
 
 function cohortFilterLabel(cohorts: BulkEmailCohort[], selectedIds: string[], studentIds: string[]) {
@@ -74,9 +89,16 @@ export function BulkEmailManagement() {
   const [isUploading, setIsUploading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
+  const [previewLoading, setPreviewLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [recentLogs, setRecentLogs] = useState<BulkEmailLog[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const attachmentInputRef = useRef<HTMLInputElement>(null);
+  const [attachments, setAttachments] = useState<SelectedAttachment[]>([]);
+  const [attachmentErrors, setAttachmentErrors] = useState<string[]>([]);
+  const [attachmentPolicy, setAttachmentPolicy] = useState<AttachmentPolicy>(DEFAULT_ATTACHMENT_POLICY);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<BulkEmailRecipient[]>([]);
@@ -209,6 +231,21 @@ export function BulkEmailManagement() {
   useEffect(() => {
     loadCohorts();
   }, [loadCohorts]);
+
+  useEffect(() => {
+    let active = true;
+    bulkEmailService
+      .getAttachmentPolicy()
+      .then((policy) => {
+        if (active) setAttachmentPolicy(policy);
+      })
+      .catch(() => {
+        /* server defaults still apply on send */
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     loadCohortStudents();
@@ -370,6 +407,26 @@ export function BulkEmailManagement() {
     }
   };
 
+  const attachFiles = (selected: File[]) => {
+    if (!selected.length) return;
+    const result = addAttachmentFiles(attachments, selected, attachmentPolicy);
+    setAttachments(result.attachments);
+    setAttachmentErrors(result.errors);
+  };
+
+  const handleAttachmentSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(event.target.files ?? []);
+    event.target.value = '';
+    attachFiles(selected);
+  };
+
+  const handleComposerPaste = (event: React.ClipboardEvent<HTMLElement>) => {
+    const files = filesFromClipboard(event.clipboardData);
+    if (!files.length) return;
+    event.preventDefault();
+    attachFiles(files);
+  };
+
   const emptyRecipientsMessage = isNoneCategory
     ? 'Please add at least one email address.'
     : 'No recipients selected.';
@@ -379,7 +436,7 @@ export function BulkEmailManagement() {
       toast.error('Subject is required');
       return;
     }
-    if (!stripHtml(body)) {
+    if (!hasMessageContent(body)) {
       toast.error('Email body is required');
       return;
     }
@@ -388,37 +445,73 @@ export function BulkEmailManagement() {
       return;
     }
 
-    const emailsToSend = isNoneCategory
-      ? recipients.filter((r) => r.source !== 'filter').map((r) => r.email)
-      : recipients.map((r) => r.email);
+    const audience = isNoneCategory
+      ? recipients.filter((r) => r.source !== 'filter')
+      : recipients;
+    const studentIds: string[] = [];
+    const externalEmails: string[] = [];
+    const seenStudentIds = new Set<string>();
+    const seenEmails = new Set<string>();
+    for (const recipient of audience) {
+      if (recipient.id) {
+        if (!seenStudentIds.has(recipient.id)) {
+          seenStudentIds.add(recipient.id);
+          studentIds.push(recipient.id);
+        }
+        continue;
+      }
+      const email = recipient.email.trim();
+      const key = normalizeEmail(email);
+      if (!email || seenEmails.has(key)) continue;
+      seenEmails.add(key);
+      externalEmails.push(email);
+    }
 
-    if (!emailsToSend.length) {
+    if (!studentIds.length && !externalEmails.length) {
       toast.error(emptyRecipientsMessage);
       return;
     }
 
+    const checked = addAttachmentFiles([], attachments.map((item) => item.file), attachmentPolicy);
+    if (checked.errors.length || checked.attachments.length !== attachments.length) {
+      setAttachmentErrors(checked.errors);
+      toast.error(checked.errors[0] || 'Check the selected attachments.');
+      return;
+    }
+
+    const audienceCount = studentIds.length + externalEmails.length;
     setIsSending(true);
+    setUploadProgress(attachments.length ? 0 : null);
     const toastId = toast.loading(
-      `Sending bulk email to ${emailsToSend.length} recipient${emailsToSend.length === 1 ? '' : 's'}...`
+      `Sending bulk email to ${audienceCount} recipient${audienceCount === 1 ? '' : 's'}...`
     );
     try {
-      const result = await bulkEmailService.sendBulkEmail({
-        category,
-        subject: subject.trim(),
-        body,
-        emails: emailsToSend,
-        cohort_filter: cohortFilterLabel(cohorts, selectedCohortIds, selectedStudentIds),
-      });
+      const result = await bulkEmailService.sendBulkEmail(
+        {
+          category,
+          subject: subject.trim(),
+          body,
+          emails: externalEmails,
+          student_ids: studentIds,
+          cohort_filter: cohortFilterLabel(cohorts, selectedCohortIds, selectedStudentIds),
+        },
+        attachments.map((item) => item.file),
+        (percent) => setUploadProgress(percent)
+      );
 
-      if (!result.success) {
+      if (result.queued) {
+        toast(result.message, { id: toastId });
+      } else if (!result.success) {
         toast.error(result.error || result.message || 'Bulk email sending failed.', { id: toastId });
         fetchLogs();
         return;
+      } else {
+        toast.success(result.message, { id: toastId });
       }
-
-      toast.success(result.message, { id: toastId });
       setSubject('');
       setBody('');
+      setAttachments([]);
+      setAttachmentErrors([]);
       setRecipients([]);
       setImportedCount(0);
       setSearchQuery('');
@@ -433,6 +526,7 @@ export function BulkEmailManagement() {
       fetchLogs();
     } finally {
       setIsSending(false);
+      setUploadProgress(null);
     }
   };
 
@@ -448,7 +542,7 @@ export function BulkEmailManagement() {
     <div className="space-y-6">
       <SectionHeader
         title="Bulk Email Management"
-        subtitle="Filter shortlisted students by cohort, search by name or email, upload CSV, or add addresses manually — then send a branded message."
+        subtitle="Filter shortlisted students by cohort, search by name or email, import CSV, or add addresses manually — then send a branded message."
       />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -592,7 +686,7 @@ export function BulkEmailManagement() {
             <Mail className="h-5 w-5" />
             Add Recipients
           </h3>
-          <p className="mt-1 text-sm text-ink-muted">Manually add emails or upload a CSV with an email column.</p>
+          <p className="mt-1 text-sm text-ink-muted">Manually add emails or import a CSV with an email column.</p>
 
           <div className="mt-4 space-y-4">
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -626,7 +720,7 @@ export function BulkEmailManagement() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="mr-2 h-4 w-4" />
-                Upload CSV
+                Import CSV
               </Button>
               <span className="text-sm text-ink-muted">Imported emails: {importedRecipientCount}</span>
             </div>
@@ -769,8 +863,9 @@ export function BulkEmailManagement() {
       </Card>
 
       <Card>
+        <div onPaste={handleComposerPaste}>
         <h3 className="text-lg font-semibold text-ink-primary">Email Composer</h3>
-        <p className="mt-1 text-sm text-ink-muted">Compose your bulk email with rich formatting.</p>
+        <p className="mt-1 text-sm text-ink-muted">Compose your bulk email with rich formatting. Paste a copied file to attach it.</p>
 
         <div className="mt-4 space-y-4">
           <Input
@@ -781,10 +876,93 @@ export function BulkEmailManagement() {
           />
           <div>
             <p className="mb-1.5 text-sm font-medium text-ink-secondary">Email description / body</p>
-            <RichTextEditor value={body} onChange={setBody} />
+            <RichTextEditor
+              value={body}
+              onChange={setBody}
+              onPasteFiles={attachFiles}
+              maxImageBytes={attachmentPolicy.max_file_bytes}
+            />
+          </div>
+          <div>
+            <p className="mb-1.5 text-sm font-medium text-ink-secondary">Attachments</p>
+            <p className="mb-3 text-xs text-ink-muted">
+              Up to {attachmentPolicy.max_files} files, {formatFileSize(attachmentPolicy.max_file_bytes)} each,{' '}
+              {formatFileSize(attachmentPolicy.max_total_bytes)} total. Allowed:{' '}
+              {attachmentPolicy.allowed_extensions.join(', ')}.
+            </p>
+            <input
+              ref={attachmentInputRef}
+              type="file"
+              multiple
+              accept={acceptAttribute(attachmentPolicy)}
+              className="hidden"
+              onChange={handleAttachmentSelection}
+            />
+            <Button type="button" variant="secondary" onClick={() => attachmentInputRef.current?.click()}>
+              <Paperclip className="mr-2 h-4 w-4" />
+              Add files
+            </Button>
+            {attachmentErrors.length > 0 && (
+              <ul className="mt-3 space-y-1 text-sm text-brand-red">
+                {attachmentErrors.map((error, index) => (
+                  <li key={`${error}-${index}`}>{error}</li>
+                ))}
+              </ul>
+            )}
+            {attachments.length > 0 && (
+              <ul className="mt-3 divide-y divide-line-default rounded-lg border border-line-default">
+                {attachments.map((attachment) => (
+                  <li key={attachment.id} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
+                    <span className="min-w-0">
+                      <span className="block truncate font-medium text-ink-primary">{attachment.name}</span>
+                      <span className="text-ink-muted">
+                        {attachment.typeLabel}
+                        {attachment.file.type ? ` · ${attachment.file.type}` : ''} · {formatFileSize(attachment.size)}
+                      </span>
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="px-2"
+                      onClick={() => {
+                        setAttachments((current) => removeSelectedAttachment(current, attachment.id));
+                        setAttachmentErrors([]);
+                      }}
+                      aria-label={`Remove ${attachment.name}`}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {uploadProgress !== null && (
+              <div className="mt-3">
+                <div className="h-2 overflow-hidden rounded bg-surface-muted">
+                  <div className="h-2 bg-brand-green" style={{ width: `${uploadProgress}%` }} />
+                </div>
+                <p className="mt-1 text-xs text-ink-muted">Uploading attachments… {uploadProgress}%</p>
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-            <Button type="button" variant="secondary" onClick={() => setShowPreview(true)}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => {
+                setPreviewHtml('');
+                setShowPreview(true);
+                setPreviewLoading(true);
+                void bulkEmailService
+                  .previewEmail({ subject: subject.trim(), body })
+                  .then((html) => setPreviewHtml(html))
+                  .catch((error) => {
+                    toast.error(bulkEmailErrorMessage(error));
+                    setShowPreview(false);
+                  })
+                  .finally(() => setPreviewLoading(false));
+              }}
+            >
               <Eye className="mr-2 h-4 w-4" />
               Preview
             </Button>
@@ -796,7 +974,7 @@ export function BulkEmailManagement() {
                   toast.error('Subject is required');
                   return;
                 }
-                if (!stripHtml(body)) {
+                if (!hasMessageContent(body)) {
                   toast.error('Email body is required');
                   return;
                 }
@@ -811,6 +989,7 @@ export function BulkEmailManagement() {
               {isSending ? 'Sending...' : 'Send Bulk Email'}
             </Button>
           </div>
+        </div>
         </div>
       </Card>
 
@@ -849,25 +1028,36 @@ export function BulkEmailManagement() {
       </Card>
 
       <Modal isOpen={showPreview} onClose={() => setShowPreview(false)} title="Email Preview" maxWidth="2xl">
-        <div className="space-y-4 text-sm">
-          <div>
-            <span className="font-semibold text-ink-secondary">From:</span> Shortlisted
-          </div>
-          <div>
-            <span className="font-semibold text-ink-secondary">To:</span> {totalRecipients} recipient
-            {totalRecipients === 1 ? '' : 's'}
-          </div>
-          <div>
-            <span className="font-semibold text-ink-secondary">Subject:</span> {subject || '—'}
-          </div>
-          <div>
-            <span className="font-semibold text-ink-secondary">Body:</span>
-            <div
-              className="prose prose-sm mt-2 max-w-none rounded-lg border border-line-default p-4"
-              dangerouslySetInnerHTML={{ __html: body || '<p>—</p>' }}
+        <div className="space-y-3 text-sm">
+          <p className="text-ink-muted">
+            To / Cc: configured mail recipients. Bcc: {totalRecipients} selected recipient
+            {totalRecipients === 1 ? '' : 's'}, each in a separate email.
+          </p>
+          {attachments.length > 0 && (
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-wide text-ink-muted">Attachments</p>
+              <ul className="mt-1 list-disc pl-5 text-ink-primary">
+                {attachments.map((attachment) => (
+                  <li key={attachment.id}>
+                    {attachment.name} · {attachment.typeLabel} · {formatFileSize(attachment.size)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {previewLoading ? (
+            <div className="flex items-center justify-center py-16 text-ink-muted">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Building preview…
+            </div>
+          ) : (
+            <iframe
+              title="Email preview"
+              sandbox=""
+              srcDoc={previewHtml}
+              className="h-[640px] w-full rounded-lg border border-line-default bg-white"
             />
-          </div>
-          <p className="text-xs text-ink-muted">Sent emails use the Shortlisted branded email wrapper.</p>
+          )}
         </div>
       </Modal>
 
@@ -876,7 +1066,7 @@ export function BulkEmailManagement() {
         onClose={() => setShowConfirm(false)}
         onConfirm={handleSend}
         title="Send Bulk Email"
-        message={`Send this email to ${totalRecipients} recipient${totalRecipients === 1 ? '' : 's'}?`}
+        message={`Send this email with ${totalRecipients} selected recipient${totalRecipients === 1 ? '' : 's'} on BCC?`}
         confirmText="Send"
         cancelText="Cancel"
         variant="info"
