@@ -78,7 +78,7 @@ export function filesFromClipboard(data: DataTransfer | null): File[] {
       const named = withClipboardName(file);
       files.set(fileKey(named), named);
     });
-    return [...files.values()];
+    return Array.from(files.values());
   } catch {
     return [];
   }
