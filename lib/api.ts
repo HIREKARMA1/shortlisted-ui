@@ -60,6 +60,11 @@ class ApiClient {
     });
 
     this.client.interceptors.request.use((cfg) => {
+      if (typeof FormData !== 'undefined' && cfg.data instanceof FormData) {
+        // The instance default is application/json, which makes Axios stringify FormData
+        // and drop the multipart fields the API expects.
+        cfg.headers.set('Content-Type', 'multipart/form-data');
+      }
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('access_token');
         if (token) cfg.headers.Authorization = `Bearer ${token}`;

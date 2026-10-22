@@ -33,11 +33,29 @@ export type BulkEmailUploadResponse = {
   emails: string[];
 };
 
+export type BulkEmailAttachmentPolicy = {
+  max_file_bytes: number;
+  max_total_bytes: number;
+  max_message_bytes: number;
+  max_files: number;
+  allowed_extensions: string[];
+};
+
+export type BulkEmailPreviewRequest = {
+  subject: string;
+  body: string;
+};
+
+export type BulkEmailPreviewResponse = {
+  html: string;
+};
+
 export type BulkEmailSendRequest = {
   category?: BulkEmailCategory;
   subject: string;
   body: string;
-  emails: string[];
+  emails?: string[];
+  student_ids?: string[];
   cohort_filter?: string;
 };
 
