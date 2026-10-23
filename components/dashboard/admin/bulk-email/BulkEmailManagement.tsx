@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
+  Download,
   Eye,
   GraduationCap,
   Loader2,
@@ -35,6 +36,7 @@ import {
   type AttachmentPolicy,
   type SelectedAttachment,
 } from '@/lib/bulkEmailAttachments';
+import { downloadBulkEmailTemplate } from '@/lib/bulkEmailTemplate';
 import { bulkEmailErrorMessage, bulkEmailService } from '@/services/bulkEmailService';
 import type {
   BulkEmailCategory,
@@ -87,6 +89,9 @@ export function BulkEmailManagement() {
   const [body, setBody] = useState('');
   const [isLoadingRecipients, setIsLoadingRecipients] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [importFile, setImportFile] = useState<{ name: string; size: number } | null>(null);
+  const [importProgress, setImportProgress] = useState<number | null>(null);
+  const [importErrors, setImportErrors] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [previewHtml, setPreviewHtml] = useState('');
@@ -379,16 +384,20 @@ export function BulkEmailManagement() {
   const handleCsvUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.csv')) {
-      toast.error('Please upload a .csv file');
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (extension !== 'csv' && extension !== 'xlsx') {
+      toast.error('Unsupported file. Supported formats: CSV, XLSX.');
       event.target.value = '';
       return;
     }
 
+    setImportFile({ name: file.name, size: file.size });
+    setImportErrors([]);
+    setImportProgress(0);
     setIsUploading(true);
-    const toastId = toast.loading('Uploading CSV...');
+    const toastId = toast.loading('Importing recipients...');
     try {
-      const result = await bulkEmailService.uploadCsv(file);
+      const result = await bulkEmailService.uploadCsv(file, setImportProgress);
       const mapped: ManagedRecipient[] = result.emails.map((email) => ({
         email,
         name: email,
@@ -398,11 +407,22 @@ export function BulkEmailManagement() {
       }));
       mergeRecipients(mapped, false);
       setImportedCount((count) => count + result.imported);
-      toast.success(`Imported ${result.imported} email${result.imported === 1 ? '' : 's'}`, { id: toastId });
+      setImportErrors(result.errors ?? []);
+      const importedLabel = `Imported ${result.imported} email${result.imported === 1 ? '' : 's'}`;
+      if (result.errors?.length) {
+        toast.success(`${importedLabel}. ${result.errors.length} row${result.errors.length === 1 ? '' : 's'} need attention.`, {
+          id: toastId,
+        });
+      } else {
+        toast.success(importedLabel, { id: toastId });
+      }
     } catch (error) {
-      toast.error(bulkEmailErrorMessage(error), { id: toastId });
+      const message = bulkEmailErrorMessage(error);
+      setImportErrors(message.split('\n').filter((line) => line.trim()));
+      toast.error(message, { id: toastId });
     } finally {
       setIsUploading(false);
+      setImportProgress(null);
       event.target.value = '';
     }
   };
@@ -542,7 +562,7 @@ export function BulkEmailManagement() {
     <div className="space-y-6">
       <SectionHeader
         title="Bulk Email Management"
-        subtitle="Filter shortlisted students by cohort, search by name or email, import CSV, or add addresses manually — then send a branded message."
+        subtitle="Filter shortlisted students by cohort, search by name or email, import CSV or Excel, or add addresses manually — then send a branded message."
       />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -686,7 +706,10 @@ export function BulkEmailManagement() {
             <Mail className="h-5 w-5" />
             Add Recipients
           </h3>
-          <p className="mt-1 text-sm text-ink-muted">Manually add emails or import a CSV with an email column.</p>
+          <p className="mt-1 text-sm text-ink-muted">
+            Manually add emails or import a spreadsheet with an email column. Replace the sample row in the template
+            before importing.
+          </p>
 
           <div className="mt-4 space-y-4">
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -712,7 +735,17 @@ export function BulkEmailManagement() {
             </div>
             {manualEmailError && <p className="text-sm text-brand-red">{manualEmailError}</p>}
             <div className="flex flex-wrap items-center gap-3">
-              <input ref={fileInputRef} type="file" accept=".csv" className="hidden" onChange={handleCsvUpload} />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                className="hidden"
+                onChange={handleCsvUpload}
+              />
+              <Button type="button" variant="secondary" onClick={downloadBulkEmailTemplate}>
+                <Download className="mr-2 h-4 w-4" />
+                Download CSV Template
+              </Button>
               <Button
                 type="button"
                 variant="secondary"
@@ -720,10 +753,31 @@ export function BulkEmailManagement() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="mr-2 h-4 w-4" />
-                Import CSV
+                Upload CSV or Excel (.xlsx)
               </Button>
               <span className="text-sm text-ink-muted">Imported emails: {importedRecipientCount}</span>
             </div>
+            <p className="text-xs text-ink-muted">Supported formats: CSV, XLSX</p>
+            {importFile && (
+              <p className="text-sm text-ink-primary">
+                {importFile.name} · {formatFileSize(importFile.size)}
+              </p>
+            )}
+            {isUploading && (
+              <div>
+                <div className="h-2 overflow-hidden rounded bg-surface-muted">
+                  <div className="h-2 bg-brand-green" style={{ width: `${importProgress ?? 0}%` }} />
+                </div>
+                <p className="mt-1 text-xs text-ink-muted">Importing recipients… {importProgress ?? 0}%</p>
+              </div>
+            )}
+            {importErrors.length > 0 && (
+              <ul className="space-y-1 text-sm text-brand-red">
+                {importErrors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            )}
           </div>
         </Card>
       </div>

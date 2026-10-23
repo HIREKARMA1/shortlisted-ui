@@ -73,11 +73,18 @@ export class BulkEmailService {
     return res.data;
   }
 
-  async uploadCsv(file: File): Promise<BulkEmailUploadResponse> {
+  async uploadCsv(
+    file: File,
+    onUploadProgress?: (percent: number) => void
+  ): Promise<BulkEmailUploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
     const res = await api.client.post<BulkEmailUploadResponse>('/admin/bulk-email/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: (event) => {
+        if (!onUploadProgress || !event.total) return;
+        onUploadProgress(Math.min(100, Math.round((event.loaded / event.total) * 100)));
+      },
     });
     return res.data;
   }

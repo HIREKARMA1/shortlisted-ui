@@ -31,6 +31,7 @@ export type BulkEmailUploadResponse = {
   success: boolean;
   imported: number;
   emails: string[];
+  errors?: string[];
 };
 
 export type BulkEmailAttachmentPolicy = {
