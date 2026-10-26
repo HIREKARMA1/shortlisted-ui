@@ -51,6 +51,56 @@ export function normalizeClipboardHtml(raw: string): string {
   return raw;
 }
 
+const URL_PATTERN = /(?<![\w@./])((?:https?:\/\/|www\.)[^\s<>"']+)/gi;
+const TRAILING_URL_PUNCTUATION = /[.,;:!?)\]]$/;
+
+function trimUrl(raw: string): { url: string; suffix: string } {
+  let url = raw;
+  let suffix = '';
+  while (url && TRAILING_URL_PUNCTUATION.test(url)) {
+    if (url.endsWith(')') && (url.match(/\(/g) || []).length >= (url.match(/\)/g) || []).length) break;
+    suffix = url.slice(-1) + suffix;
+    url = url.slice(0, -1);
+  }
+  return { url, suffix };
+}
+
+export function linkHref(url: string): string {
+  const trimmed = url.trim();
+  if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+  return trimmed;
+}
+
+export function linkifyPlainText(text: string): string {
+  let html = '';
+  let last = 0;
+  const pattern = new RegExp(URL_PATTERN.source, 'gi');
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(text))) {
+    const raw = match[1] || match[0];
+    const { url, suffix } = trimUrl(raw);
+    const href = linkHref(url);
+    if (!url || !/^(https?:\/\/|www\.)/i.test(url) || !/^https?:\/\//i.test(href)) {
+      continue;
+    }
+    html += escapeHtml(text.slice(last, match.index));
+    html += `<a href="${escapeHtml(href)}">${escapeHtml(url)}</a>`;
+    html += escapeHtml(suffix);
+    last = match.index + raw.length;
+  }
+  html += escapeHtml(text.slice(last));
+  return html;
+}
+
+export function autolinkRange(text: string): { start: number; end: number; url: string; href: string } | null {
+  const match = /(?<![\w@./])((?:https?:\/\/|www\.)[^\s<>"']+)\s?$/.exec(text);
+  if (!match || match.index === undefined) return null;
+  const { url } = trimUrl(match[1]);
+  const href = linkHref(url);
+  if (!url || !/^https?:\/\//i.test(href)) return null;
+  return { start: match.index, end: match.index + url.length, url, href };
+}
+
 export function plainTextToHtml(text: string): string {
   const normalized = text
     .replace(/\r\n/g, '\n')
@@ -60,7 +110,7 @@ export function plainTextToHtml(text: string): string {
   if (!normalized.trim()) return '';
   return normalized
     .split(/\n{2,}/)
-    .map((block) => `<p>${block.split('\n').map(escapeHtml).join('<br>')}</p>`)
+    .map((block) => `<p>${block.split('\n').map(linkifyPlainText).join('<br>')}</p>`)
     .join('');
 }
 
@@ -106,7 +156,7 @@ function imageMarkup(element: HTMLElement): string {
 }
 
 function safeHref(value: string): string {
-  const href = value.trim();
+  const href = linkHref(value);
   if (!href || /[\n\r\0]/.test(href)) return '';
   if (/^(javascript|data|vbscript|file):/i.test(href)) return '';
   if (/^(https?:\/\/|mailto:|tel:)/i.test(href)) return href;
@@ -126,12 +176,12 @@ function indentPx(value: string): number {
   return Math.max(24, Math.min(72, steps * 24));
 }
 
-function inlineHtml(element: HTMLElement, includeBlocks = false): string {
+function inlineHtml(element: HTMLElement, includeBlocks = false, insideLink = false): string {
   let html = '';
   element.childNodes.forEach((child) => {
     if (child.nodeType === Node.TEXT_NODE) {
       const text = (child.textContent || '').replace(/\u00a0/g, ' ').replace(/\s+/g, ' ');
-      if (text) html += escapeHtml(text);
+      if (text) html += insideLink ? escapeHtml(text) : linkifyPlainText(text);
       return;
     }
     if (child.nodeType !== Node.ELEMENT_NODE) return;
@@ -147,7 +197,8 @@ function inlineHtml(element: HTMLElement, includeBlocks = false): string {
       return;
     }
     if (BLOCK_TAGS.has(tag) && !includeBlocks) return;
-    let inner = inlineHtml(el, includeBlocks);
+    const href = tag === 'a' ? safeHref(el.getAttribute('href') || '') : '';
+    let inner = inlineHtml(el, includeBlocks, insideLink || Boolean(href));
     if (!inner.trim()) return;
     const styles = styleMap(el);
     const weight = styles['font-weight'] || '';
@@ -163,10 +214,7 @@ function inlineHtml(element: HTMLElement, includeBlocks = false): string {
     if (bold) inner = `<strong>${inner}</strong>`;
     if (italic) inner = `<em>${inner}</em>`;
     if (underline) inner = `<u>${inner}</u>`;
-    if (tag === 'a') {
-      const href = safeHref(el.getAttribute('href') || '');
-      if (href) inner = `<a href="${escapeHtml(href)}">${inner}</a>`;
-    }
+    if (href) inner = `<a href="${escapeHtml(href)}">${inner}</a>`;
     html += inner;
   });
   return html.trim();

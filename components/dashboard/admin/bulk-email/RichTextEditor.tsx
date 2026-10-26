@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, type ClipboardEvent } from 'react';
+import { useCallback, useEffect, useRef, type ClipboardEvent, type KeyboardEvent } from 'react';
 import {
   AlignCenter,
   AlignLeft,
@@ -17,7 +17,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { filesFromClipboard } from '@/lib/bulkEmailAttachments';
 import { clipboardFileKind, imagePasteError, inlineImageMarkup } from '@/lib/inlineEmailImage';
-import { normalizeClipboardHtml, plainTextToHtml, sanitizePastedHtml } from '@/lib/sanitizePastedHtml';
+import { autolinkRange, normalizeClipboardHtml, plainTextToHtml, sanitizePastedHtml } from '@/lib/sanitizePastedHtml';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
@@ -28,6 +28,43 @@ interface RichTextEditorProps {
   maxImageBytes?: number;
   placeholder?: string;
   className?: string;
+}
+
+function linkifyTextNode(textNode: Text, moveCaret: boolean) {
+  if (textNode.parentElement?.closest('a')) return;
+  const found = autolinkRange(textNode.textContent || '');
+  if (!found || !textNode.parentNode) return;
+  const before = textNode.textContent?.slice(0, found.start) || '';
+  const after = textNode.textContent?.slice(found.end) || '';
+  const anchor = document.createElement('a');
+  anchor.href = found.href;
+  anchor.textContent = found.url;
+  const fragment = document.createDocumentFragment();
+  if (before) fragment.appendChild(document.createTextNode(before));
+  fragment.appendChild(anchor);
+  const afterNode = document.createTextNode(after);
+  fragment.appendChild(afterNode);
+  textNode.parentNode.replaceChild(fragment, textNode);
+  if (!moveCaret) return;
+  const selection = window.getSelection();
+  if (!selection) return;
+  const caret = document.createRange();
+  if (after) caret.setStart(afterNode, after.length);
+  else caret.setStartAfter(anchor);
+  caret.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(caret);
+}
+
+function lastTextNode(element: Element): Text | null {
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  let last: Text | null = null;
+  let current = walker.nextNode();
+  while (current) {
+    last = current as Text;
+    current = walker.nextNode();
+  }
+  return last;
 }
 
 function insertHtmlAtCaret(editor: HTMLElement, html: string) {
@@ -99,9 +136,31 @@ export function RichTextEditor({
 
   const handleLink = () => {
     const url = window.prompt('Enter link URL (include https://)');
-    if (url && /^(https?:\/\/|mailto:|tel:)/i.test(url.trim())) {
-      exec('createLink', url.trim());
+    const trimmed = url?.trim() || '';
+    const href = /^www\./i.test(trimmed) ? `https://${trimmed}` : trimmed;
+    if (/^(https?:\/\/|mailto:|tel:)/i.test(href)) {
+      exec('createLink', href);
     }
+  };
+
+  const handleKeyUp = (event: KeyboardEvent<HTMLDivElement>) => {
+    const editor = editorRef.current;
+    if (!editor || (event.key !== ' ' && event.key !== 'Enter')) return;
+    if (event.key === ' ') {
+      const selection = window.getSelection();
+      const node = selection?.anchorNode;
+      if (node?.nodeType === Node.TEXT_NODE && editor.contains(node)) {
+        linkifyTextNode(node as Text, true);
+      }
+    } else {
+      const selection = window.getSelection();
+      const anchor = selection?.anchorNode;
+      const block = anchor?.nodeType === Node.ELEMENT_NODE ? (anchor as HTMLElement) : anchor?.parentElement;
+      const previous = block?.previousElementSibling;
+      const previousText = previous && editor.contains(previous) ? lastTextNode(previous) : null;
+      if (previousText) linkifyTextNode(previousText, false);
+    }
+    publish();
   };
 
   const readImageSource = (file: File) =>
@@ -236,6 +295,7 @@ export function RichTextEditor({
         data-placeholder={placeholder}
         className="min-h-[220px] max-h-[420px] overflow-y-auto p-4 text-sm leading-7 text-ink-primary focus:outline-none empty:before:text-ink-muted empty:before:content-[attr(data-placeholder)] [&_a]:text-brand-blue [&_a]:underline [&_img]:h-auto [&_img]:max-w-full [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-3 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
         onInput={handleInput}
+        onKeyUp={handleKeyUp}
         onPaste={handlePaste}
         suppressContentEditableWarning
       />

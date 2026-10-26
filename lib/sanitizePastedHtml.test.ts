@@ -1,11 +1,47 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { filesFromClipboard } from './bulkEmailAttachments.ts';
-import { normalizeClipboardHtml, plainTextToHtml } from './sanitizePastedHtml.ts';
+import { autolinkRange, linkifyPlainText, normalizeClipboardHtml, plainTextToHtml } from './sanitizePastedHtml.ts';
 
 test('plain text paste keeps paragraphs and line breaks', () => {
   const html = plainTextToHtml('Hello\nthere\n\n\n\nNext paragraph');
   assert.equal(html, '<p>Hello<br>there</p><p>Next paragraph</p>');
+});
+
+test('pasting a url produces a clickable link', () => {
+  const html = plainTextToHtml('https://amagopalpur.org/');
+  assert.equal(
+    html,
+    '<p><a href="https://amagopalpur.org/">https://amagopalpur.org/</a></p>'
+  );
+});
+
+test('www addresses use an https destination and keep their visible text', () => {
+  const html = linkifyPlainText('Visit www.example.com.');
+  assert.equal(
+    html,
+    'Visit <a href="https://www.example.com">www.example.com</a>.'
+  );
+});
+
+test('trailing punctuation stays outside the link', () => {
+  const html = linkifyPlainText('See https://amagopalpur.org/, then reply.');
+  assert.match(html, /href="https:\/\/amagopalpur.org\/"/);
+  assert.equal(html.includes('href="https://amagopalpur.org/,"'), false);
+  assert.match(html, /<\/a>,/);
+});
+
+test('unsafe schemes are not linkified', () => {
+  const html = linkifyPlainText('javascript:alert(1)');
+  assert.equal(html.includes('<a'), false);
+  assert.equal(html.includes('href='), false);
+});
+
+test('a typed url before a space is ready to link', () => {
+  const found = autolinkRange('Join https://amagopalpur.org/ ');
+  assert.equal(found?.url, 'https://amagopalpur.org/');
+  assert.equal(found?.href, 'https://amagopalpur.org/');
+  assert.equal(found?.end, 'Join https://amagopalpur.org/'.length);
 });
 
 test('plain text paste escapes html tags', () => {

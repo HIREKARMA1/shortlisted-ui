@@ -1107,7 +1107,7 @@ export function BulkEmailManagement() {
           ) : (
             <iframe
               title="Email preview"
-              sandbox=""
+              sandbox="allow-popups allow-popups-to-escape-sandbox"
               srcDoc={previewHtml}
               className="h-[640px] w-full rounded-lg border border-line-default bg-white"
             />
