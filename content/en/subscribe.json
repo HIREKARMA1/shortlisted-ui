@@ -15,14 +15,17 @@
   "ctaOnline": "Pay online & activate",
   "processing": "Processing payment...",
   "redirecting": "Redirecting to PayU secure checkout...",
-  "success": "Subscription activated. Welcome to your batch!",
+  "success": "You're on the full plan. Your batch seat is confirmed.",
+  "trialSubtitle": "Your trial runs until {{date}}. Pay once to keep your seat, applications, classes, and assessments.",
+  "expiredSubtitle": "Your 7-day trial has ended. Pay once to restore full access.",
   "paymentMode": {
     "online": "Online payment",
     "offline": "Offline payment"
   },
   "offline": {
     "description": "Prefer to pay offline? Contact our sales team. Once payment is received, your account will be activated.",
-    "note": "Your dashboard stays locked until our team confirms your payment."
+    "note": "Your dashboard stays locked until our team confirms your payment.",
+    "trialNote": "You can keep using your trial or limited access until our team confirms the payment."
   },
   "benefits": {
     "title": "What's included",

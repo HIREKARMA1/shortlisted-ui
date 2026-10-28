@@ -9,7 +9,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
 import { api } from '@/lib/api';
-import { getInactiveStudentPath, getLockedStudentPath } from '@/lib/auth/session';
+import { getInactiveStudentPath } from '@/lib/auth/session';
 import { applicationBadgeTone } from '@/lib/status';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { Button } from '@/components/ui/Button';
@@ -45,8 +45,8 @@ export function StudentDashboardView() {
           router.replace(getInactiveStudentPath());
           return;
         }
-        if (status !== 'active') {
-          router.replace(getLockedStudentPath({ signupChannel: channel }));
+        if (status !== 'active' && channel === 'whatsapp') {
+          router.replace('/subscribe/review');
           return;
         }
         setData(dashboard);
@@ -55,7 +55,8 @@ export function StudentDashboardView() {
         if (cancelled) return;
         // 401 is handled by the API interceptor (refresh or force logout).
         if (axios.isAxiosError(err) && err.response?.status === 401) return;
-        router.replace(getLockedStudentPath({ signupChannel: localStorage.getItem('signup_channel') || 'web' }));
+        const channel = localStorage.getItem('signup_channel') || 'web';
+        if (channel === 'whatsapp') router.replace('/subscribe/review');
       });
     return () => {
       cancelled = true;
@@ -66,6 +67,16 @@ export function StudentDashboardView() {
 
   const student = data.student as Record<string, unknown>;
   const batch = data.batch as Record<string, unknown> | null;
+  const plan = String(student.plan || '');
+  const accessLabel =
+    plan === 'trial'
+      ? t('dashboard.trial.planTrial')
+      : plan === 'expired'
+        ? t('dashboard.trial.planExpired')
+        : plan === 'premium'
+          ? t('dashboard.trial.planPremium')
+          : String(student.access_status || '');
+  const seatConfirmed = batch?.seat_confirmed !== false;
   const jobs = (data.recent_jobs as Record<string, unknown>[]) || [];
   const apps = (data.active_applications as Record<string, unknown>[]) || [];
 
@@ -79,7 +90,7 @@ export function StudentDashboardView() {
       <div className="mb-8 grid gap-4 md:grid-cols-3">
         <StatCard
           label={t('dashboard.student.stats.access')}
-          value={<span className="capitalize">{String(student.access_status)}</span>}
+          value={<span className="capitalize">{accessLabel}</span>}
           accent="green"
           icon={Shield}
         />
@@ -87,11 +98,13 @@ export function StudentDashboardView() {
           label={t('dashboard.student.stats.batch')}
           value={batch ? String(batch.name) : t('dashboard.student.stats.batchAdminPending')}
           hint={
-            batch
-              ? batch.admin_name
-                ? `${t('dashboard.student.stats.batchAdmin')}: ${String(batch.admin_name)}`
-                : t('dashboard.student.stats.batchAdminPending')
-              : undefined
+            batch && !seatConfirmed
+              ? t('dashboard.trial.seatHint')
+              : batch
+                ? batch.admin_name
+                  ? `${t('dashboard.student.stats.batchAdmin')}: ${String(batch.admin_name)}`
+                  : t('dashboard.student.stats.batchAdminPending')
+                : undefined
           }
           accent="sky"
           icon={Users}

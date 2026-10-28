@@ -12,6 +12,8 @@ import { SiteHeader } from '@/components/layout/Shell';
 import { useSession } from '@/hooks/useSession';
 import { api } from '@/lib/api';
 import { getInactiveStudentPath } from '@/lib/auth/session';
+import { TrialUpgradeDialog, type TrialDialogMode } from '@/components/dashboard/student/TrialUpgradeDialog';
+import { parseTrialError } from '@/lib/trial';
 
 export default function StudentExamEntryPage() {
   const params = useParams();
@@ -24,6 +26,7 @@ export default function StudentExamEntryPage() {
   const [loading, setLoading] = useState(true);
   const [startError, setStartError] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
+  const [upgradeMode, setUpgradeMode] = useState<TrialDialogMode | null>(null);
   const [eligibility, setEligibility] = useState<StudentExamEligibility | null>(null);
   const [eligibilityLoading, setEligibilityLoading] = useState(true);
 
@@ -131,16 +134,19 @@ export default function StudentExamEntryPage() {
     setStarting(true);
     try {
       const res = await api.generateAssessmentToken(assessmentId, { expires_in_minutes: 120 });
-      if (res?.solviq_url) {
-        window.location.href = res.solviq_url as string;
+      const examUrl = res?.solviq_url as string | undefined;
+      if (examUrl) {
+        window.location.href = examUrl;
         return;
       }
       setStartError('Could not start the exam. Please try again.');
     } catch (e: unknown) {
-      const msg =
-        (e as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        (e as Error)?.message ||
-        'Could not start the exam.';
+      const detail = (e as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      if (parseTrialError(detail)) {
+        setUpgradeMode(parseTrialError(detail) === 'TRIAL_EXPIRED' ? 'expired' : 'limit');
+        return;
+      }
+      const msg = detail || (e as Error)?.message || 'Could not start the exam.';
       setStartError(typeof msg === 'string' ? msg : 'Could not start the exam.');
     } finally {
       setStarting(false);
@@ -150,6 +156,7 @@ export default function StudentExamEntryPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <SiteHeader />
+      <TrialUpgradeDialog mode={upgradeMode} feature="assessment" onClose={() => setUpgradeMode(null)} />
 
       {loading || !sessionReady ? (
         <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 pt-20 text-gray-600">

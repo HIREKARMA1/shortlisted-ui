@@ -140,12 +140,32 @@ class ApiClient {
 
   async sendRegistrationOtp(email: string) {
     const res = await this.client.post('/auth/register/send-otp', { email });
-    return res.data as { message: string; expires_in_minutes: number };
+    return res.data as {
+      message: string;
+      expires_in_minutes: number;
+      expires_in_seconds?: number;
+      rate_limit?: import('@/lib/otp-clock').OtpRateStatus;
+    };
+  }
+
+  async verifyRegistrationOtp(email: string, otp: string) {
+    const res = await this.client.post('/auth/register/verify-otp', { email, otp });
+    return res.data as { verified: boolean; message: string };
   }
 
   async sendForgotPasswordOtp(email: string, user_type: UserType) {
     const res = await this.client.post('/auth/forgot-password/send-otp', { email, user_type });
-    return res.data as { message: string; expires_in_minutes: number };
+    return res.data as {
+      message: string;
+      expires_in_minutes: number;
+      expires_in_seconds?: number;
+      rate_limit?: import('@/lib/otp-clock').OtpRateStatus;
+    };
+  }
+
+  async verifyForgotPasswordOtp(email: string, otp: string, user_type: UserType) {
+    const res = await this.client.post('/auth/forgot-password/verify-otp', { email, otp, user_type });
+    return res.data as { verified: boolean; message: string };
   }
 
   async resetPassword(data: {

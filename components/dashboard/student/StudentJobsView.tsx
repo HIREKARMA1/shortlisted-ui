@@ -21,6 +21,8 @@ import {
   getTotalPages,
   paginateItems,
 } from '@/components/dashboard/shared/management/ManagementPagination';
+import { TrialUpgradeDialog, type TrialDialogMode } from '@/components/dashboard/student/TrialUpgradeDialog';
+import { parseTrialError } from '@/lib/trial';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Input } from '@/components/ui/Input';
 import { LoadingState } from '@/components/ui/LoadingState';
@@ -42,6 +44,7 @@ export function StudentJobsView() {
   const [applying, setApplying] = useState<string | null>(null);
   const [selectedJob, setSelectedJob] = useState<StudentJob | null>(null);
   const [applyJobTarget, setApplyJobTarget] = useState<StudentJob | null>(null);
+  const [upgradeMode, setUpgradeMode] = useState<TrialDialogMode | null>(null);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -83,6 +86,10 @@ export function StudentJobsView() {
   const openApplyModal = useCallback(
     (job: StudentJob) => {
       if (isPlaced) return;
+      if (job.details_locked) {
+        setUpgradeMode('expired');
+        return;
+      }
       setApplyJobTarget(job);
     },
     [isPlaced],
@@ -113,6 +120,11 @@ export function StudentJobsView() {
           );
           throw err;
         }
+        if (parseTrialError(detail)) {
+          setApplyJobTarget(null);
+          setUpgradeMode(parseTrialError(detail) === 'TRIAL_EXPIRED' ? 'expired' : 'limit');
+          return;
+        }
         const msg = detail || t('common.errors.generic');
         toast.error(String(msg));
         throw err;
@@ -137,6 +149,10 @@ export function StudentJobsView() {
     if (!jobId) return;
     const job = jobs.find((item) => item.id === jobId);
     if (!job) return;
+    if (job.details_locked) {
+      setUpgradeMode('expired');
+      return;
+    }
     setSelectedJob(job);
     if (
       searchParams.get('apply') === '1' &&
@@ -293,7 +309,13 @@ export function StudentJobsView() {
                 key={job.id}
                 job={job}
                 cardIndex={index}
-                onViewDescription={() => setSelectedJob(job)}
+                onViewDescription={() => {
+                  if (job.details_locked) {
+                    setUpgradeMode('expired');
+                    return;
+                  }
+                  setSelectedJob(job);
+                }}
                 onApply={() => openApplyModal(job)}
                 isApplying={applying === job.id}
                 placed={isPlaced}
@@ -332,6 +354,12 @@ export function StudentJobsView() {
           showApplyButton={!isPlaced}
         />
       )}
+
+      <TrialUpgradeDialog
+        mode={upgradeMode}
+        feature="application"
+        onClose={() => setUpgradeMode(null)}
+      />
 
       {applyJobTarget && (
         <ApplyWithResumeModal
