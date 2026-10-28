@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/Button';
 import { Text } from '@/components/ui/Text';
 import { cn } from '@/lib/utils';
 import { formatAmountINR } from '@/lib/currency';
+import { formatTrialDate } from '@/lib/trial';
 
 type BatchInfo = {
   seats_remaining?: number;
@@ -46,7 +47,7 @@ export function SubscribePageView() {
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
   const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
   const [paymentMode, setPaymentMode] = useState<PaymentMode>('online');
-  const { ready, session, accessStatus } = useStudentSubscribeGate();
+  const { ready, session, accessStatus, plan, trialEndsAt } = useStudentSubscribeGate();
 
   useEffect(() => {
     if (!ready || !session || accessStatus === 'active') return;
@@ -112,7 +113,13 @@ export function SubscribePageView() {
   return (
     <AuthLayout
       title={t('subscribe.title')}
-      subtitle={t('subscribe.subtitle')}
+      subtitle={
+        plan === 'trial'
+          ? t('subscribe.trialSubtitle', { date: formatTrialDate(trialEndsAt) })
+          : plan === 'expired'
+            ? t('subscribe.expiredSubtitle')
+            : t('subscribe.subtitle')
+      }
       footer={
         <button
           type="button"
@@ -241,7 +248,11 @@ export function SubscribePageView() {
                 </li>
               )}
             </ul>
-            <p className="text-xs text-ink-muted">{t('subscribe.offline.note')}</p>
+            <p className="text-xs text-ink-muted">
+              {plan === 'trial' || plan === 'expired'
+                ? t('subscribe.offline.trialNote')
+                : t('subscribe.offline.note')}
+            </p>
           </div>
         )}
       </div>

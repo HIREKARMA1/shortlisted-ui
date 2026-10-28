@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { api } from '@/lib/api';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
-import { getInactiveStudentPath, getLockedStudentPath } from '@/lib/auth/session';
+import { getInactiveStudentPath } from '@/lib/auth/session';
 
 export function useStudentActiveGate() {
   const router = useRouter();
@@ -38,15 +38,15 @@ export function useStudentActiveGate() {
             router.replace(getInactiveStudentPath());
             return;
           }
-          if (status !== 'active') {
-            router.replace(getLockedStudentPath({ signupChannel: channel }));
+          if (status !== 'active' && channel === 'whatsapp') {
+            router.replace('/subscribe/review');
           }
         })
         .catch((err) => {
           // 401 is handled by the API interceptor (refresh or force logout).
           if (axios.isAxiosError(err) && err.response?.status === 401) return;
           const channel = localStorage.getItem('signup_channel') || 'web';
-          router.replace(getLockedStudentPath({ signupChannel: channel }));
+          if (channel === 'whatsapp') router.replace('/subscribe/review');
         });
     };
 

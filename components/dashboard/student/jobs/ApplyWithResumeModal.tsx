@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Download, FileText, Loader2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { parseTrialError } from '@/lib/trial';
 import { useTranslation } from '@/lib/i18n/context';
 import { hasResume } from '@/lib/resumeRequiredToast';
 import { profileService, type StudentProfile } from '@/lib/services/profileService';
@@ -110,10 +111,9 @@ export function ApplyWithResumeModal({
       await onConfirmApply();
       onClose();
     } catch (err: unknown) {
-      const detail =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        t('common.errors.generic');
-      toast.error(String(detail));
+      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      if (parseTrialError(detail)) return;
+      toast.error(String(detail || t('common.errors.generic')));
     } finally {
       setSubmitting(false);
     }

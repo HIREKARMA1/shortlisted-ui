@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { KeyRound, Loader2, Lock, Mail, Phone, User } from 'lucide-react';
+import { Loader2, Lock, Mail, Phone, User } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,12 +11,14 @@ import { useGuestOnly, useSession } from '@/hooks/useSession';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
 import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
+import { OtpCodePanel } from '@/components/auth/OtpCodePanel';
+import { useOtpVerification } from '@/components/auth/useOtpVerification';
+import { useOtpWindow } from '@/components/auth/useOtpWindow';
 import { Button } from '@/components/ui/Button';
+import { otpStatusFromError, statusFromSend } from '@/lib/otp-clock';
 
 const FIELDS = ['name', 'email', 'password', 'confirmPassword', 'phone', 'otp'] as const;
 type FieldKey = (typeof FIELDS)[number];
-
-const OTP_COOLDOWN_SECONDS = 60;
 
 export function RegisterFormView() {
   const { t } = useTranslation();
@@ -26,17 +28,11 @@ export function RegisterFormView() {
   const [loading, setLoading] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
-  const [resendIn, setResendIn] = useState(0);
+  const otpWindow = useOtpWindow();
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [form, setForm] = useState<Record<FieldKey, string>>(
     Object.fromEntries(FIELDS.map((k) => [k, ''])) as Record<FieldKey, string>
   );
-
-  useEffect(() => {
-    if (resendIn <= 0) return;
-    const timer = window.setTimeout(() => setResendIn((value) => value - 1), 1000);
-    return () => window.clearTimeout(timer);
-  }, [resendIn]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -45,6 +41,14 @@ export function RegisterFormView() {
       sessionStorage.setItem('signup_channel', 'whatsapp');
     }
   }, []);
+
+  const otpCheck = useOtpVerification({
+    email: form.email.trim(),
+    otp: otpSent && otpWindow.codeSeconds > 0 ? form.otp : '',
+    verify: (email, otp) => api.verifyRegistrationOtp(email, otp),
+    successMessage: t('auth.register.otp.verified'),
+    fallbackError: t('common.errors.generic'),
+  });
 
   if (!ready || session) return null;
 
@@ -58,7 +62,15 @@ export function RegisterFormView() {
   const phoneError =
     form.phone.length > 0 && !phoneValid ? t('auth.register.errors.invalidPhone') : undefined;
   const canSubmit =
-    otpSent && otpValid && form.name.trim() && passwordValid && passwordsMatch && phoneValid && agreedToTerms;
+    otpSent &&
+    otpWindow.codeSeconds > 0 &&
+    otpValid &&
+    otpCheck.verified &&
+    form.name.trim() &&
+    passwordValid &&
+    passwordsMatch &&
+    phoneValid &&
+    agreedToTerms;
 
   const handleSendOtp = async () => {
     if (!emailValid) {
@@ -67,15 +79,19 @@ export function RegisterFormView() {
     }
     setSendingOtp(true);
     try {
-      await api.sendRegistrationOtp(form.email.trim());
+      const sent = await api.sendRegistrationOtp(form.email.trim());
       setOtpSent(true);
-      setResendIn(OTP_COOLDOWN_SECONDS);
+      setForm((current) => ({ ...current, otp: '' }));
+      otpWindow.setStatus(statusFromSend(sent));
       toast.success(t('auth.register.otp.sent'));
     } catch (err: unknown) {
-      const msg =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        t('common.errors.generic');
-      toast.error(msg);
+      const parsed = otpStatusFromError(err);
+      if (parsed.status) {
+        setOtpSent(true);
+        setForm((current) => ({ ...current, otp: '' }));
+        otpWindow.setStatus(parsed.status);
+      }
+      toast.error(parsed.message || t('common.errors.generic'));
     } finally {
       setSendingOtp(false);
     }
@@ -159,6 +175,7 @@ export function RegisterFormView() {
                 onChange={(e) => {
                   setForm({ ...form, email: e.target.value, otp: '' });
                   setOtpSent(false);
+                  otpWindow.setStatus(null);
                 }}
                 required
                 autoComplete="email"
@@ -166,44 +183,51 @@ export function RegisterFormView() {
                 className="w-full rounded-xl border border-line-default bg-white py-2 pl-10 pr-3.5 text-sm text-ink-primary outline-none transition-shadow placeholder:text-ink-muted/60 focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/15"
               />
             </div>
-            <Button
-              type="button"
-              variant="secondary"
-              disabled={!emailValid || sendingOtp || resendIn > 0}
-              onClick={handleSendOtp}
-              className="h-[38px] shrink-0 rounded-xl px-3 text-xs sm:px-4"
-            >
-              {sendingOtp ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : resendIn > 0 ? (
-                t('auth.register.otp.resendIn', { seconds: resendIn })
-              ) : otpSent ? (
-                t('auth.register.otp.resend')
-              ) : (
-                t('auth.register.otp.send')
-              )}
-            </Button>
+            {!otpSent && (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={!emailValid || sendingOtp}
+                onClick={handleSendOtp}
+                className="h-[38px] shrink-0 rounded-xl px-3 text-xs sm:px-4"
+              >
+                {sendingOtp ? <Loader2 className="h-4 w-4 animate-spin" /> : t('auth.register.otp.send')}
+              </Button>
+            )}
           </div>
           {otpSent && (
-            <p className="text-[10px] leading-relaxed text-ink-muted">{t('auth.register.otp.hint')}</p>
+            <OtpCodePanel
+              email={form.email.trim()}
+              value={form.otp}
+              onChange={(otp) => setForm((current) => ({ ...current, otp }))}
+              codeSecondsLeft={otpWindow.codeSeconds}
+              clockSecondsLeft={otpWindow.clockSeconds}
+              lockedOut={otpWindow.lockedOut}
+              sending={sendingOtp}
+              onResend={handleSendOtp}
+              verified={otpCheck.verified}
+              verifying={otpCheck.verifying}
+              error={otpCheck.error}
+              labels={{
+                timeRemaining: t('auth.register.otp.timeRemaining'),
+                attempts: t('auth.register.otp.attempts'),
+                attemptsValue: t('auth.register.otp.attemptsValue', {
+                  remaining: otpWindow.remaining,
+                  max: otpWindow.max,
+                }),
+                sentTo: t('auth.register.otp.sentTo'),
+                expires: t('auth.register.otp.expires'),
+                expired: t('auth.register.otp.expired'),
+                lockout: t('auth.register.otp.lockout'),
+                resend: t('auth.register.otp.resend'),
+                resendIn: t('auth.register.otp.resend'),
+                groupLabel: t('auth.register.fields.otp'),
+                verified: t('auth.register.otp.verified'),
+                verifying: t('auth.register.otp.verifying'),
+              }}
+            />
           )}
         </div>
-        {otpSent && (
-          <AuthField
-            compact
-            name="otp"
-            label={t('auth.register.fields.otp')}
-            icon={KeyRound}
-            type="text"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            maxLength={6}
-            value={form.otp}
-            onChange={(e) => setForm({ ...form, otp: e.target.value.replace(/\D/g, '').slice(0, 6) })}
-            required
-            placeholder={t('auth.register.placeholders.otp')}
-          />
-        )}
         <div className="grid gap-2.5 sm:grid-cols-2">
           <AuthField
             compact
