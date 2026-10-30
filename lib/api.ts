@@ -622,6 +622,86 @@ class ApiClient {
     return res.data;
   }
 
+  async getAdminMockInterviews(batchId?: string) {
+    const res = await this.client.get('/admin/mock-interviews', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
+  async getAdminMockInterview(interviewId: string) {
+    const res = await this.client.get(`/admin/mock-interviews/${interviewId}`);
+    return res.data;
+  }
+
+  async createMockInterview(data: Record<string, unknown>) {
+    const res = await this.client.post('/admin/mock-interviews', data);
+    return res.data;
+  }
+
+  async updateMockInterview(interviewId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/mock-interviews/${interviewId}`, data);
+    return res.data;
+  }
+
+  async deleteMockInterview(interviewId: string) {
+    await this.client.delete(`/admin/mock-interviews/${interviewId}`);
+  }
+
+  async generateMockInterviewQuestions(interviewId: string) {
+    const res = await this.client.post(`/admin/mock-interviews/${interviewId}/generate`);
+    return res.data;
+  }
+
+  async publishMockInterview(interviewId: string) {
+    const res = await this.client.post(`/admin/mock-interviews/${interviewId}/publish`);
+    return res.data;
+  }
+
+  async unpublishMockInterview(interviewId: string) {
+    const res = await this.client.post(`/admin/mock-interviews/${interviewId}/unpublish`);
+    return res.data;
+  }
+
+  async updateMockInterviewQuestion(interviewId: string, questionId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(
+      `/admin/mock-interviews/${interviewId}/questions/${questionId}`,
+      data,
+    );
+    return res.data;
+  }
+
+  async deleteMockInterviewQuestion(interviewId: string, questionId: string) {
+    await this.client.delete(`/admin/mock-interviews/${interviewId}/questions/${questionId}`);
+  }
+
+  async regenerateMockInterviewQuestion(interviewId: string, questionId: string) {
+    const res = await this.client.post(
+      `/admin/mock-interviews/${interviewId}/questions/${questionId}/regenerate`,
+    );
+    return res.data;
+  }
+
+  async getStudentMockInterviews() {
+    const res = await this.client.get('/students/me/mock-interviews');
+    return res.data;
+  }
+
+  async startMockInterview(interviewId: string) {
+    const res = await this.client.post(`/students/me/mock-interviews/${interviewId}/sessions`);
+    return res.data;
+  }
+
+  async getMockInterviewSessions() {
+    const res = await this.client.get('/students/me/mock-interview-sessions');
+    return res.data;
+  }
+
+  async getMockInterviewReport(sessionId: string) {
+    const res = await this.client.get(`/students/me/mock-interview-sessions/${sessionId}/report`);
+    return res.data;
+  }
+
   async getAdminAssessments(batchId?: string) {
     const res = await this.client.get('/admin/assessments/list', {
       params: batchId ? { batch_id: batchId } : undefined,
