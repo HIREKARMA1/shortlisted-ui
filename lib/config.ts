@@ -10,7 +10,12 @@ export const config = {
   },
   app: {
     name: process.env.NEXT_PUBLIC_APP_NAME ?? 'Shortlisted',
-    url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001',
+    url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3003',
+  },
+  supabase: {
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '',
+    publishableKey:
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || '',
   },
   contact: {
     whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '',
