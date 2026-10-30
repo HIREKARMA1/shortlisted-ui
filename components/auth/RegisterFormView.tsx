@@ -12,6 +12,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
 import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
 import { Button } from '@/components/ui/Button';
+import { GoogleAuthButton, GoogleAuthDivider } from '@/components/auth/GoogleAuthButton';
 
 const FIELDS = ['name', 'email', 'password', 'confirmPassword', 'phone', 'otp'] as const;
 type FieldKey = (typeof FIELDS)[number];
@@ -250,6 +251,13 @@ export function RegisterFormView() {
           id="register-legal-consent"
           checked={agreedToTerms}
           onCheckedChange={setAgreedToTerms}
+        />
+        <GoogleAuthDivider label={t('auth.google.or')} />
+        <GoogleAuthButton
+          label={t('auth.google.signUp')}
+          requireTerms
+          termsAccepted={agreedToTerms}
+          termsMessage={t('auth.google.terms')}
         />
         <Button type="submit" fullWidth variant="accent" disabled={loading || !canSubmit} className="h-10 rounded-xl">
           {loading ? (

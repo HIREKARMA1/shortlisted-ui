@@ -13,6 +13,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
 import { LegalConsentCheckbox } from '@/components/auth/LegalConsentCheckbox';
 import { Button } from '@/components/ui/Button';
+import { GoogleAuthButton, GoogleAuthDivider } from '@/components/auth/GoogleAuthButton';
 
 type LoginFormViewProps = {
   /** Fixed role for internal login links - hides the role selector */
@@ -141,6 +142,18 @@ export function LoginFormView({ fixedRole }: LoginFormViewProps) {
             t('auth.login.submit')
           )}
         </Button>
+        {!isTeamLogin && (
+          <>
+            <GoogleAuthDivider label={t('auth.google.or')} />
+            <GoogleAuthButton
+              label={t('auth.google.continue')}
+              requireTerms
+              termsAccepted={agreedToTerms}
+              termsMessage={t('auth.google.terms')}
+              redirectPath={typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('redirect') : null}
+            />
+          </>
+        )}
       </form>
     </AuthLayout>
   );
