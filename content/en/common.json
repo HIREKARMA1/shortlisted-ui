@@ -7,6 +7,7 @@
   "nav": {
     "login": "Login",
     "profile": "Profile",
+    "resumeBuilder": "Resume Builder",
     "register": "Claim Your Seat",
     "logout": "Logout",
     "back": "Back",
