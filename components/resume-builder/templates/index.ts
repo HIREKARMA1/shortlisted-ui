@@ -3,6 +3,8 @@ export { ModernProfessionalTemplate } from "./ModernProfessional";
 export { ExecutiveCorporateTemplate } from "./ExecutiveCorporate";
 export { MinimalATSTemplate } from "./MinimalATS";
 export { CreativePremiumTemplate } from "./CreativePremium";
+export { ExecutiveProfessionalTemplate } from "./ExecutiveProfessional";
+export { ModernCreativeTemplate } from "./ModernCreative";
 export {
   TEMPLATES,
   TEMPLATE_SLUGS,

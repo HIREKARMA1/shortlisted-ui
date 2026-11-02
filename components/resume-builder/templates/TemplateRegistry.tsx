@@ -6,6 +6,8 @@ import { ModernProfessionalTemplate } from "./ModernProfessional";
 import { ExecutiveCorporateTemplate } from "./ExecutiveCorporate";
 import { MinimalATSTemplate } from "./MinimalATS";
 import { CreativePremiumTemplate } from "./CreativePremium";
+import { ExecutiveProfessionalTemplate } from "./ExecutiveProfessional";
+import { ModernCreativeTemplate } from "./ModernCreative";
 import { ResumeData } from "./shared/types";
 
 export interface TemplateInfo {
@@ -26,6 +28,8 @@ export const TEMPLATE_SLUGS = [
   "modern-professional",
   "executive-corporate",
   "minimal-ats",
+  "executive-professional",
+  "modern-creative",
   "creative-premium",
 ] as const;
 
@@ -79,6 +83,30 @@ export const TEMPLATES: Record<TemplateSlug, TemplateInfo> = {
     sections: 9,
     accentColor: "#000000",
   },
+  "executive-professional": {
+    id: "executive-professional",
+    name: "Executive Professional",
+    layout: "single-column",
+    font_family: "Segoe UI",
+    font_size: "11pt",
+    description:
+      "Premium navy corporate layout with strong hierarchy and categorized skills",
+    category: "executive",
+    sections: 9,
+    accentColor: "#0f172a",
+  },
+  "modern-creative": {
+    id: "modern-creative",
+    name: "Modern Creative",
+    layout: "sidebar",
+    font_family: "Inter",
+    font_size: "11pt",
+    description:
+      "Teal-accent two-column design with sidebar for contact, skills, and education",
+    category: "creative",
+    sections: 9,
+    accentColor: "#0d9488",
+  },
   "creative-premium": {
     id: "creative-premium",
     name: "Creative Premium",
@@ -98,8 +126,14 @@ const TEMPLATE_NAME_MAP: Record<string, TemplateSlug> = {
   "modern professional": "modern-professional",
   "executive corporate": "executive-corporate",
   "minimal ats": "minimal-ats",
+  "executive professional": "executive-professional",
+  "modern creative": "modern-creative",
   "creative premium": "creative-premium",
 };
+
+function normalizeTemplateKey(id: string): string {
+  return id.toLowerCase().trim().replace(/_/g, "-");
+}
 
 export function getTemplateList(): TemplateInfo[] {
   return TEMPLATE_SLUGS
@@ -124,7 +158,10 @@ export function resolveTemplateSlug(
   }
 
   if (templateId) {
-    const normalized = templateId.toLowerCase().trim();
+    const normalized = normalizeTemplateKey(templateId);
+    if (isTemplateSlug(normalized)) {
+      return normalized;
+    }
     if (TEMPLATE_NAME_MAP[normalized]) {
       return TEMPLATE_NAME_MAP[normalized];
     }
@@ -148,6 +185,10 @@ export function getTemplateComponent(
       return ExecutiveCorporateTemplate;
     case "minimal-ats":
       return MinimalATSTemplate;
+    case "executive-professional":
+      return ExecutiveProfessionalTemplate;
+    case "modern-creative":
+      return ModernCreativeTemplate;
     case "creative-premium":
       return CreativePremiumTemplate;
     default:
