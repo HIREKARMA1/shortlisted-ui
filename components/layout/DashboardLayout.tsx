@@ -11,7 +11,8 @@ import { BrandStripe } from '@/components/ui/BrandStripe';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { BrandLogo } from './Shell';
 import { DashboardRole, getNavForRole, NavItem } from '@/lib/dashboard-nav';
-import { StudentResumePrompt } from '@/components/dashboard/student/StudentResumeUploadModal';
+import { StudentTrialChrome, StudentTrialProvider } from '@/components/dashboard/student/StudentTrialChrome';
+import { TrialSidebarCard } from '@/components/dashboard/student/TrialSidebarCard';
 
 function NavLink({ item, pathname, onNavigate }: { item: NavItem; pathname: string; onNavigate?: () => void }) {
   const { t } = useTranslation();
@@ -70,6 +71,7 @@ export function DashboardLayout({
           <NavLink key={item.href} item={item} pathname={pathname} onNavigate={() => setMobileOpen(false)} />
         ))}
       </nav>
+      {role === 'student' ? <TrialSidebarCard /> : null}
       <div className="shrink-0 border-t border-line-default p-3">
         <button
           type="button"
@@ -83,9 +85,8 @@ export function DashboardLayout({
     </div>
   );
 
-  return (
+  const layout = (
     <div className="flex h-dvh max-h-dvh flex-col overflow-hidden bg-surface-page">
-      {role === 'student' && <StudentResumePrompt />}
       <BrandStripe />
       <div className="flex min-h-0 flex-1">
         {/* Desktop sidebar: full viewport height, Logout always pinned */}
@@ -132,8 +133,14 @@ export function DashboardLayout({
             </div>
           </header>
 
-          <main className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
+          <main
+            className={cn(
+              'min-h-0 flex-1 overflow-y-auto px-4 pb-6 sm:px-6 lg:px-8',
+              role === 'student' ? 'pt-0' : 'pt-6',
+            )}
+          >
             <div className="mx-auto max-w-6xl">
+              {role === 'student' && <StudentTrialChrome />}
               {(title || subtitle) && (
                 <div className="mb-8 border-b border-line-default pb-6">
                   {title ? <h1 className="section-title">{title}</h1> : null}
@@ -147,4 +154,7 @@ export function DashboardLayout({
       </div>
     </div>
   );
+
+  if (role === 'student') return <StudentTrialProvider>{layout}</StudentTrialProvider>;
+  return layout;
 }
