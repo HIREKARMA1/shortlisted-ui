@@ -10,16 +10,29 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--surface)]">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-4 text-sm text-[var(--muted)] sm:px-6">
-        <img src="/images/shortlisted-logo.png" alt="Shortlisted" width={120} height={28} className="h-7 w-auto" />
-        {footerLinks.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:text-[var(--ink)]">
-            {link.label}
-          </Link>
-        ))}
-        <a href={`mailto:${email}`} className="hover:text-[var(--ink)]">{email}</a>
-        <span className="sm:ml-auto">© {year} Hirekarma Private Limited</span>
+    <footer className="border-t border-[#E5EAF2] bg-white">
+      <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-5 text-xs sm:text-sm text-[var(--muted)] sm:px-6">
+        <div className="flex items-center gap-3">
+          <img src="/images/shortlisted-logo.png" alt="Shortlisted" width={120} height={28} className="h-7 w-auto" />
+          <span className="hidden sm:inline border-l border-[#E5EAF2] pl-3 text-xs text-[var(--muted)]">
+            AI Virtual Placement Cell
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-medium">
+          {footerLinks.map((link) => (
+            <Link key={link.href} href={link.href} className="transition-colors hover:text-[var(--ink)]">
+              {link.label}
+            </Link>
+          ))}
+          <a href={`mailto:${email}`} className="transition-colors hover:text-[var(--ink)]">
+            {email}
+          </a>
+        </div>
+
+        <span className="text-xs text-[var(--muted)]">
+          © {year} Hirekarma Private Limited
+        </span>
       </div>
     </footer>
   );

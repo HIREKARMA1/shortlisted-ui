@@ -1,11 +1,8 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { sidebarStorageKey } from '@/lib/home/content';
 
 type ShellState = {
-  collapsed: boolean;
-  toggleCollapsed: () => void;
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
   paletteOpen: boolean;
@@ -14,30 +11,20 @@ type ShellState = {
   setContactOpen: (open: boolean) => void;
   unlockOpen: boolean;
   setUnlockOpen: (open: boolean) => void;
+  pendingTargetHref: string | null;
+  setPendingTargetHref: (href: string | null) => void;
   activeSection: string;
 };
 
 const ShellContext = createContext<ShellState | null>(null);
 
-function readCollapsed() {
-  try {
-    return localStorage.getItem(sidebarStorageKey) === '1';
-  } catch {
-    return false;
-  }
-}
-
 export function ShellProvider({ children }: { children: ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [unlockOpen, setUnlockOpen] = useState(false);
+  const [pendingTargetHref, setPendingTargetHref] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState('home');
-
-  useEffect(() => {
-    setCollapsed(readCollapsed());
-  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -51,39 +38,60 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const ids = ['home', 'plans', 'faq'];
+    const ids = ['home', 'journey', 'desk', 'trainers', 'stories', 'plans', 'faq'];
     const nodes = ids.map((id) => document.getElementById(id)).filter((node): node is HTMLElement => !!node);
     if (!nodes.length) return;
+
+    const updateHash = (sectionId: string) => {
+      setActiveSection(sectionId);
+      if (typeof window === 'undefined') return;
+      if (sectionId === 'home') {
+        if (window.location.hash) {
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      } else {
+        const nextHash = `#${sectionId}`;
+        if (window.location.hash !== nextHash) {
+          window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${nextHash}`);
+        }
+      }
+    };
+
+    const onScroll = () => {
+      if (window.scrollY < 120) {
+        updateHash('home');
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     const observer = new IntersectionObserver(
       (entries) => {
+        if (window.scrollY < 120) {
+          updateHash('home');
+          return;
+        }
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(visible.target.id);
+        if (visible?.target.id) {
+          updateHash(visible.target.id);
+        }
       },
-      { rootMargin: '-20% 0px -55% 0px', threshold: [0.2, 0.45] },
+      { rootMargin: '-15% 0px -50% 0px', threshold: [0.15, 0.4] },
     );
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
-  }, []);
 
-  const toggleCollapsed = () => {
-    setCollapsed((current) => {
-      const next = !current;
-      try {
-        localStorage.setItem(sidebarStorageKey, next ? '1' : '0');
-      } catch {
-        /* ignore private mode */
-      }
-      return next;
-    });
-  };
+    nodes.forEach((node) => observer.observe(node));
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <ShellContext.Provider
       value={{
-        collapsed,
-        toggleCollapsed,
         mobileOpen,
         setMobileOpen,
         paletteOpen,
@@ -92,6 +100,8 @@ export function ShellProvider({ children }: { children: ReactNode }) {
         setContactOpen,
         unlockOpen,
         setUnlockOpen,
+        pendingTargetHref,
+        setPendingTargetHref,
         activeSection,
       }}
     >

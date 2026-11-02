@@ -25,7 +25,10 @@ export function useFeatureGate() {
       return;
     }
     if (feature.access === 'signIn') {
-      router.push(home.isLoggedIn ? feature.href : home.trialHref);
+      const targetUrl = home.isLoggedIn
+        ? feature.href
+        : `/auth/login?redirect=${encodeURIComponent(feature.href)}`;
+      router.push(targetUrl);
       return;
     }
     if (home.isPaidStudent) {
@@ -36,6 +39,7 @@ export function useFeatureGate() {
       router.push(home.dashboardHref);
       return;
     }
+    shell.setPendingTargetHref(feature.href);
     shell.setUnlockOpen(true);
   };
 

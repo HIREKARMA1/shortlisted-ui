@@ -9,7 +9,7 @@ import {
   CreditCard,
   Headphones,
   Home,
-  Sparkles,
+  Route,
   UserRound,
   Users,
   Video,
@@ -18,7 +18,7 @@ import {
 
 export const featureIcons: Record<string, LucideIcon> = {
   home: Home,
-  trial: Sparkles,
+  trial: Route,
   profile: UserRound,
   jobs: Briefcase,
   applications: ClipboardList,
@@ -44,6 +44,7 @@ export const toneStyles: Record<
     gradient: string;
     accent: string;
     tileBg: string;
+    tileBgHover: string;
   }
 > = {
   blue: {
@@ -52,11 +53,12 @@ export const toneStyles: Record<
     icon: 'text-[var(--brand-blue)]',
     iconOnGradient: 'text-white',
     ring: 'ring-[var(--brand-blue)]',
-    border: 'hover:border-[var(--brand-blue)]',
-    borderSolid: 'border-[var(--brand-blue)]',
-    gradient: 'from-[#1b52a4] to-[#3d74c4]',
+    border: 'hover:border-[#1b52a4]',
+    borderSolid: 'border-[#1b52a4]',
+    gradient: 'from-[#1b52a4] to-[#2c6cd1]',
     accent: '#1b52a4',
-    tileBg: 'bg-[rgba(27,82,164,0.08)]',
+    tileBg: 'bg-[#1b52a4]/[0.08]',
+    tileBgHover: 'hover:bg-[#1b52a4]/[0.14]',
   },
   sky: {
     wash: 'bg-[#00a2e5]/[0.09]',
@@ -64,23 +66,25 @@ export const toneStyles: Record<
     icon: 'text-[var(--brand-sky)]',
     iconOnGradient: 'text-white',
     ring: 'ring-[var(--brand-sky)]',
-    border: 'hover:border-[var(--brand-sky)]',
-    borderSolid: 'border-[var(--brand-sky)]',
+    border: 'hover:border-[#00a2e5]',
+    borderSolid: 'border-[#00a2e5]',
     gradient: 'from-[#0077b6] to-[#00a2e5]',
     accent: '#00a2e5',
-    tileBg: 'bg-[rgba(0,162,229,0.08)]',
+    tileBg: 'bg-[#00a2e5]/[0.08]',
+    tileBgHover: 'hover:bg-[#00a2e5]/[0.14]',
   },
   yellow: {
     wash: 'bg-[#fec40d]/[0.14]',
     washStrong: 'bg-[#fec40d]/[0.22]',
-    icon: 'text-[var(--ink)]',
-    iconOnGradient: 'text-[var(--ink)]',
+    icon: 'text-[#0B1B33]',
+    iconOnGradient: 'text-[#0B1B33]',
     ring: 'ring-[var(--brand-yellow)]',
-    border: 'hover:border-[var(--brand-yellow)]',
-    borderSolid: 'border-[var(--brand-yellow)]',
+    border: 'hover:border-[#fec40d]',
+    borderSolid: 'border-[#fec40d]',
     gradient: 'from-[#fec40d] to-[#f5b400]',
     accent: '#fec40d',
-    tileBg: 'bg-[rgba(254,196,13,0.12)]',
+    tileBg: 'bg-[#fec40d]/[0.10]',
+    tileBgHover: 'hover:bg-[#fec40d]/[0.18]',
   },
   orange: {
     wash: 'bg-[#f58020]/[0.09]',
@@ -88,11 +92,12 @@ export const toneStyles: Record<
     icon: 'text-[var(--brand-orange)]',
     iconOnGradient: 'text-white',
     ring: 'ring-[var(--brand-orange)]',
-    border: 'hover:border-[var(--brand-orange)]',
-    borderSolid: 'border-[var(--brand-orange)]',
+    border: 'hover:border-[#f58020]',
+    borderSolid: 'border-[#f58020]',
     gradient: 'from-[#d96a12] to-[#f58020]',
     accent: '#f58020',
-    tileBg: 'bg-[rgba(245,128,32,0.08)]',
+    tileBg: 'bg-[#f58020]/[0.08]',
+    tileBgHover: 'hover:bg-[#f58020]/[0.14]',
   },
   green: {
     wash: 'bg-[#098855]/[0.09]',
@@ -100,10 +105,11 @@ export const toneStyles: Record<
     icon: 'text-[var(--brand-green)]',
     iconOnGradient: 'text-white',
     ring: 'ring-[var(--brand-green)]',
-    border: 'hover:border-[var(--brand-green)]',
-    borderSolid: 'border-[var(--brand-green)]',
+    border: 'hover:border-[#098855]',
+    borderSolid: 'border-[#098855]',
     gradient: 'from-[#067048] to-[#098855]',
     accent: '#098855',
-    tileBg: 'bg-[rgba(9,136,85,0.08)]',
+    tileBg: 'bg-[#098855]/[0.08]',
+    tileBgHover: 'hover:bg-[#098855]/[0.14]',
   },
 };

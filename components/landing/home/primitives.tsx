@@ -21,7 +21,7 @@ export function PrimaryLink({
       href={href}
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand-orange)] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(245,128,32,0.28)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-sky)]',
+        'inline-flex items-center justify-center gap-2 rounded-full bg-[var(--brand-orange)] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(245,128,32,0.35),0_0_16px_rgba(245,128,32,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(245,128,32,0.48),0_0_20px_rgba(245,128,32,0.3)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-sky)]',
         className,
       )}
     >
@@ -46,7 +46,7 @@ export function GhostLink({
       href={href}
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--ink)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-sky)]',
+        'inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm font-semibold text-[var(--ink)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--brand-sky)]/50 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-sky)]',
         className,
       )}
     >
@@ -71,7 +71,7 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+      viewport={{ once: true, margin: '0px 0px -8% 0px' }}
       transition={{ duration: 0.4, ease: 'easeOut', delay }}
     >
       {children}
@@ -84,27 +84,29 @@ export function SectionHeading({
   title,
   subtitle,
   light = false,
+  className,
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   light?: boolean;
+  className?: string;
 }) {
   return (
-    <div className="max-w-2xl">
+    <div className={cn('max-w-2xl', className)}>
       {eyebrow ? (
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${light ? 'text-white/75' : 'text-[var(--brand-sky)]'}`}>
+        <p className={`text-[11px] font-bold uppercase tracking-[0.18em] ${light ? 'text-white/80' : 'text-[#00a2e5]'}`}>
           {eyebrow}
         </p>
       ) : null}
       <h2
-        className={`mt-2 font-bold tracking-tight ${light ? 'text-white' : 'text-[var(--ink)]'}`}
-        style={{ fontFamily: 'var(--font-home-display), Inter, sans-serif', fontSize: 'clamp(1.55rem, 1.2rem + 0.9vw, 1.75rem)', letterSpacing: '-0.02em' }}
+        className={`mt-1.5 text-[26px] sm:text-[28px] font-bold leading-tight tracking-[-0.02em] ${light ? 'text-white' : 'text-[var(--ink)]'}`}
+        style={{ fontFamily: 'var(--font-home-display), Inter, sans-serif' }}
       >
         {title}
       </h2>
       {subtitle ? (
-        <p className={`mt-2 text-[14px] leading-relaxed sm:text-[15px] ${light ? 'text-white/80' : 'text-[var(--muted)]'}`}>{subtitle}</p>
+        <p className={`mt-1.5 text-[14px] sm:text-[15px] leading-relaxed ${light ? 'text-white/85' : 'text-[var(--muted)]'}`}>{subtitle}</p>
       ) : null}
     </div>
   );
@@ -126,7 +128,7 @@ export function OutlineLink({
       href={href}
       onClick={onClick}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full border-2 border-[var(--brand-orange)] bg-transparent px-5 py-2.5 text-sm font-semibold text-[var(--brand-orange)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-sky)]',
+        'inline-flex items-center justify-center gap-2 rounded-full border-2 border-[var(--brand-orange)] bg-transparent px-5 py-2.5 text-sm font-semibold text-[var(--brand-orange)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--brand-orange)]/[0.08] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-sky)]',
         className,
       )}
     >

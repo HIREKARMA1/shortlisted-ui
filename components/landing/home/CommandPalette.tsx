@@ -3,10 +3,34 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
-import { categories, faqs, searchPages } from '@/lib/home/content';
+import freeTrialEn from '@/content/en/freeTrial.json';
+import { faqs } from '@/lib/home/content';
 import { useShell } from './ShellContext';
 
 type Row = { group: string; label: string; href: string; hint: string };
+
+const pageSections: Row[] = [
+  { group: 'Sections', label: 'Home', href: '#home', hint: 'Back to top' },
+  { group: 'Sections', label: 'Plans & Pricing', href: '#plans', hint: 'Simple, transparent plans' },
+  { group: 'Sections', label: 'Support', href: '/support', hint: 'Get help anytime' },
+  { group: 'Sections', label: 'FAQ', href: '#faq', hint: 'Frequently asked questions' },
+];
+
+const placementDeskFeatures: Row[] = [
+  { group: 'Placement Desk', label: 'Profile & resume', href: '#desk', hint: 'Stand out clearly' },
+  { group: 'Placement Desk', label: 'Matched jobs', href: '#desk', hint: 'Roles chosen for your batch' },
+  { group: 'Placement Desk', label: 'Applications', href: '#desk', hint: 'Track every step' },
+  { group: 'Placement Desk', label: 'Classes', href: '#desk', hint: 'Learn with your batch' },
+  { group: 'Placement Desk', label: 'Assessments', href: '#desk', hint: 'Know where you stand' },
+  { group: 'Placement Desk', label: 'Batch of 12', href: '#desk', hint: 'Small on purpose' },
+];
+
+const trainerRows: Row[] = (freeTrialEn.trainers?.items || []).map((t) => ({
+  group: 'Trainers',
+  label: t.name,
+  href: '#trainers',
+  hint: t.role,
+}));
 
 export function CommandPalette() {
   const { paletteOpen, setPaletteOpen } = useShell();
@@ -16,8 +40,9 @@ export function CommandPalette() {
 
   const rows = useMemo<Row[]>(() => {
     const all: Row[] = [
-      ...categories.map((item) => ({ group: 'Features', label: item.title, href: item.href, hint: item.caption })),
-      ...searchPages.map((item) => ({ group: 'Pages', label: item.label, href: item.href, hint: item.hint })),
+      ...pageSections,
+      ...placementDeskFeatures,
+      ...trainerRows,
       ...faqs.map((item) => ({ group: 'FAQ', label: item.q, href: '#faq', hint: 'Answer' })),
     ];
     const q = query.trim().toLowerCase();
@@ -32,7 +57,10 @@ export function CommandPalette() {
     const go = (href: string) => {
       setPaletteOpen(false);
       if (href.startsWith('#')) {
-        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const el = document.querySelector(href);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
       } else {
         router.push(href);
       }
@@ -69,13 +97,13 @@ export function CommandPalette() {
             autoFocus
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search features, pages, and FAQ"
+            placeholder="Search sections, features, trainers, and FAQ"
             className="h-12 w-full bg-transparent text-sm outline-none"
           />
         </label>
         <ul className="max-h-80 overflow-auto p-2" role="listbox">
           {rows.length === 0 ? (
-            <li className="px-3 py-6 text-center text-sm text-[var(--muted)]">No matches.</li>
+            <li className="px-3 py-6 text-center text-sm text-[var(--muted)]">No matches found.</li>
           ) : (
             groups.map((group) => (
               <li key={group}>
@@ -95,7 +123,10 @@ export function CommandPalette() {
                             onClick={() => {
                               setPaletteOpen(false);
                               if (row.href.startsWith('#')) {
-                                document.querySelector(row.href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                const el = document.querySelector(row.href);
+                                if (el) {
+                                  el.scrollIntoView({ behavior: 'smooth' });
+                                }
                               } else {
                                 router.push(row.href);
                               }
