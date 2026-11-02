@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Briefcase, Calendar, Check, LayoutDashboard, Sparkles, UserRound, Users } from 'lucide-react';
+import { ArrowRight, Briefcase, Calendar, Check, LayoutDashboard, UserRound, Users } from 'lucide-react';
 import { ctaLabel } from '@/lib/home/content';
 import { useHome, type BatchInfo } from './HomeProvider';
 import { PrimaryLink } from './primitives';
@@ -32,8 +32,8 @@ function useCountUp(target: number | null, active: boolean) {
 }
 
 /**
- * Typed live seat availability state.
- * Never displays a hardcoded number as live.
+ * Typed live seat availability state derived from HomeProvider's active batch request.
+ * The API is shared with production; this component only handles loading and empty responses.
  */
 export type SeatsAvailabilityState =
   | { status: 'loading'; text: 'Checking availability...' }
@@ -73,19 +73,19 @@ const GOLD_DUST = [
   { left: '78%', bottom: '38%', size: 4.2, duration: 15, delay: -4.9, desktopOnly: true },
 ];
 
-// String lights: 4 swags, 8 bulbs per swag cycling #ffd36b, #f58020, #fff3c4
-const BULB_COLORS = ['#ffd36b', '#f58020', '#fff3c4'];
+// String lights: four continuous swags with horizontal tangents at each join.
+const BULB_COLORS = ['#ffd36b', '#ff9a3c', '#fff3c4'];
 const STRING_LIGHTS_BULBS = Array.from({ length: 4 }).flatMap((_, swagIdx) => {
   const x0 = swagIdx * 300;
-  const x1 = x0 + 150;
-  const x2 = x0 + 300;
-  const y0 = 8;
-  const y1 = 76;
-  const y2 = 8;
+  const bezier = (a: number, b: number, c: number, d: number, t: number) =>
+    (1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t ** 2 * c + t ** 3 * d;
   return Array.from({ length: 8 }).map((_, bulbIdx) => {
-    const t = (bulbIdx + 1) / 9;
-    const x = Math.round(((1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * x1 + t * t * x2) * 10) / 10;
-    const y = Math.round(((1 - t) * (1 - t) * y0 + 2 * (1 - t) * t * y1 + t * t * y2) * 10) / 10;
+    const t = ((bulbIdx + 1) / 9) * 2;
+    const half = t <= 1 ? 0 : 1;
+    const localT = t <= 1 ? t : t - 1;
+    const startX = x0 + half * 150;
+    const x = Math.round(bezier(startX, startX + 50, startX + 100, startX + 150, localT) * 10) / 10;
+    const y = Math.round(bezier(half ? 76 : 8, half ? 76 : 8, half ? 8 : 76, half ? 8 : 76, localT) * 10) / 10;
     const globalIdx = swagIdx * 8 + bulbIdx;
     const color = BULB_COLORS[globalIdx % 3];
     const delay = -Number(((globalIdx * 0.375) % 3).toFixed(2));
@@ -106,11 +106,11 @@ const SPARKS = SPARK_ANGLES.map((deg, i) => {
 
 // 5 Career Journey Diya Steps
 const DIYA_STEPS = [
-  { id: 'profile', name: 'Profile', label: 'Light the Profile diya' },
-  { id: 'assessment', name: 'Assessment', label: 'Light the Assessment diya' },
-  { id: 'jobs', name: 'Jobs', label: 'Light the Jobs diya' },
-  { id: 'interview', name: 'Interview', label: 'Light the Interview diya' },
-  { id: 'offer', name: 'Offer', label: 'Light the Offer diya' },
+  { id: 'profile', name: 'Profile' },
+  { id: 'assessment', name: 'Assessment' },
+  { id: 'jobs', name: 'Jobs' },
+  { id: 'interview', name: 'Interview' },
+  { id: 'offer', name: 'Offer' },
 ] as const;
 
 function StringLights() {
@@ -119,11 +119,12 @@ function StringLights() {
       viewBox="0 0 1200 92"
       preserveAspectRatio="xMidYMin slice"
       className="pointer-events-none absolute left-0 top-0 z-10 h-[72px] sm:h-[92px] w-full"
+      style={{ transform: 'scaleY(0.55)', transformOrigin: 'top' }}
       aria-hidden="true"
     >
-      {/* 4 Swag Wires (quadratic curves, sag ~34px) */}
+      {/* Four cubic swags meet with matching horizontal tangents. */}
       <path
-        d="M 0 8 Q 150 76 300 8 M 300 8 Q 450 76 600 8 M 600 8 Q 750 76 900 8 M 900 8 Q 1050 76 1200 8"
+        d="M 0 8 C 50 8 100 76 150 76 C 200 76 250 8 300 8 C 350 8 400 76 450 76 C 500 76 550 8 600 8 C 650 8 700 76 750 76 C 800 76 850 8 900 8 C 950 8 1000 76 1050 76 C 1100 76 1150 8 1200 8"
         stroke="rgba(255,255,255,0.35)"
         strokeWidth="1.5"
         fill="none"
@@ -139,8 +140,6 @@ function StringLights() {
             r="11"
             fill={b.color}
             opacity="0.22"
-            className="diwali-twinkle"
-            style={{ animationDelay: `${b.delay}s` }}
           />
           {/* Bulb */}
           <circle
@@ -154,50 +153,6 @@ function StringLights() {
         </g>
       ))}
     </svg>
-  );
-}
-
-function RangoliMandala() {
-  return (
-    <div
-      className="pointer-events-none absolute -right-6 top-1/2 z-0 hidden h-[480px] w-[480px] -translate-y-1/2 overflow-visible min-[901px]:block lg:right-[2%] lg:h-[600px] lg:w-[600px]"
-      aria-hidden="true"
-    >
-      <svg viewBox="-300 -300 600 600" className="h-full w-full">
-        <g className="diwali-rangoli-spin" style={{ transformOrigin: '0px 0px' }}>
-          {/* Concentric Circles */}
-          <circle cx="0" cy="0" r="30" stroke="#ffd36b" strokeOpacity="0.18" strokeWidth="0.8" fill="none" />
-          <circle cx="0" cy="0" r="52" stroke="#ffd36b" strokeOpacity="0.18" strokeWidth="0.8" fill="none" />
-          <circle cx="0" cy="0" r="140" stroke="#ffd36b" strokeOpacity="0.18" strokeWidth="0.8" fill="none" />
-          {/* 12 Petals Rotated every 30° */}
-          {Array.from({ length: 12 }).map((_, i) => (
-            <g key={i} transform={`rotate(${i * 30})`}>
-              <ellipse
-                cx="0"
-                cy="-84"
-                rx="13"
-                ry="38"
-                stroke="#ffd36b"
-                strokeOpacity="0.18"
-                strokeWidth="0.8"
-                fill="none"
-              />
-              <ellipse
-                cx="0"
-                cy="-122"
-                rx="7"
-                ry="20"
-                stroke="#ffd36b"
-                strokeOpacity="0.18"
-                strokeWidth="0.8"
-                fill="none"
-              />
-              <circle cx="0" cy="-143" r="2.5" fill="#ffd36b" fillOpacity="0.18" />
-            </g>
-          ))}
-        </g>
-      </svg>
-    </div>
   );
 }
 
@@ -226,24 +181,18 @@ function DiyaButton({
   const delay = (index * 0.35).toFixed(2);
 
   return (
-    <div className="flex flex-col items-center">
-      <button
-        type="button"
-        onClick={handleClick}
-        aria-label={step.label}
-        aria-pressed={isLit}
-        className="group relative flex h-[48px] w-[44px] min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-xl p-0.5 transition-transform duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2e5] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c2a5c] sm:h-[62px] sm:w-[58px]"
-      >
+    <button
+      type="button"
+      onClick={handleClick}
+      aria-label={isLit ? `Put out the diya: ${step.name}` : `Light the diya: ${step.name}`}
+      aria-pressed={isLit}
+      className="diwali-diya-button group relative z-0 flex shrink-0 flex-col items-center justify-start rounded-xl p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffd36b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c2a5c]"
+      style={{ WebkitTapHighlightColor: 'transparent' }}
+    >
+      <span className="diwali-diya-visual relative flex shrink-0 items-center justify-center">
         {/* Soft Radial Halo (Signature bloom effect - PROTECTED) */}
         <div
-          className="pointer-events-none absolute left-1/2 top-[16px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 sm:top-[18px]"
-          style={{
-            width: isLit ? '48px' : '32px',
-            height: isLit ? '48px' : '32px',
-            opacity: isLit ? 1 : 0.45,
-            transform: `translate(-50%, -50%) scale(${isLit ? 1.5 : 1})`,
-            background: 'radial-gradient(circle, rgba(255,211,107,0.85) 0%, rgba(245,128,32,0.4) 50%, transparent 75%)',
-          }}
+          className={`diwali-bloom pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${isLit ? 'diwali-bloom-lit' : ''}`}
           aria-hidden="true"
         />
 
@@ -251,7 +200,7 @@ function DiyaButton({
         {isLit && (
           <div
             key={clickCount}
-            className="pointer-events-none absolute left-1/2 top-[16px] -translate-x-1/2 -translate-y-1/2 sm:top-[18px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             aria-hidden="true"
           >
             {SPARKS.map((s, si) => (
@@ -285,13 +234,15 @@ function DiyaButton({
 
           {/* Flame with flicker and boost glow filter */}
           <g
-            className="diwali-flame-flicker"
+            className={`diwali-flame ${isLit ? 'diwali-flame-flicker' : ''}`}
             style={{
+              opacity: isLit ? 1 : 0,
+              transition: 'opacity 250ms ease',
               transformOrigin: '29px 36px',
               animationDelay: `${delay}s`,
               filter: isLit
                 ? 'drop-shadow(0 0 8px rgba(254, 196, 13, 0.95)) drop-shadow(0 0 14px rgba(245, 128, 32, 0.8))'
-                : 'drop-shadow(0 0 4px rgba(254, 196, 13, 0.5))',
+                : 'none',
             }}
           >
             {/* Outer flame */}
@@ -314,18 +265,17 @@ function DiyaButton({
           {/* Wick */}
           <path d="M 29 37 L 29 33" stroke="#3b1704" strokeWidth="2" strokeLinecap="round" />
         </svg>
-      </button>
+      </span>
 
-      {/* Step label that fades in beneath lit diya */}
       <span
-        className={`mt-1.5 text-[11px] font-semibold transition-opacity duration-300 sm:text-xs ${
-          isLit ? 'text-[#ffd36b] opacity-100' : 'text-white/40 opacity-0'
+        className={`diwali-diya-label mt-1 h-4 whitespace-nowrap text-[12.5px] leading-4 ${
+          isLit ? 'lit font-bold text-white' : 'font-semibold text-white/80'
         }`}
         aria-hidden="true"
       >
         {step.name}
       </span>
-    </div>
+    </button>
   );
 }
 
@@ -336,7 +286,7 @@ function DiyaButton({
 function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
   return (
     <div
-      className="relative mx-auto flex w-full max-w-[500px] flex-col items-center justify-center pt-2 sm:pt-4"
+      className="diwali-mockup-column relative mx-auto flex w-full max-w-[500px] flex-col items-center justify-start"
       role="region"
       aria-label="Interactive preview of Shortlisted AI virtual placement desk"
     >
@@ -346,17 +296,19 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
         style={{ transform: `translate(${shift.x * 0.35}px, ${shift.y * 0.35}px)` }}
       >
         {/* Window title bar */}
-        <div className="flex items-center justify-between border-b border-[#E5EAF2] bg-[#F7F9FC] px-4 py-2.5">
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-1 border-b border-[#E5EAF2] bg-[#F7F9FC] px-2 py-2.5 min-[480px]:flex-nowrap min-[480px]:px-4">
+          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 min-[480px]:flex-nowrap">
             <span className="h-2.5 w-2.5 rounded-full bg-[#d64246]/80" aria-hidden="true" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#fec40d]" aria-hidden="true" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#098855]" aria-hidden="true" />
-            <span className="ml-2 text-xs font-semibold tracking-wide text-[#5B6B82]">shortlisted.desk</span>
-            <span className="ml-2 rounded-full border border-[#E5EAF2] bg-white px-2 py-0.5 text-[10px] font-bold text-[#5B6B82]">
+            <span className="ml-1 whitespace-nowrap text-[10px] font-semibold tracking-wide text-[#5B6B82] min-[480px]:ml-2 min-[480px]:text-xs sm:text-sm">
+              shortlisted.desk
+            </span>
+            <span className="ml-2 rounded-full border border-[#E5EAF2] bg-white px-2 py-0.5 text-[10px] font-bold text-[#5B6B82] sm:text-xs">
               Sample preview
             </span>
           </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#098855]/15 px-2.5 py-0.5 text-[11px] font-bold text-[#098855]">
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#098855]/15 px-2 py-0.5 text-[10px] font-bold text-[#08734a] sm:px-2.5 sm:text-sm">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#098855]" aria-hidden="true" /> Live Batch
           </span>
         </div>
@@ -364,7 +316,7 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
         {/* Window interior */}
         <div className="flex">
           {/* Mini sidebar */}
-          <div className="flex w-14 flex-col items-center gap-3 border-r border-[#E5EAF2] bg-[#F7F9FC] py-4 sm:w-16">
+          <div className="hidden w-14 flex-col items-center gap-3 border-r border-[#E5EAF2] bg-[#F7F9FC] py-4 min-[480px]:flex sm:w-16">
             <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#1b52a4] text-white shadow-sm">
               <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
             </div>
@@ -387,7 +339,7 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
             {/* Top row: Profile completion status */}
             <div className="flex items-center justify-between gap-2">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82]">Placement Desk</p>
+                <p className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82] sm:text-sm">Placement Desk</p>
                 <p className="text-base font-bold text-[#0B1B33] sm:text-[17px]">Cohort Dashboard</p>
               </div>
               <div className="flex items-center gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] px-3 py-1.5">
@@ -405,11 +357,11 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
                       strokeLinecap="round"
                     />
                   </svg>
-                  <span className="absolute text-xs font-extrabold text-[#098855]">100%</span>
+                  <span className="absolute text-xs font-extrabold text-[#08734a]">100%</span>
                 </div>
                 <div className="text-left">
-                  <p className="text-[11px] font-semibold leading-none text-[#5B6B82]">Profile</p>
-                  <p className="mt-0.5 text-xs font-bold leading-tight text-[#098855] sm:text-sm">Ready</p>
+                  <p className="text-[11px] font-semibold leading-none text-[#5B6B82] sm:text-sm">Profile</p>
+                  <p className="mt-0.5 text-xs font-bold leading-tight text-[#08734a] sm:text-sm">Ready</p>
                 </div>
               </div>
             </div>
@@ -426,11 +378,11 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
                       <p className="truncate text-[15px] font-semibold text-[#0B1B33] sm:text-[16px]">
                         Software Engineer
                       </p>
-                      <span className="rounded bg-[#098855]/15 px-2 py-0.5 text-[11px] font-bold text-[#098855]">
+                      <span className="rounded bg-[#098855]/15 px-2 py-0.5 text-[11px] font-bold text-[#08734a] sm:text-sm">
                         92% match
                       </span>
                     </div>
-                    <p className="truncate text-[13px] font-medium text-[#5B6B82] sm:text-[14px]">
+                    <p className="truncate text-[13px] font-medium text-[#5B6B82] sm:text-sm">
                       Batch role • Matched for you
                     </p>
                   </div>
@@ -450,13 +402,13 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
         </div>
 
         {/* 4-Step Progress Timeline: Profile ✓ -> Assessment ✓ -> Interview (current, pulse) -> Offer */}
-        <div className="border-t border-[#E5EAF2] bg-[#F7F9FC]/90 px-4 py-2.5">
+        <div className="border-t border-[#E5EAF2] bg-[#F7F9FC]/90 px-4 py-2.5 pb-4">
           <p className="sr-only">
             Placement journey progress: Profile completed, Assessment completed, Interview current, Offer upcoming.
           </p>
-          <div className="flex items-center justify-between text-xs" aria-hidden="true">
+          <div className="flex items-center justify-between text-[11px] sm:text-sm" aria-hidden="true">
             {/* Step 1: Profile */}
-            <div className="flex items-center gap-1 font-semibold text-[#098855]">
+            <div className="flex items-center gap-1 font-semibold text-[#08734a]">
               <span className="grid h-4 w-4 place-items-center rounded-full bg-[#098855] text-white">
                 <Check className="h-2.5 w-2.5 stroke-[3]" />
               </span>
@@ -465,7 +417,7 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
             <span className="h-0.5 w-4 bg-[#098855]/40 sm:w-6" />
 
             {/* Step 2: Assessment */}
-            <div className="flex items-center gap-1 font-semibold text-[#098855]">
+            <div className="flex items-center gap-1 font-semibold text-[#08734a]">
               <span className="grid h-4 w-4 place-items-center rounded-full bg-[#098855] text-white">
                 <Check className="h-2.5 w-2.5 stroke-[3]" />
               </span>
@@ -479,7 +431,7 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#f58020] opacity-75" />
                 <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#f58020]" />
               </span>
-              <span className="rounded bg-[#fec40d]/30 px-1.5 py-0.5 text-[11px] font-extrabold text-[#1b52a4]">
+              <span className="rounded bg-[#fec40d]/30 px-1.5 py-0.5 text-[10px] font-extrabold text-[#1b52a4] sm:text-sm">
                 Interview
               </span>
             </div>
@@ -497,10 +449,11 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
       {/* 3 Floating Chips anchored snugly touching/overlapping card edges (-12px to -24px offset) */}
       {/* 1. "Assessment completed" (above top-left) */}
       <div
-        className="absolute -top-3.5 left-2 z-20 hidden sm:flex sm:left-4"
-        style={{ transform: `translate(${shift.x * 0.3}px, ${shift.y * 0.3}px)` }}
+        className="pointer-events-none absolute -top-14 left-2 z-20 hidden sm:flex sm:left-4"
+        style={{ transform: `translateX(${shift.x * 0.3}px)` }}
+        aria-hidden="true"
       >
-        <div className="sl-float flex items-center gap-2 rounded-2xl border border-white/80 bg-white px-3.5 py-1.5 text-xs font-bold text-[#098855] shadow-[0_12px_28px_rgba(9,136,85,0.2)] backdrop-blur-sm">
+        <div className="sl-float flex items-center gap-2 rounded-2xl border border-white/80 bg-white px-3.5 py-1.5 text-xs font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(9,136,85,0.2)] backdrop-blur-sm">
           <span className="grid h-5 w-5 place-items-center rounded-full bg-[#098855] text-white">
             <Check className="h-3.5 w-3.5 stroke-[2.5]" aria-hidden="true" />
           </span>
@@ -508,39 +461,33 @@ function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
         </div>
       </div>
 
-      {/* 2. "Job matched" (below bottom-right) */}
-      <div
-        className="absolute -bottom-3.5 right-2 z-20 hidden sm:flex sm:right-4"
-        style={{ transform: `translate(${-shift.x * 0.3}px, ${shift.y * 0.25}px)` }}
-      >
-        <div className="sl-float flex items-center gap-2 rounded-2xl border border-white/80 bg-white px-3.5 py-1.5 text-xs font-bold text-[#00a2e5] shadow-[0_12px_28px_rgba(0,162,229,0.22)] backdrop-blur-sm [animation-delay:1200ms]">
-          <span className="grid h-5 w-5 place-items-center rounded-full bg-[#00a2e5] text-white">
-            <Briefcase className="h-3 w-3 stroke-[2.5]" aria-hidden="true" />
-          </span>
-          Job matched
+      {/* Bottom chips touch the outer card edge and stay below its content. */}
+      <div className="pointer-events-none relative z-20 mt-5 hidden w-full items-start justify-between px-2 sm:flex" aria-hidden="true">
+        <div style={{ transform: `translateX(${shift.x * 0.25}px)` }}>
+          <div className="sl-float flex items-center gap-2 rounded-2xl border border-[#fec40d] bg-[#fec40d] px-3.5 py-1.5 text-xs font-bold text-[#1b52a4] shadow-[0_12px_28px_rgba(254,196,13,0.3)] backdrop-blur-sm [animation-delay:2400ms]">
+            <Calendar className="h-3.5 w-3.5 stroke-[2.2] text-[#f58020]" aria-hidden="true" />
+            Interview scheduled
+          </div>
         </div>
-      </div>
-
-      {/* 3. "Interview scheduled" (below bottom-left) */}
-      <div
-        className="absolute -bottom-3.5 left-2 z-20 hidden sm:flex sm:left-4"
-        style={{ transform: `translate(${shift.x * 0.25}px, ${-shift.y * 0.3}px)` }}
-      >
-        <div className="sl-float flex items-center gap-2 rounded-2xl border border-[#fec40d] bg-[#fec40d] px-3.5 py-1.5 text-xs font-bold text-[#1b52a4] shadow-[0_12px_28px_rgba(254,196,13,0.3)] backdrop-blur-sm [animation-delay:2400ms]">
-          <Calendar className="h-3.5 w-3.5 stroke-[2.2] text-[#f58020]" aria-hidden="true" />
-          Interview scheduled
+        <div style={{ transform: `translateX(${-shift.x * 0.3}px)` }}>
+          <div className="sl-float flex items-center gap-2 rounded-2xl border border-white/80 bg-white px-3.5 py-1.5 text-xs font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(0,162,229,0.22)] backdrop-blur-sm [animation-delay:1200ms]">
+            <span className="grid h-5 w-5 place-items-center rounded-full bg-[#00a2e5] text-white">
+              <Briefcase className="h-3 w-3 stroke-[2.5]" aria-hidden="true" />
+            </span>
+            Job matched
+          </div>
         </div>
       </div>
 
       {/* Compact row on mobile to prevent overflow (< 640px) */}
-      <div className="mt-3 flex flex-wrap justify-center gap-2 sm:hidden">
-        <span className="inline-flex items-center gap-1 rounded-full border border-white/40 bg-white/15 px-2.5 py-0.5 text-[11px] font-bold text-white backdrop-blur-sm">
+      <div className="pointer-events-none mt-3 flex flex-wrap justify-center gap-2 sm:hidden" aria-hidden="true">
+        <span className="inline-flex items-center gap-1 rounded-full border border-white/40 bg-[#071936]/60 px-2.5 py-0.5 text-[11px] font-bold text-white backdrop-blur-sm">
           <Check className="h-3 w-3 text-[#098855]" aria-hidden="true" /> Assessment completed
         </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-white/40 bg-white/15 px-2.5 py-0.5 text-[11px] font-bold text-white backdrop-blur-sm">
+        <span className="inline-flex items-center gap-1 rounded-full border border-white/40 bg-[#071936]/60 px-2.5 py-0.5 text-[11px] font-bold text-white backdrop-blur-sm">
           <Briefcase className="h-3 w-3 text-[#00a2e5]" aria-hidden="true" /> Job matched
         </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-[#fec40d]/60 bg-[#fec40d]/25 px-2.5 py-0.5 text-[11px] font-bold text-[#ffd36b] backdrop-blur-sm">
+        <span className="inline-flex items-center gap-1 rounded-full border border-[#fec40d]/60 bg-[#071936]/60 px-2.5 py-0.5 text-[11px] font-bold text-[#ffd36b] backdrop-blur-sm">
           <Calendar className="h-3 w-3 text-[#f58020]" aria-hidden="true" /> Interview scheduled
         </span>
       </div>
@@ -562,36 +509,27 @@ export function DiwaliHero() {
   const seatsTarget = seatsAvailability.status === 'available' ? seatsAvailability.seats : null;
   const seatsShown = useCountUp(seatsTarget, statsInView && !batchLoading);
 
-  // 5 Diya states: Profile, Assessment, Jobs, Interview, Offer
-  const [litDiyas, setLitDiyas] = useState<boolean[]>([false, false, false, false, false]);
-  const [liveAnnouncement, setLiveAnnouncement] = useState<string>('');
+  // Keep the toggle state and its announcement in one update so rapid clicks cannot use stale state.
+  const [diyaState, setDiyaState] = useState({
+    lit: [false, false, false, false, false],
+    announcement: '',
+  });
+  const { lit: litDiyas, announcement: liveAnnouncement } = diyaState;
 
   const litCount = litDiyas.filter(Boolean).length;
   const allLit = litCount === 5;
 
   const handleDiyaClick = (index: number) => {
-    // If already lit, keep it lit (no toggle-off)
-    if (litDiyas[index]) return;
-
-    const next = [...litDiyas];
-    next[index] = true;
-    setLitDiyas(next);
-
-    const count = next.filter(Boolean).length;
-    const names = next.map((isLit, i) => (isLit ? DIYA_STEPS[i].name : null)).filter(Boolean);
-
-    if (count === 5) {
-      setLiveAnnouncement(
-        'All 5 stages lit: Profile, Assessment, Jobs, Interview, Offer. Your career journey is lit. Claim your seat.',
-      );
-    } else {
-      setLiveAnnouncement(`${count} of 5 lit: ${names.join(', ')}.`);
-    }
-  };
-
-  const handleResetDiyas = () => {
-    setLitDiyas([false, false, false, false, false]);
-    setLiveAnnouncement('Diyas reset. 0 of 5 lit.');
+    setDiyaState((current) => {
+      const next = [...current.lit];
+      next[index] = !next[index];
+      const nextCount = next.filter(Boolean).length;
+      const wasComplete = current.lit.every(Boolean);
+      return {
+        lit: next,
+        announcement: nextCount === 5 && !wasComplete ? 'Your career journey is lit.' : '',
+      };
+    });
   };
 
   // Pause ambient animations when tab is hidden or hero is offscreen
@@ -636,24 +574,16 @@ export function DiwaliHero() {
     <section
       ref={heroRef}
       id="home"
-      className="scroll-mt-[88px] w-full bg-[#F7F9FC] px-4 pt-6 pb-6 sm:px-6"
+      className="diwali-hero-section flex min-h-[calc(100svh_-_72px)] w-full items-center scroll-mt-[88px] bg-[#F7F9FC] px-4 py-4 sm:px-6"
     >
       {/* Scoped CSS for Diwali Animations, Ambient Pausing & Reduced Motion */}
       <style jsx global>{`
         @keyframes diwali-twinkle {
           0%, 100% {
-            opacity: 0.55;
+            opacity: 0.85;
           }
           50% {
             opacity: 1;
-          }
-        }
-        @keyframes diwali-rangoli-spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
           }
         }
         @keyframes diwali-gold-dust {
@@ -693,19 +623,64 @@ export function DiwaliHero() {
             opacity: 0;
           }
         }
-        @keyframes cta-glow-pulse {
-          0%, 100% {
-            box-shadow: 0 12px 28px rgba(245, 128, 32, 0.5), 0 0 24px rgba(245, 128, 32, 0.4);
+        @keyframes diwali-success-glow {
+          0%, 100% { box-shadow: 0 0 0 rgba(255, 211, 107, 0); }
+          50% { box-shadow: 0 0 22px rgba(255, 211, 107, 0.38); }
+        }
+        @media (min-width: 1024px) and (max-height: 800px) {
+          .diwali-hero-section {
+            padding-block: 0.5rem !important;
           }
-          50% {
-            box-shadow: 0 16px 36px rgba(254, 196, 13, 0.7), 0 0 34px rgba(254, 196, 13, 0.6);
+          .diwali-headline {
+            font-size: clamp(1.75rem, 3.4vw, 2.75rem) !important;
+          }
+          .diwali-hero-content { row-gap: 0.75rem !important; }
+          .diwali-subhead {
+            font-size: 15px !important;
           }
         }
+        .diwali-bloom {
+          width: 0;
+          height: 0;
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.96);
+          background: radial-gradient(circle, rgba(255, 211, 107, 0.78) 0%, rgba(245, 128, 32, 0.32) 50%, transparent 75%);
+          transition: width 300ms ease, height 300ms ease, opacity 300ms ease, transform 300ms ease;
+        }
+        .diwali-bloom-lit {
+          width: 62px;
+          height: 62px;
+          opacity: 0.9;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        .diwali-journey-strip {
+          grid-template-columns: minmax(200px, 1fr) auto minmax(200px, 1fr);
+          margin: 24px 48px 28px;
+          padding: 16px 24px;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          border-radius: 22px;
+          background-color: rgba(7, 25, 54, 0.35);
+          background-image: linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08));
+        }
+        .diwali-journey-strip .diwali-diya-button {
+          width: 64px;
+          min-height: 80px;
+        }
+        .diwali-journey-strip .diwali-diya-visual {
+          width: 48px;
+          height: 52px;
+        }
+        .diwali-journey-strip .diwali-diya-row { gap: 28px; }
+        .diwali-journey-strip .diwali-diya-label {
+          margin-top: 4px;
+          font-size: 12.5px;
+          font-weight: 600;
+          line-height: 16px;
+          color: rgba(255, 255, 255, 0.82);
+        }
+        .diwali-journey-strip .diwali-diya-label.lit { color: #ffffff; font-weight: 700; }
         .diwali-twinkle {
           animation: diwali-twinkle 3s ease-in-out infinite;
-        }
-        .diwali-rangoli-spin {
-          animation: diwali-rangoli-spin 90s linear infinite;
         }
         .diwali-gold-dust {
           animation: diwali-gold-dust 12s linear infinite;
@@ -716,29 +691,65 @@ export function DiwaliHero() {
         .diwali-spark {
           animation: diwali-spark 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
         }
-        .animate-cta-pulse {
-          animation: cta-glow-pulse 2.2s ease-in-out infinite;
+        .diwali-success-pulse {
+          animation: diwali-success-glow 1.4s ease-in-out 1;
         }
         .ambient-paused .diwali-twinkle,
-        .ambient-paused .diwali-rangoli-spin,
         .ambient-paused .diwali-gold-dust,
         .ambient-paused .sl-float {
           animation-play-state: paused !important;
         }
+        .diwali-diya-button:focus:not(:focus-visible) {
+          outline: none;
+        }
         @media (prefers-reduced-motion: reduce) {
           .diwali-twinkle,
-          .diwali-rangoli-spin,
           .diwali-gold-dust,
           .diwali-flame-flicker,
           .diwali-spark,
+          .diwali-diya-button,
           .sl-float,
-          .animate-cta-pulse,
           .animate-pulse,
           .animate-ping {
             animation: none !important;
             transition: none !important;
             transform: none !important;
           }
+          .diwali-spark {
+            display: none !important;
+          }
+          .diwali-success-pulse {
+            animation: none !important;
+          }
+          .diwali-flame {
+            transition: none !important;
+          }
+          .diwali-bloom-lit {
+            opacity: 0.7 !important;
+            transform: translate(-50%, -50%) scale(1) !important;
+            transition: none !important;
+          }
+          .diwali-bloom { transition: none !important; }
+        }
+        @media (max-width: 1100px) {
+          .diwali-journey-strip { margin-right: 24px; margin-left: 24px; padding-right: 16px; padding-left: 16px; }
+        }
+        @media (max-width: 1023px) {
+          .diwali-journey-strip { grid-template-columns: minmax(0, 1fr); row-gap: 16px; margin-right: 16px; margin-left: 16px; }
+          .diwali-journey-strip .diwali-diya-row { justify-content: center; gap: 12px; }
+          .diwali-journey-strip .diwali-diya-button { width: 52px; min-height: 68px; }
+          .diwali-journey-strip .diwali-diya-visual { width: 40px; height: 44px; }
+          .diwali-journey-strip .diwali-diya-label { font-size: 11px; line-height: 14px; }
+          .diwali-journey-status { width: 100%; justify-content: center; }
+          .diwali-journey-status > :is(span, a) { width: 100%; }
+          .diwali-bloom-lit { width: 52px; height: 52px; }
+        }
+        @media (max-width: 480px) {
+          .diwali-journey-strip { margin-right: 12px; margin-left: 12px; padding: 12px; }
+          .diwali-journey-strip .diwali-diya-row { gap: 6px; }
+          .diwali-journey-strip .diwali-diya-button { width: 50px; }
+          .diwali-journey-strip .diwali-diya-visual { width: 36px; height: 40px; }
+          .diwali-bloom-lit { width: 47px; height: 47px; }
         }
       `}</style>
 
@@ -749,7 +760,7 @@ export function DiwaliHero() {
 
       {/* Main Diwali Hero Panel */}
       <div
-        className={`relative mx-auto max-w-[1200px] overflow-hidden rounded-[28px] text-white shadow-[0_24px_60px_-24px_rgba(12,42,92,0.55)] ${
+        className={`relative mx-auto flex w-full max-w-[1200px] flex-col overflow-visible rounded-[28px] text-white shadow-[0_24px_60px_-24px_rgba(12,42,92,0.55)] ${
           isAmbientActive ? '' : 'ambient-paused'
         }`}
         style={{ background: 'linear-gradient(135deg, #0c2a5c 0%, #1b52a4 58%, #1479c4 100%)' }}
@@ -809,27 +820,23 @@ export function DiwaliHero() {
           ))}
         </div>
 
-        {/* Rangoli mandala behind right-hand product preview (hidden at <= 900px) */}
-        <RangoliMandala />
-
-        {/* Content grid: two columns on desktop (1.05fr / 0.95fr), single column <= 900px
-            pt-20 sm:pt-24 lg:pt-24 guarantees at least 24px vertical clearance below fairy lights */}
-        <div className="relative z-10 grid items-center gap-8 px-6 pt-20 pb-8 sm:px-10 sm:pt-24 sm:pb-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:py-14">
+        {/* Content grid: columns share a top edge; the right preview aligns with the badge. */}
+        <div className="diwali-hero-content relative z-10 grid min-w-0 grid-cols-[minmax(0,1fr)] items-center gap-6 px-6 pt-[72px] sm:px-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-8">
           {/* Left Column Content:
-              Visual Hierarchy: pill -> headline -> one-line subhead -> CTAs -> trust chips -> diyas */}
-          <div>
+              Visual Hierarchy: pill -> headline -> subhead -> greeting -> CTAs -> trust chips */}
+          <div className="diwali-copy min-w-0">
             {/* 1. Badge Pill: "Happy Diwali 2026" */}
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/15 px-3.5 py-1 text-xs font-semibold text-white backdrop-blur-md shadow-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-[#071936]/40 px-3.5 py-1 text-xs font-semibold text-white backdrop-blur-md shadow-sm">
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#ffd36b] shadow-[0_0_8px_#ffd36b]" aria-hidden="true" />
               Happy Diwali 2026
             </span>
 
             {/* 2. Headline */}
             <h1
-              className="mt-4 font-extrabold leading-[1.06] tracking-tight text-white"
+              className="diwali-headline mt-3 font-extrabold leading-[1.06] tracking-tight text-white"
               style={{
                 fontFamily: 'var(--font-home-display), Inter, sans-serif',
-                fontSize: 'clamp(2.25rem, 4.8vw, 3.5rem)',
+                fontSize: 'clamp(2rem, 4.8vw, 3.5rem)',
                 letterSpacing: '-0.03em',
                 maxWidth: '15ch',
               }}
@@ -840,45 +847,47 @@ export function DiwaliHero() {
               </span>
             </h1>
 
-            {/* 3. One-line Subheadline (No mentions of courses or classes) */}
-            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/95 sm:text-[17px]">
+            {/* 3. One-line subheadline; keep hero messaging focused on placements. */}
+            <p className="diwali-subhead mt-4 max-w-lg text-[15px] leading-relaxed text-white sm:text-[17px]">
               Sign in free, then subscribe once for AI-matched jobs and a dedicated coordinator.
             </p>
 
+            <p className="mt-3 border-l-[3px] border-[#ffd36b] py-0.5 pl-3 text-[14px] leading-relaxed text-white/[0.78]">
+              Wishing you a bright and prosperous Diwali from Team Shortlisted.
+            </p>
+
             {/* 4. CTAs */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              {ready ? (
+            <div className="diwali-cta-row mt-6 flex flex-wrap items-center gap-3">
+              {ready && (
                 <PrimaryLink
                   href={primary}
-                  className={`bg-gradient-to-r from-[#f58020] to-[#fec40d] font-bold text-white shadow-[0_12px_28px_rgba(245,128,32,0.5),0_0_24px_rgba(245,128,32,0.4)] transition hover:from-[#f58020] hover:to-[#ffd36b] hover:shadow-[0_16px_36px_rgba(245,128,32,0.65)] ${
-                    allLit ? 'animate-cta-pulse ring-2 ring-[#ffd36b]' : ''
-                  }`}
+                  className="bg-gradient-to-r from-[#f58020] to-[#fec40d] font-bold text-[#0B1B33] focus-visible:outline-white shadow-[0_12px_28px_rgba(245,128,32,0.5),0_0_24px_rgba(245,128,32,0.4)] transition hover:from-[#f58020] hover:to-[#ffd36b] hover:shadow-[0_16px_36px_rgba(245,128,32,0.65)]"
                 >
                   {hideTrialPromos ? 'Go to dashboard' : ctaLabel}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </PrimaryLink>
-              ) : null}
+              )}
               <Link
                 href="#journey"
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById('journey')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/45 bg-white/15 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/25 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/45 bg-[#071936]/40 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#071936]/60 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 See how it works
               </Link>
             </div>
 
             {/* 5. Brand Trust Chips */}
-            <div className="mt-5 flex flex-wrap items-center gap-2 pt-1 text-xs text-white/90">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-medium backdrop-blur-sm">
+            <div className="diwali-trust-row relative z-10 mt-5 flex flex-wrap items-center gap-2 text-xs text-white">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#071936]/40 px-3 py-1 font-medium backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#fec40d]" aria-hidden="true" /> Batch of 12
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-medium backdrop-blur-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#071936]/40 px-3 py-1 font-medium backdrop-blur-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#00a2e5]" aria-hidden="true" /> Dedicated coordinator
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1 font-medium backdrop-blur-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#071936]/40 px-3 py-1 font-medium backdrop-blur-sm">
                 <span className="rounded-full bg-[#098855] px-1.5 py-0.5 text-[11px] font-bold uppercase leading-none text-white">
                   AI
                 </span>{' '}
@@ -886,79 +895,77 @@ export function DiwaliHero() {
               </span>
             </div>
 
-            {/* 6. Interactive Diyas (24-32px rhythm gap, with labels, reset button, and celebration banner) */}
-            <div className="mt-7 pt-1">
-              {/* Row of 5 Diyas */}
-              <div className="flex items-center gap-2.5 sm:gap-4">
-                {DIYA_STEPS.map((step, idx) => (
-                  <DiyaButton
-                    key={step.id}
-                    index={idx}
-                    step={step}
-                    isLit={litDiyas[idx]}
-                    onClick={() => handleDiyaClick(idx)}
-                  />
-                ))}
-              </div>
-
-              {/* Caption and Reset control */}
-              <div className="mt-2.5 flex min-h-[28px] max-w-md items-center justify-between gap-3">
-                <p className="text-[14px] font-semibold text-[#ffd36b] drop-shadow-sm">
-                  {allLit ? 'All 5 stages lit!' : 'Tap a diya to light it'}
-                </p>
-
-                {litCount > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleResetDiyas}
-                    className="text-xs font-semibold text-white/80 underline underline-offset-4 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a2e5] rounded px-1"
-                  >
-                    Reset diyas
-                  </button>
-                )}
-              </div>
-
-              {/* Celebration Banner when all 5 are lit */}
-              <div className={`mt-2 transition-all duration-300 ${allLit ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
-                <div className="inline-flex items-center gap-2 rounded-xl border border-[#ffd36b]/50 bg-[#ffd36b]/20 px-3.5 py-1.5 text-xs font-bold text-[#ffd36b] backdrop-blur-sm shadow-sm sm:text-sm">
-                  <Sparkles className="h-4 w-4 text-[#ffd36b]" aria-hidden="true" />
-                  Your career journey is lit. Claim your seat.
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Right Column: Product Preview Mockup */}
           <ProductMockup shift={shift} />
         </div>
 
+        <div className="diwali-journey-strip grid items-center gap-4 overflow-hidden backdrop-blur-md">
+          <div className="flex min-h-[52px] flex-col justify-center gap-1">
+            <p className="text-[15px] font-bold leading-tight text-white">
+              {allLit ? 'Your career journey is lit.' : 'Light the 5 diyas of your journey'}
+            </p>
+            <p className="text-[13px] leading-tight text-white/90">
+              {allLit ? 'Seats are limited per batch.' : 'Tap each diya'}
+            </p>
+          </div>
+
+          <div className="diwali-diya-row flex items-center justify-center gap-7" role="group" aria-label="Five journey diyas">
+            {DIYA_STEPS.map((step, index) => (
+              <DiyaButton
+                key={step.id}
+                index={index}
+                step={step}
+                isLit={litDiyas[index]}
+                onClick={() => handleDiyaClick(index)}
+              />
+            ))}
+          </div>
+
+          <div className="diwali-journey-status flex h-11 min-w-[200px] items-center justify-end">
+            {allLit ? (
+              <Link
+                href="/auth/register"
+                className="inline-flex h-11 min-w-[200px] items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#f58020] to-[#fec40d] px-5 text-sm font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(245,128,32,0.5),0_0_24px_rgba(245,128,32,0.4)] transition hover:from-[#f58020] hover:to-[#ffd36b] hover:shadow-[0_16px_36px_rgba(245,128,32,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd36b] diwali-success-pulse"
+              >
+                Claim your seat <span aria-hidden="true">→</span>
+              </Link>
+            ) : (
+              <span className="inline-flex h-11 min-w-[100px] items-center justify-center rounded-full border border-white/30 bg-[#071936]/35 px-4 text-sm font-semibold text-white">
+                {litCount} of 5 lit
+              </span>
+            )}
+          </div>
+        </div>
+
         {/* Translucent stats bar:
             High contrast WCAG AA background (bg-[#071936]/80), dividers, tabular numerals */}
         <div
           ref={statsRef}
-          className="relative z-10 border-t border-white/20 bg-[#071936]/80 px-6 py-4 backdrop-blur-md sm:px-10"
+          className="relative z-10 shrink-0 border-t border-white/20 bg-[#071936]/80 px-6 py-4 backdrop-blur-md sm:px-10"
         >
           <dl className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {/* Stat 1: Students per batch */}
             <div className="text-center sm:text-left">
               <dt className="sr-only">Students per batch</dt>
-              <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
+              <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
                 12
               </dd>
               <p className="mt-0.5 text-[13px] font-medium text-white/95">Students per batch</p>
             </div>
 
             {/* Stat 2: Seats open (Live availability sourced with skeleton & fallback states) */}
-            <div className="text-center sm:text-left lg:border-l lg:border-white/20 lg:pl-6">
+            <div className="text-center sm:text-left even:border-l even:border-white/20 even:pl-3 lg:border-l lg:pl-6">
               <dt className="sr-only">Seats open</dt>
               {seatsAvailability.status === 'loading' ? (
                 <div className="flex flex-col items-center sm:items-start">
-                  <div className="h-7 w-20 animate-pulse rounded bg-white/20" />
+                  <div className="h-7 w-[3ch] animate-pulse rounded bg-white/20" />
                   <p className="mt-1 text-[13px] font-medium text-white/95">Checking availability...</p>
                 </div>
               ) : seatsAvailability.status === 'available' ? (
                 <>
-                  <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
+                  <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
                     {seatsShown}
                   </dd>
                   <p className="mt-0.5 text-[13px] font-medium text-white/95">Seats open</p>
@@ -976,7 +983,7 @@ export function DiwaliHero() {
             {/* Stat 3: 24/7 Virtual placement desk
                 NOTE: Replaced previous "60-day Placement journey" with "24/7 Virtual placement desk"
                 per Phase 1.6 requirement. Needs product confirmation if this differed from legacy production site. */}
-            <div className="text-center sm:text-left lg:border-l lg:border-white/20 lg:pl-6">
+            <div className="border-t border-white/20 pt-4 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <dt className="sr-only">Virtual placement desk</dt>
               <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
                 24/7
@@ -985,7 +992,7 @@ export function DiwaliHero() {
             </div>
 
             {/* Stat 4: Coordinator */}
-            <div className="text-center sm:text-left lg:border-l lg:border-white/20 lg:pl-6">
+            <div className="border-t border-white/20 pt-4 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <dt className="sr-only">Coordinator</dt>
               <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
                 1

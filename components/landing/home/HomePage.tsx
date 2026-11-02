@@ -19,7 +19,9 @@ export function HomePage() {
 
   useEffect(() => {
     // Check for QA override in query string: ?theme=diwali or ?theme=default
-    if (typeof window !== 'undefined') {
+    const qaOverrideAllowed =
+      process.env.NODE_ENV !== 'production' || process.env.NEXT_PUBLIC_DIWALI_THEME_QA === 'true';
+    if (qaOverrideAllowed && typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const themeOverride = params.get('theme');
       if (themeOverride) {

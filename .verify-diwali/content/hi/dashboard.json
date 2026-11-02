@@ -1,0 +1,499 @@
+{
+  "roles": {
+    "student": "छात्र",
+    "admin": "कोऑर्डिनेटर",
+    "super_admin": "सुपर एडमिन"
+  },
+  "student": {
+    "title": "कमांड सेंटर",
+    "welcome": "वापसी पर स्वागत, {{name}}",
+    "inactiveTitle": "प्रोफ़ाइल निष्क्रिय",
+    "inactiveMessage": "आपकी प्रोफ़ाइल Inactive चिह्नित है। अधिक जानकारी के लिए एडमिन से संपर्क करें।",
+    "stats": {
+      "access": "एक्सेस स्थिति",
+      "batch": "आपका बैच",
+      "batchAdmin": "कोऑर्डिनेटर",
+      "batchAdminPending": "कोऑर्डिनेटर असाइन हो रहा है...",
+      "applications": "कुल आवेदन"
+    },
+    "sections": {
+      "jobs": "मैच की गई नौकरियां",
+      "applications": "हाल के आवेदन"
+    },
+    "empty": {
+      "jobs": "अभी आपके बैच को कोई नौकरी असाइन नहीं की गई।",
+      "applications": "अभी कोई आवेदन नहीं। नौकरियां देखें और आवेदन करें।"
+    },
+    "quickActions": {
+      "title": "त्वरित कार्य",
+      "subtitle": "अवसर देखें या अपने आवेदन ट्रैक करें।",
+      "browseJobs": "नौकरियां देखें",
+      "viewApplications": "आवेदन देखें"
+    },
+    "resumeModal": {
+      "title": "अपना रिज़्यूमे अपलोड करें",
+      "subtitle": "नौकरियों के लिए आवेदन करने से पहले आवश्यक।",
+      "uploadPlaceholder": "अपना रिज़्यूमे अपलोड करें (PDF)",
+      "uploading": "अपलोड हो रहा है...",
+      "uploadFailed": "रिज़्यूमे अपलोड विफल। पुनः प्रयास करें।",
+      "success": "रिज़्यूमे आपकी प्रोफ़ाइल में सहेजा गया।",
+      "completeTitle": "रिज़्यूमे अपलोड हो गया",
+      "completeHint": "अब आप नौकरियों के लिए आवेदन कर सकते हैं।",
+      "footerHint": "केवल PDF, अधिकतम 5MB।",
+      "dismiss": "बंद करें"
+    }
+  },
+  "profile": {
+    "title": "मेरी प्रोफ़ाइल",
+    "subtitle": "नाम, संपर्क नंबर और रिज़्यूमे अपडेट करें",
+    "heading": "प्रोफ़ाइल विवरण",
+    "headingHint": "नौकरियों के लिए आवेदन करने हेतु सभी फ़ील्ड आवश्यक हैं।",
+    "name": "नाम",
+    "email": "ईमेल",
+    "contact": "संपर्क नंबर",
+    "resume": "रिज़्यूमे",
+    "resumeHint": "केवल PDF, अधिकतम 5MB।",
+    "resumePlaceholder": "अपना रिज़्यूमे अपलोड करें (PDF)",
+    "save": "परिवर्तन सहेजें",
+    "saving": "सहेजा जा रहा है...",
+    "saveSuccess": "प्रोफ़ाइल सफलतापूर्वक सहेजी गई।",
+    "saveFailed": "प्रोफ़ाइल सहेजने में विफल।",
+    "saveError": "कृपया सभी आवश्यक फ़ील्ड भरें और रिज़्यूमे अपलोड करें।",
+    "resumeSuccess": "रिज़्यूमे सफलतापूर्वक अपलोड हुआ।",
+    "resumeFailed": "रिज़्यूमे अपलोड विफल।",
+    "nameRequired": "नाम आवश्यक है",
+    "phoneRequired": "संपर्क नंबर आवश्यक है",
+    "phoneInvalid": "मान्य 10 अंकों का संपर्क नंबर दर्ज करें",
+    "resumeRequired": "रिज़्यूमे आवश्यक है",
+    "incompleteHint": "नौकरियों के लिए आवेदन करने हेतु नाम, संपर्क नंबर और रिज़्यूमे पूरा करें।",
+    "tryAgain": "पुनः प्रयास करें"
+  },
+  "jobs": {
+    "title": "आपके बैच की नौकरियां",
+    "subtitle": "आपके बैच को असाइन की गई अवसर",
+    "empty": "अभी कोई नौकरी असाइन नहीं। जल्द वापस जांचें।",
+    "applySuccess": "आवेदन सफलतापूर्वक जमा हुआ।",
+    "placedBanner": "आप प्लेस्ड छात्र हैं। अब आप नौकरी के लिए आवेदन नहीं कर सकते।",
+    "company": "कंपनी",
+    "location": "स्थान",
+    "headerHint": "अपने बैच को असाइन की गई नौकरियां देखें। आवेदन से पहले पूरी JD पढ़ें।",
+    "resultsCount": "{{count}} अवसर उपलब्ध",
+    "searchPlaceholder": "शीर्षक, कंपनी या स्थान से खोजें...",
+    "filter": "फ़िल्टर",
+    "filterAll": "सभी",
+    "filterOpen": "खुले",
+    "filterExpired": "समाप्त",
+    "pageSize": "पेज आकार",
+    "pagination": "{{total}} में से {{from}}–{{to}} दिखाए जा रहे हैं",
+    "prev": "पिछला",
+    "next": "अगला",
+    "viewJd": "JD देखें",
+    "applyNow": "अभी आवेदन करें",
+    "downloadJd": "JD डाउनलोड",
+    "downloading": "डाउनलोड हो रहा है...",
+    "downloadSuccess": "जॉब विवरण डाउनलोड हो गया।",
+    "downloadFailed": "जॉब विवरण डाउनलोड नहीं हो सका।",
+    "salary": "वेतन",
+    "experience": "अनुभव",
+    "jobType": "नौकरी प्रकार",
+    "deadline": "अंतिम तिथि",
+    "posted": "पोस्ट किया",
+    "notSpecified": "निर्दिष्ट नहीं",
+    "description": "नौकरी विवरण",
+    "requirements": "आवश्यकताएं",
+    "responsibilities": "जिम्मेदारियां",
+    "skills": "आवश्यक कौशल",
+    "deadlineNear": "जल्द बंद",
+    "expired": "समाप्त",
+    "deadlineExpired": "इस भूमिका की आवेदन अंतिम तिथि समाप्त हो गई है।",
+    "jobTypes": {
+      "full_time": "पूर्णकालिक",
+      "part_time": "अंशकालिक",
+      "contract": "अनुबंध",
+      "internship": "इंटर्नशिप",
+      "freelance": "फ्रीलांस",
+      "unknown": "भूमिका"
+    },
+    "status": {
+      "applied": "आवेदन किया",
+      "shortlisted": "शॉर्टलिस्ट",
+      "selected": "चयनित",
+      "rejected": "चयनित नहीं",
+      "pending": "समीक्षाधीन"
+    },
+    "resumeRequired": "नौकरियों के लिए आवेदन करने से पहले अपना रिज़्यूमे अपलोड करें।",
+    "uploadResumeLink": "प्रोफ़ाइल पर जाकर रिज़्यूमे अपलोड करें",
+    "applyModal": {
+      "title": "{{company}} में आवेदन करें",
+      "stepLabel": "रिज़्यूमे",
+      "resumeLabel": "रिज़्यूमे",
+      "resumeHint": "अपडेटेड रिज़्यूमे अपलोड करें। केवल PDF, अधिकतम 5MB।",
+      "profileResume": "प्रोफ़ाइल पर सेव",
+      "newUpload": "इस आवेदन के लिए नया अपलोड",
+      "uploadResume": "रिज़्यूमे अपलोड करें",
+      "uploadHint": "नया रिज़्यूमे प्रोफ़ाइल अपडेट करेगा। पुराने आवेदनों का मूल रिज़्यूमे लिंक वैध रहेगा।",
+      "download": "रिज़्यूमे डाउनलोड करें",
+      "loading": "रिज़्यूमे लोड हो रहा है...",
+      "pdfOnly": "कृपया केवल PDF फ़ाइल अपलोड करें।",
+      "maxSize": "रिज़्यूमे 5MB से कम होना चाहिए।",
+      "resumeUpdated": "प्रोफ़ाइल पर रिज़्यूमे अपडेट हो गया।",
+      "submit": "आवेदन जमा करें",
+      "submitting": "जमा हो रहा है...",
+      "cancel": "रद्द करें",
+      "close": "बंद करें"
+    }
+  },
+  "applications": {
+    "title": "मेरे आवेदन",
+    "subtitle": "अपनी प्लेसमेंट प्रगति ट्रैक करें",
+    "empty": "अभी तक कोई आवेदन नहीं।",
+    "status": "स्थिति",
+    "searchPlaceholder": "नौकरी, कंपनी या स्थिति से खोजें...",
+    "viewOffer": "ऑफर देखें",
+    "downloadOffer": "डाउनलोड",
+    "offerPending": "ऑफर लेटर लंबित",
+    "rejected": "आवेदन अस्वीकृत",
+    "pagination": "{{total}} में से {{from}}–{{to}} दिखा रहे हैं",
+    "page": "पृष्ठ {{page}} / {{total}}",
+    "stats": {
+      "total": "कुल आवेदन",
+      "active": "प्रगति में",
+      "selected": "चयनित"
+    },
+    "columns": {
+      "jobTitle": "नौकरी शीर्षक",
+      "company": "कंपनी",
+      "status": "स्थिति",
+      "appliedAt": "आवेदन तिथि",
+      "interview": "इंटरव्यू",
+      "actions": "कार्रवाई"
+    },
+    "statuses": {
+      "applied": "आवेदन किया",
+      "shortlisted": "शॉर्टलिस्ट",
+      "selected": "चयनित",
+      "rejected": "अस्वीकृत",
+      "pending": "समीक्षाधीन"
+    }
+  },
+  "admin": {
+    "title": "मेरे बैच",
+    "subtitle": "कोऑर्डिनेटर के रूप में असाइन किए गए बैच",
+    "seats": "{{filled}} में से {{max}} छात्र",
+    "empty": "अभी कोई बैच असाइन नहीं।",
+    "viewRoster": "छात्र सूची देखें"
+  },
+  "adminStudents": {
+    "title": "छात्र प्रबंधन",
+    "subtitle": "अपने बैच के छात्र - भुगतान, आवेदन और गतिविधि",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी मेरे बैच",
+    "empty": "चयनित बैच में कोई छात्र नहीं मिला।",
+    "offerLetter": "ऑफर लेटर",
+    "columns": {
+      "name": "छात्र",
+      "email": "संपर्क",
+      "batch": "बैच",
+      "joined": "बैच में शामिल",
+      "payment": "भुगतान",
+      "paymentMode": "मोड",
+      "paymentDate": "भुगतान तिथि",
+      "applied": "आवेदन",
+      "selected": "चयनित",
+      "offers": "ऑफर लेटर",
+      "lastLogin": "अंतिम लॉगिन",
+      "placement": "प्लेसमेंट",
+      "status": "एक्सेस",
+      "actions": "कार्रवाई"
+    }
+  },
+  "adminJobs": {
+    "title": "नौकरी प्रबंधन",
+    "subtitle": "आपके बैच की नौकरियां - फ़िल्टर करें और आवेदक देखें",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी मेरे बैच",
+    "empty": "चयनित बैच के लिए कोई नौकरी नहीं मिली।",
+    "viewApplicants": "आवेदक देखें",
+    "applicantsFor": "{{batch}} के आवेदक",
+    "noApplicants": "इस बैच के कोई छात्र ने अभी आवेदन नहीं किया।",
+    "selectApplicant": "प्रोफ़ाइल देखने के लिए आवेदक चुनें।",
+    "profileTitle": "छात्र प्रोफ़ाइल",
+    "viewResume": "रिज़्यूमे देखें",
+    "columns": {
+      "title": "नौकरी",
+      "company": "कंपनी",
+      "location": "स्थान",
+      "batch": "बैच",
+      "actions": "कार्रवाई"
+    },
+    "profile": {
+      "name": "नाम",
+      "email": "ईमेल",
+      "phone": "फोन",
+      "college": "कॉलेज",
+      "branch": "शाखा",
+      "graduation_year": "स्नातक वर्ष",
+      "skills": "कौशल",
+      "preferred_roles": "पसंदीदा भूमिकाएं"
+    }
+  },
+  "batchDetail": {
+    "seats": "{{filled}} में से {{max}} सीटें भरी",
+    "coordinator": "कोऑर्डिनेटर: {{name}}",
+    "roster": "छात्र सूची",
+    "rosterEmpty": "इस बैच में अभी कोई छात्र नहीं।",
+    "columns": {
+      "name": "नाम",
+      "email": "ईमेल",
+      "status": "एक्सेस"
+    }
+  },
+  "superAdminStudents": {
+    "title": "छात्र प्रबंधन",
+    "subtitle": "सभी बैच के छात्र - भुगतान, आवेदन और गतिविधि",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी बैच",
+    "empty": "चयनित बैच में कोई छात्र नहीं।",
+    "statusUpdated": "छात्र एक्सेस स्थिति अपडेट की गई।",
+    "placementUpdated": "छात्र प्लेसमेंट अपडेट किया गया।",
+    "batchUpdated": "छात्र का बैच अपडेट किया गया।",
+    "editPayment": "संपादित करें",
+    "editPaymentTitle": "भुगतान विवरण संपादित करें",
+    "addPaymentTitle": "भुगतान विवरण जोड़ें",
+    "paymentUpdated": "भुगतान विवरण अपडेट किए गए।",
+    "paymentCreated": "भुगतान दर्ज किया गया और छात्र सक्रिय किया गया।",
+    "savingPayment": "सहेजा जा रहा है...",
+    "savePayment": "परिवर्तन सहेजें",
+    "savePaymentCreate": "भुगतान सहेजें",
+    "noPaymentToEdit": "इस छात्र के लिए अभी कोई भुगतान दर्ज नहीं है।",
+    "viewReceipt": "वर्तमान रसीद देखें",
+    "columns": {
+      "actions": "कार्रवाई"
+    }
+  },
+  "superAdminBatches": {
+    "title": "बैच प्रबंधन",
+    "subtitle": "मैन्युअल रूप से बैच बनाएं और क्षमता देखें",
+    "createTitle": "बैच बनाएं",
+    "name": "बैच नाम (वैकल्पिक)",
+    "namePlaceholder": "खाली होने पर स्वतः बनेगा",
+    "maxSeats": "अधिकतम सीटें",
+    "coordinator": "समन्वयक",
+    "autoCoordinator": "स्वतः समन्वयक नियुक्त करें",
+    "createCta": "बैच बनाएं",
+    "invalidSeats": "मान्य सीट संख्या दर्ज करें।",
+    "createSuccess": "बैच सफलतापूर्वक बनाया गया।",
+    "empty": "अभी कोई बैच नहीं।",
+    "sync": "सिंक",
+    "syncing": "सिंक हो रहा है...",
+    "syncAll": "सभी को DISHA से सिंक करें",
+    "syncingAll": "सभी सिंक हो रहे हैं...",
+    "dishaSyncTitle": "DISHA सिंक",
+    "syncSuccess": "बैच DISHA से सिंक हो गया।",
+    "syncFailed": "DISHA सिंक विफल। API कुंजी और सर्वर जांचें।",
+    "pendingDisha": "{{count}} बैच अभी DISHA पर पंजीकृत नहीं हैं।",
+    "syncAllHint": "DISHA पर बैच पंजीकृत करता है और यहाँ से हटाए गए बैच DISHA से भी हटाता है।",
+    "delete": "हटाएं",
+    "deleteTitle": "बैच हटाएं?",
+    "deleteConfirm": "\"{{name}}\" हटाएं? इसके {{count}} छात्र खाली सीट वाले अन्य बैच में स्थानांतरित होंगे। जरूरत पड़ने पर नए बैच बनाए जाएंगे।",
+    "deleteConfirmCta": "बैच हटाएं",
+    "deleteSuccess": "बैच हटाया गया। {{reassigned}} छात्र पुनः नियुक्त किए गए।",
+    "deleteNewBatches": "अतिरिक्त छात्रों के लिए {{created}} नए बैच बनाए गए।",
+    "columns": {
+      "name": "नाम",
+      "seats": "सीटें",
+      "status": "स्थिति",
+      "coordinator": "समन्वयक",
+      "disha": "DISHA",
+      "created": "बनाया गया",
+      "actions": "कार्रवाई"
+    }
+  },
+  "superAdminRevenue": {
+    "title": "राजस्व",
+    "subtitle": "सब्सक्रिप्शन भुगतान और राजस्व विवरण",
+    "totalRevenue": "कुल राजस्व",
+    "onlineRevenue": "ऑनलाइन संग्रह",
+    "offlineRevenue": "ऑफलाइन संग्रह",
+    "paymentCount": "भुगतान संख्या",
+    "filterBatch": "बैच से फ़िल्टर",
+    "allBatches": "सभी बैच",
+    "dateFrom": "प्रारंभ तिथि",
+    "dateTo": "समाप्ति तिथि",
+    "empty": "चयनित फ़िल्टर के लिए कोई भुगतान नहीं।",
+    "columns": {
+      "date": "भुगतान तिथि",
+      "student": "छात्र",
+      "batch": "बैच",
+      "amount": "राशि",
+      "mode": "मोड",
+      "provider": "प्रदाता",
+      "transaction": "लेनदेन ID"
+    }
+  },
+  "superAdminLeads": {
+    "title": "लीड्स",
+    "subtitle": "साइन अप किए लेकिन भुगतान नहीं किए छात्र - फॉलो अप करें",
+    "totalLeads": "अवैतनिक साइनअप",
+    "empty": "अभी कोई अवैतनिक साइनअप नहीं।",
+    "signupFrom": "साइन अप से",
+    "signupTo": "साइन अप तक",
+    "searchLabel": "लीड खोजें",
+    "searchPlaceholder": "नाम या संपर्क नंबर से खोजें",
+    "exportCsv": "CSV निर्यात",
+    "exporting": "निर्यात हो रहा है...",
+    "exportEmpty": "चयनित फ़िल्टर के लिए कोई लीड नहीं।",
+    "exportSuccess": "लीड्स CSV में निर्यात हुईं।",
+    "modalTitle": "ऑफलाइन भुगतान दर्ज करें",
+    "amountInr": "एकत्रित राशि (₹)",
+    "paidAt": "भुगतान दिनांक और समय",
+    "utr": "UTR / लेनदेन संदर्भ",
+    "utrPlaceholder": "उदा. UTR123456789",
+    "collectedBy": "एकत्रित किया (सेल्स टीम)",
+    "collectedByPlaceholder": "सेल्स टीम सदस्य का नाम",
+    "receipt": "भुगतान रसीद (वैकल्पिक)",
+    "note": "भुगतान नोट (वैकल्पिक)",
+    "recordPayment": "भुगतान दर्ज करें",
+    "markPaidOffline": "ऑफलाइन भुगतान दर्ज करें",
+    "recording": "दर्ज हो रहा है...",
+    "paymentRecorded": "ऑफलाइन भुगतान दर्ज। छात्र सक्रिय।",
+    "invalidAmount": "वैध भुगतान राशि दर्ज करें।",
+    "invalidPaidAt": "भुगतान दिनांक और समय चुनें।",
+    "gradYear": "ग्रेज {{year}}",
+    "pagination": "{{total}} में से {{from}}–{{to}} दिखा रहे हैं",
+    "prev": "पिछला",
+    "next": "अगला",
+    "columns": {
+      "signedUp": "साइन अप",
+      "student": "छात्र",
+      "contact": "संपर्क",
+      "profile": "प्रोफ़ाइल",
+      "lastLogin": "अंतिम लॉगिन",
+      "action": "कार्रवाई"
+    }
+  },
+  "superAdmin": {
+    "title": "प्लेटफॉर्म अवलोकन",
+    "subtitle": "कोऑर्डिनेटर, बैच और छात्र एक्सेस प्रबंधित करें",
+    "createAdmin": "बैच कोऑर्डिनेटर बनाएं",
+    "fields": {
+      "name": "पूरा नाम",
+      "email": "ईमेल",
+      "password": "अस्थायी पासवर्ड",
+      "phone": "फोन"
+    },
+    "sections": {
+      "batches": "सभी बैच ({{count}})",
+      "students": "सभी छात्र ({{count}})",
+      "admins": "कोऑर्डिनेटर"
+    },
+    "batchMeta": "{{filled}}/{{max}} सीटें · {{admin}}",
+    "unassigned": "असाइन नहीं",
+    "assignCoordinator": "कोऑर्डिनेटर असाइन करें",
+    "assignSuccess": "बैच में कोऑर्डिनेटर असाइन किया गया।",
+    "coordinators": {
+      "title": "कोऑर्डिनेटर प्रबंधन",
+      "subtitle": "कोऑर्डिनेटर बनाएं, क्रेडेंशियल प्रबंधित करें और बैच असाइन करें",
+      "empty": "अभी कोई कोऑर्डिनेटर नहीं।",
+      "assignBatch": "बैच असाइन करें",
+      "pickBatch": "असाइन करने के लिए बैच चुनें",
+      "editTitle": "कोऑर्डिनेटर संपादित करें",
+      "newPassword": "नया पासवर्ड (खाली छोड़ें यदि न बदलें)",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "updateSuccess": "कोऑर्डिनेटर अपडेट किया गया।",
+      "deactivateSuccess": "कोऑर्डिनेटर निष्क्रिय किया गया।",
+      "columns": {
+        "name": "कोऑर्डिनेटर",
+        "email": "ईमेल",
+        "password": "पासवर्ड",
+        "batches": "असाइन बैच",
+        "status": "स्थिति",
+        "actions": "कार्रवाई"
+      }
+    },
+    "grantSuccess": "एक्सेस सफलतापूर्वक दिया गया।",
+    "createSuccess": "कोऑर्डिनेटर सफलतापूर्वक बनाया गया।",
+    "stats": {
+      "batches": "कुल बैच",
+      "students": "कुल छात्र",
+      "active": "सक्रिय छात्र"
+    }
+  },
+  "testimonials": {
+    "title": "प्रशंसापत्र",
+    "subtitle": "लैंडिंग पेज पर दिखने वाला छात्र फीडबैक जोड़ें और मैनेज करें",
+    "createTitle": "नया प्रशंसापत्र जोड़ें",
+    "create": "प्रशंसापत्र जोड़ें",
+    "createSuccess": "प्रशंसापत्र सफलतापूर्वक जोड़ा गया।",
+    "deleteSuccess": "प्रशंसापत्र हटाया गया।",
+    "statusUpdated": "प्रशंसापत्र स्थिति अपडेट हुई।",
+    "listTitle": "प्रकाशित प्रशंसापत्र",
+    "imageRequired": "कृपया प्रोफाइल इमेज अपलोड करें।",
+    "statusLabel": "स्थिति",
+    "filterStatus": "स्थिति से फ़िल्टर",
+    "filters": {
+      "all": "सभी",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय"
+    },
+    "fields": {
+      "name": "छात्र नाम",
+      "batchName": "बैच नाम",
+      "feedback": "फीडबैक",
+      "image": "प्रोफाइल इमेज"
+    }
+  },
+  "successStories": {
+    "title": "सफलता की कहानियां",
+    "subtitle": "लैंडिंग पेज के लिए छात्र सफलता वीडियो और थंबनेल अपलोड करें",
+    "createTitle": "नई सफलता की कहानी जोड़ें",
+    "create": "सफलता की कहानी जोड़ें",
+    "createSuccess": "सफलता की कहानी सफलतापूर्वक जोड़ी गई।",
+    "deleteSuccess": "सफलता की कहानी हटाई गई।",
+    "statusUpdated": "सफलता की कहानी की स्थिति अपडेट हुई।",
+    "listTitle": "प्रकाशित सफलता की कहानियां",
+    "thumbnailRequired": "कृपया थंबनेल इमेज अपलोड करें।",
+    "videoRequired": "कृपया वीडियो फ़ाइल अपलोड करें।",
+    "viewVideo": "वीडियो देखें",
+    "statusLabel": "स्थिति",
+    "filterStatus": "स्थिति से फ़िल्टर",
+    "filters": {
+      "all": "सभी",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय"
+    },
+    "fields": {
+      "title": "वीडियो शीर्षक",
+      "thumbnail": "थंबनेल इमेज",
+      "video": "वीडियो फ़ाइल"
+    }
+  },
+  "community": {
+    "title": "समुदाय",
+    "subtitle": "लैंडिंग पेज समुदाय बैनर और गैलरी फ़ोटो प्रबंधित करें",
+    "createTitle": "समुदाय फ़ोटो जोड़ें",
+    "create": "फ़ोटो जोड़ें",
+    "createSuccess": "समुदाय फ़ोटो सफलतापूर्वक जोड़ी गई।",
+    "deleteSuccess": "समुदाय फ़ोटो हटाई गई।",
+    "statusUpdated": "समुदाय फ़ोटो की स्थिति अपडेट हुई।",
+    "listTitle": "समुदाय फ़ोटो",
+    "collageHint": "कोलाज छवि हीरो बैनर में दिखती है। एक समय में केवल एक सक्रिय कोलाज दिखाया जाता है।",
+    "statusLabel": "स्थिति",
+    "filterStatus": "स्थिति से फ़िल्टर",
+    "filters": {
+      "all": "सभी",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय"
+    },
+    "types": {
+      "collage": "हीरो कोलाज",
+      "gallery": "गैलरी फ़ोटो"
+    },
+    "fields": {
+      "type": "फ़ोटो प्रकार",
+      "image": "इमेज",
+      "displayOrder": "प्रदर्शन क्रम"
+    }
+  }
+}
