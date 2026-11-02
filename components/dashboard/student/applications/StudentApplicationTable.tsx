@@ -49,9 +49,10 @@ export function StudentApplicationTable({ applications, loading = false }: Stude
   const [page, setPage] = useState(1);
 
   const statusLabel = (status: string) => {
+    if (status.toLowerCase() === 'forwarded_to_company') return 'Forwarded to Company';
     const key = `dashboard.applications.statuses.${status.toLowerCase()}`;
     const label = t(key);
-    return label === key ? status.charAt(0).toUpperCase() + status.slice(1) : label;
+    return label === key ? status.replace(/_/g, ' ').replace(/^\w/, (letter) => letter.toUpperCase()) : label;
   };
 
   const handleSort = (field: SortField) => {

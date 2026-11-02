@@ -5,6 +5,7 @@ export function applicationBadgeTone(status: string): BadgeTone {
   if (s.includes('select') || s.includes('offer')) return 'success';
   if (s.includes('reject')) return 'error';
   if (s.includes('shortlist') || s.includes('interview')) return 'sky';
+  if (s.includes('forwarded_to_company') || s.includes('forwarded to company')) return 'sky';
   if (s.includes('applied') || s.includes('pending')) return 'primary';
   return 'neutral';
 }

@@ -60,6 +60,7 @@ export function JobCard({
     if (status === 'selected') return t('dashboard.jobs.status.selected');
     if (status === 'rejected') return t('dashboard.jobs.status.rejected');
     if (status === 'shortlisted') return t('dashboard.jobs.status.shortlisted');
+    if (status === 'forwarded_to_company') return 'Forwarded to Company';
     if (status === 'pending') return t('dashboard.jobs.status.pending');
     if (expired) return t('dashboard.jobs.expired');
     return t('dashboard.jobs.applyNow');
@@ -199,6 +200,12 @@ export function JobCard({
               <span className="inline-flex items-center gap-1 text-brand-red">
                 <X className="h-3.5 w-3.5" />
                 {t('dashboard.jobs.status.rejected')}
+              </span>
+            )}
+            {status === 'forwarded_to_company' && (
+              <span className="inline-flex items-center gap-1 text-brand-sky">
+                <Briefcase className="h-3.5 w-3.5" />
+                Forwarded to Company
               </span>
             )}
             {status === 'pending' && (
