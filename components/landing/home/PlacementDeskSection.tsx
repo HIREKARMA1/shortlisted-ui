@@ -8,19 +8,16 @@ import {
   Check,
   FileText,
   Lock,
+  Mic,
+  Sparkles,
   Users,
 } from 'lucide-react';
-import { useHome } from './HomeProvider';
 import { Reveal, SectionHeading } from './primitives';
 import { useFeatureGate } from './useFeatureGate';
 
 export function PlacementDeskSection() {
-  const { batch, batchLoading } = useHome();
   const { openFeature } = useFeatureGate();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-
-  const openSeats = batch?.seats_remaining ?? null;
-  const maxSeats = batch?.max_seats ?? 12;
 
   const features = [
     {
@@ -34,7 +31,7 @@ export function PlacementDeskSection() {
       href: '/dashboard/student/profile',
       access: 'fullPlan' as const,
       preview: (isHovered: boolean) => (
-        <div className="flex h-[250px] flex-col justify-between rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
+        <div className="flex h-[210px] flex-col justify-between gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3">
           <div className="flex items-center justify-between border-b border-[#E5EAF2] pb-2">
             <span className="text-[11px] font-bold text-[#5B6B82]">Application Readiness</span>
             <span className="rounded-full bg-white border border-[#E5EAF2] px-2 py-0.5 text-[9px] font-bold text-[#5B6B82]">
@@ -42,7 +39,7 @@ export function PlacementDeskSection() {
             </span>
           </div>
 
-          <div className="my-auto flex items-center justify-between py-2">
+          <div className="flex items-center justify-between py-1">
             <div className="space-y-2 text-[11px]">
               <div className="flex items-center gap-2 text-[#0B1B33] font-medium">
                 <span className="grid h-3.5 w-3.5 place-items-center rounded-full bg-[#098855] text-white">
@@ -106,7 +103,7 @@ export function PlacementDeskSection() {
       href: '/dashboard/student/jobs',
       access: 'fullPlan' as const,
       preview: () => (
-        <div className="relative flex h-[250px] flex-col justify-between overflow-hidden rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
+        <div className="relative flex h-[210px] flex-col justify-between gap-3 overflow-hidden rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3">
           <div className="flex items-center justify-between border-b border-[#E5EAF2] pb-2">
             <div className="flex items-center gap-1.5">
               <span className="inline-flex items-center rounded-full bg-[#00a2e5]/15 px-1.5 py-0.5 text-[11px] font-bold uppercase text-[#00a2e5] leading-none">
@@ -120,7 +117,7 @@ export function PlacementDeskSection() {
           </div>
 
           {/* 2 clearly visible skeleton job rows with reduced blur so shapes read crisply */}
-          <div className="my-auto space-y-2.5 opacity-65">
+          <div className="space-y-2.5 opacity-65">
             {/* Job Row 1 */}
             <div className="rounded-lg border border-[#E5EAF2] bg-white p-2.5">
               <div className="flex items-center justify-between">
@@ -171,7 +168,7 @@ export function PlacementDeskSection() {
       href: '/dashboard/student/applications',
       access: 'fullPlan' as const,
       preview: (isHovered: boolean) => (
-        <div className="flex h-[250px] flex-col justify-between rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
+        <div className="flex h-[210px] flex-col justify-between gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3">
           <div className="flex items-center justify-between border-b border-[#E5EAF2] pb-2">
             <span className="text-[11px] font-bold text-[#5B6B82]">Application Pipeline</span>
             <span className="rounded-full bg-white border border-[#E5EAF2] px-2 py-0.5 text-[9px] font-bold text-[#5B6B82]">
@@ -180,7 +177,7 @@ export function PlacementDeskSection() {
           </div>
 
           {/* 4-step status stepper */}
-          <div className="my-auto flex items-center justify-between text-[10px] font-bold py-4">
+          <div className="flex items-center justify-between text-[10px] font-bold py-2">
             <div className="flex flex-col items-center gap-1">
               <span className="grid h-6 w-6 place-items-center rounded-full bg-[#098855] text-white shadow-sm">
                 <Check className="h-3.5 w-3.5 stroke-[3]" />
@@ -227,7 +224,7 @@ export function PlacementDeskSection() {
       href: '/free-trial',
       access: 'signIn' as const,
       preview: () => (
-        <div className="flex h-[250px] flex-col justify-between rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
+        <div className="flex h-[210px] flex-col justify-between gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3">
           <div className="flex items-center justify-between border-b border-[#E5EAF2] pb-2">
             <span className="text-[11px] font-bold text-[#5B6B82]">Live Cohort Training</span>
             <span className="rounded-full bg-white border border-[#E5EAF2] px-2 py-0.5 text-[9px] font-bold text-[#5B6B82]">
@@ -235,7 +232,7 @@ export function PlacementDeskSection() {
             </span>
           </div>
 
-          <div className="my-auto space-y-3 py-2">
+          <div className="space-y-2.5 py-1">
             <div className="rounded-lg border border-[#E5EAF2] bg-white p-2.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-[#0B1B33]">Trainer session</span>
@@ -270,7 +267,7 @@ export function PlacementDeskSection() {
       href: '/dashboard/student/assessments',
       access: 'fullPlan' as const,
       preview: (isHovered: boolean) => (
-        <div className="flex h-[250px] flex-col justify-between rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
+        <div className="flex h-[210px] flex-col justify-between gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3">
           <div className="flex items-center justify-between border-b border-[#E5EAF2] pb-2">
             <span className="text-[11px] font-bold text-[#5B6B82]">Evaluation Meter</span>
             <span className="rounded-full bg-white border border-[#E5EAF2] px-2 py-0.5 text-[9px] font-bold text-[#5B6B82]">
@@ -278,7 +275,7 @@ export function PlacementDeskSection() {
             </span>
           </div>
 
-          <div className="my-auto space-y-3 py-2">
+          <div className="space-y-2.5 py-1">
             <div className="rounded-lg border border-[#E5EAF2] bg-white p-3 flex items-center justify-between">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5">
@@ -303,68 +300,54 @@ export function PlacementDeskSection() {
       ),
     },
     {
-      id: 'batch',
-      title: 'Batch of 12',
-      benefit: 'Small cohorts with one coordinator staying with your group.',
-      badge: 'Public cohort info',
-      badgeClass: 'bg-[#00a2e5]/15 text-[#00a2e5]',
+      id: 'mock-interview',
+      title: 'Mock interview',
+      benefit: 'Practise with sample interview questions.',
+      badge: 'Full plan',
+      badgeClass: 'bg-[var(--brand-blue)]/10 text-[var(--brand-blue)]',
       accentColor: '#1b52a4',
-      linkText: 'View batch status',
-      href: '#plans',
-      access: 'public' as const,
-      preview: (isHovered: boolean) => (
-        <div className="flex h-[250px] flex-col justify-between rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
+      linkText: 'Unlock with plan',
+      href: '/dashboard/student/assessments',
+      access: 'fullPlan' as const,
+      preview: () => (
+        <div className="flex h-[210px] flex-col justify-between gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3">
           <div className="flex items-center justify-between border-b border-[#E5EAF2] pb-2">
-            <span className="text-[11px] font-bold text-[#5B6B82]">Cohort Ring (12 Seats)</span>
+            <span className="text-[11px] font-bold text-[#5B6B82]">Practice session</span>
             <span className="rounded-full bg-white border border-[#E5EAF2] px-2 py-0.5 text-[9px] font-bold text-[#5B6B82]">
               Sample preview
             </span>
           </div>
 
-          {/* Fixed square area with center coordinator and true circle */}
-          <div className="my-auto py-1">
-            <div className="relative mx-auto flex h-[140px] w-[140px] items-center justify-center">
-              {/* Center coordinator avatar */}
-              <div className="flex flex-col items-center justify-center pointer-events-none">
-                <div
-                  className={`grid h-8 w-8 place-items-center rounded-full transition-transform ${
-                    isHovered ? 'bg-[#00a2e5] text-white scale-110' : 'bg-[#1b52a4] text-white'
-                  } shadow-sm`}
-                >
-                  <Users className="h-4 w-4" />
-                </div>
-                <span className="mt-1 text-[8px] font-bold text-[#1b52a4] leading-none">Coordinator</span>
+          <div className="space-y-2.5 py-1">
+            <div className="rounded-lg border border-[#E5EAF2] bg-white p-3">
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide text-[#5B6B82]">
+                <Mic className="h-3.5 w-3.5 text-[#1b52a4]" aria-hidden="true" />
+                Practice question
               </div>
-
-              {/* 12 outer dots evenly on a true circle (30° apart, radius 48px, dot size 10px) */}
-              {Array.from({ length: 12 }).map((_, i) => {
-                const angle = ((i * 30 - 90) * Math.PI) / 180;
-                const radius = 48;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                const isTaken = openSeats != null ? i < (maxSeats - openSeats) : i < 2;
-                return (
-                  <div
-                    key={i}
-                    className={`absolute h-2.5 w-2.5 rounded-full transition-all ${
-                      isTaken
-                        ? 'bg-[#1b52a4]'
-                        : 'border-2 border-[#098855] bg-[#098855]/20'
-                    }`}
-                    style={{
-                      transform: `translate(${x}px, ${y}px)`,
-                    }}
-                    title={`Seat ${i + 1}: ${isTaken ? 'Reserved' : 'Open'}`}
-                  />
-                );
-              })}
+              <p className="mt-2 text-xs font-semibold leading-relaxed text-[#0B1B33]">Tell me about your experience.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center gap-2 rounded-lg border border-[#E5EAF2] bg-white p-2.5">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#00a2e5]/10 text-[#1b52a4]" aria-hidden="true">
+                  <Sparkles className="h-4 w-4" />
+                </span>
+                <div>
+                  <p className="text-[10px] font-bold text-[#0B1B33]">Question</p>
+                  <p className="text-[9px] leading-tight text-[#5B6B82]">Practice prompt</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg border border-[#E5EAF2] bg-white p-2.5">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[#1b52a4]/10 text-[#1b52a4]" aria-hidden="true">
+                  <Users className="h-4 w-4" />
+                </span>
+                <div>
+                  <p className="text-[10px] font-bold text-[#0B1B33]">Your answer</p>
+                  <p className="text-[9px] leading-tight text-[#5B6B82]">Practice response</p>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Seats open caption below the ring with >=12px clearance from ring and from box border */}
-          <div className="mb-0.5 text-center text-xs font-bold text-[#098855]">
-            {batchLoading ? 'Loading cohort seats...' : openSeats != null ? `${openSeats} of ${maxSeats} seats open` : '10 of 12 seats open'}
-          </div>
+          <span className="text-[10px] text-[#5B6B82] text-center">Question and answer practice</span>
         </div>
       ),
     },
@@ -463,7 +446,7 @@ export function PlacementDeskSection() {
                   </p>
 
                   {/* HTML/SVG Mini Preview */}
-                  <div className="my-4">{feat.preview(isHovered)}</div>
+          <div className="my-3">{feat.preview(isHovered)}</div>
                 </div>
 
                 {/* Bottom action trigger with varied contextual link text */}

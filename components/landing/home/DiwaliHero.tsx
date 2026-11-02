@@ -2,34 +2,11 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Briefcase, Calendar, Check, LayoutDashboard, UserRound, Users } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { ctaLabel } from '@/lib/home/content';
 import { useHome, type BatchInfo } from './HomeProvider';
+import { CohortCard } from './CohortCard';
 import { PrimaryLink } from './primitives';
-
-/**
- * Hook for smooth integer count-up animation on numerical stats.
- */
-function useCountUp(target: number | null, active: boolean) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!active || target == null) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setValue(target);
-      return;
-    }
-    const start = performance.now();
-    let frame = 0;
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / 750, 1);
-      setValue(Math.round(target * progress));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [target, active]);
-  return value;
-}
 
 /**
  * Typed live seat availability state derived from HomeProvider's active batch request.
@@ -44,14 +21,14 @@ function getSeatsAvailability(batch: BatchInfo | null, loading: boolean): SeatsA
   if (loading) {
     return { status: 'loading', text: 'Checking availability...' };
   }
-  if (!batch || batch.seats_remaining == null) {
+  if (!batch || batch.seats_remaining == null || !Number.isFinite(batch.seats_remaining)) {
     // Fallback state when backend batch API is offline or returns empty
     return { status: 'fallback', text: 'Limited seats' };
   }
   return {
     status: 'available',
-    seats: batch.seats_remaining,
-    text: String(batch.seats_remaining),
+    seats: Math.max(0, Math.min(12, Math.trunc(batch.seats_remaining))),
+    text: String(Math.max(0, Math.min(12, Math.trunc(batch.seats_remaining)))),
   };
 }
 
@@ -73,22 +50,67 @@ const GOLD_DUST = [
   { left: '78%', bottom: '38%', size: 4.2, duration: 15, delay: -4.9, desktopOnly: true },
 ];
 
+const DIWALI_STREAMERS = [
+  { side: 'left', top: '22%', color: 'var(--brand-yellow)', width: 6, height: 34, delay: 0, duration: 1700, drop: 46, startAngle: -28, endAngle: 114 },
+  { side: 'left', top: '38%', color: 'var(--brand-orange)', width: 7, height: 40, delay: 90, duration: 1850, drop: 68, startAngle: 34, endAngle: 192 },
+  { side: 'left', top: '57%', color: '#fff3c4', width: 5, height: 30, delay: 180, duration: 1600, drop: 38, startAngle: -18, endAngle: 136 },
+  { side: 'left', top: '72%', color: 'var(--brand-yellow)', width: 7, height: 38, delay: 270, duration: 1900, drop: 56, startAngle: 22, endAngle: 174 },
+  { side: 'right', top: '24%', color: 'var(--brand-orange)', width: 7, height: 38, delay: 45, duration: 1800, drop: 52, startAngle: 26, endAngle: 176 },
+  { side: 'right', top: '42%', color: 'var(--brand-yellow)', width: 5, height: 30, delay: 135, duration: 1650, drop: 40, startAngle: -24, endAngle: 126 },
+  { side: 'right', top: '60%', color: '#fff3c4', width: 7, height: 40, delay: 225, duration: 1900, drop: 70, startAngle: 30, endAngle: 188 },
+  { side: 'right', top: '76%', color: 'var(--brand-orange)', width: 6, height: 34, delay: 315, duration: 1750, drop: 48, startAngle: -20, endAngle: 144 },
+] as const;
+
+const DIWALI_CRACKER_BURSTS = [
+  { side: 'left', left: '8%', top: '38%', color: 'var(--brand-yellow)', delay: 120 },
+  { side: 'right', left: '92%', top: '34%', color: 'var(--brand-orange)', delay: 390 },
+  { side: 'left', left: '15%', top: '70%', color: 'var(--brand-orange)', delay: 660 },
+  { side: 'right', left: '85%', top: '68%', color: 'var(--brand-yellow)', delay: 930 },
+  { side: 'center', left: '50%', top: '26%', color: 'var(--brand-orange)', delay: 1200 },
+] as const;
+
+const DIWALI_CRACKER_SPARKS = Array.from({ length: 16 }, (_, index) => {
+  const angle = (index * 360) / 16;
+  const radians = (angle * Math.PI) / 180;
+  const distance = 58 + ((index * 13) % 35);
+
+  return {
+    dx: Math.round(Math.cos(radians) * distance),
+    dy: Math.round(Math.sin(radians) * distance),
+    angle: angle + 90,
+  };
+});
+
 // String lights: four continuous swags with horizontal tangents at each join.
-const BULB_COLORS = ['#ffd36b', '#ff9a3c', '#fff3c4'];
+const BULB_COLORS = [
+  'var(--warm-white)',
+  'var(--yellow)',
+  'var(--orange)',
+  'var(--yellow)',
+];
 const STRING_LIGHTS_BULBS = Array.from({ length: 4 }).flatMap((_, swagIdx) => {
-  const x0 = swagIdx * 300;
+  const swagWidth = 291;
+  const halfWidth = swagWidth / 2;
+  const x0 = 18 + swagIdx * swagWidth;
   const bezier = (a: number, b: number, c: number, d: number, t: number) =>
     (1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t ** 2 * c + t ** 3 * d;
   return Array.from({ length: 8 }).map((_, bulbIdx) => {
     const t = ((bulbIdx + 1) / 9) * 2;
     const half = t <= 1 ? 0 : 1;
     const localT = t <= 1 ? t : t - 1;
-    const startX = x0 + half * 150;
-    const x = Math.round(bezier(startX, startX + 50, startX + 100, startX + 150, localT) * 10) / 10;
-    const y = Math.round(bezier(half ? 76 : 8, half ? 76 : 8, half ? 8 : 76, half ? 8 : 76, localT) * 10) / 10;
+    const startX = x0 + half * halfWidth;
+    const third = halfWidth / 3;
+    const x = Math.round(bezier(startX, startX + third, startX + third * 2, startX + halfWidth, localT) * 10) / 10;
+    const startY = swagIdx === 0 ? 14 : 8;
+    const endY = swagIdx === 3 ? 14 : 8;
+    const y = Math.round(
+      half === 0
+        ? bezier(startY, startY, 76, 76, localT) * 10
+        : bezier(76, 76, endY, endY, localT) * 10,
+    ) / 10;
     const globalIdx = swagIdx * 8 + bulbIdx;
-    const color = BULB_COLORS[globalIdx % 3];
-    const delay = -Number(((globalIdx * 0.375) % 3).toFixed(2));
+    const color = BULB_COLORS[globalIdx % BULB_COLORS.length];
+    const delay = -Number(((globalIdx * 0.21) % 2.7).toFixed(2));
     return { x, y, color, delay, id: `bulb-${globalIdx}` };
   });
 });
@@ -118,38 +140,67 @@ function StringLights() {
     <svg
       viewBox="0 0 1200 92"
       preserveAspectRatio="xMidYMin slice"
-      className="pointer-events-none absolute left-0 top-0 z-10 h-[72px] sm:h-[92px] w-full"
-      style={{ transform: 'scaleY(0.55)', transformOrigin: 'top' }}
+      className="pointer-events-none absolute left-0 top-0 z-0 h-[72px] w-full overflow-visible sm:h-[92px]"
+      style={{
+        transform: 'translateY(-22px) scaleY(0.55)',
+        transformOrigin: 'top',
+        '--warm-white': '#fff3c4',
+        '--yellow': 'var(--brand-yellow)',
+        '--orange': 'var(--brand-orange)',
+        '--socket': '#302315',
+      } as CSSProperties}
       aria-hidden="true"
     >
+      <defs>
+        {STRING_LIGHTS_BULBS.map((b) => (
+          <radialGradient key={`bulb-gradient-${b.id}`} id={`bulb-gradient-${b.id}`} cx="34%" cy="28%" r="76%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="24%" stopColor="var(--warm-white)" />
+            <stop offset="58%" stopColor={b.color} />
+            <stop offset="100%" stopColor={b.color} />
+          </radialGradient>
+        ))}
+      </defs>
       {/* Four cubic swags meet with matching horizontal tangents. */}
       <path
-        d="M 0 8 C 50 8 100 76 150 76 C 200 76 250 8 300 8 C 350 8 400 76 450 76 C 500 76 550 8 600 8 C 650 8 700 76 750 76 C 800 76 850 8 900 8 C 950 8 1000 76 1050 76 C 1100 76 1150 8 1200 8"
-        stroke="rgba(255,255,255,0.35)"
+        d="M 18 14 C 66.5 14 115 76 163.5 76 C 212 76 260.5 8 309 8 C 357.5 8 406 76 454.5 76 C 503 76 551.5 8 600 8 C 648.5 8 697 76 745.5 76 C 794 76 842.5 8 891 8 C 939.5 8 988 76 1036.5 76 C 1085 76 1133.5 14 1182 14"
+        stroke="rgba(3,18,24,0.92)"
         strokeWidth="1.5"
         fill="none"
       />
-      {/* 32 Bulbs along curve */}
+      <path
+        d="M 18 14 C 66.5 14 115 76 163.5 76 C 212 76 260.5 8 309 8 C 357.5 8 406 76 454.5 76 C 503 76 551.5 8 600 8 C 648.5 8 697 76 745.5 76 C 794 76 842.5 8 891 8 C 939.5 8 988 76 1036.5 76 C 1085 76 1133.5 14 1182 14"
+        stroke="rgba(255,255,255,0.12)"
+        strokeWidth="0.45"
+        fill="none"
+      />
+      {/* The original 32 bulb positions and swags are preserved. */}
       {STRING_LIGHTS_BULBS.map((b) => (
-        <g key={b.id}>
-          <line x1={b.x} y1={b.y} x2={b.x} y2={b.y + 4} stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-          {/* Halo */}
-          <circle
+        <g
+          key={b.id}
+          transform={`translate(${b.x} ${b.y}) scale(0.8) translate(${-b.x} ${-b.y})`}
+          style={{ '--light-color': b.color, '--light-delay': `${b.delay}s` } as CSSProperties}
+        >
+          <line x1={b.x} y1={b.y} x2={b.x} y2={b.y + 4} stroke="rgba(35,25,14,0.92)" strokeWidth="1.5" />
+          <rect x={b.x - 3} y={b.y + 2} width="6" height="5" rx="1.4" fill="var(--socket)" />
+          <ellipse
             cx={b.x}
-            cy={b.y + 7}
-            r="11"
+            cy={b.y + 18}
+            rx="12"
+            ry="17"
             fill={b.color}
-            opacity="0.22"
+            opacity="0.24"
+            className="diwali-light-halo"
           />
-          {/* Bulb */}
-          <circle
-            cx={b.x}
-            cy={b.y + 7}
-            r="4.6"
-            fill={b.color}
-            className="diwali-twinkle"
-            style={{ animationDelay: `${b.delay}s` }}
-          />
+          <g className="diwali-twinkle">
+            <path
+              d={`M ${b.x} ${b.y + 3} C ${b.x + 1.6} ${b.y + 9}, ${b.x + 6} ${b.y + 17}, ${b.x + 6} ${b.y + 22} C ${b.x + 6} ${b.y + 29}, ${b.x + 3} ${b.y + 33}, ${b.x} ${b.y + 33} C ${b.x - 3} ${b.y + 33}, ${b.x - 6} ${b.y + 29}, ${b.x - 6} ${b.y + 22} C ${b.x - 6} ${b.y + 17}, ${b.x - 1.6} ${b.y + 9}, ${b.x} ${b.y + 3} Z`}
+              fill={`url(#bulb-gradient-${b.id})`}
+              stroke={b.color}
+              strokeWidth="0.8"
+              className="diwali-light-bulb"
+            />
+          </g>
         </g>
       ))}
     </svg>
@@ -164,11 +215,13 @@ function DiyaButton({
   index,
   step,
   isLit,
+  isOpening,
   onClick,
 }: {
   index: number;
   step: (typeof DIYA_STEPS)[number];
   isLit: boolean;
+  isOpening: boolean;
   onClick: () => void;
 }) {
   const [clickCount, setClickCount] = useState(0);
@@ -178,18 +231,21 @@ function DiyaButton({
     onClick();
   };
 
-  const delay = (index * 0.35).toFixed(2);
+  const delay = `${index * 0.15}s`;
 
   return (
     <button
       type="button"
       onClick={handleClick}
-      aria-label={isLit ? `Put out the diya: ${step.name}` : `Light the diya: ${step.name}`}
+      aria-label={isLit ? `Put out the ${step.name} diya` : `Light the ${step.name} diya`}
       aria-pressed={isLit}
-      className="diwali-diya-button group relative z-0 flex shrink-0 flex-col items-center justify-start rounded-xl p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffd36b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c2a5c]"
+      className="diwali-diya-button group relative z-0 flex min-h-[44px] min-w-[44px] shrink-0 flex-col items-center justify-start rounded-xl p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffd36b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c2a5c]"
       style={{ WebkitTapHighlightColor: 'transparent' }}
     >
-      <span className="diwali-diya-visual relative flex shrink-0 items-center justify-center">
+      <span
+        className={`diwali-diya-visual relative flex shrink-0 items-center justify-center ${isOpening && isLit ? 'diwali-opening-visual' : ''}`}
+        style={{ '--diwali-light-delay': delay } as CSSProperties}
+      >
         {/* Soft Radial Halo (Signature bloom effect - PROTECTED) */}
         <div
           className={`diwali-bloom pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${isLit ? 'diwali-bloom-lit' : ''}`}
@@ -236,8 +292,9 @@ function DiyaButton({
           <g
             className={`diwali-flame ${isLit ? 'diwali-flame-flicker' : ''}`}
             style={{
-              opacity: isLit ? 1 : 0,
-              transition: 'opacity 250ms ease',
+              opacity: isLit ? 1 : 0.32,
+              transform: isLit ? undefined : 'scale(0.72)',
+              transition: 'opacity 250ms ease, transform 250ms ease, filter 250ms ease',
               transformOrigin: '29px 36px',
               animationDelay: `${delay}s`,
               filter: isLit
@@ -279,258 +336,34 @@ function DiyaButton({
   );
 }
 
-/**
- * Placement Desk Product Preview Mockup.
- * Features 14px body text, 16px semibold title, 92% match badge, and a 4-step progress timeline.
- */
-function ProductMockup({ shift }: { shift: { x: number; y: number } }) {
-  return (
-    <div
-      className="diwali-mockup-column relative mx-auto flex w-full max-w-[500px] flex-col items-center justify-start"
-      role="region"
-      aria-label="Interactive preview of Shortlisted AI virtual placement desk"
-    >
-      {/* Main dashboard window card with 8px translucent ring */}
-      <div
-        className="relative w-full overflow-hidden rounded-[20px] bg-white shadow-[0_28px_60px_rgba(11,27,51,0.28)] ring-8 ring-white/10 transition-transform duration-200 ease-out"
-        style={{ transform: `translate(${shift.x * 0.35}px, ${shift.y * 0.35}px)` }}
-      >
-        {/* Window title bar */}
-        <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-1 border-b border-[#E5EAF2] bg-[#F7F9FC] px-2 py-2.5 min-[480px]:flex-nowrap min-[480px]:px-4">
-          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 min-[480px]:flex-nowrap">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#d64246]/80" aria-hidden="true" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#fec40d]" aria-hidden="true" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[#098855]" aria-hidden="true" />
-            <span className="ml-1 whitespace-nowrap text-[10px] font-semibold tracking-wide text-[#5B6B82] min-[480px]:ml-2 min-[480px]:text-xs sm:text-sm">
-              shortlisted.desk
-            </span>
-            <span className="ml-2 rounded-full border border-[#E5EAF2] bg-white px-2 py-0.5 text-[10px] font-bold text-[#5B6B82] sm:text-xs">
-              Sample preview
-            </span>
-          </div>
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#098855]/15 px-2 py-0.5 text-[10px] font-bold text-[#08734a] sm:px-2.5 sm:text-sm">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#098855]" aria-hidden="true" /> Live Batch
-          </span>
-        </div>
-
-        {/* Window interior */}
-        <div className="flex">
-          {/* Mini sidebar */}
-          <div className="hidden w-14 flex-col items-center gap-3 border-r border-[#E5EAF2] bg-[#F7F9FC] py-4 min-[480px]:flex sm:w-16">
-            <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#1b52a4] text-white shadow-sm">
-              <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-            </div>
-            <div className="mt-1 flex flex-col items-center gap-2.5">
-              <div className="grid h-7 w-7 place-items-center rounded-lg bg-[#00a2e5]/15 text-[#00a2e5]">
-                <Briefcase className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-              </div>
-              <div className="grid h-7 w-7 place-items-center rounded-lg bg-[#5B6B82]/10 text-[#5B6B82]">
-                <UserRound className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-              </div>
-              <div className="grid h-7 w-7 place-items-center rounded-lg bg-[#5B6B82]/10 text-[#5B6B82]">
-                <Users className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-              </div>
-            </div>
-            <div className="mt-auto h-2 w-6 rounded-full bg-[#E5EAF2]" aria-hidden="true" />
-          </div>
-
-          {/* Mini main panel */}
-          <div className="flex min-w-0 flex-1 flex-col justify-between p-3.5 sm:p-4.5">
-            {/* Top row: Profile completion status */}
-            <div className="flex items-center justify-between gap-2">
-              <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#5B6B82] sm:text-sm">Placement Desk</p>
-                <p className="text-base font-bold text-[#0B1B33] sm:text-[17px]">Cohort Dashboard</p>
-              </div>
-              <div className="flex items-center gap-3 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] px-3 py-1.5">
-                <div className="relative grid h-12 w-12 place-items-center sm:h-13 sm:w-13">
-                  <svg viewBox="0 0 56 56" className="h-12 w-12 -rotate-90 sm:h-13 sm:w-13" aria-hidden="true">
-                    <circle cx="28" cy="28" r="22" fill="none" stroke="#E5EAF2" strokeWidth="4" />
-                    <circle
-                      cx="28"
-                      cy="28"
-                      r="22"
-                      fill="none"
-                      stroke="#098855"
-                      strokeWidth="4"
-                      strokeDasharray="138 138"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <span className="absolute text-xs font-extrabold text-[#08734a]">100%</span>
-                </div>
-                <div className="text-left">
-                  <p className="text-[11px] font-semibold leading-none text-[#5B6B82] sm:text-sm">Profile</p>
-                  <p className="mt-0.5 text-xs font-bold leading-tight text-[#08734a] sm:text-sm">Ready</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Matched Job Row (16px semibold job title, 92% match badge) */}
-            <div className="my-2 rounded-xl border border-[#E5EAF2] bg-[#F7F9FC] p-3 transition hover:border-[#00a2e5]/50">
-              <div className="flex items-center justify-between">
-                <div className="flex min-w-0 items-center gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#00a2e5]/15 text-[#00a2e5]">
-                    <Briefcase className="h-4.5 w-4.5" strokeWidth={2} aria-hidden="true" />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="truncate text-[15px] font-semibold text-[#0B1B33] sm:text-[16px]">
-                        Software Engineer
-                      </p>
-                      <span className="rounded bg-[#098855]/15 px-2 py-0.5 text-[11px] font-bold text-[#08734a] sm:text-sm">
-                        92% match
-                      </span>
-                    </div>
-                    <p className="truncate text-[13px] font-medium text-[#5B6B82] sm:text-sm">
-                      Batch role • Matched for you
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Interview Chip & Coordinator row */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#E5EAF2] pt-2.5">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-[#fec40d]/40 bg-[#fec40d]/25 px-2.5 py-1 text-xs font-bold text-[#1b52a4]">
-                <Calendar className="h-3.5 w-3.5 text-[#f58020]" strokeWidth={2} aria-hidden="true" />
-                Round 1 Scheduled
-              </div>
-              <span className="text-xs font-medium text-[#5B6B82]">1 Coordinator assigned</span>
-            </div>
-          </div>
-        </div>
-
-        {/* 4-Step Progress Timeline: Profile ✓ -> Assessment ✓ -> Interview (current, pulse) -> Offer */}
-        <div className="border-t border-[#E5EAF2] bg-[#F7F9FC]/90 px-4 py-2.5 pb-4">
-          <p className="sr-only">
-            Placement journey progress: Profile completed, Assessment completed, Interview current, Offer upcoming.
-          </p>
-          <div className="flex items-center justify-between text-[11px] sm:text-sm" aria-hidden="true">
-            {/* Step 1: Profile */}
-            <div className="flex items-center gap-1 font-semibold text-[#08734a]">
-              <span className="grid h-4 w-4 place-items-center rounded-full bg-[#098855] text-white">
-                <Check className="h-2.5 w-2.5 stroke-[3]" />
-              </span>
-              <span>Profile</span>
-            </div>
-            <span className="h-0.5 w-4 bg-[#098855]/40 sm:w-6" />
-
-            {/* Step 2: Assessment */}
-            <div className="flex items-center gap-1 font-semibold text-[#08734a]">
-              <span className="grid h-4 w-4 place-items-center rounded-full bg-[#098855] text-white">
-                <Check className="h-2.5 w-2.5 stroke-[3]" />
-              </span>
-              <span>Assessment</span>
-            </div>
-            <span className="h-0.5 w-4 bg-[#f58020]/40 sm:w-6" />
-
-            {/* Step 3: Interview (current, highlighted, subtle pulse) */}
-            <div className="flex items-center gap-1.5 font-bold text-[#1b52a4]">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#f58020] opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#f58020]" />
-              </span>
-              <span className="rounded bg-[#fec40d]/30 px-1.5 py-0.5 text-[10px] font-extrabold text-[#1b52a4] sm:text-sm">
-                Interview
-              </span>
-            </div>
-            <span className="h-0.5 w-4 bg-[#E5EAF2] sm:w-6" />
-
-            {/* Step 4: Offer */}
-            <div className="flex items-center gap-1 font-medium text-[#5B6B82]/70">
-              <span className="h-2.5 w-2.5 rounded-full border-2 border-[#5B6B82]/40" />
-              <span>Offer</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 3 Floating Chips anchored snugly touching/overlapping card edges (-12px to -24px offset) */}
-      {/* 1. "Assessment completed" (above top-left) */}
-      <div
-        className="pointer-events-none absolute -top-14 left-2 z-20 hidden sm:flex sm:left-4"
-        style={{ transform: `translateX(${shift.x * 0.3}px)` }}
-        aria-hidden="true"
-      >
-        <div className="sl-float flex items-center gap-2 rounded-2xl border border-white/80 bg-white px-3.5 py-1.5 text-xs font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(9,136,85,0.2)] backdrop-blur-sm">
-          <span className="grid h-5 w-5 place-items-center rounded-full bg-[#098855] text-white">
-            <Check className="h-3.5 w-3.5 stroke-[2.5]" aria-hidden="true" />
-          </span>
-          Assessment completed
-        </div>
-      </div>
-
-      {/* Bottom chips touch the outer card edge and stay below its content. */}
-      <div className="pointer-events-none relative z-20 mt-5 hidden w-full items-start justify-between px-2 sm:flex" aria-hidden="true">
-        <div style={{ transform: `translateX(${shift.x * 0.25}px)` }}>
-          <div className="sl-float flex items-center gap-2 rounded-2xl border border-[#fec40d] bg-[#fec40d] px-3.5 py-1.5 text-xs font-bold text-[#1b52a4] shadow-[0_12px_28px_rgba(254,196,13,0.3)] backdrop-blur-sm [animation-delay:2400ms]">
-            <Calendar className="h-3.5 w-3.5 stroke-[2.2] text-[#f58020]" aria-hidden="true" />
-            Interview scheduled
-          </div>
-        </div>
-        <div style={{ transform: `translateX(${-shift.x * 0.3}px)` }}>
-          <div className="sl-float flex items-center gap-2 rounded-2xl border border-white/80 bg-white px-3.5 py-1.5 text-xs font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(0,162,229,0.22)] backdrop-blur-sm [animation-delay:1200ms]">
-            <span className="grid h-5 w-5 place-items-center rounded-full bg-[#00a2e5] text-white">
-              <Briefcase className="h-3 w-3 stroke-[2.5]" aria-hidden="true" />
-            </span>
-            Job matched
-          </div>
-        </div>
-      </div>
-
-      {/* Compact row on mobile to prevent overflow (< 640px) */}
-      <div className="pointer-events-none mt-3 flex flex-wrap justify-center gap-2 sm:hidden" aria-hidden="true">
-        <span className="inline-flex items-center gap-1 rounded-full border border-white/40 bg-[#071936]/60 px-2.5 py-0.5 text-[11px] font-bold text-white backdrop-blur-sm">
-          <Check className="h-3 w-3 text-[#098855]" aria-hidden="true" /> Assessment completed
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-white/40 bg-[#071936]/60 px-2.5 py-0.5 text-[11px] font-bold text-white backdrop-blur-sm">
-          <Briefcase className="h-3 w-3 text-[#00a2e5]" aria-hidden="true" /> Job matched
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full border border-[#fec40d]/60 bg-[#071936]/60 px-2.5 py-0.5 text-[11px] font-bold text-[#ffd36b] backdrop-blur-sm">
-          <Calendar className="h-3 w-3 text-[#f58020]" aria-hidden="true" /> Interview scheduled
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export function DiwaliHero() {
   const { trialHref, dashboardHref, hideTrialPromos, ready, batch, batchLoading } = useHome();
   const primary = hideTrialPromos ? dashboardHref : trialHref;
-  const [shift, setShift] = useState({ x: 0, y: 0 });
-  const [statsInView, setStatsInView] = useState(false);
   const [isAmbientActive, setIsAmbientActive] = useState(true);
   const heroRef = useRef<HTMLElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
+  const [openingDiyas, setOpeningDiyas] = useState(true);
 
-  // Live seats availability helper
+  // The card and stats bar both use this clamped value from the active-batch API.
   const seatsAvailability = getSeatsAvailability(batch, batchLoading);
-  const seatsTarget = seatsAvailability.status === 'available' ? seatsAvailability.seats : null;
-  const seatsShown = useCountUp(seatsTarget, statsInView && !batchLoading);
+  const availableSeatCount = seatsAvailability.status === 'available' ? seatsAvailability.seats : null;
 
-  // Keep the toggle state and its announcement in one update so rapid clicks cannot use stale state.
-  const [diyaState, setDiyaState] = useState({
-    lit: [false, false, false, false, false],
-    announcement: '',
-  });
-  const { lit: litDiyas, announcement: liveAnnouncement } = diyaState;
+  const [litDiyas, setLitDiyas] = useState<boolean[]>([true, true, true, true, true]);
 
   const litCount = litDiyas.filter(Boolean).length;
   const allLit = litCount === 5;
 
   const handleDiyaClick = (index: number) => {
-    setDiyaState((current) => {
-      const next = [...current.lit];
+    setLitDiyas((current) => {
+      const next = [...current];
       next[index] = !next[index];
-      const nextCount = next.filter(Boolean).length;
-      const wasComplete = current.lit.every(Boolean);
-      return {
-        lit: next,
-        announcement: nextCount === 5 && !wasComplete ? 'Your career journey is lit.' : '',
-      };
+      return next;
     });
   };
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setOpeningDiyas(false), 1000);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
   // Pause ambient animations when tab is hidden or hero is offscreen
   useEffect(() => {
@@ -556,35 +389,21 @@ export function DiwaliHero() {
     };
   }, []);
 
-  // Intersection observer for stats count-up trigger
-  useEffect(() => {
-    const node = statsRef.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setStatsInView(true);
-      },
-      { threshold: 0.3 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
       ref={heroRef}
       id="home"
-      className="diwali-hero-section flex min-h-[calc(100svh_-_72px)] w-full items-center scroll-mt-[88px] bg-[#F7F9FC] px-4 py-4 sm:px-6"
+      className="diwali-hero-section relative flex min-h-[600px] w-full flex-col justify-between scroll-mt-[88px] bg-[linear-gradient(135deg,#0c2a5c_0%,#1b52a4_58%,#1479c4_100%)] py-[clamp(4px,1vh,16px)]"
     >
       {/* Scoped CSS for Diwali Animations, Ambient Pausing & Reduced Motion */}
       <style jsx global>{`
         @keyframes diwali-twinkle {
-          0%, 100% {
-            opacity: 0.85;
-          }
-          50% {
-            opacity: 1;
-          }
+          0%, 100% { opacity: 0.8; filter: brightness(0.98); }
+          50% { opacity: 1; filter: brightness(1.04); }
+        }
+        @keyframes diwali-halo-twinkle {
+          0%, 100% { opacity: 0.16; }
+          50% { opacity: 0.3; }
         }
         @keyframes diwali-gold-dust {
           0% {
@@ -613,6 +432,10 @@ export function DiwaliHero() {
             transform: scale(0.96, 1.05) rotate(-1.2deg);
           }
         }
+        @keyframes diwali-diya-opening {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
         @keyframes diwali-spark {
           0% {
             transform: translate(0, 0) scale(1);
@@ -623,20 +446,67 @@ export function DiwaliHero() {
             opacity: 0;
           }
         }
+        @keyframes diwali-streamer-burst {
+          0% {
+            opacity: 0;
+            transform: translate3d(var(--streamer-start-x), -8px, 0) rotate(var(--streamer-start-angle)) scale(0.72);
+          }
+          14% { opacity: 0.96; }
+          56% {
+            opacity: 0.9;
+            transform: translate3d(var(--streamer-end-x), var(--streamer-drop), 0) rotate(var(--streamer-end-angle)) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate3d(var(--streamer-end-x), calc(var(--streamer-drop) + 64px), 0) rotate(var(--streamer-end-angle)) scale(0.82);
+          }
+        }
+        @keyframes diwali-cracker-flash {
+          0% { opacity: 0; transform: scale(0.15); }
+          14% { opacity: 0.95; transform: scale(1); }
+          100% { opacity: 0; transform: scale(3.6); }
+        }
+        @keyframes diwali-cracker-launch {
+          0% { opacity: 0; transform: translateY(var(--cracker-rise)) scaleY(0.35); }
+          12% { opacity: 1; }
+          78% { opacity: 0.95; }
+          100% { opacity: 0; transform: translateY(0) scaleY(1); }
+        }
+        @keyframes diwali-cracker-spark {
+          0% { opacity: 0; transform: translate(0, 0) rotate(var(--cracker-angle)) scale(0.3, 0.5); }
+          14% { opacity: 1; }
+          62% { opacity: 0.9; transform: translate(var(--cracker-dx), var(--cracker-dy)) rotate(var(--cracker-angle)) scale(0.75, 1); }
+          100% { opacity: 0; transform: translate(var(--cracker-dx), calc(var(--cracker-dy) + 30px)) rotate(var(--cracker-angle)) scale(0.2, 0.5); }
+        }
         @keyframes diwali-success-glow {
           0%, 100% { box-shadow: 0 0 0 rgba(255, 211, 107, 0); }
           50% { box-shadow: 0 0 22px rgba(255, 211, 107, 0.38); }
         }
         @media (min-width: 1024px) and (max-height: 800px) {
           .diwali-hero-section {
-            padding-block: 0.5rem !important;
+            padding-block: clamp(4px, 1vh, 8px) !important;
           }
+          .diwali-journey-strip { margin-block: clamp(8px, 1.5vh, 16px); padding-block: clamp(8px, 1.5vh, 12px); }
           .diwali-headline {
-            font-size: clamp(1.75rem, 3.4vw, 2.75rem) !important;
+            font-size: clamp(1.75rem, 5.2vh, 2.75rem) !important;
           }
           .diwali-hero-content { row-gap: 0.75rem !important; }
+          .diwali-inner-content { padding-top: clamp(8px, 1.8vh, 16px) !important; }
           .diwali-subhead {
             font-size: 15px !important;
+          }
+        }
+        .diwali-hero-section { min-height: 600px; }
+        @media (min-width: 1024px) {
+          .diwali-hero-section { height: calc(100vh - 72px); }
+          @supports (height: 100svh) {
+            .diwali-hero-section { height: calc(100svh - 72px); }
+          }
+        }
+        @media (max-width: 1023px) {
+          .diwali-hero-section { height: auto; min-height: calc(100vh - 72px); }
+          @supports (height: 100svh) {
+            .diwali-hero-section { min-height: calc(100svh - 72px); }
           }
         }
         .diwali-bloom {
@@ -653,10 +523,23 @@ export function DiwaliHero() {
           opacity: 0.9;
           transform: translate(-50%, -50%) scale(1);
         }
+        .diwali-opening-visual {
+          animation: diwali-diya-opening 280ms ease-out backwards;
+          animation-delay: var(--diwali-light-delay);
+        }
+        section[aria-label="Active cohort"] > div:first-child > div[role="group"] > p:last-child {
+          color: #c2410c !important;
+        }
+        .diwali-cohort-column > section[aria-label="Active cohort"] {
+          margin-left: 0;
+          margin-right: 0;
+        }
+        .diwali-cohort-column { justify-self: end; }
         .diwali-journey-strip {
           grid-template-columns: minmax(200px, 1fr) auto minmax(200px, 1fr);
-          margin: 24px 48px 28px;
-          padding: 16px 24px;
+          flex-shrink: 0;
+          margin: clamp(8px, 2vh, 24px) 0 clamp(8px, 2vh, 28px);
+          padding: clamp(8px, 1.8vh, 16px) 24px;
           border: 1px solid rgba(255, 255, 255, 0.18);
           border-radius: 22px;
           background-color: rgba(7, 25, 54, 0.35);
@@ -679,8 +562,33 @@ export function DiwaliHero() {
           color: rgba(255, 255, 255, 0.82);
         }
         .diwali-journey-strip .diwali-diya-label.lit { color: #ffffff; font-weight: 700; }
-        .diwali-twinkle {
-          animation: diwali-twinkle 3s ease-in-out infinite;
+        .diwali-twinkle { opacity: 1; }
+        .diwali-light-bulb {
+          filter:
+            drop-shadow(0 0 4px var(--light-color))
+            drop-shadow(0 0 10px var(--light-color))
+            drop-shadow(0 0 20px color-mix(in srgb, var(--light-color) 28%, transparent));
+        }
+        .diwali-light-halo {
+          mix-blend-mode: screen;
+          filter:
+            drop-shadow(0 0 4px var(--light-color))
+            drop-shadow(0 0 10px var(--light-color))
+            drop-shadow(0 0 20px color-mix(in srgb, var(--light-color) 28%, transparent));
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          .diwali-twinkle {
+            animation: diwali-twinkle 2.4s ease-in-out infinite;
+            animation-delay: var(--light-delay);
+          }
+          .diwali-light-halo {
+            animation: diwali-halo-twinkle 2.4s ease-in-out infinite;
+            animation-delay: var(--light-delay);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .diwali-twinkle { opacity: 1; animation: none; }
+          .diwali-light-halo { opacity: 0.2; animation: none; }
         }
         .diwali-gold-dust {
           animation: diwali-gold-dust 12s linear infinite;
@@ -691,13 +599,58 @@ export function DiwaliHero() {
         .diwali-spark {
           animation: diwali-spark 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
         }
+        .diwali-streamer {
+          border-radius: 55% 45% 60% 40%;
+          box-shadow: 0 0 9px color-mix(in srgb, var(--streamer-color) 55%, transparent);
+          opacity: 0;
+          transform-origin: center;
+          will-change: transform, opacity;
+        }
+        .diwali-streamer-left { left: 0; }
+        .diwali-streamer-right { right: 0; }
+        .diwali-cracker-flash {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: radial-gradient(circle, #fff8db 0%, var(--cracker-color) 28%, transparent 74%);
+          filter: drop-shadow(0 0 9px var(--cracker-color));
+          opacity: 0;
+          animation: diwali-cracker-flash 950ms ease-out var(--cracker-delay) both;
+        }
+        .diwali-cracker-launch {
+          width: 4px;
+          height: 24px;
+          border-radius: 999px;
+          background: linear-gradient(to top, transparent, var(--cracker-color) 35%, #fff8db);
+          box-shadow: 0 0 8px var(--cracker-color), 0 0 14px color-mix(in srgb, var(--cracker-color) 70%, transparent);
+          opacity: 0;
+          animation: diwali-cracker-launch 620ms cubic-bezier(0.2, 0.65, 0.35, 1) var(--cracker-launch-delay) both;
+        }
+        .diwali-cracker-spark {
+          width: 4px;
+          height: 18px;
+          border-radius: 999px;
+          background: linear-gradient(to top, transparent 0%, var(--cracker-color) 45%, #fff8db 100%);
+          box-shadow: 0 0 7px var(--cracker-color), 0 0 13px var(--cracker-color);
+          opacity: 0;
+          transform-origin: center bottom;
+          animation: diwali-cracker-spark 1250ms cubic-bezier(0.14, 0.7, 0.28, 1) var(--cracker-spark-delay) both;
+        }
         .diwali-success-pulse {
           animation: diwali-success-glow 1.4s ease-in-out 1;
         }
         .ambient-paused .diwali-twinkle,
         .ambient-paused .diwali-gold-dust,
-        .ambient-paused .sl-float {
+        .ambient-paused .diwali-streamer,
+        .ambient-paused .diwali-cracker-flash,
+        .ambient-paused .diwali-cracker-launch,
+        .ambient-paused .diwali-cracker-spark {
           animation-play-state: paused !important;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          .diwali-streamer {
+            animation: diwali-streamer-burst var(--streamer-duration) cubic-bezier(0.18, 0.72, 0.32, 1) var(--streamer-delay) both;
+          }
         }
         .diwali-diya-button:focus:not(:focus-visible) {
           outline: none;
@@ -706,9 +659,13 @@ export function DiwaliHero() {
           .diwali-twinkle,
           .diwali-gold-dust,
           .diwali-flame-flicker,
+          .diwali-opening-visual,
           .diwali-spark,
+          .diwali-streamer,
+          .diwali-cracker-flash,
+          .diwali-cracker-launch,
+          .diwali-cracker-spark,
           .diwali-diya-button,
-          .sl-float,
           .animate-pulse,
           .animate-ping {
             animation: none !important;
@@ -718,9 +675,9 @@ export function DiwaliHero() {
           .diwali-spark {
             display: none !important;
           }
-          .diwali-success-pulse {
-            animation: none !important;
-          }
+          .diwali-streamer { display: none !important; }
+          .diwali-crackers-layer { display: none !important; }
+          .diwali-success-pulse { animation: none !important; }
           .diwali-flame {
             transition: none !important;
           }
@@ -732,20 +689,21 @@ export function DiwaliHero() {
           .diwali-bloom { transition: none !important; }
         }
         @media (max-width: 1100px) {
-          .diwali-journey-strip { margin-right: 24px; margin-left: 24px; padding-right: 16px; padding-left: 16px; }
+          .diwali-journey-strip { padding-right: 16px; padding-left: 16px; }
         }
         @media (max-width: 1023px) {
-          .diwali-journey-strip { grid-template-columns: minmax(0, 1fr); row-gap: 16px; margin-right: 16px; margin-left: 16px; }
+          .diwali-cohort-column > section[aria-label="Active cohort"] { margin-inline: auto; }
+          .diwali-journey-strip { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
           .diwali-journey-strip .diwali-diya-row { justify-content: center; gap: 12px; }
+          .diwali-journey-status { width: 100%; justify-content: center; }
+          .diwali-journey-status > :is(span, a) { width: 100%; }
           .diwali-journey-strip .diwali-diya-button { width: 52px; min-height: 68px; }
           .diwali-journey-strip .diwali-diya-visual { width: 40px; height: 44px; }
           .diwali-journey-strip .diwali-diya-label { font-size: 11px; line-height: 14px; }
-          .diwali-journey-status { width: 100%; justify-content: center; }
-          .diwali-journey-status > :is(span, a) { width: 100%; }
           .diwali-bloom-lit { width: 52px; height: 52px; }
         }
         @media (max-width: 480px) {
-          .diwali-journey-strip { margin-right: 12px; margin-left: 12px; padding: 12px; }
+          .diwali-journey-strip { padding: 12px; }
           .diwali-journey-strip .diwali-diya-row { gap: 6px; }
           .diwali-journey-strip .diwali-diya-button { width: 50px; }
           .diwali-journey-strip .diwali-diya-visual { width: 36px; height: 40px; }
@@ -753,25 +711,16 @@ export function DiwaliHero() {
         }
       `}</style>
 
-      {/* Screen reader live announcement for progressive diya lighting */}
+      {/* Announces the current independent diya toggle count without changing the panel layout. */}
       <div className="sr-only" aria-live="polite" role="status">
-        {liveAnnouncement}
+        {litCount} of 5 lit
       </div>
 
       {/* Main Diwali Hero Panel */}
       <div
-        className={`relative mx-auto flex w-full max-w-[1200px] flex-col overflow-visible rounded-[28px] text-white shadow-[0_24px_60px_-24px_rgba(12,42,92,0.55)] ${
+        className={`relative flex w-full flex-1 flex-col justify-between overflow-hidden text-white ${
           isAmbientActive ? '' : 'ambient-paused'
         }`}
-        style={{ background: 'linear-gradient(135deg, #0c2a5c 0%, #1b52a4 58%, #1479c4 100%)' }}
-        onMouseMove={(event) => {
-          const rect = event.currentTarget.getBoundingClientRect();
-          setShift({
-            x: (event.clientX - rect.left - rect.width / 2) / 25,
-            y: (event.clientY - rect.top - rect.height / 2) / 25,
-          });
-        }}
-        onMouseLeave={() => setShift({ x: 0, y: 0 })}
       >
         {/* String Lights along top border */}
         <StringLights />
@@ -820,23 +769,75 @@ export function DiwaliHero() {
           ))}
         </div>
 
-        {/* Content grid: columns share a top edge; the right preview aligns with the badge. */}
-        <div className="diwali-hero-content relative z-10 grid min-w-0 grid-cols-[minmax(0,1fr)] items-center gap-6 px-6 pt-[72px] sm:px-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-8">
+        {/* Brief Diwali streamer burst from both edges; decorative and behind hero content. */}
+        <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden" aria-hidden="true">
+          {DIWALI_STREAMERS.map((streamer, index) => (
+            <span
+              key={`streamer-${index}`}
+              className={`diwali-streamer diwali-streamer-${streamer.side} absolute block`}
+              style={{
+                top: streamer.top,
+                width: `${streamer.width}px`,
+                height: `${streamer.height}px`,
+                backgroundColor: streamer.color,
+                '--streamer-color': streamer.color,
+                '--streamer-delay': `${streamer.delay}ms`,
+                '--streamer-duration': `${streamer.duration}ms`,
+                '--streamer-drop': `${streamer.drop}px`,
+                '--streamer-start-x': streamer.side === 'left' ? '-30px' : '30px',
+                '--streamer-end-x': streamer.side === 'left' ? 'clamp(18px, 4vw, 56px)' : 'clamp(-56px, -4vw, -18px)',
+                '--streamer-start-angle': `${streamer.startAngle}deg`,
+                '--streamer-end-angle': `${streamer.endAngle}deg`,
+              } as CSSProperties}
+            />
+          ))}
+        </div>
+
+        {/* Brief, staggered Diwali cracker bursts; decorative and behind hero content. */}
+        <div className="diwali-crackers-layer pointer-events-none absolute inset-0 z-[2] overflow-hidden" aria-hidden="true">
+          {DIWALI_CRACKER_BURSTS.map((burst, burstIndex) => (
+            <div
+              key={`cracker-${burst.side}-${burstIndex}`}
+              className="absolute h-0 w-0"
+              style={{
+                left: burst.left,
+                top: burst.top,
+                '--cracker-color': burst.color,
+                '--cracker-rise': '40vh',
+                '--cracker-launch-delay': `${burst.delay}ms`,
+                '--cracker-delay': `${burst.delay + 620}ms`,
+              } as CSSProperties}
+            >
+              <span className="diwali-cracker-launch absolute -left-[2px] -top-[12px] block" />
+              <span className="diwali-cracker-flash absolute -left-[14px] -top-[14px] block" />
+              {DIWALI_CRACKER_SPARKS.map((spark, sparkIndex) => (
+                <span
+                  key={`cracker-spark-${sparkIndex}`}
+                  className="diwali-cracker-spark absolute -left-[2px] -top-[18px] block"
+                  style={{
+                    '--cracker-dx': `${spark.dx}px`,
+                    '--cracker-dy': `${spark.dy}px`,
+                    '--cracker-angle': `${spark.angle}deg`,
+                    '--cracker-spark-delay': `${burst.delay + 620 + 60 + sparkIndex * 12}ms`,
+                  } as CSSProperties}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="diwali-inner-content relative z-10 mx-auto flex w-[calc(100%-2rem)] max-w-[1200px] flex-1 flex-col px-6 pt-[clamp(8px,3vh,52px)] sm:w-[calc(100%-3rem)] sm:px-10">
+        {/* Content grid: both columns share the hero's content edges. */}
+        <div className="diwali-hero-content grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] items-center gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-8">
           {/* Left Column Content:
               Visual Hierarchy: pill -> headline -> subhead -> greeting -> CTAs -> trust chips */}
           <div className="diwali-copy min-w-0">
-            {/* 1. Badge Pill: "Happy Diwali 2026" */}
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-[#071936]/40 px-3.5 py-1 text-xs font-semibold text-white backdrop-blur-md shadow-sm">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-[#ffd36b] shadow-[0_0_8px_#ffd36b]" aria-hidden="true" />
-              Happy Diwali 2026
-            </span>
-
             {/* 2. Headline */}
             <h1
               className="diwali-headline mt-3 font-extrabold leading-[1.06] tracking-tight text-white"
               style={{
                 fontFamily: 'var(--font-home-display), Inter, sans-serif',
-                fontSize: 'clamp(2rem, 4.8vw, 3.5rem)',
+                fontSize: 'clamp(1.75rem, 5.2vh, 3.5rem)',
                 letterSpacing: '-0.03em',
                 maxWidth: '15ch',
               }}
@@ -848,8 +849,8 @@ export function DiwaliHero() {
             </h1>
 
             {/* 3. One-line subheadline; keep hero messaging focused on placements. */}
-            <p className="diwali-subhead mt-4 max-w-lg text-[15px] leading-relaxed text-white sm:text-[17px]">
-              Sign in free, then subscribe once for AI-matched jobs and a dedicated coordinator.
+            <p className="diwali-subhead mt-4 max-w-[560px] text-[15px] leading-[clamp(1.3rem,2.7vh,1.6rem)] text-white sm:text-[17px]">
+              Subscribe once. Join a curated batch of 12 – get AI-matched jobs from top companies, 24/7 application tracking, and a human coordinator focused on your placement every day.
             </p>
 
             <p className="mt-3 border-l-[3px] border-[#ffd36b] py-0.5 pl-3 text-[14px] leading-relaxed text-white/[0.78]">
@@ -888,27 +889,23 @@ export function DiwaliHero() {
                 <span className="h-1.5 w-1.5 rounded-full bg-[#00a2e5]" aria-hidden="true" /> Dedicated coordinator
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-[#071936]/40 px-3 py-1 font-medium backdrop-blur-sm">
-                <span className="rounded-full bg-[#098855] px-1.5 py-0.5 text-[11px] font-bold uppercase leading-none text-white">
-                  AI
-                </span>{' '}
-                Matched jobs
+                <span className="h-1.5 w-1.5 rounded-full bg-[#098855]" aria-hidden="true" /> Matched jobs
               </span>
             </div>
 
           </div>
 
-          {/* Right Column: Product Preview Mockup */}
-          <ProductMockup shift={shift} />
+          <div className="diwali-cohort-column relative z-10 flex w-full items-center justify-end pb-4">
+            <CohortCard seatsOpen={availableSeatCount} loading={batchLoading} />
+          </div>
         </div>
 
         <div className="diwali-journey-strip grid items-center gap-4 overflow-hidden backdrop-blur-md">
           <div className="flex min-h-[52px] flex-col justify-center gap-1">
-            <p className="text-[15px] font-bold leading-tight text-white">
-              {allLit ? 'Your career journey is lit.' : 'Light the 5 diyas of your journey'}
+            <p className="min-h-5 min-w-[250px] text-[15px] font-bold leading-tight text-white">
+              {allLit ? 'Your career journey is lit.' : `Your career journey: ${litCount} of 5 lit`}
             </p>
-            <p className="text-[13px] leading-tight text-white/90">
-              {allLit ? 'Seats are limited per batch.' : 'Tap each diya'}
-            </p>
+            <p className="text-[13px] leading-tight text-white/90">Seats are limited per batch.</p>
           </div>
 
           <div className="diwali-diya-row flex items-center justify-center gap-7" role="group" aria-label="Five journey diyas">
@@ -918,34 +915,29 @@ export function DiwaliHero() {
                 index={index}
                 step={step}
                 isLit={litDiyas[index]}
+                isOpening={openingDiyas}
                 onClick={() => handleDiyaClick(index)}
               />
             ))}
           </div>
 
           <div className="diwali-journey-status flex h-11 min-w-[200px] items-center justify-end">
-            {allLit ? (
-              <Link
-                href="/auth/register"
-                className="inline-flex h-11 min-w-[200px] items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#f58020] to-[#fec40d] px-5 text-sm font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(245,128,32,0.5),0_0_24px_rgba(245,128,32,0.4)] transition hover:from-[#f58020] hover:to-[#ffd36b] hover:shadow-[0_16px_36px_rgba(245,128,32,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd36b] diwali-success-pulse"
-              >
-                Claim your seat <span aria-hidden="true">→</span>
-              </Link>
-            ) : (
-              <span className="inline-flex h-11 min-w-[100px] items-center justify-center rounded-full border border-white/30 bg-[#071936]/35 px-4 text-sm font-semibold text-white">
-                {litCount} of 5 lit
-              </span>
-            )}
+            <Link
+              href="/auth/register"
+              className="inline-flex h-11 min-w-[200px] items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#f58020] to-[#fec40d] px-5 text-sm font-bold text-[#0B1B33] shadow-[0_12px_28px_rgba(245,128,32,0.5),0_0_24px_rgba(245,128,32,0.4)] transition hover:from-[#f58020] hover:to-[#ffd36b] hover:shadow-[0_16px_36px_rgba(245,128,32,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffd36b] diwali-success-pulse"
+            >
+              Claim Your Seat <span aria-hidden="true">→</span>
+            </Link>
           </div>
+        </div>
         </div>
 
         {/* Translucent stats bar:
             High contrast WCAG AA background (bg-[#071936]/80), dividers, tabular numerals */}
         <div
-          ref={statsRef}
-          className="relative z-10 shrink-0 border-t border-white/20 bg-[#071936]/80 px-6 py-4 backdrop-blur-md sm:px-10"
+          className="relative z-10 w-full shrink-0 border-t border-white/20 bg-[#071936]/80 px-4 py-[clamp(8px,1.5vh,16px)] backdrop-blur-md sm:px-6"
         >
-          <dl className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <dl className="diwali-stats-content mx-auto grid w-[calc(100%-2rem)] max-w-[1200px] grid-cols-2 gap-4 px-6 sm:w-[calc(100%-3rem)] sm:gap-6 sm:px-10 lg:grid-cols-4">
             {/* Stat 1: Students per batch */}
             <div className="text-center sm:text-left">
               <dt className="sr-only">Students per batch</dt>
@@ -966,7 +958,7 @@ export function DiwaliHero() {
               ) : seatsAvailability.status === 'available' ? (
                 <>
                   <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
-                    {seatsShown}
+                    {availableSeatCount}
                   </dd>
                   <p className="mt-0.5 text-[13px] font-medium text-white/95">Seats open</p>
                 </>

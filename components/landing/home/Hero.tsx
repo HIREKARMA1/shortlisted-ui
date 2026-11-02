@@ -260,8 +260,8 @@ export function Hero() {
                 <YellowUnderline />
               </span>
             </h1>
-            <p className="mt-4 max-w-md text-[14px] leading-relaxed text-white/90 sm:text-[15px]">
-              Sign in free, then subscribe once for jobs, classes, and a coordinator.
+            <p className="mt-4 max-w-[560px] text-[14px] leading-relaxed text-white/90 sm:text-[15px]">
+              Subscribe once. Join a curated batch of 12 – get AI-matched jobs from top companies, 24/7 application tracking, and a human coordinator focused on your placement every day.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               {ready ? (

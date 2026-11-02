@@ -1,9 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { ContactModal } from './ContactModal';
 import { CommandPalette } from './CommandPalette';
-import { Footer } from './Footer';
 import { useHome } from './HomeProvider';
 import { Navbar } from './Navbar';
 import { Modal, PrimaryLink } from './primitives';
@@ -38,9 +36,7 @@ function Frame({ children }: { children: ReactNode }) {
     <div className="min-h-screen flex flex-col bg-[var(--bg)]">
       <Navbar />
       <main className="flex-1 w-full">{children}</main>
-      <Footer />
       <CommandPalette />
-      <ContactModal />
       <UnlockModal />
     </div>
   );

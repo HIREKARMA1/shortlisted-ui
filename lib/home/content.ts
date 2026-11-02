@@ -42,7 +42,7 @@ export type HomeFeature = {
   group: 'explore' | 'student' | 'both';
 };
 
-export const ctaLabel = 'Start free trial';
+export const ctaLabel = 'Try for Free';
 
 /**
  * Seasonal Diwali Hero Window (IST / Asia/Kolkata timezone)

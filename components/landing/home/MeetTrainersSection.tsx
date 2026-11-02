@@ -123,7 +123,7 @@ export function MeetTrainersSection() {
                     href="/free-trial#trainers"
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--brand-blue)] hover:text-[var(--brand-sky)] transition-colors"
                   >
-                    <span>View training curriculum</span>
+                    <span>View preparation topics</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>

@@ -3,7 +3,6 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { homeTokenVars, isSeasonalHeroActive } from '@/lib/home/content';
 import { AppShell } from './AppShell';
-import { ClosingCta } from './ClosingCta';
 import { DiwaliHero } from './DiwaliHero';
 import { FaqAndContact } from './FaqAndContact';
 import { Hero } from './Hero';
@@ -13,6 +12,8 @@ import { PlacementDeskSection } from './PlacementDeskSection';
 import { PlacementJourneySection } from './PlacementJourneySection';
 import { PlansAndBatch } from './PlansAndBatch';
 import { Stories } from './Stories';
+import { ContactSupportSection } from '@/components/landing/ContactSupportSection';
+import { SiteFooter } from '@/components/layout/Footer';
 
 export function HomePage() {
   const [seasonalActive, setSeasonalActive] = useState<boolean>(() => isSeasonalHeroActive());
@@ -47,9 +48,10 @@ export function HomePage() {
           <Stories />
           <PlansAndBatch />
           <FaqAndContact />
-          <ClosingCta />
+          <ContactSupportSection />
         </AppShell>
       </div>
+      <SiteFooter />
     </HomeProvider>
   );
 }

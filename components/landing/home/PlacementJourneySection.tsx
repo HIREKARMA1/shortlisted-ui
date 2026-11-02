@@ -1,103 +1,104 @@
 'use client';
 
 import { useEffect, useRef, useState, type FocusEvent, type KeyboardEvent, type ReactNode } from 'react';
-import { Check, Clock3 } from 'lucide-react';
+import { Check, CheckCircle2, Clock3, LockKeyhole } from 'lucide-react';
 import { PrimaryLink } from './primitives';
 import { useHome } from './HomeProvider';
 
 type StageBadge = 'AI' | 'Coordinator';
+type AccessTag = 'Unlocks with full plan' | 'Free to start' | '';
 
 type Stage = {
   id: string;
   name: string;
   title: string;
-  startDay: number;
-  endDay: number;
   outcome: string;
   you: string[];
   shortlisted: { text: string; badge: StageBadge }[];
+  accessTag: AccessTag;
 };
 
-// TODO: Confirm these placeholder day ranges with product before publishing.
 const STAGES: Stage[] = [
   {
     id: 'profile',
     name: 'Set up profile',
     title: 'Set up your profile',
-    startDay: 1,
-    endDay: 5,
-    outcome: 'Profile ready, coordinator assigned.',
-    you: ['Sign up and add your skills and career goals.'],
-    shortlisted: [
-      { text: 'Builds your readiness profile', badge: 'AI' },
-      { text: 'Introduces your batch of 12 and your coordinator', badge: 'Coordinator' },
+    outcome: 'Tell Shortlisted your skills, college and the roles you want.',
+    you: [
+      'Register in English, Hindi or Odia',
+      'Add your skills, college and target roles',
     ],
+    shortlisted: [
+      { text: 'Builds your readiness profile from your skills, eligibility and career preferences.', badge: 'AI' },
+      { text: 'Introduces your batch of up to 12 and its coordinator after you subscribe.', badge: 'Coordinator' },
+    ],
+    accessTag: 'Free to start',
   },
   {
     id: 'readiness',
     name: 'Check readiness',
     title: 'Check your readiness',
-    startDay: 6,
-    endDay: 15,
-    outcome: 'A clear picture of where you stand.',
-    you: ['Take the assessments and review your results.'],
-    shortlisted: [{ text: 'Shows your strengths and skill gaps', badge: 'AI' }],
+    outcome: 'See where you stand and what to improve.',
+    you: [
+      'Take the readiness assessments',
+      'Review your strengths and skill gaps',
+    ],
+    shortlisted: [
+      { text: 'Assesses your skills and shows your strengths, skill gaps and placement readiness.', badge: 'AI' },
+      { text: 'Helps you understand your results and what to work on next.', badge: 'Coordinator' },
+    ],
+    // TODO: confirm with the team whether assessments are free or part of the paid plan.
+    accessTag: '',
   },
   {
     id: 'prepare',
     name: 'Prepare',
-    title: 'Prepare',
-    startDay: 16,
-    endDay: 30,
-    outcome: 'An interview-ready profile.',
-    you: ['Work on your gaps and polish your resume.'],
+    title: 'Prepare for real hiring',
+    outcome: 'Get ready for real interviews and applications, not just theory.',
+    you: ['Practise interviews and refine your resume and profile', 'Work on your communication and interview approach'],
     shortlisted: [
-      { text: 'Guides your profile and next steps', badge: 'Coordinator' },
-      { text: 'Gives you practice rounds', badge: 'AI' },
+      { text: 'Gives you interview practice and assessments to measure your progress.', badge: 'AI' },
+      { text: 'Guides your resume, communication and interview approach.', badge: 'Coordinator' },
     ],
+    accessTag: 'Unlocks with full plan',
   },
   {
     id: 'matching',
-    name: 'Get matched',
-    title: 'Get matched',
-    startDay: 31,
-    endDay: 42,
-    outcome: 'Applications that fit, not random ones.',
-    you: ['Apply to the roles that suit you.'],
+    name: 'Start applying',
+    title: 'Apply to jobs assigned to your batch',
+    outcome: 'Focus on openings that fit your profile instead of applying randomly.',
+    you: ['Review the DISHA jobs assigned to your batch', 'Apply with one click to the roles that fit you'],
     shortlisted: [
-      { text: 'Matches live jobs to your profile through DISHA', badge: 'AI' },
-      { text: 'Tracks every application in real time', badge: 'AI' },
+      { text: 'Matches live DISHA openings to your profile, skills, eligibility and readiness.', badge: 'AI' },
+      { text: 'Guides your applications and follow-ups.', badge: 'Coordinator' },
     ],
+    accessTag: 'Unlocks with full plan',
   },
   {
     id: 'interview',
     name: 'Interview',
-    title: 'Interview',
-    startDay: 43,
-    endDay: 55,
-    outcome: 'Confident interviews and a clear status.',
-    you: ['Do mock rounds, then real interviews.'],
+    title: 'Interview with support',
+    outcome: 'Know where each application stands and what to do next.',
+    you: ['Track shortlist and interview status in your dashboard', 'Prepare for each interview before you attend'],
     shortlisted: [
-      { text: 'Runs practice interviews with you', badge: 'AI' },
-      { text: 'Gives feedback and shortlist updates', badge: 'Coordinator' },
+      { text: 'Keeps your shortlist and interview status updated in your dashboard, 24/7.', badge: 'AI' },
+      { text: 'Helps you prepare for interviews and follow up afterwards.', badge: 'Coordinator' },
     ],
+    accessTag: 'Unlocks with full plan',
   },
   {
     id: 'offer',
     name: 'Get placed',
-    title: 'Get placed',
-    startDay: 56,
-    endDay: 60,
-    outcome: 'Offers tracked from start to finish.',
-    you: ['Review your offers and choose your next step.'],
+    title: 'Track offers and get placed',
+    outcome: 'Stay supported through offers until you join a role.',
+    you: ['Track your offers and selection status', 'Follow up with your coordinator on next steps'],
     shortlisted: [
-      { text: 'Tracks offers and next steps', badge: 'AI' },
-      { text: 'Guides your decision', badge: 'Coordinator' },
+      { text: 'Shows your applications, interviews and offers in one place, so you always know where you stand.', badge: 'AI' },
+      { text: 'Supports your follow-ups and next steps until you join a role.', badge: 'Coordinator' },
     ],
+    accessTag: 'Unlocks with full plan',
   },
 ];
-
-const DAY_RANGE = (stage: Stage) => `Days ${stage.startDay}–${stage.endDay}`;
 
 function StageStepper({
   activeStage,
@@ -121,7 +122,7 @@ function StageStepper({
       <div className="journey-track" aria-hidden="true">
         <span className="journey-track-fill" style={{ width: `${progress}%` }} />
       </div>
-      <div className="relative z-10 grid grid-cols-6">
+      <div className="journey-stepper-tabs relative z-10 grid grid-cols-6">
         {STAGES.map((stage, index) => {
           const isActive = index === activeStage;
           const isPast = index < activeStage;
@@ -135,7 +136,7 @@ function StageStepper({
               role="tab"
               aria-selected={isActive}
               aria-controls="journey-stage-panel"
-              aria-label={`Stage ${index + 1}: ${stage.title}, ${DAY_RANGE(stage)}`}
+              aria-label={`Stage ${index + 1}: ${stage.name}`}
               tabIndex={isActive ? 0 : -1}
               onClick={() => onSelect(index)}
               onKeyDown={(event) => onKeyDown(event, index)}
@@ -158,9 +159,6 @@ function StageStepper({
               <span className="journey-step-name mt-2 text-[14.5px] font-semibold leading-tight">
                 {stage.name}
               </span>
-              <span className="journey-step-days mt-1 text-[13px] tabular-nums leading-none">
-                {DAY_RANGE(stage)}
-              </span>
             </button>
           );
         })}
@@ -169,8 +167,8 @@ function StageStepper({
   );
 }
 
-function BulletList({ children }: { children: ReactNode }) {
-  return <ul className="journey-bullet-list flex flex-col gap-2">{children}</ul>;
+function BulletList({ children, className }: { children: ReactNode; className?: string }) {
+  return <ul className={`journey-bullet-list ${className ?? ''}`}>{children}</ul>;
 }
 
 function StageCard({
@@ -184,47 +182,60 @@ function StageCard({
 }) {
   return (
     <div
-      className={`journey-stage-content grid grid-cols-1 content-start items-start gap-5 min-[901px]:grid-cols-[1.1fr_1fr_1.2fr] min-[901px]:gap-8 ${
-        isActive ? 'journey-stage-active' : 'journey-stage-inactive'
-      }`}
-      aria-hidden={!isActive}
+      className={`journey-stage-content ${isActive ? 'journey-stage-active' : 'journey-stage-inactive'}`}
+      role="region"
+      aria-labelledby={`journey-stage-title-${stage.id}`}
+      aria-hidden={isActive ? 'false' : 'true'}
     >
-      <div>
-        <p className="journey-stage-kicker text-[13.5px] font-bold">
-          Stage {index + 1} of 6 <span aria-hidden="true">·</span> {DAY_RANGE(stage)}
-        </p>
-        <h3 className="mt-1.5 text-[22px] font-extrabold leading-tight tracking-[-0.02em]">
-          {stage.title}
-        </h3>
-        <p className="mt-3 flex items-start gap-2 text-[14.5px] leading-[1.45]">
-          <Check className="journey-outcome-check mt-0.5 h-4 w-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
-          <span>{stage.outcome}</span>
-        </p>
+      <div className="journey-stage-summary">
+        <div className="journey-stage-number-line">
+          <span className="journey-stage-number">0{index + 1}</span>
+          <span className="journey-stage-total">of 6</span>
+        </div>
+        <h3 id={`journey-stage-title-${stage.id}`} className="journey-stage-title">{stage.title}</h3>
+        <p className="journey-stage-outcome">{stage.outcome}</p>
+        {stage.accessTag && (
+          <span className={`journey-access-tag ${stage.accessTag === 'Free to start' ? 'journey-access-free' : 'journey-access-plan'}`}>
+            {stage.accessTag === 'Free to start'
+              ? <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+              : <LockKeyhole className="h-4 w-4" aria-hidden="true" />}
+            {stage.accessTag}
+          </span>
+        )}
       </div>
 
-      <div>
-        <h4 className="journey-list-heading mb-2 text-[13px] font-bold">What you do</h4>
-        <BulletList>
-          {stage.you.map((item) => (
-            <li key={item} className="journey-bullet text-[15px] leading-[1.45]">
-              {item}
-            </li>
-          ))}
-        </BulletList>
-      </div>
+      <div className="journey-stage-details">
+        <section className="journey-stage-section" aria-labelledby={`journey-you-${stage.id}`}>
+          <h4 id={`journey-you-${stage.id}`} className="journey-panel-heading">What you do</h4>
+          <BulletList className={stage.you.length > 2 ? 'journey-bullet-list-three' : 'journey-bullet-list-two'}>
+            {stage.you.map((item) => (
+              <li key={item} className="journey-task-card">
+                <CheckCircle2 className="journey-bullet-icon" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </BulletList>
+        </section>
 
-      <div>
-        <h4 className="journey-list-heading mb-2 text-[13px] font-bold">What Shortlisted does</h4>
-        <ul className="journey-shortlisted-list">
-          {stage.shortlisted.map((item) => (
-            <li key={item.text} className="journey-shortlisted-row">
-              <span className={`journey-badge ${item.badge === 'AI' ? 'journey-badge-ai' : 'journey-badge-coordinator'}`}>
-                {item.badge}
-              </span>
-              <span className="journey-shortlisted-copy">{item.text}</span>
-            </li>
-          ))}
-        </ul>
+        <section className="journey-stage-section" aria-labelledby={`journey-shortlisted-${stage.id}`}>
+          <h4 id={`journey-shortlisted-${stage.id}`} className="journey-panel-heading journey-help-block-heading">How you get help</h4>
+          <ul className="journey-help-list">
+            {stage.shortlisted.map((item) => (
+              <li key={item.text} className="journey-help-row">
+                <div className="journey-help-label-column">
+                  <p className="journey-help-label">
+                    <span className={`journey-help-dot ${item.badge === 'AI' ? 'journey-help-dot-ai' : 'journey-help-dot-coordinator'}`} aria-hidden="true" />
+                    {item.badge === 'AI' ? 'AI' : 'Your coordinator'}
+                  </p>
+                  <p className="journey-help-descriptor">
+                    {item.badge === 'AI' ? 'Automatic, 24/7' : 'A real person for your batch'}
+                  </p>
+                </div>
+                <p className="journey-help-description">{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );
@@ -238,16 +249,15 @@ function TrialStrip({ href }: { href: string }) {
           <Clock3 className="h-5 w-5" strokeWidth={1.8} />
         </span>
         <p className="text-[15px] leading-[1.45]">
-          <strong>7-day free trial.</strong> Start free, then subscribe once for AI-matched jobs, assessments, application tracking and a dedicated coordinator in a batch of 12.
+          <strong>Try Shortlisted free.</strong> Explore first, then subscribe once to unlock your batch of 12, a dedicated coordinator, AI-matched jobs and application tracking.
         </p>
       </div>
       <PrimaryLink
         href={href}
         className="journey-trial-cta w-full min-h-12 shrink-0 bg-gradient-to-r from-[#f58020] to-[#fec40d] font-bold text-[#0B1B33] shadow-[0_8px_20px_rgba(245,128,32,0.22)] hover:-translate-y-px hover:shadow-[0_10px_24px_rgba(245,128,32,0.3)] min-[641px]:w-auto min-[641px]:min-h-11"
       >
-        Start 7-day free trial
+        Try for Free
       </PrimaryLink>
-      {/* TODO: Confirm with product exactly what the 7-day trial includes. */}
     </div>
   );
 }
@@ -261,7 +271,6 @@ export function PlacementJourneySection() {
   const [isFocusWithin, setIsFocusWithin] = useState(false);
   const [holdUntil, setHoldUntil] = useState(0);
   const [resumeAfter, setResumeAfter] = useState(0);
-  const [progressCycle, setProgressCycle] = useState(0);
   const [schedulerTick, setSchedulerTick] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -306,8 +315,16 @@ export function PlacementJourneySection() {
     timerStartedAtRef.current = null;
     setHoldUntil(Date.now() + 12000);
     setActiveStage(index);
-    setProgressCycle((cycle) => cycle + 1);
   };
+
+  useEffect(() => {
+    if (window.matchMedia('(min-width: 768px)').matches) return;
+    tabRefs.current[activeStage]?.scrollIntoView({
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
+  }, [activeStage, prefersReducedMotion]);
 
   useEffect(() => {
     const now = Date.now();
@@ -340,7 +357,6 @@ export function PlacementJourneySection() {
       timerStartedAtRef.current = null;
       remainingMsRef.current = 6000;
       setActiveStage((stage) => (stage + 1) % STAGES.length);
-      setProgressCycle((cycle) => cycle + 1);
     }, remainingMsRef.current);
 
     return () => {
@@ -393,15 +409,12 @@ export function PlacementJourneySection() {
     setResumeAfter(isHoveredRef.current ? 0 : Date.now() + 3000);
   };
 
-  const isAutoplayPaused = prefersReducedMotion || !isInView || !isTabVisible || isHovered || isFocusWithin || Math.max(holdUntil, resumeAfter) > Date.now();
-
   return (
     <section
       ref={sectionRef}
       id="journey"
       aria-labelledby="journey-heading"
       className="journey-section scroll-mt-[88px] border-y bg-white py-14"
-      data-autoplay-paused={isAutoplayPaused}
       onPointerEnter={() => {
         isHoveredRef.current = true;
         setIsHovered(true);
@@ -437,67 +450,115 @@ export function PlacementJourneySection() {
         }
         .journey-card {
           position: relative;
+          overflow: hidden;
           color: var(--journey-ink);
-          background: var(--journey-card);
-          border-color: var(--journey-border);
-          box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.06);
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 20px;
+          box-shadow: 0 10px 30px rgba(15, 40, 90, 0.08);
         }
         .journey-card-content-stack {
           display: grid;
           grid-template-columns: minmax(0, 1fr);
           grid-template-rows: max-content;
-          align-items: start;
+          align-items: stretch;
         }
         .journey-stage-content {
           grid-area: 1 / 1 / 2 / 2;
+          display: grid;
+          grid-template-columns: 300px minmax(0, 1fr);
+          align-items: stretch;
+          min-width: 0;
           color: var(--journey-ink);
-          transition: opacity 220ms ease, visibility 220ms ease;
+          opacity: 0;
+          transform: translateY(8px);
+          visibility: hidden;
+          transition: opacity 200ms ease, transform 200ms ease, visibility 0s linear 200ms;
         }
         .journey-stage-active {
           visibility: visible;
           opacity: 1;
+          transform: translateY(0);
+          transition: opacity 200ms ease, transform 200ms ease, visibility 0s;
         }
         .journey-stage-inactive {
-          visibility: hidden;
-          opacity: 0;
           pointer-events: none;
         }
-        .journey-stage-progress-track {
-          position: absolute;
-          right: 32px;
-          bottom: 12px;
-          left: 32px;
-          height: 2px;
-          overflow: hidden;
-          border-radius: 2px;
-          background: #e6f0fb;
-          pointer-events: none;
+        .journey-stage-summary {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 28px;
+          color: #ffffff;
+          background: linear-gradient(145deg, #1553a5, #1e6fd0);
         }
-        .journey-stage-progress-fill {
-          display: block;
-          width: 100%;
-          height: 100%;
-          transform: scaleX(0);
-          transform-origin: left center;
-          animation: journey-autoplay-progress 6000ms linear forwards;
+        .journey-stage-number-line { display: flex; align-items: baseline; gap: 12px; }
+        .journey-stage-number {
+          color: #ffffff;
+          font-size: 56px;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          font-variant-numeric: tabular-nums;
         }
-        .journey-section[data-autoplay-paused='true'] .journey-stage-progress-fill {
-          animation-play-state: paused;
+        .journey-stage-total {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 16px;
+          font-weight: 500;
         }
-        @keyframes journey-autoplay-progress {
-          to { transform: scaleX(1); }
+        .journey-stage-title {
+          color: #ffffff;
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+        }
+        .journey-stage-outcome {
+          color: #ffffff;
+          font-size: 15px;
+          line-height: 1.5;
+        }
+        .journey-access-tag {
+          display: inline-flex;
+          min-height: 40px;
+          flex: 0 0 auto;
+          align-self: flex-start;
+          align-items: center;
+          gap: 7px;
+          border: 1px solid transparent;
+          border-radius: 999px;
+          padding: 8px 14px;
+          font-size: 14px;
+          font-weight: 600;
         }
         .journey-section .journey-eyebrow,
-        .journey-section .journey-stage-kicker {
+        .journey-section .journey-panel-heading {
           color: var(--journey-blue);
         }
         .journey-section .journey-heading-hyphen {
           font-family: system-ui, sans-serif;
         }
-        .journey-section .journey-subtitle,
-        .journey-section .journey-step-days,
-        .journey-section .journey-list-heading {
+        .journey-section .journey-subtitle {
           color: var(--journey-muted);
+        }
+        .journey-stage-details {
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          gap: 24px;
+          padding: 24px 28px;
+        }
+        .journey-stage-section { min-width: 0; }
+        .journey-panel-heading {
+          margin-bottom: 12px;
+          color: #1e3a8a;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          line-height: 1.4;
+          text-transform: uppercase;
         }
         .journey-section .journey-track {
           position: absolute;
@@ -546,61 +607,94 @@ export function PlacementJourneySection() {
         .journey-section .journey-outcome-check {
           color: var(--journey-green);
         }
-        .journey-section .journey-bullet {
-          position: relative;
-          padding-left: 14px;
-          color: var(--journey-muted);
-        }
-        .journey-section .journey-bullet::before {
-          position: absolute;
-          top: 0.55em;
-          left: 0;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: var(--journey-sky);
-          content: '';
-        }
-        .journey-section .journey-badge-ai {
-          color: var(--journey-blue);
-          background: #e6f0fb;
-        }
-        .journey-section .journey-badge-coordinator {
-          color: var(--journey-amber);
-          background: #fdf0d9;
-        }
-        .journey-section .journey-shortlisted-list {
+        .journey-section .journey-bullet-list {
           display: grid;
-          row-gap: 12px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
           margin: 0;
           padding: 0;
           list-style: none;
         }
-        .journey-section .journey-shortlisted-row {
-          display: grid;
-          grid-template-columns: 96px minmax(0, 1fr);
-          column-gap: 12px;
-          align-items: start;
+        .journey-section .journey-bullet-list-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .journey-section .journey-task-card {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 14px 16px;
+          color: #0f172a;
+          background: #f8fafc;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 1.5;
         }
-        .journey-section .journey-badge {
-          display: inline-flex;
-          width: fit-content;
-          min-height: 22px;
+        .journey-bullet-icon {
+          width: 20px;
+          height: 20px;
+          flex: 0 0 auto;
+          margin-top: 3px;
+          color: #1b52a4;
+        }
+        .journey-section .journey-access-free {
+          border-color: #86c9a4;
+          color: #166534;
+          background: #ffffff;
+        }
+        .journey-section .journey-access-plan {
+          border-color: #f2c879;
+          color: #854d0e;
+          background: #ffffff;
+        }
+        .journey-section .journey-help-list {
+          overflow: hidden;
+          margin: 0;
+          padding: 0;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          background: #ffffff;
+          list-style: none;
+        }
+        .journey-section .journey-help-block-heading { font-size: 13px; }
+        .journey-section .journey-help-row {
+          display: grid;
+          grid-template-columns: 190px minmax(0, 1fr);
+          align-items: start;
+          column-gap: 24px;
+          min-width: 0;
+          padding: 16px 20px;
+        }
+        .journey-section .journey-help-row + .journey-help-row { border-top: 1px solid #e2e8f0; }
+        .journey-help-label {
+          display: flex;
           align-items: center;
-          justify-content: center;
-          justify-self: start;
-          border-radius: 999px;
-          padding: 2px 10px;
-          font-size: 12px;
+          gap: 8px;
+          color: #0f172a;
+          font-size: 16px;
           font-weight: 700;
           line-height: 1.5;
-          text-align: center;
         }
-        .journey-section .journey-shortlisted-copy {
+        .journey-help-dot {
+          width: 8px;
+          height: 8px;
+          flex: 0 0 auto;
+          border-radius: 50%;
+        }
+        .journey-help-dot-ai { background: #1e6fd0; }
+        .journey-help-dot-coordinator { background: #d97706; }
+        .journey-help-descriptor {
+          margin-top: 2px;
+          color: #475569;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 1.4;
+        }
+        .journey-help-description {
           min-width: 0;
-          color: var(--journey-muted);
-          font-size: 15px;
-          line-height: 1.45;
+          color: #1e293b;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.6;
         }
         .journey-section .journey-trial-strip {
           color: var(--journey-ink);
@@ -615,15 +709,21 @@ export function PlacementJourneySection() {
           outline: 2px solid var(--journey-blue);
           outline-offset: 3px;
         }
-        @media (max-width: 640px) {
-          .journey-section .journey-step-name,
-          .journey-section .journey-step-days { display: none; }
+        @media (max-width: 767px) {
+          .journey-section .journey-stepper { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; }
+          .journey-section .journey-stepper-tabs { min-width: 780px; }
           .journey-section .journey-track { top: 18px; }
-          .journey-section .journey-shortlisted-row { grid-template-columns: 84px minmax(0, 1fr); }
+          .journey-stage-content { grid-template-columns: minmax(0, 1fr); }
+          .journey-stage-summary { gap: 16px; padding: 20px; }
+          .journey-stage-number { font-size: 40px; }
+          .journey-stage-title { font-size: 24px; }
+          .journey-stage-details { gap: 24px; padding: 20px; }
+          .journey-section .journey-bullet-list-three { grid-template-columns: minmax(0, 1fr); }
+          .journey-section .journey-bullet-list { grid-template-columns: minmax(0, 1fr); }
+          .journey-section .journey-help-row { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 16px; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .journey-section .journey-stage-content { transition-duration: 0.01ms; }
-          .journey-section .journey-stage-progress-track { display: none; }
+          .journey-section .journey-stage-content { transition: none; transform: none; }
         }
         @media (prefers-reduced-motion: reduce) {
           .journey-section *,
@@ -646,10 +746,10 @@ export function PlacementJourneySection() {
             id="journey-heading"
             className="mt-2 text-[clamp(1.65rem,3vw,2.15rem)] font-extrabold leading-tight tracking-[-0.02em]"
           >
-            Your 60<span className="journey-heading-hyphen">-</span>day placement roadmap
+            Your placement journey, step by step
           </h2>
           <p className="journey-subtitle mt-2 mb-10 max-w-[720px] text-base leading-relaxed">
-            Six stages, with AI-matched jobs and a dedicated coordinator in a batch of 12.
+            Six clear stages take you from building your profile to tracking offers. AI-matched jobs, assessments and a dedicated coordinator guide every step, in a batch of 12.
           </p>
         </header>
 
@@ -667,7 +767,7 @@ export function PlacementJourneySection() {
           role="tabpanel"
           aria-labelledby={`journey-tab-${currentStage.id}`}
           aria-live="polite"
-          className="journey-card mt-4 rounded-[20px] border px-6 py-6 min-[901px]:px-8 min-[901px]:py-8"
+          className="journey-card mt-6 overflow-hidden rounded-[20px] border"
         >
           <div className="journey-card-content-stack">
             {STAGES.map((stage, index) => (
@@ -679,15 +779,6 @@ export function PlacementJourneySection() {
               />
             ))}
           </div>
-          {!prefersReducedMotion && (
-            <div className="journey-stage-progress-track" aria-hidden="true">
-              <span
-                key={`${activeStage}-${progressCycle}`}
-                className="journey-stage-progress-fill"
-                style={{ backgroundColor: 'var(--journey-blue)' }}
-              />
-            </div>
-          )}
         </div>
 
         <TrialStrip href={trialCtaHref} />

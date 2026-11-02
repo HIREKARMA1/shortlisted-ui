@@ -7,8 +7,6 @@ type ShellState = {
   setMobileOpen: (open: boolean) => void;
   paletteOpen: boolean;
   setPaletteOpen: (open: boolean) => void;
-  contactOpen: boolean;
-  setContactOpen: (open: boolean) => void;
   unlockOpen: boolean;
   setUnlockOpen: (open: boolean) => void;
   pendingTargetHref: string | null;
@@ -21,7 +19,6 @@ const ShellContext = createContext<ShellState | null>(null);
 export function ShellProvider({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
   const [unlockOpen, setUnlockOpen] = useState(false);
   const [pendingTargetHref, setPendingTargetHref] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState('home');
@@ -38,7 +35,7 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const ids = ['home', 'journey', 'desk', 'trainers', 'stories', 'plans', 'faq'];
+    const ids = ['home', 'journey', 'desk', 'trainers', 'stories', 'plans', 'faq', 'contact'];
     const nodes = ids.map((id) => document.getElementById(id)).filter((node): node is HTMLElement => !!node);
     if (!nodes.length) return;
 
@@ -96,8 +93,6 @@ export function ShellProvider({ children }: { children: ReactNode }) {
         setMobileOpen,
         paletteOpen,
         setPaletteOpen,
-        contactOpen,
-        setContactOpen,
         unlockOpen,
         setUnlockOpen,
         pendingTargetHref,

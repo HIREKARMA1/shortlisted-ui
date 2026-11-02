@@ -56,7 +56,7 @@
       "title": "Ready to join?",
       "subtitle": "Limited seats per batch. Start with a free profile - subscribe when you're ready.",
       "cards": [
-        { "title": "Claim your seat", "body": "Register and subscribe to join the current batch before seats fill up.", "href": "/auth/register", "cta": "Register now" },
+        { "title": "Claim Your Seat", "body": "Register and subscribe to join the current batch before seats fill up.", "href": "/auth/register", "cta": "Claim Your Seat" },
         { "title": "Student login", "body": "Already registered? Sign in to your dashboard, jobs, and applications.", "href": "/auth/login", "cta": "Sign in" },
         { "title": "Talk to us", "body": "Questions about batches, pricing, or the program? Our team is one call away.", "href": "/contact", "cta": "Contact us" }
       ]

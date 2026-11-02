@@ -1,16 +1,19 @@
 'use client';
 
-import { ArrowRight, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { ctaLabel, plans } from '@/lib/home/content';
 import { useHome } from './HomeProvider';
 import { OutlineLink, PrimaryLink, Reveal, SectionHeading } from './primitives';
 
 export function PlansAndBatch() {
-  const { batch, batchLoading, hideTrialPromos, trialHref, dashboardHref, subscribeHref } = useHome();
+  const { batch, hideTrialPromos, trialHref, dashboardHref, subscribeHref } = useHome();
   const amount = batch?.subscription_amount_inr;
-  const max = batch?.max_seats ?? 12;
-  const open = batch?.seats_remaining;
-  const showBatch = !batchLoading && max != null && open != null && max > 0;
+  const regularAmount = batch?.regular_amount_inr;
+  const showOffer = Boolean(
+    batch?.offer_active && amount != null && regularAmount != null && regularAmount > amount,
+  );
+  const savings = showOffer ? regularAmount! - amount! : 0;
+  const savingsPercent = showOffer ? Math.round((savings / regularAmount!) * 100) : 0;
 
   return (
     <section id="plans" className="scroll-mt-[88px] w-full bg-white border-y border-[#E5EAF2]/60 py-14" aria-label="Plans and pricing">
@@ -23,7 +26,7 @@ export function PlansAndBatch() {
           />
         </Reveal>
 
-        <div className={`mt-8 grid gap-6 items-stretch ${showBatch || batchLoading ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'}`}>
+        <div className="mx-auto mt-8 grid max-w-4xl grid-cols-1 items-stretch gap-6 md:grid-cols-2">
           {/* Free Plan Card */}
           <Reveal delay={0.05} className="flex">
             <article className="flex w-full flex-col justify-between rounded-[20px] border border-[#E5EAF2] bg-white p-6 shadow-[0_8px_24px_rgba(11,27,51,0.04)] transition-all duration-200 hover:-translate-y-1">
@@ -55,7 +58,7 @@ export function PlansAndBatch() {
 
                 {/* Real FAQ note to fill vertical gap */}
                 <p className="mt-4 pt-3 border-t border-[#E5EAF2] text-[11px] leading-relaxed text-[#5B6B82]">
-                  No payment required. The 60-day journey is a structured curriculum, not a countdown.
+                  No payment required. The placement journey is a roadmap, not a countdown.
                 </p>
               </div>
 
@@ -80,7 +83,9 @@ export function PlansAndBatch() {
 
                 {/* Yellow Ribbon sits FULLY INSIDE top-right with 12px margin */}
                 <span className="absolute top-3 right-3 z-10 rounded-full bg-[#fec40d] px-3 py-1 text-[11px] font-extrabold text-[#1b52a4] shadow-sm uppercase tracking-wider">
-                  {plans.full.ribbon}
+                  {showOffer
+                    ? `${(batch?.offer_name || 'SPECIAL OFFER').toUpperCase()} · SAVE ${savingsPercent}%`
+                    : plans.full.ribbon}
                 </span>
 
                 <div className="relative z-10">
@@ -89,7 +94,12 @@ export function PlansAndBatch() {
                   </span>
                   <h3 className="mt-1 text-xl font-bold text-[var(--ink)]">{plans.full.name}</h3>
 
-                  <div className="mt-3 flex items-baseline gap-2">
+                  <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    {showOffer && (
+                      <span className="text-lg font-bold text-[#5B6B82] line-through decoration-[#d64246]">
+                        ₹{regularAmount!.toLocaleString('en-IN')}
+                      </span>
+                    )}
                     <span className="text-[36px] font-extrabold tracking-tight text-[#1b52a4] leading-none">
                       {amount != null ? `₹${amount.toLocaleString('en-IN')}` : 'At checkout'}
                     </span>
@@ -97,6 +107,11 @@ export function PlansAndBatch() {
                       one-time
                     </span>
                   </div>
+                  {showOffer && (
+                    <p className="mt-1 text-xs font-bold text-[#098855]">
+                      Save ₹{savings.toLocaleString('en-IN')} with this offer
+                    </p>
+                  )}
 
                   <ul className="mt-5 space-y-2.5">
                     {plans.full.items.map((item) => (
@@ -129,97 +144,13 @@ export function PlansAndBatch() {
                 {/* Filled orange full-width button pinned at bottom */}
                 <div className="relative z-10 mt-6 pt-2">
                   <PrimaryLink href={hideTrialPromos ? dashboardHref : subscribeHref} className="w-full">
-                    {hideTrialPromos ? 'Go to dashboard' : 'Subscribe'}
+                    {hideTrialPromos ? 'Go to dashboard' : 'Claim Your Seat'}
                   </PrimaryLink>
                 </div>
               </article>
             </div>
           </Reveal>
 
-          {/* Batch Status Card */}
-          {batchLoading ? (
-            <div className="flex h-full min-h-[380px] animate-pulse rounded-[20px] bg-white border border-[#E5EAF2]" aria-hidden />
-          ) : showBatch ? (
-            <Reveal delay={0.15} className="flex">
-              <article className="flex w-full flex-col justify-between rounded-[20px] border border-[#E5EAF2] bg-white p-6 shadow-[0_8px_24px_rgba(11,27,51,0.04)] transition-all duration-200 hover:-translate-y-1">
-                <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#098855]">
-                    LIVE BATCH MONITOR
-                  </span>
-                  <h3 className="mt-1 text-xl font-bold text-[var(--ink)]">Batch status</h3>
-
-                  <div className="mt-3 flex items-baseline gap-2">
-                    <span className="text-[36px] font-extrabold tracking-tight text-[#1b52a4] leading-none">
-                      {open}
-                    </span>
-                    <span className="text-sm font-semibold text-[#5B6B82]">
-                      of {max} seats open
-                    </span>
-                  </div>
-
-                  {/* 12-dot Visual Seat Grid */}
-                  <div className="mt-4 rounded-2xl border border-[#E5EAF2] bg-[#F7F9FC] p-3.5">
-                    <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold text-[#5B6B82]">
-                      <span>12 Seats Per Cohort</span>
-                      <span className="text-[#098855]">Active</span>
-                    </div>
-
-                    <div className="grid grid-cols-6 gap-2 place-items-center">
-                      {Array.from({ length: 12 }).map((_, i) => {
-                        const isTaken = i < (max - open);
-                        return isTaken ? (
-                          <div
-                            key={i}
-                            className="grid h-7 w-7 place-items-center rounded-full bg-[#1b52a4] text-white shadow-sm"
-                            title={`Seat ${i + 1}: Reserved`}
-                          >
-                            <span className="text-[9px] font-extrabold">{i + 1}</span>
-                          </div>
-                        ) : (
-                          <div
-                            key={i}
-                            className="grid h-7 w-7 place-items-center rounded-full border-2 border-[#098855] bg-[#098855]/10 text-[#098855] sl-seat-pulse"
-                            title={`Seat ${i + 1}: Open`}
-                          >
-                            <span className="text-[9px] font-extrabold">{i + 1}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div className="mt-2.5 flex items-center justify-center gap-4 text-[11px] font-semibold text-[#5B6B82]">
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full bg-[#1b52a4]" /> Taken
-                      </span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-2 w-2 rounded-full border border-[#098855] bg-[#098855]/30" /> Open
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Short coordinator line */}
-                  <div className="mt-3 rounded-xl border border-[#00a2e5]/20 bg-[#00a2e5]/[0.06] p-2.5 text-xs leading-relaxed text-[#0B1B33]">
-                    <p className="font-bold text-[#1b52a4]">Dedicated Coordinator</p>
-                    <p className="mt-0.5 text-[#5B6B82]">
-                      {batch?.batch_name
-                        ? `${batch.batch_name} includes 1 dedicated coordinator.`
-                        : '1 coordinator stays with your batch of 12 for the entire 60 days.'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Only text link for batch card - NO third orange button */}
-                <div className="mt-6 pt-2 flex items-center justify-center">
-                  <a
-                    href="#journey"
-                    className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1b52a4] hover:text-[#00a2e5] transition-colors py-2"
-                  >
-                    How batches work <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              </article>
-            </Reveal>
-          ) : null}
         </div>
       </div>
     </section>
