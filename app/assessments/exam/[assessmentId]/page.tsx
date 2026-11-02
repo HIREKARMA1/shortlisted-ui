@@ -134,9 +134,12 @@ export default function StudentExamEntryPage() {
     setStarting(true);
     try {
       const res = await api.generateAssessmentToken(assessmentId, { expires_in_minutes: 120 });
-      const examUrl = res?.solviq_url as string | undefined;
-      if (examUrl) {
-        window.location.href = examUrl;
+      if (res?.exam_url) {
+        window.location.href = res.exam_url as string;
+        return;
+      }
+      if (res?.solviq_url) {
+        window.location.href = res.solviq_url as string;
         return;
       }
       setStartError('Could not start the exam. Please try again.');
