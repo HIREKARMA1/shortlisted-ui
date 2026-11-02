@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Download, Pencil, Trash2, Users, X } from 'lucide-react';
+import { ChevronDown, Download, Pencil, Trash2, Users, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useRoleGuard } from '@/hooks/useRoleGuard';
@@ -123,6 +123,9 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
   const [batchFilter, setBatchFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState<'upcoming' | 'completed'>('upcoming');
   const [createMode, setCreateMode] = useState<CreateMode>('monthly');
+  const [selectedBatchIds, setSelectedBatchIds] = useState<string[]>([]);
+  const [batchDropdownOpen, setBatchDropdownOpen] = useState(false);
+  const batchDropdownRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ ...EMPTY_FORM, schedule_month: currentMonthValue() });
@@ -140,6 +143,17 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
       .catch(() => toast.error(t('common.errors.network')))
       .finally(() => setReady(true));
   }, [role, t]);
+
+  useEffect(() => {
+    if (!batchDropdownOpen) return;
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!batchDropdownRef.current?.contains(event.target as Node)) {
+        setBatchDropdownOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    return () => document.removeEventListener('pointerdown', closeOnOutsideClick);
+  }, [batchDropdownOpen]);
 
   const loadClasses = useCallback(() => {
     setLoading(true);
@@ -207,11 +221,15 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
 
   const submitCreate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (selectedBatchIds.length === 0) {
+      toast.error(t('dashboard.classes.batchRequired'));
+      return;
+    }
     try {
       if (createMode === 'monthly') {
         const [year, month] = form.schedule_month.split('-').map(Number);
         const result = await api.createRecurringClasses({
-          batch_id: form.batch_id,
+          batch_ids: selectedBatchIds,
           title: form.title,
           trainer_name: form.trainer_name,
           description: form.description || undefined,
@@ -226,7 +244,7 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
         toast.success(t('dashboard.classes.recurringSuccess', { count: result.created_count }));
       } else {
         await api.createClass({
-          batch_id: form.batch_id,
+          batch_ids: selectedBatchIds,
           title: form.title,
           trainer_name: form.trainer_name,
           description: form.description || undefined,
@@ -238,6 +256,7 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
         toast.success(t('dashboard.classes.createSuccess'));
       }
       setForm({ ...EMPTY_FORM, schedule_month: currentMonthValue() });
+      setSelectedBatchIds([]);
       loadClasses();
     } catch (err: unknown) {
       const msg =
@@ -246,6 +265,18 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
       toast.error(typeof msg === 'string' ? msg : t('common.errors.generic'));
     }
   };
+
+  const toggleSelectedBatch = (batchId: string) => {
+    setSelectedBatchIds((selected) =>
+      selected.includes(batchId)
+        ? selected.filter((id) => id !== batchId)
+        : [...selected, batchId],
+    );
+  };
+
+  const selectedBatchNames = batches
+    .filter((batch) => selectedBatchIds.includes(String(batch.id)))
+    .map((batch) => String(batch.name));
 
   const startEdit = (row: ClassRow) => {
     setEditing(row);
@@ -389,13 +420,72 @@ export function ClassesManagementView({ role }: { role: DashboardRole }) {
           <p className="mb-4 text-sm text-ink-muted">{t('dashboard.classes.createModeMonthlyHint')}</p>
         ) : null}
         <form onSubmit={submitCreate} className="grid gap-4 md:grid-cols-2">
-          <Select
-            label={t('dashboard.classes.filterBatch')}
-            value={form.batch_id}
-            onChange={(e) => setForm({ ...form, batch_id: e.target.value })}
-            options={[{ value: '', label: t('dashboard.classes.pickBatch') }, ...batchOptions.slice(1)]}
-            required
-          />
+          <div
+            ref={batchDropdownRef}
+            className="relative space-y-1.5"
+            onBlur={(event: React.FocusEvent<HTMLDivElement>) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                setBatchDropdownOpen(false);
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') setBatchDropdownOpen(false);
+            }}
+          >
+            <label htmlFor="class-batch-selector" className="text-sm font-medium text-ink-secondary">
+              {t('dashboard.classes.selectBatches')}
+            </label>
+            <button
+              id="class-batch-selector"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded={batchDropdownOpen}
+              onClick={() => setBatchDropdownOpen((open) => !open)}
+              className="flex w-full items-center justify-between gap-3 rounded-lg border border-line-default bg-white px-3 py-2.5 text-left text-sm outline-none focus:border-brand-sky focus:ring-2 focus:ring-secondary-100"
+            >
+              <span className={`truncate ${selectedBatchNames.length ? 'text-ink-primary' : 'text-ink-muted'}`}>
+                {selectedBatchNames.length
+                  ? selectedBatchNames.join(', ')
+                  : t('dashboard.classes.pickBatch')}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 shrink-0 text-ink-muted transition-transform ${batchDropdownOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {batchDropdownOpen ? (
+              <div
+                role="listbox"
+                aria-multiselectable="true"
+                aria-label={t('dashboard.classes.selectBatches')}
+                className="absolute z-20 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-line-default bg-white py-1 shadow-lg"
+              >
+                {batches.length === 0 ? (
+                  <p className="px-3 py-2 text-sm text-ink-muted">
+                    {t('dashboard.classes.noBatches')}
+                  </p>
+                ) : (
+                  batches.map((batch) => {
+                    const batchId = String(batch.id);
+                    const isSelected = selectedBatchIds.includes(batchId);
+                    return (
+                      <button
+                        key={batchId}
+                        type="button"
+                        role="option"
+                        aria-selected={isSelected}
+                        onClick={() => toggleSelectedBatch(batchId)}
+                        className={`w-full px-3 py-2 text-left text-sm hover:bg-soft ${
+                          isSelected ? 'bg-secondary-100 font-medium text-brand-blue' : 'text-ink-primary'
+                        }`}
+                      >
+                        {String(batch.name)}
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            ) : null}
+          </div>
           <Input
             label={t('dashboard.classes.columns.title')}
             value={form.title}
