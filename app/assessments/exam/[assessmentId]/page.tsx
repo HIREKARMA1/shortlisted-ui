@@ -131,6 +131,10 @@ export default function StudentExamEntryPage() {
     setStarting(true);
     try {
       const res = await api.generateAssessmentToken(assessmentId, { expires_in_minutes: 120 });
+      if (res?.exam_url) {
+        window.location.href = res.exam_url as string;
+        return;
+      }
       if (res?.solviq_url) {
         window.location.href = res.solviq_url as string;
         return;
