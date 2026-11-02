@@ -20,6 +20,7 @@ type EventPayload = {
   mime_type?: string;
   available?: boolean;
   tts_available?: boolean;
+  is_final?: boolean;
   question_progress?: QuestionProgress;
 };
 
@@ -48,6 +49,8 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const ttsEnabledRef = useRef(true);
   const serverTtsAvailableRef = useRef(false);
   const lastInterviewerTextRef = useRef('');
+  const finalVoiceTranscriptRef = useRef('');
+  const audioChunkQueueRef = useRef(Promise.resolve());
   const [messages, setMessages] = useState<Message[]>([]);
   const [answer, setAnswer] = useState('');
   const [connected, setConnected] = useState(false);
@@ -103,7 +106,16 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
             : 'Answer noted.';
         toast.success(note);
       }
-      if (event.type === 'transcript' && event.text) setAnswer(event.text);
+      if (event.type === 'transcript' && event.text) {
+        if (event.is_final) {
+          const separator = finalVoiceTranscriptRef.current && !/\s$/.test(finalVoiceTranscriptRef.current) ? ' ' : '';
+          finalVoiceTranscriptRef.current = `${finalVoiceTranscriptRef.current}${separator}${event.text}`;
+          setAnswer(finalVoiceTranscriptRef.current);
+        } else {
+          const separator = finalVoiceTranscriptRef.current && !/\s$/.test(finalVoiceTranscriptRef.current) ? ' ' : '';
+          setAnswer(`${finalVoiceTranscriptRef.current}${separator}${event.text}`);
+        }
+      }
       if (event.type === 'voice_status') {
         if (typeof event.available === 'boolean') setVoiceAvailable(event.available);
         if (typeof event.tts_available === 'boolean') {
@@ -138,24 +150,35 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
     const text = answer.trim();
     if (!text || sending) return;
     setMessages((current) => [...current, { role: 'candidate', text }]);
-    setAnswer(''); setSending(true); send({ type: 'candidate_answer', text });
+    setAnswer(''); finalVoiceTranscriptRef.current = ''; setSending(true); send({ type: 'candidate_answer', text });
     window.setTimeout(() => setSending(false), 350);
   };
 
   const toggleRecording = async () => {
     if (recording) {
       recorderRef.current?.stop();
-      send({ type: 'voice_end' });
       setRecording(false);
       return;
     }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioStreamRef.current = stream;
+      finalVoiceTranscriptRef.current = answer.trim();
+      audioChunkQueueRef.current = Promise.resolve();
       const recorder = new MediaRecorder(stream);
       recorderRef.current = recorder;
-      recorder.ondataavailable = async (event) => { if (event.data.size) send({ type: 'voice_chunk', data: toBase64(await event.data.arrayBuffer()) }); };
-      recorder.onstop = () => { stream.getTracks().forEach((track) => track.stop()); audioStreamRef.current = null; };
+      recorder.ondataavailable = (event) => {
+        if (event.data.size) {
+          audioChunkQueueRef.current = audioChunkQueueRef.current.then(async () => {
+            send({ type: 'voice_chunk', data: toBase64(await event.data.arrayBuffer()) });
+          });
+        }
+      };
+      recorder.onstop = () => {
+        void audioChunkQueueRef.current.finally(() => send({ type: 'voice_end' }));
+        stream.getTracks().forEach((track) => track.stop());
+        audioStreamRef.current = null;
+      };
       send({ type: 'voice_start' });
       recorder.start(300);
       setRecording(true);
@@ -198,7 +221,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
             <textarea
               value={answer}
               onChange={(event) => setAnswer(event.target.value)}
-              placeholder="Type your answer, or use the microphone when available..."
+              placeholder="Type your answer or speak, review the transcript, then send..."
               className="min-h-24 flex-1 resize-none rounded-md border border-line-default bg-white p-3 text-sm outline-none focus:border-brand-sky"
             />
             <div className="flex flex-col gap-2">

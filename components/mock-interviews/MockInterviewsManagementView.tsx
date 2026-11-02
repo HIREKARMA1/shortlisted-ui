@@ -17,7 +17,7 @@ import { LoadingState } from '@/components/ui/LoadingState';
 import type { MockInterview, MockInterviewDetail, MockInterviewQuestion } from './types';
 
 const EMPTY_FORM = {
-  batch_id: '', title: '', topic: '', difficulty: 'intermediate', duration_minutes: '30', number_of_questions: '5', focus_areas: '',
+  batch_ids: [] as string[], title: '', topic: '', difficulty: 'intermediate', duration_minutes: '30', number_of_questions: '5', focus_areas: '',
 };
 
 export function MockInterviewsManagementView({ role }: { role: DashboardRole }) {
@@ -56,20 +56,26 @@ export function MockInterviewsManagementView({ role }: { role: DashboardRole }) 
   }, [rows, load]);
 
   const create = async () => {
-    if (!form.batch_id || !form.title.trim() || !form.topic.trim()) {
+    if (!form.batch_ids.length || !form.title.trim() || !form.topic.trim()) {
       toast.error('Batch, title, and topic are required.');
       return;
     }
     setCreating(true);
     try {
-      await api.createMockInterview({
-        ...form,
+      const { batch_ids, ...interviewDetails } = form;
+      const results = await Promise.allSettled(batch_ids.map((batch_id) => api.createMockInterview({
+        ...interviewDetails,
+        batch_id,
         duration_minutes: Number(form.duration_minutes),
         number_of_questions: Number(form.number_of_questions),
         focus_areas: form.focus_areas.split(',').map((value) => value.trim()).filter(Boolean),
-      });
+      })));
+      const createdCount = results.filter((result) => result.status === 'fulfilled').length;
+      if (createdCount === 0) throw new Error('No interviews were created.');
       setForm(EMPTY_FORM);
-      toast.success('Question generation started.');
+      toast.success(results.every((result) => result.status === 'fulfilled')
+        ? `Question generation started for ${createdCount} batch${createdCount === 1 ? '' : 'es'}.`
+        : `Created for ${createdCount} of ${batch_ids.length} batches. Some batches could not be created.`);
       load();
     } catch {
       toast.error('Could not create the mock interview.');
@@ -95,13 +101,37 @@ export function MockInterviewsManagementView({ role }: { role: DashboardRole }) 
   };
 
   if (!ready || loading) return <LoadingState />;
-  const batchOptions = [{ value: '', label: 'Select batch' }, ...batches.map((batch) => ({ value: String(batch.id), label: String(batch.name) }))];
+  const batchIds = batches.map((batch) => String(batch.id));
+  const allBatchesSelected = batchIds.length > 0 && batchIds.every((id) => form.batch_ids.includes(id));
+  const toggleBatch = (batchId: string) => setForm((current) => ({
+    ...current,
+    batch_ids: current.batch_ids.includes(batchId)
+      ? current.batch_ids.filter((id) => id !== batchId)
+      : [...current.batch_ids, batchId],
+  }));
 
   return (
     <DashboardLayout role={role} title="Mock interviews" subtitle="Create, review, and publish interview practice for each batch." onLogout={logout}>
       <section className="mb-8 border-b border-line-default pb-8">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <Select label="Batch" value={form.batch_id} onChange={(event) => setForm({ ...form, batch_id: event.target.value })} options={batchOptions} />
+          <fieldset className="space-y-2 rounded-lg border border-line-default bg-white p-3 xl:row-span-2">
+            <legend className="px-1 text-sm font-medium text-ink-secondary">Batches</legend>
+            <label className="flex items-center gap-2 text-sm font-semibold text-ink-primary">
+              <input type="checkbox" checked={allBatchesSelected} disabled={!batchIds.length} onChange={() => setForm((current) => ({ ...current, batch_ids: allBatchesSelected ? [] : batchIds }))} />
+              All batches ({batchIds.length})
+            </label>
+            <div className="max-h-36 space-y-2 overflow-y-auto border-t border-line-default pt-2">
+              {batches.map((batch) => {
+                const id = String(batch.id);
+                return <label key={id} className="flex items-center gap-2 text-sm text-ink-secondary">
+                  <input type="checkbox" checked={form.batch_ids.includes(id)} onChange={() => toggleBatch(id)} />
+                  {String(batch.name)}
+                </label>;
+              })}
+              {!batches.length && <p className="text-xs text-ink-muted">No batches available.</p>}
+            </div>
+            <p className="text-xs text-ink-muted">{form.batch_ids.length} selected</p>
+          </fieldset>
           <Input label="Interview title" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} placeholder="Frontend practice" />
           <Input label="Topic" value={form.topic} onChange={(event) => setForm({ ...form, topic: event.target.value })} placeholder="React" />
           <Select label="Difficulty" value={form.difficulty} onChange={(event) => setForm({ ...form, difficulty: event.target.value })} options={[{ value: 'beginner', label: 'Beginner' }, { value: 'intermediate', label: 'Intermediate' }, { value: 'advanced', label: 'Advanced' }]} />
