@@ -67,6 +67,8 @@ export function useStudentSubscribeGate(options?: { reviewOnly?: boolean }) {
   const { session, ready } = useSession();
   const [accessStatus, setAccessStatus] = useState(session?.accessStatus ?? '');
   const [signupChannel, setSignupChannel] = useState(session?.signupChannel ?? 'web');
+  const [plan, setPlan] = useState('');
+  const [trialEndsAt, setTrialEndsAt] = useState<string | null>(null);
   const reviewOnly = options?.reviewOnly === true;
 
   useEffect(() => {
@@ -91,6 +93,8 @@ export function useStudentSubscribeGate(options?: { reviewOnly?: boolean }) {
           const student = data.student as {
             access_status?: string;
             signup_channel?: string;
+            plan?: string;
+            trial_ends_at?: string | null;
           };
           const status = String(student?.access_status || '');
           const channel = String(student?.signup_channel || current.signupChannel || 'web');
@@ -98,6 +102,8 @@ export function useStudentSubscribeGate(options?: { reviewOnly?: boolean }) {
           localStorage.setItem('signup_channel', channel);
           setAccessStatus(status);
           setSignupChannel(channel);
+          setPlan(String(student?.plan || ''));
+          setTrialEndsAt(student?.trial_ends_at || null);
           if (status === 'inactive') {
             router.replace(getInactiveStudentPath());
             return;
@@ -131,5 +137,7 @@ export function useStudentSubscribeGate(options?: { reviewOnly?: boolean }) {
     ready,
     accessStatus: accessStatus || session?.accessStatus,
     signupChannel: signupChannel || session?.signupChannel || 'web',
+    plan,
+    trialEndsAt,
   };
 }
