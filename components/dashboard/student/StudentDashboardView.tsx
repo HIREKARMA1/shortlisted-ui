@@ -98,13 +98,21 @@ export function StudentDashboardView() {
           label={t('dashboard.student.stats.batch')}
           value={batch ? String(batch.name) : t('dashboard.student.stats.batchAdminPending')}
           hint={
-            batch && !seatConfirmed
-              ? t('dashboard.trial.seatHint')
-              : batch
-                ? batch.admin_name
-                  ? `${t('dashboard.student.stats.batchAdmin')}: ${String(batch.admin_name)}`
-                  : t('dashboard.student.stats.batchAdminPending')
-                : undefined
+            batch
+              ? [
+                  batch.account_type ? `Account: ${String(batch.account_type)}` : null,
+                  batch && !seatConfirmed && String(batch.batch_type) !== 'free_trial'
+                    ? t('dashboard.trial.seatHint')
+                    : null,
+                  batch.admin_name
+                    ? `${t('dashboard.student.stats.batchAdmin')}: ${String(batch.admin_name)}`
+                    : String(batch.batch_type) === 'free_trial'
+                      ? undefined
+                      : t('dashboard.student.stats.batchAdminPending'),
+                ]
+                  .filter(Boolean)
+                  .join(' · ') || undefined
+              : undefined
           }
           accent="sky"
           icon={Users}

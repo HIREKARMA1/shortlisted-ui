@@ -34,7 +34,12 @@ export function AdminDashboardView() {
 
   if (!ready) return <LoadingState />;
 
-  const totalStudents = batches.reduce((sum, b) => sum + Number(b.seats_filled || 0), 0);
+  const totalStudents = batches.reduce((sum, b) => {
+    if (Boolean(b.is_unlimited) || String(b.batch_type) === 'free_trial') {
+      return sum + Number(b.student_count ?? b.seats_filled ?? 0);
+    }
+    return sum + Number(b.seats_filled || 0);
+  }, 0);
 
   return (
     <DashboardLayout
@@ -58,7 +63,12 @@ export function AdminDashboardView() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {batches.map((b) => {
-            const fillPct = Math.round((Number(b.seats_filled) / Number(b.max_seats || 1)) * 100);
+            const unlimited = Boolean(b.is_unlimited) || String(b.batch_type) === 'free_trial';
+            const filled = unlimited
+              ? Number(b.student_count ?? b.seats_filled ?? 0)
+              : Number(b.seats_filled || 0);
+            const max = unlimited ? null : Number(b.max_seats || 1);
+            const fillPct = unlimited ? 0 : Math.round((filled / Number(max || 1)) * 100);
             return (
               <Link
                 key={String(b.id)}
@@ -70,14 +80,20 @@ export function AdminDashboardView() {
                   <ChevronRight className="h-5 w-5 text-ink-muted group-hover:text-brand-sky" />
                 </div>
                 <p className="mt-2 text-sm text-ink-muted">
-                  {t('dashboard.admin.seats', { filled: String(b.seats_filled), max: String(b.max_seats) })}
+                  {unlimited
+                    ? `${filled} / Unlimited`
+                    : t('dashboard.admin.seats', { filled: String(filled), max: String(max) })}
                 </p>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-surface-muted">
-                  <div
-                    className="h-full rounded-full bg-brand-sky transition-all"
-                    style={{ width: `${fillPct}%` }}
-                  />
-                </div>
+                {!unlimited ? (
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-surface-muted">
+                    <div
+                      className="h-full rounded-full bg-brand-sky transition-all"
+                      style={{ width: `${fillPct}%` }}
+                    />
+                  </div>
+                ) : (
+                  <p className="mt-3 text-xs text-ink-muted">Free Trial · unlimited capacity</p>
+                )}
                 <p className="mt-3 text-xs font-medium text-brand-orange">{t('dashboard.admin.viewRoster')}</p>
               </Link>
             );

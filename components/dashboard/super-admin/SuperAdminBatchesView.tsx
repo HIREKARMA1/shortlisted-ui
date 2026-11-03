@@ -74,6 +74,41 @@ export function SuperAdminBatchesView() {
     [batches],
   );
 
+  const freeTrialBatches = useMemo(
+    () =>
+      batches.filter(
+        (b) => Boolean(b.is_unlimited) || String(b.batch_type) === 'free_trial',
+      ),
+    [batches],
+  );
+
+  const paidCohortBatches = useMemo(
+    () =>
+      batches.filter(
+        (b) => !(Boolean(b.is_unlimited) || String(b.batch_type) === 'free_trial'),
+      ),
+    [batches],
+  );
+
+  const renderSeatCell = (batch: BatchRow) => {
+    const unlimited = Boolean(batch.is_unlimited) || String(batch.batch_type) === 'free_trial';
+    if (unlimited) {
+      const count = Number(batch.student_count ?? batch.seats_filled ?? 0);
+      return (
+        <span className="inline-flex items-center gap-1">
+          <Users className="h-3.5 w-3.5 text-ink-muted" />
+          {count} / Unlimited
+        </span>
+      );
+    }
+    return (
+      <span className="inline-flex items-center gap-1">
+        <Users className="h-3.5 w-3.5 text-ink-muted" />
+        {String(batch.seats_filled)}/{String(batch.max_seats)}
+      </span>
+    );
+  };
+
   const createBatch = async () => {
     const seats = Number(maxSeats);
     if (!seats || seats < 1) {
@@ -223,81 +258,138 @@ export function SuperAdminBatchesView() {
       {batches.length === 0 ? (
         <EmptyState message={t('dashboard.superAdminBatches.empty')} />
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-line-default bg-white">
-          <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-line-default bg-surface-muted text-xs font-semibold uppercase tracking-wide text-ink-muted">
-              <tr>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.name')}</th>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.seats')}</th>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.status')}</th>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.coordinator')}</th>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.disha')}</th>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.created')}</th>
-                <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.actions')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line-default">
-              {batches.map((batch) => {
-                const dishaStatus = String(batch.disha_batch_registered || 'pending');
-                const batchId = String(batch.id);
-                const isSyncing = syncingBatchId === batchId;
-                const isDeleting = deletingBatchId === batchId;
-                return (
-                  <tr key={batchId}>
-                    <td className="px-4 py-3 font-medium text-brand-blue">{String(batch.name)}</td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1">
-                        <Users className="h-3.5 w-3.5 text-ink-muted" />
-                        {String(batch.seats_filled)}/{String(batch.max_seats)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 capitalize">
-                      <Badge tone={String(batch.status) === 'full' ? 'warning' : 'success'}>
-                        {String(batch.status)}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3 text-ink-muted">
-                      {String(batch.admin_name || '-')}
-                    </td>
-                    <td className="px-4 py-3 capitalize">
-                      <Badge tone={dishaTone(dishaStatus)}>{dishaStatus}</Badge>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-ink-muted">
-                      {batch.created_at
-                        ? new Date(String(batch.created_at)).toLocaleString()
-                        : '-'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-2">
-                        <Button
-                          variant="secondary"
-                          className="text-xs"
-                          disabled={isSyncing || isDeleting}
-                          onClick={() =>
-                            syncBatchToDisha(batchId, dishaStatus === 'registered')
-                          }
-                        >
-                          <RefreshCw className={`mr-1 h-3.5 w-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-                          {isSyncing
-                            ? t('dashboard.superAdminBatches.syncing')
-                            : t('dashboard.superAdminBatches.sync')}
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          className="text-xs text-brand-red hover:text-brand-red"
-                          disabled={isSyncing || isDeleting}
-                          onClick={() => setConfirmDelete(batch)}
-                        >
-                          <Trash2 className="mr-1 h-3.5 w-3.5" />
-                          {t('dashboard.superAdminBatches.delete')}
-                        </Button>
-                      </div>
-                    </td>
+        <div className="space-y-8">
+          {freeTrialBatches.length > 0 ? (
+            <div>
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+                Free Trial Batch
+              </h3>
+              <div className="overflow-x-auto rounded-xl border border-sky-200 bg-sky-50/40">
+                <table className="min-w-full text-left text-sm">
+                  <thead className="border-b border-sky-100 bg-sky-50 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                    <tr>
+                      <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.name')}</th>
+                      <th className="px-4 py-3">Type</th>
+                      <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.seats')}</th>
+                      <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.disha')}</th>
+                      <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.actions')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {freeTrialBatches.map((batch) => {
+                      const dishaStatus = String(batch.disha_batch_registered || 'pending');
+                      const batchId = String(batch.id);
+                      const isSyncing = syncingBatchId === batchId;
+                      return (
+                        <tr key={batchId}>
+                          <td className="px-4 py-3 font-medium text-brand-blue">{String(batch.name)}</td>
+                          <td className="px-4 py-3">
+                            <Badge tone="sky">Free Trial</Badge>
+                          </td>
+                          <td className="px-4 py-3">{renderSeatCell(batch)}</td>
+                          <td className="px-4 py-3 capitalize">
+                            <Badge tone={dishaTone(dishaStatus)}>{dishaStatus}</Badge>
+                          </td>
+                          <td className="px-4 py-3">
+                            <Button
+                              variant="secondary"
+                              className="text-xs"
+                              disabled={isSyncing}
+                              onClick={() =>
+                                syncBatchToDisha(batchId, dishaStatus === 'registered')
+                              }
+                            >
+                              <RefreshCw className={`mr-1 h-3.5 w-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+                              {isSyncing
+                                ? t('dashboard.superAdminBatches.syncing')
+                                : t('dashboard.superAdminBatches.sync')}
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : null}
+
+          <div>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-muted">
+              Paid Cohort Batches
+            </h3>
+            <div className="overflow-x-auto rounded-xl border border-line-default bg-white">
+              <table className="min-w-full text-left text-sm">
+                <thead className="border-b border-line-default bg-surface-muted text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                  <tr>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.name')}</th>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.seats')}</th>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.status')}</th>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.coordinator')}</th>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.disha')}</th>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.created')}</th>
+                    <th className="px-4 py-3">{t('dashboard.superAdminBatches.columns.actions')}</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody className="divide-y divide-line-default">
+                  {paidCohortBatches.map((batch) => {
+                    const dishaStatus = String(batch.disha_batch_registered || 'pending');
+                    const batchId = String(batch.id);
+                    const isSyncing = syncingBatchId === batchId;
+                    const isDeleting = deletingBatchId === batchId;
+                    return (
+                      <tr key={batchId}>
+                        <td className="px-4 py-3 font-medium text-brand-blue">{String(batch.name)}</td>
+                        <td className="px-4 py-3">{renderSeatCell(batch)}</td>
+                        <td className="px-4 py-3 capitalize">
+                          <Badge tone={String(batch.status) === 'full' ? 'warning' : 'success'}>
+                            {String(batch.status)}
+                          </Badge>
+                        </td>
+                        <td className="px-4 py-3 text-ink-muted">
+                          {String(batch.admin_name || '-')}
+                        </td>
+                        <td className="px-4 py-3 capitalize">
+                          <Badge tone={dishaTone(dishaStatus)}>{dishaStatus}</Badge>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-ink-muted">
+                          {batch.created_at
+                            ? new Date(String(batch.created_at)).toLocaleString()
+                            : '-'}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex flex-wrap gap-2">
+                            <Button
+                              variant="secondary"
+                              className="text-xs"
+                              disabled={isSyncing || isDeleting}
+                              onClick={() =>
+                                syncBatchToDisha(batchId, dishaStatus === 'registered')
+                              }
+                            >
+                              <RefreshCw className={`mr-1 h-3.5 w-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+                              {isSyncing
+                                ? t('dashboard.superAdminBatches.syncing')
+                                : t('dashboard.superAdminBatches.sync')}
+                            </Button>
+                            <Button
+                              variant="secondary"
+                              className="text-xs text-brand-red hover:text-brand-red"
+                              disabled={isSyncing || isDeleting}
+                              onClick={() => setConfirmDelete(batch)}
+                            >
+                              <Trash2 className="mr-1 h-3.5 w-3.5" />
+                              {t('dashboard.superAdminBatches.delete')}
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
 

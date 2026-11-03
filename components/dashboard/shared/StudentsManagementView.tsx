@@ -92,6 +92,9 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
   const [batchFilter, setBatchFilter] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [accessFilter, setAccessFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  const [assignmentFilter, setAssignmentFilter] = useState<
+    'all' | 'free_trial' | 'assigned' | 'awaiting_cohort'
+  >('all');
   const [page, setPage] = useState(1);
   const [ready, setReady] = useState(false);
   const [loadingStudents, setLoadingStudents] = useState(false);
@@ -125,20 +128,26 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
 
   useEffect(() => {
     setPage(1);
-  }, [batchFilter, searchTerm, accessFilter]);
+  }, [batchFilter, searchTerm, accessFilter, assignmentFilter]);
 
   const filteredStudents = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
     return students.filter((row) => {
       if (accessFilter === 'active' && String(row.access_status) !== 'active') return false;
       if (accessFilter === 'inactive' && String(row.access_status) === 'active') return false;
+      if (assignmentFilter !== 'all') {
+        const assignment = String(row.cohort_assignment_status || '');
+        if (assignmentFilter === 'free_trial' && assignment !== 'free_trial') return false;
+        if (assignmentFilter === 'assigned' && assignment !== 'assigned') return false;
+        if (assignmentFilter === 'awaiting_cohort' && assignment !== 'awaiting_cohort') return false;
+      }
       if (!query) return true;
       const haystack = [row.name, row.email, row.phone, row.college, row.branch]
         .filter(Boolean)
         .map((value) => String(value).toLowerCase());
       return haystack.some((value) => value.includes(query));
     });
-  }, [students, searchTerm, accessFilter]);
+  }, [students, searchTerm, accessFilter, assignmentFilter]);
 
   const paginatedStudents = useMemo(
     () => paginateItems(filteredStudents, page),
@@ -227,12 +236,33 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
 
   const allBatchOptions = useMemo(
     () =>
-      batches.map((b) => ({
-        value: String(b.id),
-        label: `${String(b.name)} (${String(b.seats_filled)}/${String(b.max_seats)})`,
-      })),
+      batches.map((b) => {
+        const unlimited = Boolean(b.is_unlimited) || String(b.batch_type) === 'free_trial';
+        const seats = unlimited
+          ? `${Number(b.student_count ?? b.seats_filled ?? 0)}/Unlimited`
+          : `${String(b.seats_filled)}/${String(b.max_seats)}`;
+        return {
+          value: String(b.id),
+          label: `${String(b.name)} (${seats})`,
+        };
+      }),
     [batches],
   );
+
+  const assignmentLabel = (row: StudentRow) => {
+    const status = String(row.cohort_assignment_status || '');
+    if (status === 'awaiting_cohort') return 'Awaiting Cohort';
+    if (status === 'assigned') return 'Assigned';
+    if (status === 'free_trial') return 'Free Trial';
+    return status || '-';
+  };
+
+  const paymentStatusLabel = (row: StudentRow) => {
+    const status = String(row.payment_status || '');
+    if (status === 'paid_awaiting_cohort') return 'Paid – Awaiting Cohort';
+    if (status === 'paid') return 'Paid';
+    return 'Unpaid';
+  };
 
   const batchOptions = useMemo(
     () => [
@@ -294,7 +324,7 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
         />
 
         <div className="rounded-xl border border-line-default bg-white p-6 shadow-card">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <ManagementSearchInput
               label={t('dashboard.adminStudents.searchLabel')}
               value={searchTerm}
@@ -317,6 +347,21 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                 { value: 'inactive', label: t('common.status.inactive') },
               ]}
             />
+            <Select
+              label="Assignment"
+              value={assignmentFilter}
+              onChange={(e) =>
+                setAssignmentFilter(
+                  e.target.value as 'all' | 'free_trial' | 'assigned' | 'awaiting_cohort',
+                )
+              }
+              options={[
+                { value: 'all', label: 'All Assignments' },
+                { value: 'free_trial', label: 'Free Trial Students' },
+                { value: 'assigned', label: 'Paid / Assigned' },
+                { value: 'awaiting_cohort', label: 'Awaiting Cohort Assignment' },
+              ]}
+            />
           </div>
         </div>
 
@@ -333,6 +378,9 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.name')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.email')}</th>
                   <th className="px-4 py-3">{t('dashboard.adminStudents.columns.batch')}</th>
+                  <th className="px-4 py-3">Batch Type</th>
+                  <th className="px-4 py-3">Assignment</th>
+                  <th className="px-4 py-3">Payment Status</th>
                   {role === 'super_admin' ? (
                     <th className="px-4 py-3 text-center">
                       {t('dashboard.adminStudents.columns.attendance')}
@@ -390,6 +438,29 @@ export function StudentsManagementView({ role }: { role: DashboardRole }) {
                           <span className="font-medium text-brand-blue">{String(row.batch_name)}</span>
                         )}
                       </td>
+                      <td className="px-4 py-3">
+                        <Badge
+                          tone={
+                            String(row.batch_type) === 'free_trial' ? 'sky' : 'neutral'
+                          }
+                        >
+                          {String(row.batch_type) === 'free_trial' ? 'Free Trial' : 'Paid Cohort'}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3">
+                        <Badge
+                          tone={
+                            String(row.cohort_assignment_status) === 'awaiting_cohort'
+                              ? 'warning'
+                              : String(row.cohort_assignment_status) === 'assigned'
+                                ? 'success'
+                                : 'sky'
+                          }
+                        >
+                          {assignmentLabel(row)}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3 text-ink-muted">{paymentStatusLabel(row)}</td>
                       {role === 'super_admin' ? (
                         <td className="px-4 py-3 text-center font-medium text-ink-primary">
                           {Number(row.attendance_percentage ?? 0).toFixed(1)}%

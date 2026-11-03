@@ -41,15 +41,20 @@ export function AdminBatchDetailView() {
   if (!batch) return <LoadingState />;
 
   const students = (batch.students as Record<string, unknown>[]) || [];
+  const unlimited =
+    Boolean(batch.is_unlimited) || String(batch.batch_type) === 'free_trial';
+  const seatLabel = unlimited
+    ? `${Number(batch.student_count ?? students.length)} / Unlimited`
+    : t('dashboard.batchDetail.seats', {
+        filled: String(batch.seats_filled),
+        max: String(batch.max_seats),
+      });
 
   return (
     <DashboardLayout
       role="admin"
       title={String(batch.name)}
-      subtitle={t('dashboard.batchDetail.seats', {
-        filled: String(batch.seats_filled),
-        max: String(batch.max_seats),
-      })}
+      subtitle={seatLabel}
       onLogout={logout}
       actions={
         <Link href="/dashboard/admin" className="link-brand">
@@ -62,7 +67,11 @@ export function AdminBatchDetailView() {
           label={t('dashboard.batchDetail.coordinator', {
             name: String(batch.admin_name || t('dashboard.superAdmin.unassigned')),
           })}
-          value={`${batch.seats_filled}/${batch.max_seats}`}
+          value={
+            unlimited
+              ? `${Number(batch.student_count ?? students.length)}/Unlimited`
+              : `${batch.seats_filled}/${batch.max_seats}`
+          }
           accent="sky"
           icon={Users}
         />
