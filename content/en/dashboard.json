@@ -391,7 +391,7 @@
   },
   "studentAssessments": {
     "title": "My assessments",
-    "subtitle": "Take batch assessments powered by Solviq",
+    "subtitle": "Take batch assessments powered by Disha",
     "empty": "No assessments for your batch right now.",
     "start": "Start assessment",
     "starting": "Starting...",
