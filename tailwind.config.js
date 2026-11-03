@@ -6,6 +6,11 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      spacing: {
+        4.5: '1.125rem', // 18px
+        5.5: '1.375rem', // 22px
+        6.5: '1.625rem', // 26px
+      },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],

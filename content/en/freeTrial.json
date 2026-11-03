@@ -1,9 +1,9 @@
 {
   "meta": {
-    "title": "Join a Free Trial | Shortlisted"
+    "title": "Try for Free | Shortlisted"
   },
   "nav": {
-    "cta": "Join a Free Trial",
+    "cta": "Try for Free",
     "menuAria": "Open menu",
     "links": [
       { "id": "home", "label": "Home", "href": "/" },
@@ -55,7 +55,7 @@
     "number": "1",
     "title": "Discover Our Classes",
     "subtitle": "Explore recorded classes and start learning at your own pace.",
-    "cta": "Join a Free Trial",
+    "cta": "Try for Free",
     "ctaHref": "/auth/register",
     "playAria": "Play class recording",
     "player": {
@@ -166,7 +166,7 @@
     "number": "3",
     "title": "How We Help Students",
     "subtitle": "Shortlisted provides a structured 60-day placement journey with continuous support at every stage.",
-    "cta": "Join a Free Trial",
+    "cta": "Try for Free",
     "ctaHref": "/auth/register",
     "steps": [
       {
