@@ -38,11 +38,7 @@
 
 .dopCard {
   position: relative;
-  max-height: 95vh;
-  max-height: calc(100dvh - 48px);
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   border-radius: 28px;
   background: #fffbf3;
   box-shadow: 0 40px 90px -20px rgba(3, 15, 40, 0.75), 0 0 0 1.5px rgba(255, 211, 107, 0.7);
@@ -50,7 +46,6 @@
   opacity: 0;
   transition: transform 0.5s cubic-bezier(0.2, 1.2, 0.3, 1), opacity 0.3s;
 }
-.dopCard::-webkit-scrollbar { display: none; }
 
 .dopIn .dopCard { transform: none; opacity: 1; }
 
@@ -86,7 +81,9 @@
 .dopBulb { animation: dop-twinkle 3.2s ease-in-out infinite; }
 @keyframes dop-twinkle { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
 
-.dopHead > :not(.dopLights) { position: relative; z-index: 1; }
+.dopHead > .dopLabel,
+.dopHead > .dopBig,
+.dopHead > .dopSub { position: relative; z-index: 1; }
 .dopClose {
   position: absolute;
   top: 12px;
@@ -198,20 +195,51 @@
 .dopOverlay button:focus-visible, .dopCta:focus-visible { outline: 3px solid var(--dop-sky); outline-offset: 3px; }
 
 @media (max-width: 760px) {
-  .dopPopper { bottom: -78px; width: 84px; height: 106px; }
-  .dopPopperLeft { left: 4px; }
-  .dopPopperRight { right: 4px; }
-  .dopHint { bottom: -34px; }
-  .dopOverlay { padding-bottom: 104px; }
+  .dopOverlay {
+    align-items: center;
+    overflow-y: auto;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  }
+  .dopWrap { width: min(372px, calc(100vw - 24px)); flex: 0 0 auto; padding-bottom: 102px; transform: scale(0.86); transform-origin: center; }
+  .dopHead { padding: 24px 14px 36px; }
+  .dopRangoli { width: 176px; height: 176px; margin: -88px 0 0 -88px; }
+  .dopBody { padding: 12px 12px 10px; }
+  .dopPriceBox { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 4px; padding: 8px 6px; }
+  .dopOldPrice { font-size: 16px; }
+  .dopNewPrice { font-size: clamp(24px, 8vw, 30px); }
+  .dopSave { max-width: 100%; font-size: 12px; text-align: center; }
+  .dopTiles { gap: 6px; margin-top: 10px; }
+  .dopTile { padding: 8px 3px; font-size: 11px; }
+  .dopPopper { bottom: 0; width: 58px; height: 74px; }
+  .dopPopperLeft { left: 8px; }
+  .dopPopperRight { right: 8px; }
+  .dopHint { right: 0; bottom: 45px; left: 0; z-index: 5; font-size: 12px; line-height: 1.25; }
 }
 @media (max-width: 420px) {
-  .dopBig b { font-size: 58px; }
-  .dopNewPrice { font-size: 30px; }
+  .dopBig b { font-size: 54px; }
+  .dopBig span { font-size: 20px; }
+  .dopLabel { font-size: 11px; letter-spacing: 0.18em; }
+  .dopSub { max-width: 270px; font-size: 12.5px; }
+  .dopSeats { gap: 6px; padding: 7px 8px; font-size: 12px; }
+  .dopDots { gap: 3px; }
+  .dopDots i { width: 9px; height: 9px; }
+  .dopPopper { width: 52px; height: 68px; }
+  .dopPopperLeft { left: 8px; }
+  .dopPopperRight { right: 8px; }
 }
-@media (max-height: 800px) {
+@media (max-width: 360px) {
+  .dopPriceBox small { font-size: 10px; }
+  .dopOldPrice { font-size: 14px; }
+  .dopNewPrice { font-size: 24px; }
+  .dopArrow { width: 18px; height: 18px; }
+  .dopTileIcon { width: 24px; height: 24px; }
+  .dopTileIcon svg { width: 16px; height: 16px; }
+  .dopCta { padding: 11px; }
+}
+@media (min-width: 761px) and (max-height: 800px) {
   .dopWrap { transform: scale(0.9); }
 }
-@media (max-height: 700px) {
+@media (min-width: 761px) and (max-height: 700px) {
   .dopWrap { transform: scale(0.8); }
 }
 @media (prefers-reduced-motion: reduce) {

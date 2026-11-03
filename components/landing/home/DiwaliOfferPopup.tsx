@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Mous
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import { isSeasonalHeroLocalDateActive } from '@/lib/home/content';
-import { useHome, type BatchInfo } from './HomeProvider';
+import { useHome, type BatchInfo, type PaymentConfig } from './HomeProvider';
 import styles from './DiwaliOfferPopup.module.css';
 
 type ParticleKind = 'flash' | 'puff' | 'paper' | 'dot' | 'str';
@@ -47,10 +47,13 @@ function formatRupees(amount: number) {
   return `₹${amount.toLocaleString('en-IN')}`;
 }
 
-function getOffer(batch: BatchInfo | null) {
-  const amount = batch?.subscription_amount_inr;
-  const regularAmount = batch?.regular_amount_inr;
-  if (!batch?.offer_active || amount == null || regularAmount == null || regularAmount <= amount) return null;
+function getOffer(batch: BatchInfo | null, paymentConfig: PaymentConfig | null) {
+  // Match the subscription flow: batch-specific values take priority, with the
+  // public payment config filling only fields omitted by the batch response.
+  const amount = batch?.subscription_amount_inr ?? paymentConfig?.amount_inr;
+  const regularAmount = batch?.regular_amount_inr ?? paymentConfig?.regular_amount_inr;
+  const offerActive = batch?.offer_active ?? paymentConfig?.offer_active;
+  if (!offerActive || amount == null || regularAmount == null || regularAmount <= amount) return null;
   const savings = regularAmount - amount;
   return { amount, regularAmount, savings, savingsPercent: Math.round((savings / regularAmount) * 100) };
 }
@@ -145,8 +148,8 @@ function OfferIcon({ kind }: { kind: 'jobs' | 'coordinator' | 'batch' }) {
 }
 
 export function DiwaliOfferPopup() {
-  const { batch, batchLoading, ready, hideTrialPromos, subscribeHref } = useHome();
-  const offer = getOffer(batch);
+  const { batch, batchLoading, paymentConfig, ready, hideTrialPromos, subscribeHref } = useHome();
+  const offer = getOffer(batch, paymentConfig);
   const offerReady = Boolean(offer);
   const [mounted, setMounted] = useState(false);
   const [delayElapsed, setDelayElapsed] = useState(false);

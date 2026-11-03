@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ctaLabel } from '@/lib/home/content';
+import { useTranslation } from '@/lib/i18n/context';
 import { useHome, type BatchInfo } from './HomeProvider';
 import { CohortCard } from './CohortCard';
 import { PrimaryLink } from './primitives';
@@ -25,10 +26,15 @@ function getSeatsAvailability(batch: BatchInfo | null, loading: boolean): SeatsA
     // Fallback state when backend batch API is offline or returns empty
     return { status: 'fallback', text: 'Limited seats' };
   }
+  const maxSeats = typeof batch.max_seats === 'number' && Number.isFinite(batch.max_seats)
+    ? Math.max(0, Math.trunc(batch.max_seats))
+    : null;
+  const seats = Math.max(0, Math.trunc(batch.seats_remaining));
+  const openSeats = maxSeats === null ? seats : Math.min(maxSeats, seats);
   return {
     status: 'available',
-    seats: Math.max(0, Math.min(12, Math.trunc(batch.seats_remaining))),
-    text: String(Math.max(0, Math.min(12, Math.trunc(batch.seats_remaining)))),
+    seats: openSeats,
+    text: String(openSeats),
   };
 }
 
@@ -337,6 +343,7 @@ function DiyaButton({
 }
 
 export function DiwaliHero() {
+  const { t } = useTranslation();
   const { trialHref, dashboardHref, hideTrialPromos, ready, batch, batchLoading } = useHome();
   const primary = hideTrialPromos ? dashboardHref : trialHref;
   const [isAmbientActive, setIsAmbientActive] = useState(true);
@@ -346,6 +353,11 @@ export function DiwaliHero() {
   // The card and stats bar both use this clamped value from the active-batch API.
   const seatsAvailability = getSeatsAvailability(batch, batchLoading);
   const availableSeatCount = seatsAvailability.status === 'available' ? seatsAvailability.seats : null;
+  const batchCapacity = typeof batch?.max_seats === 'number' && Number.isFinite(batch.max_seats) && batch.max_seats > 0
+    ? Math.trunc(batch.max_seats)
+    : null;
+  const virtualDeskValue = t('landing.stats.access.value');
+  const coordinatorValue = t('landing.impact.stats.coordinator.value').match(/^\d+/)?.[0] ?? '—';
 
   const [litDiyas, setLitDiyas] = useState<boolean[]>([true, true, true, true, true]);
 
@@ -703,11 +715,42 @@ export function DiwaliHero() {
           .diwali-bloom-lit { width: 52px; height: 52px; }
         }
         @media (max-width: 480px) {
+          .diwali-inner-content {
+            width: calc(100% - 24px) !important;
+            padding: 44px 8px 0 !important;
+          }
+          .diwali-headline {
+            margin-top: 0 !important;
+            font-size: clamp(2rem, 9vw, 2.5rem) !important;
+            line-height: 1.04 !important;
+          }
+          .diwali-subhead {
+            max-width: 100%;
+            margin-top: 12px !important;
+            font-size: 15px !important;
+            line-height: 1.45 !important;
+            text-wrap: pretty;
+          }
+          .diwali-copy > p:last-of-type {
+            margin-top: 10px !important;
+            font-size: 13px !important;
+          }
+          .diwali-cta-row { margin-top: 16px !important; gap: 8px !important; }
+          .diwali-trust-row { margin-top: 12px !important; gap: 6px !important; }
+          .diwali-trust-row > span { padding-inline: 9px; font-size: 11px; }
+          .diwali-cohort-column { padding-bottom: 8px !important; }
+          .diwali-journey-strip { margin-top: 12px; margin-bottom: 12px; }
           .diwali-journey-strip { padding: 12px; }
           .diwali-journey-strip .diwali-diya-row { gap: 6px; }
           .diwali-journey-strip .diwali-diya-button { width: 50px; }
           .diwali-journey-strip .diwali-diya-visual { width: 36px; height: 40px; }
           .diwali-bloom-lit { width: 47px; height: 47px; }
+          .diwali-journey-strip > div:first-child > p:first-child {
+            min-width: 0 !important;
+            font-size: 14px !important;
+          }
+          .diwali-stats-content { width: 100% !important; padding-inline: 4px !important; gap: 10px !important; }
+          .diwali-stats-content > div p { font-size: 11px !important; line-height: 1.25; }
         }
       `}</style>
 
@@ -941,9 +984,13 @@ export function DiwaliHero() {
             {/* Stat 1: Students per batch */}
             <div className="text-center sm:text-left">
               <dt className="sr-only">Students per batch</dt>
-              <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
-                12
-              </dd>
+              {batchLoading ? (
+                <div className="mx-auto h-7 w-[3ch] animate-pulse rounded bg-white/20 sm:mx-0" aria-label="Loading batch capacity" />
+              ) : (
+                <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
+                  {batchCapacity ?? '—'}
+                </dd>
+              )}
               <p className="mt-0.5 text-[13px] font-medium text-white/95">Students per batch</p>
             </div>
 
@@ -978,7 +1025,7 @@ export function DiwaliHero() {
             <div className="border-t border-white/20 pt-4 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <dt className="sr-only">Virtual placement desk</dt>
               <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
-                24/7
+                {virtualDeskValue}
               </dd>
               <p className="mt-0.5 text-[13px] font-medium text-white/95">Virtual placement desk</p>
             </div>
@@ -987,7 +1034,7 @@ export function DiwaliHero() {
             <div className="border-t border-white/20 pt-4 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <dt className="sr-only">Coordinator</dt>
               <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
-                1
+                {coordinatorValue}
               </dd>
               <p className="mt-0.5 text-[13px] font-medium text-white/95">Coordinator</p>
             </div>

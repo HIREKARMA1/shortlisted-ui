@@ -238,10 +238,18 @@ export const journeyStages = [
 
 export const plans = {
   trial: {
-    name: 'Free trial page',
+    eyebrow: 'START YOUR PLACEMENT JOURNEY',
+    name: 'Your first step to getting hired, free',
     priceLabel: 'No charge',
-    note: 'After you sign in',
-    items: ['60-day journey overview', 'Trainers and class topics', 'No payment to view', 'Jobs open with the full plan'],
+    note: 'for 7 days',
+    items: [
+      'Apply to a real job and get noticed by recruiters',
+      'Take an assessment and discover your strengths',
+      'Practise a mock interview and build real confidence',
+      'Join a live class and learn from the experts',
+    ],
+    description: 'Try one of each and see how Shortlisted gets you interview-ready. No payment needed during your free trial.',
+    cta: 'Start My Free Trial',
   },
   full: {
     name: 'AI Virtual Placement Cell',

@@ -110,9 +110,9 @@ export function Navbar() {
             <img
               src="/images/shortlisted-logo.png"
               alt="Shortlisted"
-              width={140}
-              height={32}
-              className="h-8 w-auto object-contain"
+              width={216}
+              height={48}
+              className="h-12 w-auto object-contain"
             />
           </Link>
 
@@ -153,18 +153,20 @@ export function Navbar() {
         {/* Right Desktop Actions (min-[900px]:flex) */}
         <div className="hidden min-[900px]:flex items-center gap-3">
           {/* Compact Search Button */}
-          <button
-            type="button"
-            onClick={() => setPaletteOpen(true)}
-            className="flex items-center gap-2 rounded-full border border-[#E5EAF2] bg-[#F7F9FC] px-3.5 py-1.5 text-xs text-[#5B6B82] hover:border-[#00a2e5]/50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00a2e5]"
-            aria-label="Search"
-          >
-            <Search className="h-3.5 w-3.5 text-[#5B6B82]" />
-            <span className="font-medium text-[#5B6B82]">Search</span>
-            <kbd className="rounded bg-white border border-[#E5EAF2] px-1.5 py-0.5 text-[10px] font-semibold text-[#0B1B33]">
-              Ctrl K
-            </kbd>
-          </button>
+          {ready && isLoggedIn && (
+            <button
+              type="button"
+              onClick={() => setPaletteOpen(true)}
+              className="flex items-center gap-2 rounded-full border border-[#E5EAF2] bg-[#F7F9FC] px-3.5 py-1.5 text-xs text-[#5B6B82] hover:border-[#00a2e5]/50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00a2e5]"
+              aria-label="Search"
+            >
+              <Search className="h-3.5 w-3.5 text-[#5B6B82]" />
+              <span className="font-medium text-[#5B6B82]">Search</span>
+              <kbd className="rounded bg-white border border-[#E5EAF2] px-1.5 py-0.5 text-[10px] font-semibold text-[#0B1B33]">
+                Ctrl K
+              </kbd>
+            </button>
+          )}
 
           {ready && isLoggedIn && session ? (
             <Link
@@ -197,14 +199,16 @@ export function Navbar() {
         {/* Mobile Controls (<900px) */}
         <div className="flex min-[900px]:hidden items-center gap-2">
           {/* Mobile search icon-only button */}
-          <button
-            type="button"
-            onClick={() => setPaletteOpen(true)}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-[#E5EAF2] text-[#5B6B82] hover:bg-[#F7F9FC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00a2e5]"
-            aria-label="Search"
-          >
-            <Search className="h-4 w-4" />
-          </button>
+          {ready && isLoggedIn && (
+            <button
+              type="button"
+              onClick={() => setPaletteOpen(true)}
+              className="grid h-10 w-10 place-items-center rounded-xl border border-[#E5EAF2] text-[#5B6B82] hover:bg-[#F7F9FC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00a2e5]"
+              aria-label="Search"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+          )}
 
           {/* Mobile hamburger button */}
           <button

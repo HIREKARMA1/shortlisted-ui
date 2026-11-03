@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 import freeTrialEn from '@/content/en/freeTrial.json';
 import { faqs } from '@/lib/home/content';
+import { useHome } from './HomeProvider';
 import { useShell } from './ShellContext';
 
 type Row = { group: string; label: string; href: string; hint: string };
@@ -16,15 +17,6 @@ const pageSections: Row[] = [
   { group: 'Sections', label: 'FAQ', href: '#faq', hint: 'Frequently asked questions' },
 ];
 
-const placementDeskFeatures: Row[] = [
-  { group: 'Placement Desk', label: 'Profile & resume', href: '#desk', hint: 'Stand out clearly' },
-  { group: 'Placement Desk', label: 'Matched jobs', href: '#desk', hint: 'Roles chosen for your batch' },
-  { group: 'Placement Desk', label: 'Applications', href: '#desk', hint: 'Track every step' },
-  { group: 'Placement Desk', label: 'Classes', href: '#desk', hint: 'Learn with your batch' },
-  { group: 'Placement Desk', label: 'Assessments', href: '#desk', hint: 'Know where you stand' },
-  { group: 'Placement Desk', label: 'Batch of 12', href: '#desk', hint: 'Small on purpose' },
-];
-
 const trainerRows: Row[] = (freeTrialEn.trainers?.items || []).map((t) => ({
   group: 'Trainers',
   label: t.name,
@@ -34,11 +26,27 @@ const trainerRows: Row[] = (freeTrialEn.trainers?.items || []).map((t) => ({
 
 export function CommandPalette() {
   const { paletteOpen, setPaletteOpen } = useShell();
+  const { isLoggedIn, session } = useHome();
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
 
   const rows = useMemo<Row[]>(() => {
+    const dashboardRoot = session?.userType === 'admin'
+      ? '/dashboard/admin'
+      : session?.userType === 'super_admin'
+        ? '/dashboard/super-admin'
+        : '/dashboard/student';
+    const dashboardPath = (studentPath: string, staffPath: string, staffFallback = dashboardRoot) =>
+      session?.userType === 'student' ? `/dashboard/student/${studentPath}` : staffPath ? `${dashboardRoot}/${staffPath}` : staffFallback;
+    const placementDeskFeatures: Row[] = [
+      { group: 'Placement Desk', label: 'Open placement desk', href: '#desk', hint: 'Feature overview' },
+      { group: 'Placement Desk', label: 'Profile & resume', href: dashboardPath('profile', 'students'), hint: 'Your placement profile' },
+      { group: 'Placement Desk', label: 'Matched jobs', href: dashboardPath('jobs', 'jobs'), hint: 'Jobs assigned to your batch' },
+      { group: 'Placement Desk', label: 'Applications', href: dashboardPath('applications', 'students'), hint: 'Track applications and updates' },
+      { group: 'Placement Desk', label: 'Classes', href: dashboardPath('classes', 'classes'), hint: 'Your classes and sessions' },
+      { group: 'Placement Desk', label: 'Assessments', href: dashboardPath('assessments', 'assessments'), hint: 'Your assessments' },
+    ];
     const all: Row[] = [
       ...pageSections,
       ...placementDeskFeatures,
@@ -48,7 +56,7 @@ export function CommandPalette() {
     const q = query.trim().toLowerCase();
     const filtered = q ? all.filter((item) => `${item.label} ${item.hint} ${item.group}`.toLowerCase().includes(q)) : all;
     return filtered.slice(0, 10);
-  }, [query]);
+  }, [query, session?.userType]);
 
   useEffect(() => setActive(0), [query, paletteOpen]);
 
@@ -84,7 +92,7 @@ export function CommandPalette() {
     return () => window.removeEventListener('keydown', onKey);
   }, [paletteOpen, rows, active, router, setPaletteOpen]);
 
-  if (!paletteOpen) return null;
+  if (!paletteOpen || !isLoggedIn) return null;
   const groups = Array.from(new Set(rows.map((row) => row.group)));
 
   return (

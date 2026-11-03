@@ -17,6 +17,14 @@ export type BatchInfo = {
   has_open_batch?: boolean;
 };
 
+export type PaymentConfig = {
+  amount_inr?: number;
+  regular_amount_inr?: number;
+  offer_active?: boolean;
+  offer_name?: string | null;
+  savings_inr?: number;
+};
+
 export type Testimonial = {
   id: string;
   name: string;
@@ -56,6 +64,7 @@ type HomeState = {
   subscribeHref: string;
   batch: BatchInfo | null;
   batchLoading: boolean;
+  paymentConfig: PaymentConfig | null;
   testimonials: Testimonial[];
   stories: SuccessStory[];
   community: CommunityContent;
@@ -69,6 +78,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
   const { session, ready, isLoggedIn } = useSession();
   const [batch, setBatch] = useState<BatchInfo | null>(null);
   const [batchLoading, setBatchLoading] = useState(true);
+  const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [community, setCommunity] = useState<CommunityContent>({ collage_url: null, gallery: [] });
@@ -81,6 +91,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
       .then(setBatch)
       .catch(() => setBatch(null))
       .finally(() => setBatchLoading(false));
+    api.getPaymentConfig().then(setPaymentConfig).catch(() => setPaymentConfig(null));
     Promise.all([
       api.getTestimonials().catch(() => []),
       api.getSuccessStories().catch(() => []),
@@ -130,6 +141,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
       subscribeHref,
       batch,
       batchLoading,
+      paymentConfig,
       testimonials,
       stories,
       community,
@@ -142,6 +154,7 @@ export function HomeProvider({ children }: { children: ReactNode }) {
     isLoggedIn,
     batch,
     batchLoading,
+    paymentConfig,
     testimonials,
     stories,
     community,
