@@ -61,6 +61,12 @@ export const seasonalHero = {
   endIso: DIWALI_THEME_END,
 };
 
+/** Local-calendar date check used by the Diwali offer popup. */
+export function isSeasonalHeroLocalDateActive(date = new Date()): boolean {
+  const localDate = [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+  return seasonalHero.enabled && localDate >= seasonalHero.startDate && localDate <= seasonalHero.endDate;
+}
+
 /**
  * Checks whether the Diwali seasonal hero should be rendered.
  * Evaluates against the exact ISO timestamp in IST (+05:30).

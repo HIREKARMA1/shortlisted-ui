@@ -1,7 +1,8 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useState, type CSSProperties } from 'react';
-import { homeTokenVars, isSeasonalHeroActive } from '@/lib/home/content';
+import { homeTokenVars, isSeasonalHeroActive, isSeasonalHeroLocalDateActive } from '@/lib/home/content';
 import { AppShell } from './AppShell';
 import { DiwaliHero } from './DiwaliHero';
 import { FaqAndContact } from './FaqAndContact';
@@ -9,14 +10,19 @@ import { Hero } from './Hero';
 import { HomeProvider } from './HomeProvider';
 import { MeetTrainersSection } from './MeetTrainersSection';
 import { PlacementDeskSection } from './PlacementDeskSection';
-import { PlacementJourneySection } from './PlacementJourneySection';
+// import { PlacementJourneySection } from './PlacementJourneySection';
 import { PlansAndBatch } from './PlansAndBatch';
 import { Stories } from './Stories';
 import { ContactSupportSection } from '@/components/landing/ContactSupportSection';
 import { SiteFooter } from '@/components/layout/Footer';
 
+const DiwaliOfferPopup = dynamic(() => import('./DiwaliOfferPopup').then((module) => module.DiwaliOfferPopup), {
+  ssr: false,
+});
+
 export function HomePage() {
   const [seasonalActive, setSeasonalActive] = useState<boolean>(() => isSeasonalHeroActive());
+  const [diwaliOfferWindowActive, setDiwaliOfferWindowActive] = useState(false);
 
   useEffect(() => {
     // Check for QA override in query string: ?theme=diwali or ?theme=default
@@ -31,6 +37,10 @@ export function HomePage() {
     }
   }, []);
 
+  useEffect(() => {
+    setDiwaliOfferWindowActive(isSeasonalHeroLocalDateActive());
+  }, []);
+
   return (
     <HomeProvider>
       <div className="sl-home min-h-screen bg-[var(--bg)] text-[var(--ink)]" style={homeTokenVars as CSSProperties}>
@@ -42,7 +52,7 @@ export function HomePage() {
               To turn it off permanently: set `seasonalHero.enabled = false` in `lib/home/content.ts`.
           */}
           {seasonalActive ? <DiwaliHero /> : <Hero />}
-          <PlacementJourneySection />
+          {/* <PlacementJourneySection /> */}
           <PlacementDeskSection />
           <MeetTrainersSection />
           <Stories />
@@ -51,6 +61,7 @@ export function HomePage() {
           <ContactSupportSection />
         </AppShell>
       </div>
+      {diwaliOfferWindowActive && <DiwaliOfferPopup />}
       <SiteFooter />
     </HomeProvider>
   );
