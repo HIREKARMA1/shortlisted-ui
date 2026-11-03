@@ -181,4 +181,56 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  @keyframes sl-home-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .sl-float {
+    animation: sl-home-float 4.5s ease-in-out infinite;
+  }
+
+  @keyframes sl-home-progress {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  .sl-home-progress {
+    width: 0;
+    animation: sl-home-progress 6s linear;
+  }
+
+  @keyframes sl-home-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .sl-home-marquee {
+    animation: sl-home-marquee 40s linear infinite;
+  }
+
+  .sl-home-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+.sl-home h1,
+.sl-home h2,
+.sl-home h3 {
+  font-family: var(--font-home-display), Inter, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-float,
+  .sl-home-marquee,
+  .sl-home-progress,
+  .sl-seat-pulse,
+  .animate-sl-marquee {
+    animation: none !important;
+  }
+
+  .sl-home-progress {
+    width: 100%;
+  }
 }

@@ -5,11 +5,11 @@
   "amountLabel": "ସବସ୍କ୍ରିପ୍ସନ୍ ଶୁଳ୍କ",
   "currency": "₹{{amount}}",
   "promo": {
-    "badge": "Independence Day Special Offer",
-    "title": "Independence Day Special Offer",
-    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
-    "exclusive": "Exclusively available for the first 12 students in each batch.",
-    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+    "badge": "ଦୀପାବଳି ଅଫର",
+    "title": "ଦୀପାବଳି ଅଫର",
+    "saveLine": "ଏକଥର ନାମଲେଖାରେ ₹{{savings}} ସଞ୍ଚୟ କରନ୍ତୁ।",
+    "exclusive": "ଦୀପାବଳି ଅଫର ସକ୍ରିୟ ଥିବା ପର୍ଯ୍ୟନ୍ତ ଉପଲବ୍ଧ।",
+    "tagline": "ପୂର୍ଣ୍ଣ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ ପାଇଁ ଏକଥର ସବସ୍କ୍ରିପ୍ସନ୍।"
   },
   "cta": "ସବସ୍କ୍ରାଇବ୍ କରି ସକ୍ରିୟ କରନ୍ତୁ",
   "ctaOnline": "ଅନଲାଇନ୍ ପେମେଣ୍ଟ କରି ସକ୍ରିୟ କରନ୍ତୁ",

@@ -44,6 +44,7 @@ function isAuthEndpoint(url?: string) {
   if (!url) return false;
   return (
     url.includes('/auth/login') ||
+    url.includes('/auth/google') ||
     url.includes('/auth/refresh') ||
     url.includes('/auth/register') ||
     url.includes('/auth/forgot-password')
@@ -160,6 +161,11 @@ class ApiClient {
 
   async login(email: string, password: string, user_type: UserType) {
     const res = await this.client.post<TokenResponse>('/auth/login', { email, password, user_type });
+    return res.data;
+  }
+
+  async loginWithGoogle(accessToken: string) {
+    const res = await this.client.post<TokenResponse>('/auth/google', { access_token: accessToken });
     return res.data;
   }
 
