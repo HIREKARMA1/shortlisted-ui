@@ -40,6 +40,7 @@ export function DashboardLayout({
   title,
   subtitle,
   actions,
+  wideContent = false,
   children,
   onLogout,
 }: {
@@ -47,6 +48,7 @@ export function DashboardLayout({
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
+  wideContent?: boolean;
   children: React.ReactNode;
   onLogout?: () => void;
 }) {
@@ -133,7 +135,7 @@ export function DashboardLayout({
           </header>
 
           <main className="min-h-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-6xl">
+            <div className={wideContent ? 'mx-auto w-full max-w-[1480px]' : 'mx-auto max-w-6xl'}>
               {(title || subtitle) && (
                 <div className="mb-8 border-b border-line-default pb-6">
                   {title ? <h1 className="section-title">{title}</h1> : null}

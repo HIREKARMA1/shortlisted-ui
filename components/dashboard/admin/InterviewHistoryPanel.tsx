@@ -7,7 +7,7 @@ import { InterviewDateTimePicker } from './InterviewDateTimePicker';
 
 type AuditEvent = { id: string; action: string; from_status?: string | null; to_status?: string | null; note?: string | null; old_start_at?: string | null; new_start_at?: string | null; created_at?: string | null; actor_type: string };
 type RecordRow = { id: string; interviewer_id: string; status: string; requested_at: string | null; start_at: string | null; end_at: string | null; timezone: string; duration_minutes: number; meet_link?: string | null; cancellation_reason?: string | null; rejection_reason?: string | null; outcome?: string | null; feedback?: string | null; admin_notes?: string | null; history?: AuditEvent[]; student: { id: string; name: string; email: string }; interviewer: { name: string; expertise?: string } };
-const states = ['all', 'pending', 'confirmed', 'completed', 'cancelled', 'rejected'];
+const states = ['all', 'pending', 'confirmed', 'completed', 'cancelled', 'rejected', 'cancelled_rejected'];
 const dateText = (value?: string | null, timezone?: string) => value ? new Date(value).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short', timeZone: timezone || 'Asia/Kolkata' }) : 'Not scheduled';
 const badge = (status: string) => status === 'completed' ? 'bg-emerald-50 text-emerald-700' : status === 'confirmed' ? 'bg-blue-50 text-blue-700' : status === 'pending' ? 'bg-amber-50 text-amber-800' : status === 'rejected' ? 'bg-rose-50 text-rose-700' : 'bg-slate-100 text-slate-600';
 const localInputInZone = (date: Date, timezone: string) => {
@@ -21,9 +21,9 @@ const addLocalMinutes = (value: string, minutes: number) => {
   return `${next.getUTCFullYear()}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}T${pad(next.getUTCHours())}:${pad(next.getUTCMinutes())}`;
 };
 
-export function InterviewHistoryPanel({ onUpdated }: { onUpdated?: () => void }) {
+export function InterviewHistoryPanel({ onUpdated, initialFilter = 'all' }: { onUpdated?: () => void; initialFilter?: string }) {
   const [rows, setRows] = useState<RecordRow[]>([]);
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState(initialFilter);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<RecordRow | null>(null);
   const [slot, setSlot] = useState('');
@@ -45,6 +45,7 @@ export function InterviewHistoryPanel({ onUpdated }: { onUpdated?: () => void })
     } finally { setLoading(false); }
   };
   useEffect(() => { void load(); }, [filter, search]);
+  useEffect(() => { setFilter(initialFilter); }, [initialFilter]);
   useEffect(() => {
     if (!selected) return;
     setNotes(selected.admin_notes || '');
@@ -101,7 +102,7 @@ export function InterviewHistoryPanel({ onUpdated }: { onUpdated?: () => void })
 
   return <section className="space-y-4">
     <div className="flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-xl font-bold text-slate-900">Interview History</h2><p className="mt-1 text-sm text-slate-500">Search every request and interview, including status changes and scheduling actions.</p></div>
-      <div className="flex flex-wrap gap-2"><label className="relative"><Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Student or interviewer" className="h-9 w-56 rounded-md border border-slate-200 bg-white pl-9 pr-3 text-sm" /></label><select value={filter} onChange={(e) => setFilter(e.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm">{states.map((state) => <option key={state} value={state}>{state === 'all' ? 'All statuses' : state[0].toUpperCase() + state.slice(1)}</option>)}</select></div>
+      <div className="flex flex-wrap gap-2"><label className="relative"><Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Student or interviewer" className="h-9 w-56 rounded-md border border-slate-200 bg-white pl-9 pr-3 text-sm" /></label><select value={filter} onChange={(e) => setFilter(e.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm">{states.map((state) => <option key={state} value={state}>{state === 'all' ? 'All statuses' : state === 'cancelled_rejected' ? 'Cancelled / Rejected' : state[0].toUpperCase() + state.slice(1)}</option>)}</select></div>
     </div>
     {message && <p role="status" className="rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-sm text-blue-800">{message}</p>}
     {loading ? <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">Loading interview history…</div> : !visible.length ? <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">No interview history matches these filters.</div> : <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">

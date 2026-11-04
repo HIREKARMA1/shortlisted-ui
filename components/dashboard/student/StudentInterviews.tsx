@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { api } from '@/lib/api';
-import { CalendarDays, ChevronDown, Info, Search, Video } from 'lucide-react';
+import { CalendarDays, Info, Search, Video } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 type Person = { id: string; name: string; email?: string; profile_details?: string; calendar_status: string; profile_photo_url?: string; expertise?: string };
 type Booking = { id: string; interviewer: Person; start_at: string | null; end_at: string | null; status: string; meet_link?: string | null; requested_at?: string | null; timezone?: string; notification_warning?: string };
@@ -20,6 +21,7 @@ const statusStyle = (status: string) => status === 'confirmed'
   : status === 'rejected' || status === 'cancelled'
     ? 'bg-slate-100 text-slate-600'
     : 'bg-amber-50 text-amber-800';
+const MAX_REAL_INTERVIEWS = 5;
 
 function Avatar({ person, small = false }: { person: Person; small?: boolean }) {
   return <span className={'grid shrink-0 place-items-center overflow-hidden rounded-full bg-blue-100 font-semibold text-blue-700 ' + (small ? 'h-9 w-9 text-sm' : 'h-14 w-14 text-base')}>
@@ -29,8 +31,6 @@ function Avatar({ person, small = false }: { person: Person; small?: boolean }) 
 
 export function StudentInterviews() {
   const { logout } = useAuth();
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const profileMenuRef = useRef<HTMLDivElement>(null);
   const [people, setPeople] = useState<Person[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [selected, setSelected] = useState('');
@@ -56,25 +56,12 @@ export function StudentInterviews() {
   };
 
   useEffect(() => { void load(); }, []);
-  useEffect(() => {
-    if (!profileMenuOpen) return;
-    const closeOutside = (event: PointerEvent) => {
-      if (event.target instanceof Node && !profileMenuRef.current?.contains(event.target)) setProfileMenuOpen(false);
-    };
-    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') setProfileMenuOpen(false); };
-    document.addEventListener('pointerdown', closeOutside);
-    document.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.removeEventListener('pointerdown', closeOutside);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [profileMenuOpen]);
-
   const filtered = useMemo(() => people.filter((person) =>
     `${person.name} ${person.profile_details || ''} ${person.expertise || ''}`.toLowerCase().includes(query.toLowerCase()),
   ), [people, query]);
   const selectedPerson = people.find((person) => person.id === selected);
-  const activeRequest = bookings.find((booking) => booking.interviewer.id === selected && ['pending', 'confirmed'].includes(booking.status));
+  const usedInterviews = bookings.filter((booking) => ['pending', 'confirmed', 'completed'].includes(booking.status)).length;
+  const hasInterviewCapacity = usedInterviews < MAX_REAL_INTERVIEWS;
 
   const submitRequest = async () => {
     if (!selectedPerson || working) return;
@@ -106,15 +93,11 @@ export function StudentInterviews() {
     }
   };
 
-  if (loading) return <div className="p-8 text-base text-slate-500">Loading interviewers and requests…</div>;
+  if (loading) return <DashboardLayout role="student" title="" wideContent onLogout={logout}><div className="p-8 text-base text-slate-500">Loading interviewers and requests…</div></DashboardLayout>;
 
-  return <div className="min-h-screen bg-slate-50 text-slate-800">
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-7">
-      <label className="relative block w-full max-w-md"><Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search for interviewers…" className="h-9 w-full rounded-md border border-slate-200 pl-9 pr-3 text-base outline-none focus:border-blue-400" /></label>
-      <div ref={profileMenuRef} className="relative ml-4"><button type="button" aria-label="Student menu" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen((open) => !open)} className="flex items-center gap-2 text-base text-slate-800"><span className="grid h-9 w-9 place-items-center rounded-full bg-blue-600 text-sm text-white">S</span><span className="hidden sm:inline">Student</span><ChevronDown className={'h-3.5 w-3.5 transition-transform ' + (profileMenuOpen ? 'rotate-180' : '')} /></button>{profileMenuOpen && <div role="menu" className="absolute right-0 top-11 z-50 w-40 rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg"><button type="button" role="menuitem" onClick={() => { setProfileMenuOpen(false); logout(); }} className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50">Sign out</button></div>}</div>
-    </header>
-    <main className="mx-auto max-w-[1500px] p-4 md:p-6">
-      <div className="mb-5"><h1 className="text-3xl font-bold text-slate-900">Request an Interview</h1><p className="mt-1 text-base text-slate-500">Choose an interviewer and send a request. An admin will schedule the date and time.</p></div>
+  return <DashboardLayout role="student" title="" wideContent onLogout={logout}>
+    <main className="mx-auto max-w-[1500px] p-4 text-slate-800 md:p-6">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4"><div><h1 className="text-3xl font-bold text-slate-900">Request an Interview</h1><p className="mt-1 text-base text-slate-500">Choose an interviewer and send a request. An admin will schedule the date and time.</p></div><label className="relative block w-full max-w-md"><Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search for interviewers…" className="h-9 w-full rounded-md border border-slate-200 bg-white pl-9 pr-3 text-base outline-none focus:border-blue-400" /></label></div>
       {message && <div role="status" className="mb-4 flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-base text-blue-800"><Info className="h-4 w-4 shrink-0" />{message}<button onClick={() => setMessage('')} className="ml-auto">×</button></div>}
       <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <section className="space-y-3">
@@ -130,7 +113,9 @@ export function StudentInterviews() {
             <hr className="my-3" />
             <p className="flex items-start gap-2 text-sm"><CalendarDays className="h-4 w-4 text-blue-600" /><span><b>Schedule</b><br /><span className="text-slate-500">Admin selects an available date and time</span></span></p>
             <p className="mt-3 flex items-start gap-2 text-sm"><Video className="h-4 w-4 text-blue-600" /><span><b>Google Meet</b><br /><span className="text-slate-500">Link provided after confirmation</span></span></p>
-            {activeRequest ? <p className="mt-4 rounded-md bg-amber-50 p-3 text-sm text-amber-800">You already have a {activeRequest.status} request with this interviewer.</p> : <button disabled={!selectedPerson || working} onClick={() => void submitRequest()} className="mt-5 w-full rounded-md bg-blue-600 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50">{working ? 'Sending request…' : 'Request Interview'}</button>}
+            <p className="mt-4 text-sm text-slate-600">Real interviews used: {usedInterviews} of {MAX_REAL_INTERVIEWS}</p>
+            {!hasInterviewCapacity && <p className="mt-2 rounded-md bg-amber-50 p-3 text-sm text-amber-800">You have reached the maximum of 5 real interviews.</p>}
+            <button disabled={!selectedPerson || working || !hasInterviewCapacity} onClick={() => void submitRequest()} className="mt-3 w-full rounded-md bg-blue-600 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50">{working ? 'Sending request…' : 'Request Interview'}</button>
           </> : <p className="mt-4 text-sm text-slate-500">Select an interviewer to continue.</p>}
         </aside>
       </div>
@@ -142,6 +127,6 @@ export function StudentInterviews() {
         </article>)}</div>}
       </section>
     </main>
-  </div>;
+  </DashboardLayout>;
 }
 

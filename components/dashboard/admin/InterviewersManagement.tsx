@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { AlertCircle, CalendarDays, Check, ChevronDown, Clock3, Edit3, MoreVertical, Plus, Search, ShieldCheck, UserRound, X, Users, Video, ClipboardList, History, GraduationCap } from 'lucide-react';
+import { AlertCircle, CalendarDays, Check, ChevronDown, Clock3, Edit3, MoreVertical, Plus, Search, UserRound, X, Users, Video, ClipboardList, History, GraduationCap } from 'lucide-react';
 import { api } from '@/lib/api';
 import { LoadingState } from '@/components/ui/LoadingState';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,6 +11,7 @@ import type { DashboardRole } from '@/lib/dashboard-nav';
 import { InterviewBookingRequests } from '@/components/dashboard/admin/InterviewBookingRequests';
 import { InterviewHistoryPanel } from '@/components/dashboard/admin/InterviewHistoryPanel';
 import { InterviewStudentRecords } from '@/components/dashboard/admin/InterviewStudentRecords';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 
 type Interviewer = { id: string; name: string; email: string; profile_details?: string; profile_photo_url?: string | null; timezone: string; is_active: boolean; calendar_status: string; calendar_connected_email?: string; interview_count?: number; last_activity?: string | null };
 type Overview = { total_interviewers: number; connected_calendars: number; pending_requests: number; confirmed_interviews: number; completed_interviews: number; cancelled_rejected_requests: number; cancelled_requests: number; rejected_requests: number };
@@ -43,14 +44,14 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
   const [search, setSearch] = useState('');
   const [openActionId, setOpenActionId] = useState<string | null>(null);
   const [actionMenuPosition, setActionMenuPosition] = useState<{ top: number; left: number } | null>(null);
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [loadError, setLoadError] = useState('');
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [calendarFilter, setCalendarFilter] = useState('all');
+  const [historyStatusFilter, setHistoryStatusFilter] = useState('all');
   const [expertiseFilter, setExpertiseFilter] = useState('all');
-  const [sortBy, setSortBy] = useState<'name' | 'expertise' | 'calendar' | 'interviews'>('name');
   const refreshOverview = async () => {
     try { setOverview(await api.get<Overview>('/admin/interview-overview')); } catch { /* keep the last known summary */ }
   };
@@ -127,28 +128,28 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
     };
   }, [openActionId]);
 
-  const counts = useMemo(() => ({
-    total: rows.length,
-    connected: rows.filter((row) => row.calendar_status === 'connected').length,
-    expired: rows.filter((row) => row.calendar_status === 'authorization_expired').length,
-    notConnected: rows.filter((row) => row.calendar_status === 'not_connected').length,
-  }), [rows]);
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase();
     return rows.filter((row) => {
       const matchesSearch = !query || [row.name, row.email, row.profile_details, row.calendar_connected_email]
         .some((value) => value?.toLowerCase().includes(query));
       const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? row.is_active : !row.is_active);
+      const matchesCalendar = calendarFilter === 'all' || row.calendar_status === calendarFilter;
       const matchesExpertise = expertiseFilter === 'all' || (row.profile_details || '').toLowerCase() === expertiseFilter.toLowerCase();
-      return matchesSearch && matchesStatus && matchesExpertise;
-    }).sort((a, b) => sortBy === 'expertise'
-      ? (a.profile_details || '').localeCompare(b.profile_details || '')
-      : sortBy === 'calendar'
-        ? a.calendar_status.localeCompare(b.calendar_status)
-        : sortBy === 'interviews'
-          ? (b.interview_count || 0) - (a.interview_count || 0)
-          : a.name.localeCompare(b.name));
-  }, [rows, search, statusFilter, expertiseFilter, sortBy]);
+      return matchesSearch && matchesStatus && matchesCalendar && matchesExpertise;
+    }).sort((a, b) => a.name.localeCompare(b.name));
+  }, [rows, search, statusFilter, calendarFilter, expertiseFilter]);
+
+  const selectSummary = (tab: AdminTab, filter = 'all') => {
+    setActiveTab(tab);
+    setDrawerOpen(false);
+    if (tab === 'interviewers') {
+      setCalendarFilter(filter);
+      setStatusFilter('all');
+      setExpertiseFilter('all');
+    }
+    if (tab === 'history') setHistoryStatusFilter(filter);
+  };
 
   const startCreate = () => {
     setOpenActionId(null);
@@ -249,13 +250,8 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
   };
   if (!ready) return <LoadingState />;
 
-  return <div className="min-h-screen bg-[#f4f7fb] text-slate-800">
-    <header className="flex h-12 items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 shadow-sm sm:px-6">
-      {activeTab === 'interviewers' ? <label className="relative block w-full max-w-[440px]"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input aria-label="Search interviewers" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search interviewers..." className="h-9 w-full rounded-md border border-slate-200 bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-400 focus:border-blue-300 focus:ring-2 focus:ring-blue-50" /></label> : <div className="text-sm font-semibold text-slate-600">Hirekarma <span className="font-normal text-slate-400">· Interview Management</span></div>}
-      <div className="flex shrink-0 items-center gap-3"><div className="relative"><button type="button" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen(!profileMenuOpen)} className="flex items-center gap-1.5 text-sm font-semibold text-slate-600"><span className="grid h-7 w-7 place-items-center rounded-full bg-blue-600 text-xs text-white">{role === 'super_admin' ? 'S' : 'A'}</span>Admin<ChevronDown className="h-3.5 w-3.5" /></button>{profileMenuOpen && <div className="absolute right-0 top-9 z-30 w-36 rounded-md border border-slate-200 bg-white p-1 shadow-lg"><button type="button" onClick={logout} className="block w-full rounded px-2.5 py-2 text-left text-sm text-slate-700 hover:bg-slate-50">Sign out</button></div>}</div></div>
-    </header>
-
-    <main className="mx-auto w-full px-4 py-5 sm:px-6" style={{ maxWidth: '1480px' }}>
+  return <DashboardLayout role={role} title="" wideContent onLogout={logout}>
+    <div className="mx-auto w-full px-4 py-5 text-slate-800 sm:px-6" style={{ maxWidth: '1480px' }}>
       <div className="grid grid-cols-1 items-start gap-5">
         <section className="min-w-0 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -264,12 +260,12 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
           </div>
 
           <section aria-label="Interview management summary" className="grid grid-cols-2 gap-2.5 md:grid-cols-3 xl:grid-cols-6">
-            <MetricCard label="Total Interviewers" value={overview.total_interviewers} icon={<Users className="h-5 w-5" />} tone="blue" />
-            <MetricCard label="Connected Calendars" value={overview.connected_calendars} icon={<CalendarDays className="h-5 w-5" />} tone="green" />
-            <MetricCard label="Pending Requests" value={overview.pending_requests} icon={<Clock3 className="h-5 w-5" />} tone="amber" />
-            <MetricCard label="Confirmed Interviews" value={overview.confirmed_interviews} icon={<Check className="h-5 w-5" />} tone="purple" />
-            <MetricCard label="Completed Interviews" value={overview.completed_interviews} icon={<Video className="h-5 w-5" />} tone="green" />
-            <MetricCard label="Cancelled / Rejected" value={overview.cancelled_rejected_requests} icon={<X className="h-5 w-5" />} tone="rose" />
+            <MetricCard label="Total Interviewers" value={overview.total_interviewers} icon={<Users className="h-5 w-5" />} tone="blue" onClick={() => selectSummary('interviewers')} />
+            <MetricCard label="Connected Calendars" value={overview.connected_calendars} icon={<CalendarDays className="h-5 w-5" />} tone="green" onClick={() => selectSummary('interviewers', 'connected')} />
+            <MetricCard label="Pending Requests" value={overview.pending_requests} icon={<Clock3 className="h-5 w-5" />} tone="amber" onClick={() => selectSummary('requests')} />
+            <MetricCard label="Confirmed Interviews" value={overview.confirmed_interviews} icon={<Check className="h-5 w-5" />} tone="purple" onClick={() => selectSummary('history', 'confirmed')} />
+            <MetricCard label="Completed Interviews" value={overview.completed_interviews} icon={<Video className="h-5 w-5" />} tone="green" onClick={() => selectSummary('history', 'completed')} />
+            <MetricCard label="Cancelled / Rejected" value={overview.cancelled_rejected_requests} icon={<X className="h-5 w-5" />} tone="rose" onClick={() => selectSummary('history', 'cancelled_rejected')} />
           </section>
 
           <nav aria-label="Interview management sections" className="flex gap-1 overflow-x-auto rounded-lg border border-slate-200 bg-white px-2 pt-2 shadow-sm">
@@ -289,18 +285,11 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
           </section>}
 
           {activeTab === 'requests' && <InterviewBookingRequests onUpdated={() => void refreshOverview()} />}
-          {activeTab === 'history' && <InterviewHistoryPanel onUpdated={() => void refreshOverview()} />}
+          {activeTab === 'history' && <InterviewHistoryPanel initialFilter={historyStatusFilter} onUpdated={() => void refreshOverview()} />}
           {activeTab === 'students' && <InterviewStudentRecords />}
           {activeTab === 'interviewers' && <>
 
-          <section aria-label="Interviewer connection summary" className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
-            <SummaryCard label="Total Interviewers" value={counts.total} icon={<UserRound className="h-5 w-5" />} tone="blue" />
-            <SummaryCard label="Connected" value={counts.connected} icon={<ShieldCheck className="h-5 w-5" />} tone="green" />
-            <SummaryCard label="Not Connected" value={counts.notConnected} icon={<CalendarDays className="h-5 w-5" />} tone="red" />
-            <SummaryCard label="Authorization Expired" value={counts.expired} icon={<Clock3 className="h-5 w-5" />} tone="orange" />
-          </section>
-
-          <div className="flex flex-wrap gap-2"><select aria-label="Filter by status" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"><option value="all">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select aria-label="Filter by expertise" value={expertiseFilter} onChange={(event) => setExpertiseFilter(event.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"><option value="all">All Expertise</option>{Array.from(new Set(rows.map((row) => row.profile_details).filter(Boolean))).sort().map((value) => <option key={value} value={value}>{value}</option>)}</select><select aria-label="Sort interviewers" value={sortBy} onChange={(event) => setSortBy(event.target.value as typeof sortBy)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"><option value="name">Sort: Name</option><option value="expertise">Sort: Expertise</option><option value="calendar">Sort: Calendar status</option><option value="interviews">Sort: Interview count</option></select></div>
+          <div className="flex flex-wrap gap-2"><select aria-label="Filter by status" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"><option value="all">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select aria-label="Filter by calendar" value={calendarFilter} onChange={(event) => setCalendarFilter(event.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"><option value="all">All Calendars</option><option value="connected">Connected</option><option value="not_connected">Not Connected</option><option value="authorization_expired">Authorization Expired</option></select><select aria-label="Filter by expertise" value={expertiseFilter} onChange={(event) => setExpertiseFilter(event.target.value)} className="h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"><option value="all">All Expertise</option>{Array.from(new Set(rows.map((row) => row.profile_details).filter(Boolean))).sort().map((value) => <option key={value} value={value}>{value}</option>)}</select></div>
 
           <section className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm">
             <div className="overflow-x-auto">
@@ -351,8 +340,8 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
           </form>
         </aside></div>}
       </div>
-    </main>
-  </div>;
+    </div>
+  </DashboardLayout>;
 }
 const drawerInputClass = 'h-9 w-full rounded-md border border-slate-200 px-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100';
 
@@ -360,23 +349,13 @@ function FormField({ label, required, children }: { label: string; required?: bo
   return <label className="block space-y-1.5"><span className="block text-xs font-semibold text-slate-700">{label}{required && <span className="ml-1 text-rose-500">*</span>}</span>{children}</label>;
 }
 
-function SummaryCard({ label, value, icon, tone }: { label: string; value: number; icon: React.ReactNode; tone: 'blue' | 'green' | 'red' | 'orange' }) {
-  const styles = {
-    blue: 'bg-blue-50 text-blue-600 ring-blue-100',
-    green: 'bg-emerald-50 text-emerald-600 ring-emerald-100',
-    red: 'bg-rose-50 text-rose-600 ring-rose-100',
-    orange: 'bg-amber-50 text-amber-600 ring-amber-100',
-  };
-  return <article className="flex min-w-0 items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-3 shadow-sm sm:px-4"><span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ring-1 ${styles[tone]}`}>{icon}</span><div className="min-w-0"><p className="truncate text-xs font-medium text-slate-500">{label}</p><p className="mt-0.5 text-xl font-bold leading-none text-slate-900">{value}</p></div></article>;
-}
-
-function MetricCard({ label, value, icon, tone }: { label: string; value: number; icon: React.ReactNode; tone: 'blue' | 'green' | 'amber' | 'purple' | 'rose' }) {
+function MetricCard({ label, value, icon, tone, onClick }: { label: string; value: number; icon: React.ReactNode; tone: 'blue' | 'green' | 'amber' | 'purple' | 'rose'; onClick: () => void }) {
   const styles = {
     blue: 'bg-blue-50 text-blue-600', green: 'bg-emerald-50 text-emerald-600',
     amber: 'bg-amber-50 text-amber-600', purple: 'bg-violet-50 text-violet-600',
     rose: 'bg-rose-50 text-rose-600',
   };
-  return <div className="flex min-w-0 items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm sm:p-4"><span className={'grid h-10 w-10 shrink-0 place-items-center rounded-full ' + styles[tone]}>{icon}</span><span className="min-w-0"><span className="block truncate text-xs text-slate-500">{label}</span><span className="block text-xl font-bold text-slate-900">{value}</span></span></div>;
+  return <button type="button" onClick={onClick} aria-label={`${label}: ${value}. Click to view matching records.`} className="flex min-w-0 items-center gap-3 rounded-lg border border-slate-200 bg-white p-3 text-left shadow-sm transition hover:border-blue-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 sm:p-4"><span className={'grid h-10 w-10 shrink-0 place-items-center rounded-full ' + styles[tone]}>{icon}</span><span className="min-w-0"><span className="block truncate text-xs text-slate-500">{label}</span><span className="block text-xl font-bold text-slate-900">{value}</span></span></button>;
 }
 
 
