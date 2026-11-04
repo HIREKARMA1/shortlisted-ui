@@ -3,6 +3,7 @@ import {
   Briefcase,
   ClipboardList,
   ClipboardCheck,
+  FileText,
   LayoutDashboard,
   User,
   Users,
@@ -18,6 +19,8 @@ import {
   Headphones,
   ListChecks,
   Mail,
+  MessagesSquare,
+  CalendarDays,
 } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
@@ -32,10 +35,13 @@ export type NavItem = {
 export const studentNav: NavItem[] = [
   { href: '/dashboard/student', labelKey: 'common.nav.dashboard', icon: LayoutDashboard, exact: true },
   { href: '/dashboard/student/profile', labelKey: 'common.nav.profile', icon: User },
+  { href: '/dashboard/student/resume-builder', labelKey: 'common.nav.resumeBuilder', icon: FileText },
   { href: '/dashboard/student/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/student/applications', labelKey: 'common.nav.applications', icon: ClipboardList },
   { href: '/dashboard/student/classes', labelKey: 'common.nav.classes', icon: Video },
+  { href: '/dashboard/student/interviews', labelKey: 'common.nav.interviews', icon: CalendarDays },
   { href: '/dashboard/student/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
+  { href: '/dashboard/student/mock-interviews', labelKey: 'common.nav.mockInterviews', icon: MessagesSquare },
   { href: '/dashboard/student/contact-support', labelKey: 'common.nav.support', icon: Headphones },
 ];
 
@@ -45,8 +51,10 @@ export const adminNav: NavItem[] = [
   { href: '/dashboard/admin/bulk-email', labelKey: 'common.nav.bulkEmail', icon: Mail },
   { href: '/dashboard/admin/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/admin/classes', labelKey: 'common.nav.classes', icon: Video },
+  { href: '/dashboard/admin/interviewers', labelKey: 'common.nav.interviewers', icon: CalendarDays },
   { href: '/dashboard/admin/attendance', labelKey: 'common.nav.attendance', icon: ListChecks },
   { href: '/dashboard/admin/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
+  { href: '/dashboard/admin/mock-interviews', labelKey: 'common.nav.mockInterviews', icon: MessagesSquare },
   { href: '/dashboard/admin/support', labelKey: 'common.nav.verifyPayment', icon: BadgeCheck },
   { href: '/dashboard/admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
   { href: '/dashboard/admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
@@ -63,8 +71,10 @@ export const superAdminNav: NavItem[] = [
   { href: '/dashboard/super-admin/revenue', labelKey: 'common.nav.revenue', icon: IndianRupee },
   { href: '/dashboard/super-admin/support', labelKey: 'common.nav.verifyPayment', icon: BadgeCheck },
   { href: '/dashboard/super-admin/classes', labelKey: 'common.nav.classes', icon: Video },
+  { href: '/dashboard/super-admin/interviewers', labelKey: 'common.nav.interviewers', icon: CalendarDays },
   { href: '/dashboard/super-admin/attendance', labelKey: 'common.nav.attendance', icon: ListChecks },
   { href: '/dashboard/super-admin/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
+  { href: '/dashboard/super-admin/mock-interviews', labelKey: 'common.nav.mockInterviews', icon: MessagesSquare },
   { href: '/dashboard/super-admin/testimonials', labelKey: 'common.nav.testimonials', icon: MessageCircle },
   { href: '/dashboard/super-admin/success-stories', labelKey: 'common.nav.successStories', icon: Clapperboard },
   { href: '/dashboard/super-admin/community', labelKey: 'common.nav.community', icon: UsersRound },

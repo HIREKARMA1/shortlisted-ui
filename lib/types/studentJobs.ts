@@ -18,6 +18,7 @@ export type StudentJob = {
   experience_max?: number | null;
   created_at?: string | null;
   can_apply?: boolean;
+  details_locked?: boolean;
   application_status?: string | null;
   status?: string | null;
   remote_work?: boolean | null;

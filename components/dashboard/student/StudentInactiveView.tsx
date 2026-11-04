@@ -6,7 +6,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
-import { getLockedStudentPath } from '@/lib/auth/session';
+import { getStudentHomePath } from '@/lib/auth/session';
 import { Button } from '@/components/ui/Button';
 import { LoadingState } from '@/components/ui/LoadingState';
 
@@ -32,12 +32,10 @@ export function StudentInactiveView() {
         const channel = String(student?.signup_channel || localStorage.getItem('signup_channel') || 'web');
         localStorage.setItem('access_status', status);
         localStorage.setItem('signup_channel', channel);
-        if (status === 'active') {
-          router.replace('/dashboard/student');
-          return;
-        }
         if (status !== 'inactive') {
-          router.replace(getLockedStudentPath({ signupChannel: channel }));
+          router.replace(
+            getStudentHomePath({ accessStatus: status, signupChannel: channel }),
+          );
           return;
         }
         setReady(true);
