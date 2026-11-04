@@ -212,7 +212,12 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
       const result = await api.post<{ authorization_url: string }>(`/admin/interviewers/${id}/connect`);
       window.location.assign(result.authorization_url);
     } catch (error: any) {
-      setMessage(error?.response?.data?.detail || 'Could not start Google authorization.');
+      const detail = error?.response?.data?.detail;
+      if (typeof detail === 'string' && detail.includes('Google Calendar configuration is missing')) {
+        setMessage('Google Calendar is not set up on the server. Ask an admin to configure Google OAuth, then try again.');
+      } else {
+        setMessage(typeof detail === 'string' ? detail : 'Could not start Google authorization.');
+      }
     }
   };
   const changeActive = async (row: Interviewer) => {
@@ -334,7 +339,15 @@ export function InterviewersManagement({ role = 'admin' }: { role?: DashboardRol
               <FormField label="Profile / Expertise"><div className="relative"><input list="interviewer-expertise-options" value={form.profile_details} onChange={(event) => setForm({ ...form, profile_details: event.target.value })} placeholder="Select expertise" className={drawerInputClass + ' pr-7'} /><datalist id="interviewer-expertise-options"><option value="Full Stack Developer" /><option value="Data Analyst" /><option value="System Design" /><option value="Frontend Developer" /><option value="Backend Developer" /><option value="UI/UX Designer" /><option value="Product Manager" /><option value="Other" /></datalist><ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-slate-400" /></div></FormField>
               <div><span className="mb-1.5 block text-sm font-semibold text-slate-700">Profile Photo</span><div className="flex items-center gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-slate-100 text-slate-400">{photoPreview ? <img src={photoPreview} alt="Interviewer profile preview" className="h-full w-full object-cover" /> : <UserRound className="h-5 w-5" />}</span><div><input ref={photoInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={choosePhoto} className="hidden" /><button type="button" onClick={() => photoInputRef.current?.click()} className="rounded-md border border-blue-200 bg-white px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-50">{photoPreview ? 'Change Photo' : 'Upload Photo'}</button><p className="mt-1 text-xs text-slate-500">JPG, PNG, or WebP · Max 2 MB</p></div></div></div>
               <div className="border-t border-slate-100 pt-3"><div className="text-sm font-semibold text-slate-800">Google Calendar</div><p className="mt-1 text-xs leading-4 text-slate-500">Connect interviewer’s Google Calendar to check availability and create events.</p>{editing ? <button type="button" onClick={() => void connect(editing)} className="mt-2 inline-flex h-8 items-center gap-1.5 rounded-md border border-blue-200 px-3 text-xs font-semibold text-blue-700 hover:bg-blue-50"><span className="font-bold text-red-500">G</span>Connect Google Calendar</button> : <p className="mt-2 text-xs text-slate-400">Save the interviewer first to connect their calendar.</p>}</div>
-              {message && <p role="alert" className="rounded bg-red-50 px-3 py-2 text-sm text-red-700">{message}</p>}
+              {message && (
+                <div role="alert" className="flex items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2.5 text-sm text-rose-800">
+                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                  <p className="flex-1 leading-5">{message}</p>
+                  <button type="button" aria-label="Dismiss" onClick={() => setMessage('')} className="rounded p-0.5 hover:bg-rose-100">
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
             <div className="flex justify-end gap-2 border-t border-slate-100 px-4 py-3"><button type="button" onClick={() => setDrawerOpen(false)} className="rounded-md border border-slate-200 px-3.5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">Cancel</button><button disabled={saving} className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60">{saving ? 'Saving…' : 'Save'}</button></div>
           </form>
