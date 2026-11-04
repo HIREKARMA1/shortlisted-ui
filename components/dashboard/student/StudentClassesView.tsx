@@ -13,6 +13,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Select } from '@/components/ui/Select';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { TrialUpgradeDialog, type TrialDialogMode } from '@/components/dashboard/student/TrialUpgradeDialog';
+import { parseTrialError } from '@/lib/trial';
 
 type ClassRow = Record<string, unknown>;
 
@@ -31,6 +33,7 @@ export function StudentClassesView() {
   const [statusFilter, setStatusFilter] = useState<'upcoming' | 'completed'>('upcoming');
   const [loading, setLoading] = useState(false);
   const [joiningId, setJoiningId] = useState<string | null>(null);
+  const [upgradeMode, setUpgradeMode] = useState<TrialDialogMode | null>(null);
 
   const [summary, setSummary] = useState<{
     average_attendance_percentage: number;
@@ -66,10 +69,12 @@ export function StudentClassesView() {
       window.open(String(result.online_link), '_blank', 'noopener,noreferrer');
       loadClasses();
     } catch (err: unknown) {
-      const msg =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        t('common.errors.generic');
-      toast.error(msg);
+      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      if (parseTrialError(detail)) {
+        setUpgradeMode(parseTrialError(detail) === 'TRIAL_EXPIRED' ? 'expired' : 'limit');
+        return;
+      }
+      toast.error(String(detail || t('common.errors.generic')));
     } finally {
       setJoiningId(null);
     }
@@ -199,6 +204,7 @@ export function StudentClassesView() {
           ))}
         </div>
       )}
+      <TrialUpgradeDialog mode={upgradeMode} feature="class" onClose={() => setUpgradeMode(null)} />
     </DashboardLayout>
   );
 }

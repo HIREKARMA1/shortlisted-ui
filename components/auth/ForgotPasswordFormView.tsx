@@ -2,18 +2,22 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
-import { KeyRound, Loader2, Lock, Mail } from 'lucide-react';
+import { Loader2, Lock, Mail } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { api, type UserType } from '@/lib/api';
 import { getLoginPathForRole } from '@/lib/auth/login-routes';
 import { useGuestOnly, useSession } from '@/hooks/useSession';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { AuthField } from '@/components/auth/AuthField';
+import { OtpCodePanel } from '@/components/auth/OtpCodePanel';
+import { useOtpVerification } from '@/components/auth/useOtpVerification';
+import { useOtpWindow } from '@/components/auth/useOtpWindow';
 import { Button } from '@/components/ui/Button';
+import { formatOtpClock, otpStatusFromError, statusFromSend } from '@/lib/otp-clock';
 
-const OTP_COOLDOWN_SECONDS = 60;
+type Step = 'email' | 'code' | 'password';
 
 function parseRole(value: string | null): UserType | undefined {
   if (value === 'student' || value === 'admin' || value === 'super_admin') {
@@ -33,24 +37,27 @@ export function ForgotPasswordFormView() {
   const isSuperAdmin = fixedRole === 'super_admin';
   const isCoordinator = fixedRole === 'admin';
 
+  const [step, setStep] = useState<Step>('email');
   const [loading, setLoading] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [resendIn, setResendIn] = useState(0);
+  const otpWindow = useOtpWindow();
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  useEffect(() => {
-    if (resendIn <= 0) return;
-    const timer = window.setTimeout(() => setResendIn((value) => value - 1), 1000);
-    return () => window.clearTimeout(timer);
-  }, [resendIn]);
+  const resetRole: UserType = fixedRole ?? 'student';
+  const otpCheck = useOtpVerification({
+    email: email.trim(),
+    otp: otpWindow.codeSeconds > 0 ? otp : '',
+    verify: (address, code) => api.verifyForgotPasswordOtp(address, code, resetRole),
+    successMessage: t('auth.forgotPassword.otp.verified'),
+    fallbackError: t('common.errors.generic'),
+  });
 
   if (!ready || session) return null;
 
-  const role: UserType = fixedRole ?? 'student';
+  const role: UserType = resetRole;
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const otpValid = /^\d{6}$/.test(otp.trim());
   const passwordValid = password.trim().length >= 8;
@@ -59,7 +66,8 @@ export function ForgotPasswordFormView() {
     confirmPassword.length > 0 && !passwordsMatch
       ? t('auth.forgotPassword.errors.passwordMismatch')
       : undefined;
-  const canSubmit = otpSent && emailValid && otpValid && passwordValid && passwordsMatch;
+  const canReset =
+    emailValid && otpValid && otpCheck.verified && otpWindow.codeSeconds > 0 && passwordValid && passwordsMatch;
 
   const loginHref = getLoginPathForRole(fixedRole);
 
@@ -69,6 +77,26 @@ export function ForgotPasswordFormView() {
       ? t('auth.forgotPassword.coordinatorKicker')
       : t('auth.forgotPassword.kicker');
 
+  const title =
+    step === 'code'
+      ? t('auth.forgotPassword.codeTitle')
+      : step === 'password'
+        ? t('auth.forgotPassword.passwordTitle')
+        : t('auth.forgotPassword.title');
+  const subtitle =
+    step === 'code'
+      ? t('auth.forgotPassword.codeSubtitle', { email: email.trim() })
+      : step === 'password'
+        ? t('auth.forgotPassword.passwordSubtitle', { email: email.trim() })
+        : t('auth.forgotPassword.subtitle');
+
+  const clearCode = () => {
+    setOtp('');
+    otpWindow.setStatus(null);
+    setPassword('');
+    setConfirmPassword('');
+  };
+
   const handleSendOtp = async () => {
     if (!emailValid) {
       toast.error(t('auth.forgotPassword.errors.invalidEmail'));
@@ -76,15 +104,19 @@ export function ForgotPasswordFormView() {
     }
     setSendingOtp(true);
     try {
-      await api.sendForgotPasswordOtp(email.trim(), role);
-      setOtpSent(true);
-      setResendIn(OTP_COOLDOWN_SECONDS);
+      const sent = await api.sendForgotPasswordOtp(email.trim(), role);
+      setOtp('');
+      otpWindow.setStatus(statusFromSend(sent));
+      setStep('code');
       toast.success(t('auth.forgotPassword.otp.sent'));
     } catch (err: unknown) {
-      const msg =
-        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
-        t('common.errors.generic');
-      toast.error(msg);
+      const parsed = otpStatusFromError(err);
+      if (parsed.status) {
+        setOtp('');
+        otpWindow.setStatus(parsed.status);
+        setStep('code');
+      }
+      toast.error(parsed.message || t('common.errors.generic'));
     } finally {
       setSendingOtp(false);
     }
@@ -92,7 +124,15 @@ export function ForgotPasswordFormView() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!canSubmit) return;
+    if (step === 'email') {
+      await handleSendOtp();
+      return;
+    }
+    if (step === 'code') {
+      if (otpCheck.verified && otpWindow.codeSeconds > 0) setStep('password');
+      return;
+    }
+    if (!canReset) return;
     setLoading(true);
     try {
       await api.resetPassword({
@@ -117,8 +157,8 @@ export function ForgotPasswordFormView() {
     <AuthLayout
       fitViewport
       kicker={forgotKicker}
-      title={t('auth.forgotPassword.title')}
-      subtitle={t('auth.forgotPassword.subtitle')}
+      title={title}
+      subtitle={subtitle}
       footer={
         <>
           {t('auth.forgotPassword.footer')}{' '}
@@ -129,94 +169,143 @@ export function ForgotPasswordFormView() {
       }
     >
       <form onSubmit={onSubmit} className="space-y-4">
-        <AuthField
-          name="email"
-          label={t('auth.login.emailLabel')}
-          icon={Mail}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-          placeholder={t('auth.login.placeholders.email')}
-        />
-
-        <div className="flex items-end gap-3">
-          <div className="flex-1">
+        {step === 'email' && (
+          <>
             <AuthField
-              name="otp"
-              label={t('auth.forgotPassword.fields.otp')}
-              icon={KeyRound}
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              name="email"
+              label={t('auth.login.emailLabel')}
+              icon={Mail}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder={t('auth.forgotPassword.placeholders.otp')}
-              disabled={!otpSent}
+              autoComplete="email"
+              placeholder={t('auth.login.placeholders.email')}
             />
-          </div>
-          <Button
-            type="button"
-            variant="secondary"
-            className="mb-0.5 h-11 shrink-0 rounded-xl px-4"
-            disabled={!emailValid || sendingOtp || resendIn > 0}
-            onClick={handleSendOtp}
-          >
-            {sendingOtp ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : resendIn > 0 ? (
-              t('auth.forgotPassword.otp.resendIn', { seconds: String(resendIn) })
-            ) : otpSent ? (
-              t('auth.forgotPassword.otp.resend')
-            ) : (
-              t('auth.forgotPassword.otp.send')
-            )}
-          </Button>
-        </div>
-
-        {otpSent && (
-          <p className="text-xs text-ink-muted">{t('auth.forgotPassword.otp.hint')}</p>
+            <Button
+              type="submit"
+              fullWidth
+              className="h-11 rounded-xl"
+              disabled={!emailValid || sendingOtp}
+            >
+              {sendingOtp ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {t('auth.forgotPassword.otp.sending')}
+                </span>
+              ) : (
+                t('auth.forgotPassword.otp.send')
+              )}
+            </Button>
+          </>
         )}
 
-        <AuthField
-          name="password"
-          label={t('auth.forgotPassword.fields.password')}
-          icon={Lock}
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="new-password"
-          placeholder={t('auth.forgotPassword.placeholders.password')}
-          disabled={!otpSent}
-        />
+        {step === 'code' && (
+          <>
+            <OtpCodePanel
+              email={email.trim()}
+              value={otp}
+              onChange={setOtp}
+              codeSecondsLeft={otpWindow.codeSeconds}
+              clockSecondsLeft={otpWindow.clockSeconds}
+              lockedOut={otpWindow.lockedOut}
+              sending={sendingOtp}
+              onResend={handleSendOtp}
+              verified={otpCheck.verified}
+              verifying={otpCheck.verifying}
+              error={otpCheck.error}
+              labels={{
+                timeRemaining: t('auth.forgotPassword.otp.timeRemaining'),
+                attempts: t('auth.forgotPassword.otp.attempts'),
+                attemptsValue: t('auth.forgotPassword.otp.attemptsValue', {
+                  remaining: otpWindow.remaining,
+                  max: otpWindow.max,
+                }),
+                sentTo: t('auth.forgotPassword.otp.sentTo'),
+                expires: t('auth.forgotPassword.otp.expires'),
+                expired: t('auth.forgotPassword.otp.expired'),
+                lockout: t('auth.forgotPassword.otp.lockout'),
+                resend: t('auth.forgotPassword.otp.resend'),
+                resendIn: t('auth.forgotPassword.otp.resend'),
+                groupLabel: t('auth.forgotPassword.fields.otp'),
+                verified: t('auth.forgotPassword.otp.verified'),
+                verifying: t('auth.forgotPassword.otp.verifying'),
+              }}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              className="h-11 rounded-xl"
+              disabled={!otpCheck.verified || otpWindow.codeSeconds <= 0}
+            >
+              {t('auth.forgotPassword.continue')}
+            </Button>
+            <button
+              type="button"
+              className="w-full text-center text-sm font-semibold text-brand-blue"
+              onClick={() => {
+                clearCode();
+                setStep('email');
+              }}
+            >
+              {t('auth.forgotPassword.changeEmail')}
+            </button>
+          </>
+        )}
 
-        <AuthField
-          name="confirmPassword"
-          label={t('auth.forgotPassword.fields.confirmPassword')}
-          icon={Lock}
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          autoComplete="new-password"
-          placeholder={t('auth.forgotPassword.placeholders.confirmPassword')}
-          error={confirmPasswordError}
-          disabled={!otpSent}
-        />
-
-        <Button type="submit" fullWidth disabled={loading || !canSubmit} className="h-11 rounded-xl">
-          {loading ? (
-            <span className="inline-flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              {t('auth.forgotPassword.submitting')}
-            </span>
-          ) : (
-            t('auth.forgotPassword.submit')
-          )}
-        </Button>
+        {step === 'password' && (
+          <>
+            <p className="flex items-center justify-between text-sm text-ink-muted">
+              <span>{t('auth.forgotPassword.otp.timeRemaining')}</span>
+              <span className={otpWindow.codeSeconds <= 0 ? 'font-mono font-semibold text-brand-red' : 'font-mono font-semibold text-ink-primary'}>
+                {formatOtpClock(otpWindow.codeSeconds)}
+              </span>
+            </p>
+            {otpWindow.codeSeconds <= 0 && (
+              <p className="text-sm text-brand-red">{t('auth.forgotPassword.otp.expired')}</p>
+            )}
+            <AuthField
+              name="password"
+              label={t('auth.forgotPassword.fields.password')}
+              icon={Lock}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+              placeholder={t('auth.forgotPassword.placeholders.password')}
+            />
+            <AuthField
+              name="confirmPassword"
+              label={t('auth.forgotPassword.fields.confirmPassword')}
+              icon={Lock}
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+              placeholder={t('auth.forgotPassword.placeholders.confirmPassword')}
+              error={confirmPasswordError}
+            />
+            <Button type="submit" fullWidth disabled={loading || !canReset} className="h-11 rounded-xl">
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {t('auth.forgotPassword.submitting')}
+                </span>
+              ) : (
+                t('auth.forgotPassword.submit')
+              )}
+            </Button>
+            <button
+              type="button"
+              className="w-full text-center text-sm font-semibold text-brand-blue"
+              onClick={() => setStep('code')}
+            >
+              {t('auth.forgotPassword.backToCode')}
+            </button>
+          </>
+        )}
       </form>
     </AuthLayout>
   );

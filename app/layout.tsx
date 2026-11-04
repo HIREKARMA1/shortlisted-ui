@@ -18,6 +18,8 @@ const newsreader = Newsreader({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-serif',
+  // next/font has no size-adjust metrics for Newsreader on this Next version
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
