@@ -5,11 +5,11 @@
   "amountLabel": "Subscription fee",
   "currency": "₹{{amount}}",
   "promo": {
-    "badge": "Independence Day Special Offer",
-    "title": "Independence Day Special Offer",
-    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
-    "exclusive": "Exclusively available for the first 12 students in each batch.",
-    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+    "badge": "Diwali Offer",
+    "title": "Diwali Offer",
+    "saveLine": "Save ₹{{savings}} on your one-time enrollment.",
+    "exclusive": "Available while the Diwali promotion is active.",
+    "tagline": "One-time subscription for the full placement cell."
   },
   "cta": "Subscribe & Activate",
   "ctaOnline": "Pay online & activate",

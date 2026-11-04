@@ -5,11 +5,11 @@
   "amountLabel": "सब्सक्रिप्शन शुल्क",
   "currency": "₹{{amount}}",
   "promo": {
-    "badge": "Independence Day Special Offer",
-    "title": "Independence Day Special Offer",
-    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
-    "exclusive": "Exclusively available for the first 12 students in each batch.",
-    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+    "badge": "दिवाली ऑफ़र",
+    "title": "दिवाली ऑफ़र",
+    "saveLine": "एक बार के नामांकन पर ₹{{savings}} बचाएं।",
+    "exclusive": "दिवाली ऑफ़र सक्रिय रहने तक उपलब्ध।",
+    "tagline": "पूरे प्लेसमेंट सेल के लिए एक बार का सब्सक्रिप्शन।"
   },
   "cta": "सब्सक्राइब और सक्रिय करें",
   "ctaOnline": "ऑनलाइन भुगतान करें और सक्रिय करें",

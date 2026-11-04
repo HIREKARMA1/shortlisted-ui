@@ -1,0 +1,60 @@
+import type { LucideIcon } from 'lucide-react';
+import {
+  Users,
+  User,
+  Brain,
+  BarChart3,
+  Briefcase,
+  Flag,
+  BookOpen,
+  TrendingUp,
+  Trophy,
+  MessageCircle,
+  Calculator,
+  Code2,
+  Presentation,
+  HelpCircle,
+  HeartHandshake,
+  Sparkles,
+  ClipboardCheck,
+  FileCheck,
+  Target,
+  Lightbulb,
+  Play,
+  Linkedin,
+  Youtube,
+  ArrowRight,
+} from 'lucide-react';
+
+const ICONS: Record<string, LucideIcon> = {
+  Users,
+  User,
+  Brain,
+  BarChart3,
+  Briefcase,
+  Flag,
+  BookOpen,
+  TrendingUp,
+  Trophy,
+  MessageCircle,
+  Calculator,
+  Code2,
+  Presentation,
+  HelpCircle,
+  HeartHandshake,
+  Handshake: HeartHandshake,
+  Sparkles,
+  ClipboardCheck,
+  FileCheck,
+  Target,
+  Lightbulb,
+  Play,
+  Linkedin,
+  Youtube,
+  ArrowRight,
+};
+
+export function getLucideIcon(name?: string | null): LucideIcon {
+  if (!name) return Users;
+  return ICONS[name] ?? Users;
+}

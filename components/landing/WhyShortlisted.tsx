@@ -58,13 +58,6 @@ const SCROLL_SPEED_PX_PER_SEC = 40;
 const RESUME_DELAY_MS = 1800;
 const LOOP_CARDS = [...cards, ...cards];
 
-function HeadingSparkle({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M12 0L13.8 8.2L22 10L13.8 11.8L12 20L10.2 11.8L2 10L10.2 8.2L12 0Z" />
-    </svg>
-  );
-}
 
 function FeatureCard({ card }: { card: (typeof cards)[number] }) {
   const { t } = useTranslation();
@@ -280,14 +273,14 @@ export function WhyShortlisted() {
       <div className="mx-auto w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <div className="mb-7 flex items-center justify-center gap-3 sm:mb-8 sm:gap-5 md:mb-10">
           <span className="hidden h-px w-10 bg-brand-blue/25 sm:block sm:w-16 md:w-24" aria-hidden />
-          <HeadingSparkle className="h-3.5 w-3.5 shrink-0 text-brand-blue/70 sm:h-4 sm:w-4" />
+
           <h2 className="max-w-3xl text-center font-display text-2xl font-extrabold tracking-tight text-brand-blue sm:text-3xl md:text-4xl">
             <span className="block">{t('landing.whyShortlisted.title')}</span>
             <span className="mt-1 block text-lg text-brand-orange sm:mt-1.5 sm:text-xl md:text-2xl">
               {t('landing.whyShortlisted.subtitle')}
             </span>
           </h2>
-          <HeadingSparkle className="h-3.5 w-3.5 shrink-0 text-brand-blue/70 sm:h-4 sm:w-4" />
+
           <span className="hidden h-px w-10 bg-brand-blue/25 sm:block sm:w-16 md:w-24" aria-hidden />
         </div>
 

@@ -1,0 +1,451 @@
+{
+  "hero": {
+    "eyebrow": "ହାଏରକର୍ମା ପ୍ଲେସମେଣ୍ଟ ପ୍ରୋଗ୍ରାମ",
+    "badgeBefore": "ଭାରତର ପ୍ରଥମ",
+    "badgeHighlight": "AI",
+    "badgeAfter": "ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
+    "title1": "ଭାରତର ପ୍ରଥମ",
+    "titleHighlight": "AI ଭର୍ଚୁଆଲ୍",
+    "title2": "ପ୍ଲେସମେଣ୍ଟ ସେଲ୍।",
+    "title3": "ଶର୍ଟଲିଷ୍ଟ ହୁଅନ୍ତୁ।",
+    "subtitle": "ଥରେ ସବସ୍କ୍ରାଇବ୍ କରନ୍ତୁ। 12 ଛାତ୍ରଙ୍କ ବ୍ୟାଚ୍‌ରେ ଯୋଗ ଦିଅନ୍ତୁ – AI-ମ୍ୟାଚ୍ ଚାକିରି, 24/7 ଆବେଦନ ଟ୍ରାକିଂ, ଏବଂ ପ୍ରତିଦିନ ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ଉପରେ କେନ୍ଦ୍ରିତ ମାନବ କୋଅର୍ଡିନେଟର।",
+    "ctaPrimary": "ଆପଣଙ୍କ ସିଟ୍ ବୁକ୍ କରନ୍ତୁ",
+    "ctaSecondary": "ଛାତ୍ର ଲଗଇନ୍",
+    "ctaFreeTrial": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ",
+    "trust": "ନିର୍ମିତ",
+    "trustBrand": "HireKarma",
+    "trustAfter": "ସାରା ଭାରତର ଛାତ୍ରମାନଙ୍କ ଦ୍ୱାରା ବିଶ୍ୱାସଯୋଗ୍ୟ"
+  },
+  "stats": {
+    "batchSize": { "value": "12", "label": "ପ୍ରତି ବ୍ୟାଚ୍ ଛାତ୍ର" },
+    "support": { "value": "AI+", "label": "ସ୍ମାର୍ଟ ଜବ୍ ମ୍ୟାଚିଂ" },
+    "access": { "value": "24/7", "label": "ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ଡେସ୍କ" }
+  },
+  "impact": {
+    "stats": {
+      "batch": { "value": "12", "label": "ପ୍ରତି ବ୍ୟାବସ୍ଥିତ ବ୍ୟାଚ୍ରେ ସର୍ବାଧିକ ଛାତ୍ର" },
+      "coordinator": { "value": "1:1", "label": "ପ୍ରତି ବ୍ୟାଚ୍ ମାନବ କୋଅର୍ଡିନେଟର" },
+      "matching": { "value": "AI", "label": "ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ଇଞ୍ଜିନ" }
+    },
+    "comparison": {
+      "badge": "The Difference",
+      "titleBefore": "Smarter Placement. ",
+      "titleHighlight": "Stronger Outcomes.",
+      "subtitle": "See how a traditional college placement workflow compares with Shortlisted's AI-powered placement cell—aligned step by step.",
+      "footerLeft": "Enterprise Ready",
+      "footerRight": "Better Students, Brighter Futures.",
+      "college": {
+        "badge": "Manual & Siloed",
+        "title": "Your College Placement",
+        "subtitle": "Structured placement administration across the campus hiring cycle",
+        "features": {
+          "registration": {
+            "title": "Student Registration & Profile Building",
+            "desc": "Creates structured student profiles with academic information, skills, interests, eligibility, and career preferences."
+          },
+          "assessment": {
+            "title": "Student Assessment & Readiness",
+            "desc": "Evaluates student capabilities and placement readiness before recruitment begins."
+          },
+          "discovery": {
+            "title": "Recruiter & Job Discovery",
+            "desc": "Connects students with relevant employers and available opportunities through the hiring ecosystem."
+          },
+          "alignment": {
+            "title": "Career & Role Alignment",
+            "desc": "Helps identify opportunities matching student skills, interests, eligibility, and recruiter requirements."
+          },
+          "applications": {
+            "title": "Application Management",
+            "desc": "Organizes applications and provides visibility into student participation and recruitment activity."
+          },
+          "shortlisting": {
+            "title": "Assessment & Shortlisting",
+            "desc": "Supports structured evaluation to identify candidates suitable for specific roles and hiring requirements."
+          },
+          "drives": {
+            "title": "Campus Hiring Drives",
+            "desc": "Supports institutions in planning, coordinating, and executing recruitment drives with employers."
+          },
+          "interviews": {
+            "title": "Interview Coordination",
+            "desc": "Streamlines communication, scheduling, participation, and candidate progression during interviews."
+          },
+          "tracking": {
+            "title": "Placement Tracking",
+            "desc": "Monitors applications, shortlists, interviews, offers, and overall recruitment progress."
+          },
+          "reports": {
+            "title": "Reports & Placement Visibility",
+            "desc": "Provides institutions with structured information on participation, recruitment performance, and placement outcomes."
+          }
+        }
+      },
+      "shortlisted": {
+        "badge": "Intelligent Standard",
+        "title": "Our Shortlisted Placement Cell",
+        "subtitle": "AI-powered, student-level placement execution with human guidance",
+        "features": {
+          "registration": {
+            "title": "AI-Powered Student Profile & Career Readiness",
+            "desc": "Builds a structured student profile while using AI-driven insights to understand skills, interests, eligibility, career preferences, and readiness."
+          },
+          "assessment": {
+            "title": "AI Assessment & Readiness Testing",
+            "desc": "Assesses capabilities, strengths, skill gaps, and placement readiness through structured and AI-enabled assessments—helping students understand where they stand and what they need to improve."
+          },
+          "discovery": {
+            "title": "AI Job Discovery through DISHA",
+            "desc": "Surfaces relevant live opportunities from the hiring ecosystem based on student profiles, eligibility, skills, and recruiter requirements—reducing random applications."
+          },
+          "alignment": {
+            "title": "AI Career & Job Alignment",
+            "desc": "Intelligently connects student capabilities and career interests with suitable roles, helping students understand which opportunities are actually relevant to them."
+          },
+          "applications": {
+            "title": "Application Management & Guidance",
+            "desc": "Helps students organize applications, track progress, and understand the next action required throughout their recruitment journey."
+          },
+          "shortlisting": {
+            "title": "AI-Assisted Assessment & Shortlisting",
+            "desc": "Combines structured assessments, AI-enabled evaluation, and hiring requirements to help identify stronger role-fit candidates and improve shortlisting decisions."
+          },
+          "drives": {
+            "title": "Hiring Drive Execution & Student Readiness",
+            "desc": "Supports hiring activities while ensuring students are better prepared, informed, and aligned with the requirements of each recruitment opportunity."
+          },
+          "interviews": {
+            "title": "Interview Preparation & Coordination",
+            "desc": "Goes beyond scheduling by combining interview coordination with AI-powered practice, preparation, assessments, and human guidance."
+          },
+          "tracking": {
+            "title": "End-to-End Placement Journey Tracking",
+            "desc": "Gives students visibility across applications, shortlists, interviews, offers, and selection—so they know where they stand and what comes next."
+          },
+          "reports": {
+            "title": "Real-Time Placement Progress & Insights",
+            "desc": "Transforms recruitment activity into actionable visibility across student progress, applications, assessments, interviews, shortlists, and placement outcomes."
+          }
+        }
+      }
+    }
+  },
+  "whyShortlisted": {
+    "title": "SHORTLISTED",
+    "subtitle": "ଆପଣଙ୍କ AI-ଚାଳିତ ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
+    "cards": {
+      "agent": {
+        "title": "AI ପ୍ଲେସମେଣ୍ଟ ଏଜେଣ୍ଟ",
+        "desc": "ଛାତ୍ରମାନଙ୍କୁ ଉପଯୁକ୍ତ ସୁଯୋଗ ଖୋଜିବା, ଆବେଦନ ସଂଗଠିତ କରିବା, ପ୍ରଗତି ନିରୀକ୍ଷଣ କରିବା ଏବଂ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରାରେ ଧ୍ୟାନ ରଖିବାରେ ସାହାଯ୍ୟ କରେ।"
+      },
+      "coordinator": {
+        "title": "ସମର୍ପିତ ମାନବ ପ୍ଲେସମେଣ୍ଟ କୋଅର୍ଡିନେଟର",
+        "desc": "ପ୍ରଯୁକ୍ତି ଏକା ଦେଇ ନପାରୁଥିବା ବ୍ୟକ୍ତିଗତ ସମର୍ଥନ ପ୍ରଦାନ କରେ—ଆବେଦନ, ଇଣ୍ଟରଭ୍ୟୁ, ଫଲୋ-ଅପ୍, ପ୍ଲେସମେଣ୍ଟ କାର୍ଯ୍ୟକଳାପ ଏବଂ ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପରେ ମାର୍ଗଦର୍ଶନ।"
+      },
+      "assessments": {
+        "title": "AI ମୂଲ୍ୟାଙ୍କନ ଏବଂ ପ୍ରସ୍ତୁତି ପରୀକ୍ଷା",
+        "desc": "ସଂରଚିତ ମୂଲ୍ୟାଙ୍କନ ଏବଂ AI-ସକ୍ଷମ ମୂଲ୍ୟାୟନ ଦ୍ୱାରା ଛାତ୍ରଙ୍କ ଦକ୍ଷତା, ପ୍ରସ୍ତୁତି, ଶକ୍ତି ଏବଂ ଉନ୍ନତି ଆବଶ୍ୟକ କ୍ଷେତ୍ର ବୁଝେ।"
+      },
+      "matching": {
+        "title": "DISHA ମାଧ୍ୟମରେ AI ଜବ୍ ମ୍ୟାଚିଂ",
+        "desc": "ପ୍ରୋଫାଇଲ୍, ଦକ୍ଷତା, ଯୋଗ୍ୟତା, ପସନ୍ଦ ଏବଂ ପ୍ରସ୍ତୁତି ଆଧାରରେ ଛାତ୍ରମାନଙ୍କୁ ପ୍ରାସଙ୍ଗିକ ଲାଇଭ୍ ସୁଯୋଗ ସହ ମ୍ୟାଚ୍ କରେ।"
+      },
+      "tracking": {
+        "title": "ରିଆଲ୍-ଟାଇମ୍ ଆବେଦନ ଟ୍ରାକିଂ",
+        "desc": "ଆବେଦନ, ଶର୍ଟଲିଷ୍ଟ, ଇଣ୍ଟରଭ୍ୟୁ ଏବଂ ଅଫର ପ୍ରଗତିର ଦୃଶ୍ୟତା ଦେଇ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ସୁଯୋଗ ଅଟ୍ରାକ୍ଡ ନରହିବା ନିଶ୍ଚିତ କରେ।"
+      },
+      "prep": {
+        "title": "ଇଣ୍ଟରଭ୍ୟୁ ଏବଂ ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତି",
+        "desc": "ସଂରଚିତ ପ୍ରସ୍ତୁତିକୁ AI-ଚାଳିତ ଅଭ୍ୟାସ ଏବଂ ମାନବ ମାର୍ଗଦର୍ଶନ ସହ ମିଶାଇ ବାସ୍ତବ ନିଯୁକ୍ତି ପରିସ୍ଥିତି ପାଇଁ ପ୍ରସ୍ତୁତ କରେ।"
+      },
+      "batch": {
+        "title": "କ୍ୟୁରେଟେଡ୍ ସ୍ମଲ୍-ବ୍ୟାଚ୍ ମଡେଲ୍ (ସର୍ବାଧିକ 12)",
+        "desc": "ସମର୍ପିତ ସମନ୍ୱୟ ଏବଂ ପ୍ରତି ବ୍ୟାଚ୍ ସର୍ବାଧିକ 12 ଛାତ୍ର ସହ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରାକୁ ଧ୍ୟାନ ଏବଂ ବ୍ୟକ୍ତିଗତ ରଖେ।"
+      }
+    }
+  },
+  "cohort": {
+    "eyebrow": "ସକ୍ରିୟ ବ୍ୟାଚ୍",
+    "primaryLead": "ପ୍ରାଥମିକ ଲିଡ୍",
+    "coordinatorRole": "ପ୍ଲେସମେଣ୍ଟ କୋଅର୍ଡିନେଟର",
+    "coordinator": "ଆପଣଙ୍କ କୋଅର୍ଡିନେଟର",
+    "seatsOpen": "ସିଟ୍ ଖାଲି",
+    "supportBadge": "24/7 ସପୋର୍ଟ",
+    "manifest": "ପ୍ରମାଣିତ ନିଯୁକ୍ତି ମ୍ୟାନିଫେଷ୍ଟ",
+    "statusLabel": "ବ୍ୟାଚ୍ ସ୍ଥିତି",
+    "statusOpen": "ନାମଲେଖା ଖୋଲା",
+    "statusFull": "ବ୍ୟାଚ୍ ପୂର୍ଣ୍ଣ"
+  },
+  "seats": {
+    "label": "ବାକି ସିଟ୍",
+    "subscription": "ଥରେ ସବସ୍କ୍ରିପ୍ସନ୍",
+    "currency": "₹{{amount}}",
+    "full": "ବର୍ତ୍ତମାନ ବ୍ୟାଚ୍ ପୂର୍ଣ୍ଣ - ପଞ୍ଜିକରଣ କରି ୱେଟଲିଷ୍ଟରେ ଯୋଗ ଦିଅନ୍ତୁ",
+    "loading": "ଉପଲବ୍ଧତା ଯାଞ୍ଚ ହେଉଛି..."
+  },
+  "compare": {
+    "eyebrow": "ପାର୍ଥକ୍ୟ",
+    "title": "ଏହା ଆଉ ଏକ ଅନଲାଇନ କୋର୍ସ ନୁହେଁ",
+    "subtitle": "Shortlisted ଆପଣଙ୍କ କଲେଜର ପ୍ଲେସମେଣ୍ଟ ସେଲ ଭଳି କାମ କରେ - ଚାକିରି ଉପରେ ଧ୍ୟାନ।",
+    "course": {
+      "label": "ସାଧାରଣ କୋର୍ସ",
+      "title": "ଦକ୍ଷତା ଶିଖନ୍ତୁ, ସର୍ଟିଫିକେଟ୍ ପାଆନ୍ତୁ",
+      "items": {
+        "classes": "ନିର୍ଦ୍ଧାରିତ କ୍ଲାସ୍ ଏବଂ ପାଠ୍ୟକ୍ରମ",
+        "syllabus": "ଆବେଦନ ପୂର୍ବରୁ ମାସ ଧରି କୋର୍ସୱର୍କ",
+        "exams": "ପାସ୍ ହେବା ପାଇଁ ପରୀକ୍ଷା",
+        "certificate": "ସର୍ଟିଫିକେଟ୍ - କିନ୍ତୁ ଚାକିରି ଗ୍ୟାରାଣ୍ଟି ନାହିଁ"
+      }
+    },
+    "placement": {
+      "label": "Shortlisted",
+      "title": "ପ୍ଲେସ୍ ହୁଅନ୍ତୁ, ସହାୟତା ସହିତ",
+      "items": {
+        "jobs": "ଆପଣଙ୍କ ପ୍ରୋଫାଇଲ୍ ସହିତ ମିଳିଥିବା ଚାକିରି",
+        "coordinator": "ବ୍ୟାଚ୍ ପାଇଁ ନିଯୁକ୍ତ କୋଅର୍ଡିନେଟର",
+        "tracking": "ଲାଇଭ୍ ଆବେଦନ ଟ୍ରାକିଂ",
+        "batch": "12 ର ଛୋଟ ବ୍ୟାଚ୍ - ବ୍ୟକ୍ତିଗତ ଧ୍ୟାନ"
+      }
+    }
+  },
+  "howItWorks": {
+    "eyebrow": "ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା",
+    "title": "ସାଇନଅପ୍ ରୁ ଅଫର ଲେଟର୍ ପର୍ଯ୍ୟନ୍ତ",
+    "subtitle": "ପାଞ୍ଚ ମାଇଲଷ୍ଟୋନ୍। ପ୍ରତ୍ୟେକରେ କୋଅର୍ଡିନେଟରର ମାର୍ଗଦର୍ଶନ।",
+    "steps": {
+      "register": { "title": "ପ୍ରୋଫାଇଲ୍ ତିଆରି କରନ୍ତୁ", "desc": "ଆପଣଙ୍କ ଭାଷାରେ ସାଇନ୍ ଅପ୍ କରନ୍ତୁ। ଦୁଇ ମିନିଟରେ ଦକ୍ଷତା ଯୋଡ଼ନ୍ତୁ।" },
+      "subscribe": { "title": "ଥରେ ସବସ୍କ୍ରାଇବ୍", "desc": "ଥରେ ପେମେଣ୍ଟ କରି ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ ଅନଲକ୍ କରନ୍ତୁ।" },
+      "batch": { "title": "ବ୍ୟାଚ୍ରେ ଯୋଗ", "desc": "12 ଛାତ୍ରଙ୍କ ବ୍ୟାଚ୍ ଏବଂ ନିଯୁକ୍ତ କୋଅର୍ଡିନେଟର।" },
+      "apply": { "title": "ଆବେଦନ ଏବଂ ଇଣ୍ଟରଭ୍ୟୁ", "desc": "ବ୍ୟବସ୍ଥିତ ଚାକିରି, କୋଅର୍ଡିନେଟର ସହାୟତାରେ ଆବେଦନ କରନ୍ତୁ।" },
+      "placed": { "title": "ପ୍ଲେସ୍ ହୁଅନ୍ତୁ", "desc": "ଜଏନ୍ ହେବା ପର୍ଯ୍ୟନ୍ତ ସହାୟତା - ଅଫର, ବେତନ ଏବଂ ଅନବୋର୍ଡିଂ।" }
+    }
+  },
+  "coordinator": {
+    "eyebrow": "AI + ମାନବ ସହାୟତା",
+    "title": "ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ ଯାହା ବ୍ୟକ୍ତିଗତ ଲାଗେ",
+    "subtitle": "AI ମ୍ୟାଚିଂ ଏବଂ ଟ୍ରାକିଂ ଚୌବିଶ ଘଣ୍ଟା ସଂଭାଳେ। ଆପଣଙ୍କ ବ୍ୟାଚ୍ କୋଅର୍ଡିନେଟର ଜଣେ ପ୍ରକୃତ ବ୍ୟକ୍ତି ଯିଏ ଆପଣଙ୍କ ନାମ, ଦକ୍ଷତା ଏବଂ ପ୍ରତ୍ୟେକ ଆବେଦନ ଜାଣନ୍ତି।",
+    "cta": "ଆପଣଙ୍କ ବ୍ୟାଚ୍ ସହିତ ମିଳନ୍ତୁ",
+    "channels": { "call": "କଲ୍ ଉପରେ", "whatsapp": "ୱାଟ୍ସଆପ୍", "batch": "ବ୍ୟାଚ୍ ଚେକ୍-ଇନ୍" },
+    "card": {
+      "role": "ବ୍ୟାଚ୍ କୋଅର୍ଡିନେଟର",
+      "name": "ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ଗାଇଡ୍",
+      "desc": "ଆବେଦନ ଟ୍ରାକ୍ କରେ, ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରସ୍ତୁତି କରାଏ।",
+      "badge": "12 ର ବ୍ୟାଚ୍",
+      "quote": "ମୁଁ ମୋ ବ୍ୟାଚର ପ୍ରତ୍ୟେକ ଛାତ୍ରଙ୍କୁ ନାମରେ ଜାଣେ। ପ୍ଲେସମେଣ୍ଟ ଏହିଭଳି ହେବା ଉଚିତ।",
+      "stats": {
+        "students": { "value": "12", "label": "ସର୍ବାଧିକ ଛାତ୍ର" },
+        "applications": { "value": "1:1", "label": "ସହାୟତା ଅନୁପାତ" },
+        "placements": { "value": "24/7", "label": "ଡ୍ୟାସବୋର୍ଡ" }
+      }
+    }
+  },
+  "features": {
+    "eyebrow": "ଆପଣଙ୍କ ଟୁଲକିଟ୍",
+    "title": "ପ୍ଲେସମେଣ୍ଟ ସେଲର ସମସ୍ତ ସୁବିଧା",
+    "subtitle": "କଲେଜ ଓଭରହେଡ୍ ବିନା - ବ୍ୟକ୍ତିଗତ, ଗଠିତ ଏବଂ ଫଳପ୍ରଦ।",
+    "bentoNote": "ଥରେ ସବସ୍କ୍ରିପ୍ସନ୍ରେ ସମ୍ପୂର୍ଣ୍ଣ ପ୍ଲେସମେଣ୍ଟ ଷ୍ଟାକ୍ ଅନଲକ୍।",
+    "items": {
+      "jobs": { "title": "ବ୍ୟବସ୍ଥିତ ଚାକିରି", "desc": "DISHA ଦ୍ୱାରା ଆପଣଙ୍କ ବ୍ୟାଚ୍‌କୁ ଦିଆଯାଇଥିବା ଚାକିରି।" },
+      "coordinator": { "title": "ନିଯୁକ୍ତ କୋଅର୍ଡିନେଟର", "desc": "ପ୍ଲେସମେଣ୍ଟ ଆଡମିନ୍ ଆପଣଙ୍କ ବ୍ୟାଚ୍ ମାର୍ଗଦର୍ଶନ କରନ୍ତି।" },
+      "tracking": { "title": "ଲାଇଭ୍ ଟ୍ରାକିଂ", "desc": "ଶର୍ଟଲିଷ୍ଟ, ଇଣ୍ଟରଭ୍ୟୁ ଏବଂ ଅଫର ସ୍ଥିତି ଦେଖନ୍ତୁ।" },
+      "batch": { "title": "ଛୋଟ ବ୍ୟାଚ୍ ଲାଭ", "desc": "ପ୍ରତି ବ୍ୟାଚ୍ କେବଳ 12 ସିଟ୍।" },
+      "brands": { "title": "କର୍ପୋରେଟ ନେଟୱାର୍କ", "desc": "ହାଏରକର୍ମା DISHA ମାଧ୍ୟମରେ ଅବସର।" },
+      "dashboard": { "title": "ଆପଣଙ୍କ କମାଣ୍ଡ ସେଣ୍ଟର", "desc": "ଚାକିରି, ଆବେଦନ, ବ୍ୟାଚ୍ - ଏକ ଡ୍ୟାସବୋର୍ଡରେ।" }
+    }
+  },
+  "pricing": {
+    "eyebrow": "ମୂଲ୍ୟ",
+    "title": "ସରଳ ମୂଲ୍ୟ",
+    "subtitle": "ଥରେ ସବସ୍କ୍ରିପ୍ସନ୍। ସମ୍ପୂର୍ଣ୍ଣ AI ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ ଆକ୍ସେସ୍।",
+    "planName": "AI ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍",
+    "oneTime": "ଥରେ",
+    "seatContext": {
+      "title": "ଲାଇଭ୍ ବ୍ୟାଚ୍ ଉପଲବ୍ଧତା",
+      "desc": "ପ୍ରତ୍ୟେକ ବିନ୍ଦୁ ଏକ ସିଟ୍। ସବୁଜ = ଖାଲି - ବ୍ୟାଚ୍ ପୂର୍ଣ୍ଣ ହେବା ପୂର୍ବରୁ ଆପଣଙ୍କ ସିଟ୍ ନିଅନ୍ତୁ।",
+      "remaining": "ବର୍ତ୍ତମାନ ବ୍ୟାଚରେ {{count}} ସିଟ୍ ବାକି"
+    },
+    "includes": {
+      "batch": "ବ୍ୟାଚ୍ ଅସାଇନମେଣ୍ଟ (12 ଛାତ୍ର)",
+      "jobs": "ବ୍ୟବସ୍ଥିତ ଚାକିରି",
+      "coordinator": "ନିଯୁକ୍ତ କୋଅର୍ଡିନେଟର",
+      "tracking": "ଆବେଦନ ଟ୍ରାକିଂ",
+      "dashboard": "ଛାତ୍ର କମାଣ୍ଡ ସେଣ୍ଟର"
+    },
+    "cta": "ଆରମ୍ଭ କରନ୍ତୁ",
+    "note": "ସୀମିତ ସିଟ୍। ଆପଣଙ୍କ ସ୍ଥାନ ସୁରକ୍ଷିତ କରନ୍ତୁ।",
+    "promo": {
+      "title": "Independence Day Special Offer",
+      "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+      "exclusive": "Exclusively available for the first 12 students in each batch.",
+      "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential",
+      "badge": "Independence Day Special Offer"
+    }
+  },
+  "careerConsultations": {
+    "title": "ଅନ୍ୟ ପରାମର୍ଶ କଣ କରନ୍ତି",
+    "subtitle": "ଚାକିରି ମ୍ୟାଚିଂ ବାହାରେ ବ୍ୟକ୍ତିଗତ ମାର୍ଗଦର୍ଶନ",
+    "steps": {
+      "guidance": {
+        "title": "କ୍ୟାରିୟର ମାର୍ଗଦର୍ଶନ ଓ କାଉନସେଲିଂ",
+        "desc": "ରୁଚି, ଦକ୍ଷତା, ଯୋଗ୍ୟତା, ଶକ୍ତି ଏବଂ ଦୀର୍ଘକାଳୀନ ଲକ୍ଷ୍ୟ ଆଧାରରେ କ୍ୟାରିୟର ବିକଳ୍ପ ବୁଝନ୍ତୁ।"
+      },
+      "resume": {
+        "title": "ରିଜ୍ୟୁମ୍ ଓ ପ୍ରୋଫାଇଲ୍ ପରାମର୍ଶ",
+        "desc": "ପ୍ରାସଙ୍ଗିକ ସୁଯୋଗ ପାଇଁ ରିଜ୍ୟୁମ୍, ପେସାଦାର ପ୍ରୋଫାଇଲ୍ ଏବଂ ସମଗ୍ର ଉପସ୍ଥାପନା ଉନ୍ନତ କରନ୍ତୁ।"
+      },
+      "interview": {
+        "title": "ଇଣ୍ଟରଭ୍ୟୁ ଓ ଯୋଗାଯୋଗ ମାର୍ଗଦର୍ଶନ",
+        "desc": "ପ୍ରକୃତ ନିଯୁକ୍ତି ପରିସ୍ଥିତି ପାଇଁ ଯୋଗାଯୋଗ, ଆତ୍ମବିଶ୍ୱାସ, ଇଣ୍ଟରଭ୍ୟୁ ପଦ୍ଧତି ଏବଂ ପେସାଦାର ଉପସ୍ଥାପନା ଉନ୍ନତ କରନ୍ତୁ।"
+      },
+      "careerPath": {
+        "title": "ଚାକିରି ଓ କ୍ୟାରିୟର ପଥ ପରାମର୍ଶ",
+        "desc": "ଉପଯୁକ୍ତ ଭୂମିକା, କ୍ୟାରିୟର ପଥ, ଶିଳ୍ପ ଆଶା ଏବଂ ଉପଲବ୍ଧ ସୁଯୋଗ ବୁଝନ୍ତୁ।"
+      },
+      "readiness": {
+        "title": "ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତି ପରାମର୍ଶ",
+        "desc": "ଆପଣଙ୍କ ବର୍ତ୍ତମାନ ପ୍ଲେସମେଣ୍ଟ ପ୍ରସ୍ତୁତି ଏବଂ ଭଲ ପ୍ରସ୍ତୁତି ପାଇଁ ଆବଶ୍ୟକ ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପ ବୁଝନ୍ତୁ।"
+      }
+    }
+  },
+  "whatWeDo": {
+    "title": "ଆମେ କଣ କରୁ",
+    "subtitle": "ପ୍ରତିଭା, ଅନୁଷ୍ଠାନ ଏବଂ ଶିଳ୍ପ ମଧ୍ୟରେ ପରିସର ନିର୍ମାଣ",
+    "features": {
+      "skillDevelopment": {
+        "title": "ସ୍କିଲ୍ ଡେଭଲପମେଣ୍ଟ",
+        "desc": "ବଦଳୁଥିବା କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଆବଶ୍ୟକତା ଅନୁଯାୟୀ ଦକ୍ଷତା ବିକାଶ ପାଇଁ ବ୍ୟବହାରିକ, ଶିଳ୍ପ-ସମନ୍ୱିତ ଶିକ୍ଷଣ ସୁଯୋଗ।"
+      },
+      "prePlacement": {
+        "title": "ପ୍ରି-ପ୍ଲେସମେଣ୍ଟ ଟ୍ରେନିଂ",
+        "desc": "ରୋଜଗାର ଯୋଗ୍ୟତା, ପେସାଦାର ଦକ୍ଷତା, ବୈଷୟିକ ପ୍ରସ୍ତୁତି ଏବଂ ନିଯୁକ୍ତି ଆଶା ଉପରେ କେନ୍ଦ୍ରିତ ସଂରଚିତ ପ୍ରଶିକ୍ଷଣ।"
+      },
+      "employability": {
+        "title": "କ୍ୟାରିୟର ଓ ରୋଜଗାର ସହାୟତା",
+        "desc": "ଶିକ୍ଷାର୍ଥୀମାନଙ୍କୁ କାର୍ଯ୍ୟକ୍ଷେତ୍ର ଆଶା ବୁଝିବା ଏବଂ ପେସାଦାର କ୍ଷମତା ସୁଦୃଢ଼ କରିବାରେ ସାହାଯ୍ୟ କରେ।"
+      },
+      "employerConnect": {
+        "title": "ଶିଳ୍ପ ଓ ନିଯୁକ୍ତିଦାତା କନେକ୍ଟ",
+        "desc": "ପ୍ରାସଙ୍ଗିକ ସୁଯୋଗ ଏବଂ ଶିଳ୍ପ ଆବଶ୍ୟକତାକୁ ନିକଟ ଆଣି ପ୍ରତିଭାକୁ ସଂଗଠନ ସହିତ ସଂଯୋଗ କରେ।"
+      },
+      "campusEngagement": {
+        "title": "କ୍ୟାମ୍ପସ୍ ଓ ଅନୁଷ୍ଠାନିକ ସଂଯୋଗ",
+        "desc": "ଛାତ୍ରମାନଙ୍କ ପାଇଁ ସଂରଚିତ କ୍ୟାରିୟର ବିକାଶ ଏବଂ ନିଯୁକ୍ତି ସୁଯୋଗ ସୃଷ୍ଟିରେ ଅନୁଷ୍ଠାନକୁ ସହାୟତା କରେ।"
+      },
+      "techHiring": {
+        "title": "ପ୍ରଯୁକ୍ତି-ସକ୍ଷମ ନିଯୁକ୍ତି",
+        "desc": "ପ୍ରତିଭା ଆବିଷ୍କାର, ମୂଲ୍ୟାଙ୍କନ, ସୁଯୋଗ ଚିହ୍ନଟ ଏବଂ ନିଯୁକ୍ତି ପ୍ରକ୍ରିୟା ପାଇଁ AI-ଚାଳିତ ଉପକରଣ।"
+      }
+    }
+  },
+  "connectedEcosystem": {
+    "title": "ଏକ ସଂଯୁକ୍ତ ପରିସର",
+    "steps": {
+      "learn": {
+        "title": "ଶିଖନ୍ତୁ",
+        "desc": "ପ୍ରାସଙ୍ଗିକ ଦକ୍ଷତା ଏବଂ କ୍ଷମତା ଗଢ଼ନ୍ତୁ।"
+      },
+      "prepare": {
+        "title": "ପ୍ରସ୍ତୁତି",
+        "desc": "ପେସାଦାର ଏବଂ ନିଯୁକ୍ତି ପ୍ରସ୍ତୁତି ବିକାଶ କରନ୍ତୁ।"
+      },
+      "connect": {
+        "title": "ସଂଯୋଗ",
+        "desc": "ଛାତ୍ର, ଅନୁଷ୍ଠାନ ଏବଂ ଶିଳ୍ପକୁ ନିକଟ ଆଣନ୍ତୁ।"
+      },
+      "discover": {
+        "title": "ଆବିଷ୍କାର",
+        "desc": "ପ୍ରାସଙ୍ଗିକ କ୍ୟାରିୟର ଏବଂ ନିଯୁକ୍ତି ସୁଯୋଗ ଚିହ୍ନଟ କରନ୍ତୁ।"
+      },
+      "engage": {
+        "title": "ସଂଲଗ୍ନତା",
+        "desc": "ପ୍ରତିଭା ଏବଂ ନିଯୁକ୍ତିଦାତା ମଧ୍ୟରେ ସଂରଚିତ ସଂଳାପ ସକ୍ଷମ କରନ୍ତୁ।"
+      },
+      "grow": {
+        "title": "ବିକାଶ",
+        "desc": "ନିରନ୍ତର ପେସାଦାର ଏବଂ ସଂଗଠନାତ୍ମକ ବିକାଶକୁ ସମର୍ଥନ କରନ୍ତୁ।"
+      }
+    }
+  },
+  "testimonials": {
+    "eyebrow": "ସଫଳତା କାହାଣୀ",
+    "title": "ଆମ ଛାତ୍ରମାନଙ୍କ ମତାମତ",
+    "subtitle": "Shortlisted ପ୍ଲେସମେଣ୍ଟ ପ୍ରୋଗ୍ରାମରେ ଯୋଗ ଦେଇଥିବା ଛାତ୍ରମାନଙ୍କର ଯଥାର୍ଥ ଫିଡ୍‌ବ୍ୟାକ୍।"
+  },
+  "successStories": {
+    "title": "ଆମ ସଫଳତା କାହାଣୀ ଶୁଣନ୍ତୁ",
+    "subtitle": "Shortlisted ମାଧ୍ୟମରେ ପ୍ଲେସ୍ ହୋଇଥିବା ଛାତ୍ରମାନଙ୍କର ଯଥାର୍ଥ ଯାତ୍ରା ଏବଂ ଫଳାଫଳ।"
+  },
+  "community": {
+    "title": "ଏକ ସମୁଦାୟ ଯାହା ଆପଣଙ୍କ ପଛରେ ଅଛି",
+    "collageAlt": "Shortlisted ସମୁଦାୟ ସଦସ୍ୟ",
+    "galleryAlt": "ସମୁଦାୟ ଇଭେଣ୍ଟ ଫଟୋ",
+    "bullets": {
+      "support": "ପ୍ଲେସମେଣ୍ଟ ଯାତ୍ରା ଜୁଡ଼ି ସକ୍ରିୟ ସମୁଦାୟ ଏବଂ କୋଅର୍ଡିନେଟର ସହାୟତା",
+      "collaborate": "ସାଥୀମାନଙ୍କ ସହ ସହଯୋଗ, ସମ୍ବଳ ଅଂଶୀଦାରୀ ଏବଂ ଏକାଠି ବୃଦ୍ଧି",
+      "studyGroups": "ସାପ୍ତାହିକ ଅଧ୍ୟୟନ ଗୋଷ୍ଠୀ ଏବଂ ପିୟର୍ ମକ୍ ଇଣ୍ଟରଭ୍ୟୁ",
+      "referrals": "ନେଟୱାର୍କ ମଧ୍ୟରେ ଚାକିରି ରେଫରାଲ୍ ଏବଂ ସୁଯୋଗ ଅଂଶୀଦାରୀ"
+    }
+  },
+  "faq": {
+    "title": "FAQs",
+    "subtitle": "ଆପଣଙ୍କ ପ୍ରଶ୍ନର ଉତ୍ତର ପାଆନ୍ତୁ",
+    "items": {
+      "ai": { "q": "AI ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ କ'ଣ?", "a": "Shortlisted ଭାରତର ପ୍ରଥମ AI ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ - ବୁଦ୍ଧିମାନ ଜବ୍ ମ୍ୟାଚିଂ ଏବଂ ରିଆଲ୍-ଟାଇମ୍ ଟ୍ରାକିଂ, ସହିତ ପ୍ରତ୍ୟେକ 12 ଛାତ୍ର ବ୍ୟାଚ୍‌ପାଇଁ ନିଯୁକ୍ତ ମାନବ କୋଅର୍ଡିନେଟର। ଆପଣଙ୍କ କଲେଜ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ ଭଳି, 24/7 ଉପଲବ୍ଧ, AI ଦ୍ୱାରା ଚାଳିତ।" },
+      "course": { "q": "Shortlisted ଏକ କୋର୍ସ କି?", "a": "ନା। ଏହା କୋର୍ସ କିମ୍ବା ସର୍ଟିଫିକେଟ୍ ପ୍ରୋଗ୍ରାମ୍ ନୁହେଁ। ଏହା AI ଭର୍ଚୁଆଲ୍ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ - ଇଣ୍ଟରଭ୍ୟୁ, ଆବେଦନ ଏବଂ ଚାକିରି ଉପରେ କେନ୍ଦ୍ରିତ।" },
+      "batch": { "q": "ବ୍ୟାଚ୍ କିପରି ଗଠିତ?", "a": "ସବସ୍କ୍ରାଇବ୍ ପରେ ଆପଣ ସ୍ୱଚାଳିତ ଭାବରେ ବର୍ତ୍ତମାନ ବ୍ୟାଚ୍‌ରେ (ସର୍ବୋଚ୍ଚ 12) ଯୋଗ ଦିଅନ୍ତି। ଏକ ସମର୍ପିତ କୋଅର୍ଡିନେଟର୍ ଆପଣଙ୍କ ବ୍ୟାଚ୍ ପରିଚାଳନା କରନ୍ତି।" },
+      "jobs": { "q": "ଚାକିରି କେଉଁଠାରୁ?", "a": "କମ୍ପାନୀ DISHA ପ୍ଲାଟଫର୍ମରେ ଚାକିରି ପୋଷ୍ଟ କରନ୍ତି। DISHA ଆଡମିନ୍ ଆପଣଙ୍କ ପ୍ରୋଫାଇଲ୍ ଅନୁଯାୟୀ ସୁଯୋଗ ଆସାଇନ୍ କରନ୍ତି।" },
+      "support": { "q": "ମୁଁ କେଉଁ ପ୍ରକାର ସହାୟତା ପାଇବି?", "a": "ଆପଣଙ୍କ ବ୍ୟାଚ୍ କୋଅର୍ଡିନେଟର୍ ଆବେଦନ, ଇଣ୍ଟରଭ୍ୟୁ ପ୍ରସ୍ତୁତି ଏବଂ ଟ୍ରାକିଂରେ ସାହାଯ୍ୟ କରନ୍ତି। ଲାଇଭ୍ ସେସନ୍, ସାଥୀ ସହାୟତା ଏବଂ ଡ୍ୟାସବୋର୍ଡ୍ ଅପଡେଟ୍ ମଧ୍ୟ ମିଳେ।" },
+      "refund": { "q": "ରିଫଣ୍ଡ ମିଳିବ କି?", "a": "ସବସ୍କ୍ରିପ୍ସନ୍ ସର୍ତ୍ତ ଚେକଆଉଟରେ ଦିଆଯାଏ। ବିଶେଷ କ୍ଷେତ୍ରରେ ସପୋର୍ଟ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।" }
+    }
+  },
+  "contactSupport": {
+    "title": "କିଛି ସନ୍ଦେହ ଅଛି? ଆମ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ!",
+    "subtitle": "ଆପଣଙ୍କ ପ୍ରଶ୍ନ ପଠାନ୍ତୁ, ଆମେ ଶୀଘ୍ର ଉତ୍ତର ଦେବୁ।",
+    "namePlaceholder": "ଆପଣଙ୍କ ନାମ",
+    "emailPlaceholder": "ଆପଣଙ୍କ ଇମେଲ୍ ଠିକଣା",
+    "phonePlaceholder": "ଆପଣଙ୍କ ଯୋଗାଯୋଗ ନମ୍ବର",
+    "messagePlaceholder": "ଆପଣଙ୍କ ପ୍ରଶ୍ନ ଏଠାରେ ଲେଖନ୍ତୁ...",
+    "submit": "ପଠାନ୍ତୁ",
+    "submitting": "ପଠାଯାଉଛି...",
+    "success": "ଧନ୍ୟବାଦ! ଆମେ ଆପଣଙ୍କ ବାର୍ତ୍ତା ପାଇଛୁ, ଶୀଘ୍ର ଯୋଗାଯୋଗ କରିବୁ।",
+    "error": "କିଛି ଭୁଲ ହେଲା। ଦୟାକରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।",
+    "phoneHint": "କେବଳ {{count}} ଅଙ୍କର ମୋବାଇଲ୍ ନମ୍ବର",
+    "messageCharCount": "{{count}}/{{max}}",
+    "errors": {
+      "nameRequired": "ଦୟାକରି ଆପଣଙ୍କ ନାମ ଲେଖନ୍ତୁ",
+      "emailInvalid": "ଏକ ବୈଧ ଇମେଲ୍ ଲେଖନ୍ତୁ (ଯେପରିକି name@domain.com)",
+      "phoneInvalid": "ବୈଧ 10 ଅଙ୍କର ମୋବାଇଲ୍ ନମ୍ବର ଲେଖନ୍ତୁ (କେବଳ ସଂଖ୍ୟା)",
+      "messageMin": "ବାର୍ତ୍ତା ଅତିକମରେ 10 ଅକ୍ଷରର ହେବା ଉଚିତ"
+    }
+  },
+  "cta": {
+    "eyebrow": "ଆରମ୍ଭ କରନ୍ତୁ",
+    "title": "ଶର୍ଟଲିଷ୍ଟ ହେବାକୁ ପ୍ରସ୍ତୁତ?",
+    "subtitle": "ସୀମିତ ସିଟ୍। ଆଜି ପଞ୍ଜିକରଣ କରନ୍ତୁ।",
+    "primary": "ପଞ୍ଜିକରଣ ଆରମ୍ଭ କରନ୍ତୁ",
+    "secondary": "ପଞ୍ଜିକୃତ? ସାଇନ୍ ଇନ୍ କରନ୍ତୁ"
+  },
+  "footer": {
+    "poweredBy": "ହାଏରକର୍ମା ପ୍ରାଇଭେଟ ଲିମିଟେଡର ଉତ୍ପାଦ।",
+    "companyName": "Hirekarma Pvt Ltd",
+    "rights": "ସର୍ବସ୍ୱାଧୀନ ସଂରକ୍ଷିତ।",
+    "contactTitle": "ଆମ ସହିତ ଯୋଗାଯୋଗ",
+    "policyTitle": "ନୀତି",
+    "description": "ଏକ AI-ସଚାଳିତ ପ୍ଲେସମେଣ୍ଟ ସହାୟତା ଯାହା ଆପଣଙ୍କୁ ସଠିକ୍ ଚାକିରି ସହିତ ମେଳ କରେ, ଆପଣଙ୍କ ଆବେଦନ ଟ୍ରାକ୍ କରେ, ଏବଂ ଚାକିରି ପାଇବା ପାଇଁ ମାର୍ଗଦର୍ଶନ କରେ।",
+    "tagline": "ଏକ ପ୍ଲାଟଫର୍ମ। ବିଶେଷଜ୍ଞ ମାର୍ଗଦର୍ଶନ। ଆପଣଙ୍କ ପରବର୍ତ୍ତୀ କ୍ୟାରିୟର୍ ସୁଯୋଗର ଏକ ସ୍ମାର୍ଟ ପଥ।",
+    "officeLabel": "କାର୍ଯ୍ୟାଳୟ",
+    "locationLabel": "ଠିକଣା",
+    "emailLabel": "ଇମେଲ୍",
+    "contactLabel": "ଯୋଗାଯୋଗ",
+    "officeAddress": "2ଯ ତଳ, ଏସ.ଏସ୍. ନିୱାସ, ହାଏରକର୍ମା ପ୍ରାଇଭେଟ ଲିମିଟେଡ, ରଘୁନାଥପୁର, ଭୁବନେଶ୍ୱର, ରଘୁନାଥପୁରଜାଲି, ଓଡ଼ିଶା 751024",
+    "contactEmail": "info@hirekarma.in",
+    "contactPhone": "+919124364764",
+    "mapTitle": "ହାଏରକର୍ମା କାର୍ଯ୍ୟାଳୟ ଅବସ୍ଥାନ ମାନଚିତ୍ର",
+    "openInMaps": "ମାନଚିତ୍ରରେ ଖୋଲନ୍ତୁ",
+    "legal": {
+      "terms": "ନିୟମ ଏବଂ ସର୍ତ୍ତାବଳୀ",
+      "privacy": "ଗୋପନୀୟତା ନୀତି",
+      "refund": "ରିଫଣ୍ଡ ଏବଂ ବାତିଲ"
+    }
+  }
+}
