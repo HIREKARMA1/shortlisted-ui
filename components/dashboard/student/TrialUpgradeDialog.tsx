@@ -18,6 +18,7 @@ const METER_LABEL: Record<TrialFeature, string> = {
   application: 'dashboard.trial.meterApplication',
   class: 'dashboard.trial.meterClass',
   assessment: 'dashboard.trial.meterAssessment',
+  mockInterview: 'dashboard.trial.meterMockInterview',
 };
 
 const UNLOCK_KEYS = [

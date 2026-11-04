@@ -34,6 +34,7 @@
     "meterApplication": "Job applications",
     "meterClass": "Classes",
     "meterAssessment": "Assessments",
+    "meterMockInterview": "Mock interviews",
     "meterUsed": "1 / 1 used",
     "unlockTitle": "Full plan includes",
     "unlockJobs": "Every job in your batch",
@@ -46,7 +47,9 @@
       "classTitle": "You've used your free class",
       "classBody": "Your 7-day free trial includes 1 class. Upgrade to join every class in your batch.",
       "assessmentTitle": "You've used your free assessment",
-      "assessmentBody": "Your 7-day free trial includes 1 assessment. Upgrade to take every assessment."
+      "assessmentBody": "Your 7-day free trial includes 1 assessment. Upgrade to take every assessment.",
+      "mockInterviewTitle": "You've used your free mock interview",
+      "mockInterviewBody": "Your 7-day free trial includes 1 mock interview. Upgrade to practise every mock interview."
     },
     "expired": {
       "applicationTitle": "Your free trial has ended",
@@ -54,7 +57,9 @@
       "classTitle": "Your free trial has ended",
       "classBody": "Your 7-day free trial has ended. Upgrade to join every class in your batch.",
       "assessmentTitle": "Your free trial has ended",
-      "assessmentBody": "Your 7-day free trial has ended. Upgrade to take every assessment."
+      "assessmentBody": "Your 7-day free trial has ended. Upgrade to take every assessment.",
+      "mockInterviewTitle": "Your free trial has ended",
+      "mockInterviewBody": "Your 7-day free trial has ended. Upgrade to practise mock interviews."
     }
   },
   "student": {

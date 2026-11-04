@@ -1,6 +1,6 @@
 export type StudentPlan = 'premium' | 'trial' | 'expired' | 'locked' | 'inactive';
 
-export type TrialFeature = 'application' | 'class' | 'assessment';
+export type TrialFeature = 'application' | 'class' | 'assessment' | 'mockInterview';
 
 export function parseTrialError(detail: unknown): 'TRIAL_LIMIT' | 'TRIAL_EXPIRED' | null {
   if (typeof detail !== 'string') return null;
