@@ -6,6 +6,7 @@ const supabasePublishableKey =
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003';
 
 const nextConfig = {
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   reactStrictMode: true,
   env: {
     NEXT_PUBLIC_SUPABASE_URL: supabaseUrl,

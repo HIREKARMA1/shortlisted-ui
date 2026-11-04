@@ -1,4 +1,7 @@
-const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8001').replace(/\/$/, '');
+const defaultApiBaseUrl = process.env.NODE_ENV === 'production'
+  ? 'https://api.shortlisted.hirekarma.in'
+  : 'http://localhost:8001';
+const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || defaultApiBaseUrl).replace(/\/$/, '');
 const apiVersion = process.env.NEXT_PUBLIC_API_VERSION ?? 'v1';
 
 export const config = {
