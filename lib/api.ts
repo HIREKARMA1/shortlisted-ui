@@ -44,6 +44,7 @@ function isAuthEndpoint(url?: string) {
   if (!url) return false;
   return (
     url.includes('/auth/login') ||
+    url.includes('/auth/google') ||
     url.includes('/auth/refresh') ||
     url.includes('/auth/register') ||
     url.includes('/auth/forgot-password')
@@ -140,12 +141,32 @@ class ApiClient {
 
   async sendRegistrationOtp(email: string) {
     const res = await this.client.post('/auth/register/send-otp', { email });
-    return res.data as { message: string; expires_in_minutes: number };
+    return res.data as {
+      message: string;
+      expires_in_minutes: number;
+      expires_in_seconds?: number;
+      rate_limit?: import('@/lib/otp-clock').OtpRateStatus;
+    };
+  }
+
+  async verifyRegistrationOtp(email: string, otp: string) {
+    const res = await this.client.post('/auth/register/verify-otp', { email, otp });
+    return res.data as { verified: boolean; message: string };
   }
 
   async sendForgotPasswordOtp(email: string, user_type: UserType) {
     const res = await this.client.post('/auth/forgot-password/send-otp', { email, user_type });
-    return res.data as { message: string; expires_in_minutes: number };
+    return res.data as {
+      message: string;
+      expires_in_minutes: number;
+      expires_in_seconds?: number;
+      rate_limit?: import('@/lib/otp-clock').OtpRateStatus;
+    };
+  }
+
+  async verifyForgotPasswordOtp(email: string, otp: string, user_type: UserType) {
+    const res = await this.client.post('/auth/forgot-password/verify-otp', { email, otp, user_type });
+    return res.data as { verified: boolean; message: string };
   }
 
   async resetPassword(data: {
@@ -160,6 +181,11 @@ class ApiClient {
 
   async login(email: string, password: string, user_type: UserType) {
     const res = await this.client.post<TokenResponse>('/auth/login', { email, password, user_type });
+    return res.data;
+  }
+
+  async loginWithGoogle(accessToken: string) {
+    const res = await this.client.post<TokenResponse>('/auth/google', { access_token: accessToken });
     return res.data;
   }
 
@@ -622,6 +648,86 @@ class ApiClient {
     return res.data;
   }
 
+  async getAdminMockInterviews(batchId?: string) {
+    const res = await this.client.get('/admin/mock-interviews', {
+      params: batchId ? { batch_id: batchId } : undefined,
+    });
+    return res.data;
+  }
+
+  async getAdminMockInterview(interviewId: string) {
+    const res = await this.client.get(`/admin/mock-interviews/${interviewId}`);
+    return res.data;
+  }
+
+  async createMockInterview(data: Record<string, unknown>) {
+    const res = await this.client.post('/admin/mock-interviews', data);
+    return res.data;
+  }
+
+  async updateMockInterview(interviewId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(`/admin/mock-interviews/${interviewId}`, data);
+    return res.data;
+  }
+
+  async deleteMockInterview(interviewId: string) {
+    await this.client.delete(`/admin/mock-interviews/${interviewId}`);
+  }
+
+  async generateMockInterviewQuestions(interviewId: string) {
+    const res = await this.client.post(`/admin/mock-interviews/${interviewId}/generate`);
+    return res.data;
+  }
+
+  async publishMockInterview(interviewId: string) {
+    const res = await this.client.post(`/admin/mock-interviews/${interviewId}/publish`);
+    return res.data;
+  }
+
+  async unpublishMockInterview(interviewId: string) {
+    const res = await this.client.post(`/admin/mock-interviews/${interviewId}/unpublish`);
+    return res.data;
+  }
+
+  async updateMockInterviewQuestion(interviewId: string, questionId: string, data: Record<string, unknown>) {
+    const res = await this.client.patch(
+      `/admin/mock-interviews/${interviewId}/questions/${questionId}`,
+      data,
+    );
+    return res.data;
+  }
+
+  async deleteMockInterviewQuestion(interviewId: string, questionId: string) {
+    await this.client.delete(`/admin/mock-interviews/${interviewId}/questions/${questionId}`);
+  }
+
+  async regenerateMockInterviewQuestion(interviewId: string, questionId: string) {
+    const res = await this.client.post(
+      `/admin/mock-interviews/${interviewId}/questions/${questionId}/regenerate`,
+    );
+    return res.data;
+  }
+
+  async getStudentMockInterviews() {
+    const res = await this.client.get('/students/me/mock-interviews');
+    return res.data;
+  }
+
+  async startMockInterview(interviewId: string) {
+    const res = await this.client.post(`/students/me/mock-interviews/${interviewId}/sessions`);
+    return res.data;
+  }
+
+  async getMockInterviewSessions() {
+    const res = await this.client.get('/students/me/mock-interview-sessions');
+    return res.data;
+  }
+
+  async getMockInterviewReport(sessionId: string) {
+    const res = await this.client.get(`/students/me/mock-interview-sessions/${sessionId}/report`);
+    return res.data;
+  }
+
   async getAdminAssessments(batchId?: string) {
     const res = await this.client.get('/admin/assessments/list', {
       params: batchId ? { batch_id: batchId } : undefined,
@@ -727,3 +833,4 @@ class ApiClient {
 }
 
 export const api = new ApiClient();
+export const apiClient = api;

@@ -7,6 +7,7 @@
   "nav": {
     "login": "Login",
     "profile": "Profile",
+    "resumeBuilder": "Resume Builder",
     "register": "Claim Your Seat",
     "logout": "Logout",
     "back": "Back",
@@ -14,8 +15,11 @@
     "jobs": "Jobs",
     "applications": "Applications",
     "classes": "Classes",
+    "interviews": "Interviews",
+    "interviewers": "Interviewers",
     "attendance": "Attendance",
     "assessments": "Assessments",
+    "mockInterviews": "Mock interviews",
     "batches": "My Batches",
     "students": "Students",
     "coordinators": "Coordinators",
@@ -34,7 +38,7 @@
     "support": "Support",
     "bulkEmail": "Bulk Email",
     "exploreUs": "Explore Us",
-    "freeTrial": "Join a Free Trial"
+    "freeTrial": "Try for Free"
   },
   "languageSwitcher": {
     "title": "Select language",

@@ -186,7 +186,7 @@
   "compare": {
     "eyebrow": "The difference",
     "title": "This is not another online course",
-    "subtitle": "Shortlisted is India's first AI virtual placement cell - focused on getting you hired, not keeping you in class.",
+    "subtitle": "Shortlisted is India's first AI virtual placement cell, focused on placement support and human guidance rather than course delivery.",
     "course": {
       "label": "Typical course",
       "title": "Learn skills, get a certificate",
@@ -395,7 +395,7 @@
     "subtitle": "Get your questions answered",
     "items": {
       "ai": { "q": "What is an AI virtual placement cell?", "a": "Shortlisted is India's first AI virtual placement cell - it uses intelligent job matching and real-time application tracking, combined with a dedicated human coordinator for every batch of 12. Think of it as your college placement cell, available 24/7, powered by AI." },
-      "course": { "q": "Is Shortlisted a course?", "a": "No. Shortlisted is not a course or certificate program. It's an AI virtual placement cell focused on interviews, applications, and getting you hired." },
+      "course": { "q": "Is Shortlisted a course?", "a": "No. Shortlisted is not a course or certificate program. It's an AI virtual placement cell that supports interviews and applications." },
       "batch": { "q": "How are batches formed?", "a": "After you subscribe, you are automatically assigned to the current open batch (max 12 students). A dedicated coordinator is assigned to guide your batch while the AI engine keeps jobs and applications organised." },
       "jobs": { "q": "Where do jobs come from?", "a": "Jobs are posted on the DISHA platform by companies. Our AI placement engine and DISHA admins assign relevant openings to your Shortlisted batch based on your profile and readiness." },
       "support": { "q": "What kind of support can I expect?", "a": "You get AI-powered job matching and 24/7 dashboard tracking, plus a human batch coordinator for applications, interview prep, and live updates on shortlist and offer status." },
@@ -421,13 +421,6 @@
       "phoneInvalid": "Enter a valid 10-digit mobile number (numbers only)",
       "messageMin": "Message must be at least 10 characters"
     }
-  },
-  "cta": {
-    "eyebrow": "Get started",
-    "title": "Ready to get shortlisted?",
-    "subtitle": "Limited seats per batch. Join India's first AI virtual placement cell today.",
-    "primary": "Start Registration",
-    "secondary": "Already registered? Sign in"
   },
   "footer": {
     "poweredBy": "A product of Hirekarma Private Limited.",

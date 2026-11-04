@@ -1,0 +1,80 @@
+{
+  "brand": {
+    "name": "Shortlisted",
+    "tagline": "ଆପଣଙ୍କ ନିଜସ୍ୱ ପ୍ଲେସମେଣ୍ଟ ସେଲ",
+    "badge": "ପ୍ଲେସମେଣ୍ଟ"
+  },
+  "nav": {
+    "login": "ଲଗଇନ୍",
+    "profile": "ପ୍ରୋଫାଇଲ୍",
+    "register": "ଆପଣଙ୍କ ସିଟ୍ ବୁକ୍ କରନ୍ତୁ",
+    "logout": "ଲଗଆଉଟ୍",
+    "back": "ପଛକୁ",
+    "dashboard": "ଡ୍ୟାସବୋର୍ଡ",
+    "jobs": "ଚାକିରି",
+    "applications": "ଆବେଦନ",
+    "classes": "କ୍ଲାସ୍",
+    "batches": "ମୋ ବ୍ୟାଚ୍",
+    "students": "ଛାତ୍ର",
+    "coordinators": "କୋଅର୍ଡିନେଟର",
+    "testimonials": "ମତାମତ",
+    "successStories": "ସଫଳତା କାହାଣୀ",
+    "community": "ସମୁଦାୟ",
+    "revenue": "ରାଜସ୍ୱ",
+    "leads": "ଲିଡ୍",
+    "verifyPayment": "ପେମେଣ୍ଟ ଯାଞ୍ଚ",
+    "overview": "ସମୀକ୍ଷା",
+    "howItWorks": "କିପରି କାମ କରେ",
+    "features": "ବିଶେଷତା",
+    "pricing": "ମୂଲ୍ୟ",
+    "about": "ବିଷୟରେ",
+    "contact": "ଯୋଗାଯୋଗ",
+    "support": "ସହାୟତା",
+    "bulkEmail": "ବଲ୍କ ଇମେଲ",
+    "exploreUs": "ଆମକୁ ଜାଣନ୍ତୁ",
+    "freeTrial": "ଫ୍ରି ଟ୍ରାଏଲ୍ ଯୋଗ ଦିଅନ୍ତୁ"
+  },
+  "languageSwitcher": {
+    "title": "ଭାଷା ବାଛନ୍ତୁ",
+    "subtitle": "ଇଂରାଜୀ, ହିନ୍ଦୀ କିମ୍ବା ଓଡ଼ିଆ ବାଛନ୍ତୁ",
+    "ariaSelect": "ଭାଷା ବାଛନ୍ତୁ",
+    "close": "ବନ୍ଦ କରନ୍ତୁ"
+  },
+  "actions": {
+    "submit": "ଦାଖଲ କରନ୍ତୁ",
+    "cancel": "ବାତିଲ୍",
+    "save": "ସେଭ୍",
+    "apply": "ଆବେଦନ କରନ୍ତୁ",
+    "applying": "ଆବେଦନ ହେଉଛି...",
+    "loading": "ଲୋଡ୍ ହେଉଛି...",
+    "grantAccess": "ଆକ୍ସେସ୍ ଦିଅନ୍ତୁ",
+    "createAdmin": "ଆଡମିନ୍ ସୃଷ୍ଟି",
+    "viewAll": "ସବୁ ଦେଖନ୍ତୁ",
+    "viewDetails": "ବିବରଣୀ ଦେଖନ୍ତୁ"
+  },
+  "status": {
+    "active": "ସକ୍ରିୟ",
+    "inactive": "ନିଷ୍କ୍ରିୟ",
+    "placed": "ପ୍ଲେସ୍ଡ",
+    "notPlaced": "ପ୍ଲେସ୍ଡ ନୁହେଁ",
+    "locked": "ଲକ୍",
+    "revoked": "ବାତିଲ୍"
+  },
+  "language": {
+    "label": "ଭାଷା",
+    "en": "ଇଂରାଜୀ",
+    "hi": "ହିନ୍ଦୀ",
+    "or": "ଓଡ଼ିଆ"
+  },
+  "errors": {
+    "generic": "କିଛି ଭୁଲ୍ ହୋଇଗଲା। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।",
+    "network": "ସର୍ଭର ସହ ସଂଯୋଗ ହେଲା ନାହିଁ।",
+    "authRequired": "ଜାରି ରଖିବାକୁ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।"
+  },
+  "empty": {
+    "noData": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ତଥ୍ୟ ନାହିଁ।"
+  },
+  "whatsapp": {
+    "ariaLabel": "ୱାଟ୍ସଆପ୍ରେ ଚାଟ୍ କରନ୍ତୁ"
+  }
+}

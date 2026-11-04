@@ -24,6 +24,7 @@ export type StudentAssessmentItem = {
   can_start: boolean;
   has_completed: boolean;
   has_given?: boolean;
+  listed_only?: boolean;
   percentage?: number | null;
 };
 
@@ -118,12 +119,14 @@ export function StudentAssessmentCard({
         ) : null}
 
         <div className="mt-auto pt-4">
-          <Link href={examUrl} className="w-full">
-            <Button className="flex h-9 w-full items-center gap-2 bg-indigo-600 text-sm font-semibold normal-case tracking-normal hover:bg-indigo-700">
-              <FileText className="h-4 w-4" />
-              {assessment.has_completed ? 'View assessment' : 'View instructions'}
-            </Button>
-          </Link>
+          {assessment.listed_only ? null : (
+            <Link href={examUrl} className="w-full">
+              <Button className="flex h-9 w-full items-center gap-2 bg-indigo-600 text-sm font-semibold normal-case tracking-normal hover:bg-indigo-700">
+                <FileText className="h-4 w-4" />
+                {assessment.has_completed ? 'View assessment' : 'View instructions'}
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </motion.div>

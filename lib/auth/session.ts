@@ -31,9 +31,18 @@ export function getInactiveStudentPath(): string {
   return '/dashboard/student/inactive';
 }
 
+export function getStudentHomePath(session: Pick<Session, 'accessStatus' | 'signupChannel'>): string {
+  if (session.accessStatus === 'inactive') return getInactiveStudentPath();
+  if (session.accessStatus !== 'active' && session.signupChannel === 'whatsapp') {
+    return '/subscribe/review';
+  }
+  return '/dashboard/student';
+}
+
 export function getPostLoginPath(session: Session): string {
   if (session.userType === 'super_admin') return '/dashboard/super-admin';
   if (session.userType === 'admin') return '/dashboard/admin';
+  if (session.userType === 'student') return getStudentHomePath(session);
   if (session.accessStatus === 'inactive') return getInactiveStudentPath();
   if (session.accessStatus === 'active') return '/dashboard/student';
   return getLockedStudentPath(session);

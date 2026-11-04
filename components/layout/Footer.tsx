@@ -117,7 +117,7 @@ export function SiteFooter() {
             </h3>
             <div className="flex flex-col gap-2">
               {contactEmail && (
-                <p className="grid grid-cols-[4.75rem_1fr] items-start gap-x-2">
+                <p className="grid grid-cols-1 items-start gap-y-0.5 sm:grid-cols-[4.75rem_1fr] sm:gap-x-2 sm:gap-y-0">
                   <span className="font-medium text-ink-secondary">{t('landing.footer.emailLabel')}:</span>
                   <a href={`mailto:${contactEmail}`} className="break-words transition hover:text-brand-blue">
                     {contactEmail}
@@ -126,7 +126,7 @@ export function SiteFooter() {
               )}
 
               {contactPhone && (
-                <p className="grid grid-cols-[4.75rem_1fr] items-start gap-x-2">
+                <p className="grid grid-cols-1 items-start gap-y-0.5 sm:grid-cols-[4.75rem_1fr] sm:gap-x-2 sm:gap-y-0">
                   <span className="font-medium text-ink-secondary">{t('landing.footer.contactLabel')}:</span>
                   <a
                     href={`tel:${contactPhone.replace(/\s/g, '')}`}
@@ -137,7 +137,7 @@ export function SiteFooter() {
                 </p>
               )}
 
-              <p className="grid grid-cols-[4.75rem_1fr] items-start gap-x-2">
+              <p className="grid grid-cols-1 items-start gap-y-0.5 sm:grid-cols-[4.75rem_1fr] sm:gap-x-2 sm:gap-y-0">
                 <span className="font-medium text-ink-secondary">{t('landing.footer.locationLabel')}:</span>
                 <span className="break-words">{officeAddress}</span>
               </p>
@@ -150,7 +150,7 @@ export function SiteFooter() {
               className="mb-2.5 hidden min-h-[1.75rem] sm:block sm:min-h-8"
               aria-hidden="true"
             />
-            <div className="w-full max-w-[240px] overflow-hidden rounded-lg border border-line-default bg-white sm:max-w-[260px]">
+            <div className="w-full overflow-hidden rounded-lg border border-line-default bg-white sm:max-w-[260px]">
               <iframe
                 title={t('landing.footer.mapTitle')}
                 src={OFFICE_MAPS_EMBED_URL}
@@ -171,7 +171,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-line-default pt-4 text-sm text-ink-muted sm:text-base">
+        <div className="mt-8 border-t border-line-default pt-4 text-sm leading-relaxed text-ink-muted sm:text-base">
           <span>
             © {year}{' '}
             <a

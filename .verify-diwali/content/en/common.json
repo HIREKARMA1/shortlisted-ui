@@ -1,0 +1,82 @@
+{
+  "brand": {
+    "name": "Shortlisted",
+    "tagline": "Your dedicated placement cell",
+    "badge": "Placement"
+  },
+  "nav": {
+    "login": "Login",
+    "profile": "Profile",
+    "register": "Claim Your Seat",
+    "logout": "Logout",
+    "back": "Back",
+    "dashboard": "Dashboard",
+    "jobs": "Jobs",
+    "applications": "Applications",
+    "classes": "Classes",
+    "attendance": "Attendance",
+    "assessments": "Assessments",
+    "batches": "My Batches",
+    "students": "Students",
+    "coordinators": "Coordinators",
+    "testimonials": "Testimonials",
+    "successStories": "Success stories",
+    "community": "Community",
+    "revenue": "Revenue",
+    "leads": "Leads",
+    "verifyPayment": "Verify Payment",
+    "overview": "Overview",
+    "howItWorks": "How it works",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "support": "Support",
+    "bulkEmail": "Bulk Email",
+    "exploreUs": "Explore Us",
+    "freeTrial": "Join a Free Trial"
+  },
+  "languageSwitcher": {
+    "title": "Select language",
+    "subtitle": "Choose English, Hindi, or Odia",
+    "ariaSelect": "Select language",
+    "close": "Close"
+  },
+  "actions": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "apply": "Apply",
+    "applying": "Applying...",
+    "loading": "Loading...",
+    "grantAccess": "Grant Access",
+    "createAdmin": "Create Admin",
+    "viewAll": "View all",
+    "viewDetails": "View details"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "placed": "Placed",
+    "notPlaced": "Not placed",
+    "locked": "Locked",
+    "revoked": "Revoked"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "hi": "Hindi",
+    "or": "Odia"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Unable to reach the server.",
+    "authRequired": "Please sign in to continue."
+  },
+  "empty": {
+    "noData": "No data available yet."
+  },
+  "whatsapp": {
+    "ariaLabel": "Chat on WhatsApp"
+  }
+}

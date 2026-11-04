@@ -7,6 +7,7 @@
   "nav": {
     "login": "लॉगिन",
     "profile": "प्रोफ़ाइल",
+    "resumeBuilder": "रिज़्यूमे बिल्डर",
     "register": "अपनी सीट बुक करें",
     "logout": "लॉगआउट",
     "back": "वापस",
@@ -14,6 +15,8 @@
     "jobs": "नौकरियां",
     "applications": "आवेदन",
     "classes": "कक्षाएं",
+    "interviews": "साक्षात्कार",
+    "interviewers": "साक्षात्कारकर्ता",
     "batches": "मेरे बैच",
     "students": "छात्र",
     "coordinators": "कोऑर्डिनेटर",

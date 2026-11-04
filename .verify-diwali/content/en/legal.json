@@ -1,0 +1,233 @@
+{
+  "contactUs": "Contact us",
+  "legal": {
+    "terms": {
+      "eyebrow": "Legal",
+      "title": "Terms & Conditions",
+      "intro": "By enrolling in the HireKarma Shortlisted Program, candidates agree to comply with the following Terms & Conditions. These conditions are designed to ensure consistent participation, professional conduct, training completion, and fair access to placement opportunities.",
+      "sections": [
+        {
+          "title": "1. Program Eligibility and Continuation",
+          "paragraphs": [
+            "A candidate's participation in the Shortlisted Program may be reviewed, suspended, cancelled, or terminated in cases of prolonged non-responsiveness to official communication, insufficient attendance, repeated absence from scheduled interviews, failure to participate in mandatory assessments or training activities, or non-compliance with the program requirements."
+          ]
+        },
+        {
+          "title": "2. Salary Expectations",
+          "paragraphs": [
+            "Candidates are expected to maintain realistic and reasonable salary expectations based on their skills, qualifications, experience, performance, market conditions, and the compensation standards of the recruiting organization."
+          ]
+        },
+        {
+          "title": "3. Interview Participation",
+          "paragraphs": [
+            "Candidates must not skip, reject, or withdraw from a scheduled interview solely because the offered or expected compensation does not meet their personal salary expectations."
+          ]
+        },
+        {
+          "title": "4. Mandatory Interview Participation",
+          "paragraphs": [
+            "Candidates are expected to attend all interviews and recruitment opportunities scheduled or assigned to them through HireKarma and participate in the recruitment process professionally and responsibly."
+          ]
+        },
+        {
+          "title": "5. Number of Interview Opportunities",
+          "paragraphs": [
+            "Eligible candidates may receive a limited number of interview opportunities during the program. The number of opportunities may vary based on candidate performance, eligibility, recruiter requirements, interview outcomes, and the availability of suitable recruitment opportunities."
+          ]
+        },
+        {
+          "title": "6. Repeated Absence from Interviews",
+          "paragraphs": [
+            "Candidates who repeatedly miss scheduled interviews without a valid and approved reason may lose eligibility for future interview opportunities and placement support."
+          ]
+        },
+        {
+          "title": "7. Official Communication",
+          "paragraphs": [
+            "Candidates must use the official communication channels designated by HireKarma for all program, training, assessment, and placement-related communication. Creating or using unauthorized individual groups for official placement-related communication is not permitted."
+          ]
+        },
+        {
+          "title": "8. Mandatory Training Participation",
+          "paragraphs": [
+            "Candidates are required to attend and actively participate in the prescribed training schedule throughout the program. This may include technical training, soft skills, aptitude, reasoning, employability skills, assessments, workshops, and other activities as determined by HireKarma."
+          ]
+        },
+        {
+          "title": "9. Minimum Attendance Requirement",
+          "paragraphs": [
+            "Candidates must maintain the minimum attendance percentage prescribed for the program. The standard minimum attendance requirement is 75%, unless otherwise communicated by HireKarma. Candidates falling below the required attendance level may receive fewer interview opportunities, additional training requirements, or may become ineligible for further placement support."
+          ]
+        },
+        {
+          "title": "10. Mandatory Assessments",
+          "paragraphs": [
+            "Candidates must participate in all mandatory assessments conducted as part of the program and meet the prescribed performance requirements. Assessment participation and performance may be considered while determining continued eligibility for placement opportunities."
+          ]
+        },
+        {
+          "title": "11. Final Assessment and Placement Eligibility",
+          "paragraphs": [
+            "Candidates who achieve 60% or above in the final assessment will become eligible to proceed to the placement phase, subject to other program requirements and the availability of suitable opportunities.",
+            "Candidates who score below 60% in the final assessment may be required to undergo an additional round of training, remedial sessions, or a further assessment before being considered for placement opportunities."
+          ]
+        },
+        {
+          "title": "12. Job-Ready Certificate",
+          "paragraphs": [
+            "Candidates who achieve 60% or above in the final assessment may be awarded a Job-Ready Certificate, subject to successful completion of the applicable program requirements."
+          ]
+        },
+        {
+          "title": "13. Professional Conduct",
+          "paragraphs": [
+            "Candidates are expected to maintain professional and respectful communication throughout the program and recruitment process. This includes appropriate communication with HireKarma representatives, trainers, recruiters, HR personnel, companies, and other stakeholders."
+          ]
+        },
+        {
+          "title": "14. Leave and Absence",
+          "paragraphs": [
+            "Leave or absence may be approved only for valid reasons and subject to the program requirements. Candidates should inform HireKarma in advance, wherever reasonably possible, through the prescribed official communication channel and provide appropriate justification when required."
+          ]
+        },
+        {
+          "title": "15. Placement Support and Opportunity Allocation",
+          "paragraphs": [
+            "Placement opportunities are not guaranteed and are subject to candidate eligibility, performance, attendance, assessment results, recruiter requirements, company selection criteria, and availability of suitable opportunities. HireKarma may determine the suitability and allocation of opportunities based on these factors."
+          ]
+        },
+        {
+          "title": "16. Right to Review Eligibility",
+          "paragraphs": [
+            "HireKarma reserves the right to periodically review a candidate's eligibility for continued training, assessments, interviews, and placement support based on attendance, participation, assessment performance, interview participation, professional conduct, responsiveness, and compliance with these Terms & Conditions."
+          ]
+        },
+        {
+          "title": "17. Modification of Program Requirements",
+          "paragraphs": [
+            "HireKarma reserves the right to modify, update, or introduce program requirements, training schedules, assessment criteria, communication processes, or placement procedures when reasonably required for effective program administration."
+          ]
+        },
+        {
+          "title": "18. Acceptance of Terms",
+          "paragraphs": [
+            "By enrolling in or continuing to participate in the Shortlisted Program, the candidate acknowledges that they have read, understood, and agreed to comply with these Terms & Conditions and any additional program guidelines communicated by HireKarma from time to time."
+          ]
+        }
+      ],
+      "closing": "Note: Participation in the Shortlisted Program provides access to training and eligible placement opportunities but does not constitute a guarantee of employment or selection by any recruiting organization."
+    },
+    "privacy": {
+      "eyebrow": "Legal",
+      "title": "Privacy Policy",
+      "intro": "This Privacy Policy describes our policies and procedures on the collection, use and disclosure of your information when you use Shortlisted and informs you about your privacy rights and how the law protects you. We use your personal data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy.",
+      "sections": [
+        {
+          "title": "Interpretation and Definitions",
+          "paragraphs": [
+            "Words where the initial letter is capitalized have meanings defined under the following conditions."
+          ],
+          "bullets": [
+            "You means the individual using the Service or the entity on whose behalf the Service is being used.",
+            "Company (We, Us or Our) refers to HireKarma Private Limited, operator of Shortlisted.",
+            "Account means a unique account created to access the Service.",
+            "Website refers to the Shortlisted web application and related domains.",
+            "Service refers to the Shortlisted placement program, dashboard, and website.",
+            "Personal Data means information that identifies an individual.",
+            "Usage Data refers to data collected automatically, such as device information and usage patterns."
+          ]
+        },
+        {
+          "title": "Personal Data We Collect",
+          "bullets": [
+            "Name, email address, and phone number provided during registration.",
+            "Academic and profile information such as college, branch, skills, and preferred roles.",
+            "Subscription and payment-related information processed through our payment partners.",
+            "Application activity, batch membership, assessment attempts, and coordinator interactions within the platform.",
+            "Usage Data including IP address, browser type, pages visited, and diagnostic data."
+          ]
+        },
+        {
+          "title": "How We Use Your Data",
+          "bullets": [
+            "To provide and maintain the Shortlisted placement program.",
+            "To manage user accounts, batch assignment, and dashboard access.",
+            "To process subscriptions and fulfill payment contracts.",
+            "To contact you regarding updates, security notices, and support requests.",
+            "To assign curated job opportunities and track application status.",
+            "To analyze platform performance and improve our services."
+          ]
+        },
+        {
+          "title": "Retention, Transfer & Disclosure",
+          "bullets": [
+            "Data is retained only as long as necessary for legal, compliance, and operational requirements.",
+            "Your data may be processed on servers located in India or with trusted service providers.",
+            "We may disclose data to comply with legal obligations, prevent fraud, or protect users and the public.",
+            "We do not sell your personal data to third parties."
+          ]
+        },
+        {
+          "title": "Security & Children's Privacy",
+          "bullets": [
+            "We use commercially acceptable practices to protect personal data, but no system is 100% secure.",
+            "The Service is intended for students and adults. If we learn that data was collected from a child without appropriate consent, we will remove it."
+          ]
+        },
+        {
+          "title": "Changes to This Policy",
+          "paragraphs": [
+            "We may update this Privacy Policy periodically. Continued use of the Service after updates constitutes acceptance of the revised policy. You are advised to review this page periodically for changes."
+          ]
+        }
+      ],
+      "closing": "For privacy-related questions,"
+    },
+    "refund": {
+      "eyebrow": "Legal",
+      "title": "Refund & Cancellation Policy",
+      "intro": "This Refund & Cancellation Policy applies to Shortlisted subscription payments made through our official website or approved offline payment channels operated by HireKarma Private Limited.",
+      "sections": [
+        {
+          "title": "General Policy",
+          "bullets": [
+            "Shortlisted provides access to a digital placement program including dashboard access, batch assignment, coordinator support, and curated job opportunities.",
+            "Because access to digital services may begin immediately after payment confirmation, subscription fees are generally non-refundable once access is activated.",
+            "All payments must be made only through official Shortlisted checkout or payment instructions shared by HireKarma. Payments made to unauthorized third parties are not eligible for support or refund."
+          ]
+        },
+        {
+          "title": "Eligible Refund Cases",
+          "bullets": [
+            "You are entitled to a refund if you were charged twice for the same subscription.",
+            "You are entitled to a refund if payment was successful but your subscription or batch access was not activated within a reasonable time and our support team is unable to resolve the issue.",
+            "You may be eligible for a refund if a technical error on our platform prevented activation and the issue cannot be corrected."
+          ]
+        },
+        {
+          "title": "Non-Refundable Cases",
+          "bullets": [
+            "Change of mind after subscription activation.",
+            "Dissatisfaction with job opportunities, interview outcomes, or placement results.",
+            "Failure to participate in the program, complete profile details, or apply to assigned opportunities.",
+            "Violation of platform terms resulting in account suspension or revocation."
+          ]
+        },
+        {
+          "title": "Offline Payments",
+          "paragraphs": [
+            "If you pay offline through our sales team, your dashboard remains locked until payment is verified and manually activated. Refund requests for offline payments must include payment proof and will be reviewed on a case-by-case basis."
+          ]
+        },
+        {
+          "title": "How to Request a Refund",
+          "paragraphs": [
+            "Contact our support team through the official contact page with your registered email, payment reference, and reason for the request. Approved refunds are processed to the original payment method within 7–14 business days, subject to payment gateway timelines."
+          ]
+        }
+      ],
+      "closing": "We encourage you to review subscription details and batch availability before completing payment. Our team is happy to answer questions before you subscribe."
+    }
+  }
+}

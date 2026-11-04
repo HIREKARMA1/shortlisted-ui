@@ -1,0 +1,39 @@
+{
+  "title": "ଆପଣଙ୍କ ପ୍ଲେସମେଣ୍ଟ ସେଲ୍ ସକ୍ରିୟ କରନ୍ତୁ",
+  "subtitle": "ବ୍ୟାଚ୍, ଚାକିରି ଏବଂ ଡ୍ୟାସବୋର୍ଡ ଅନଲକ୍ କରିବାକୁ ସବସ୍କ୍ରିପ୍ସନ୍ ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ।",
+  "seatsLabel": "ବାକି ସିଟ୍",
+  "amountLabel": "ସବସ୍କ୍ରିପ୍ସନ୍ ଶୁଳ୍କ",
+  "currency": "₹{{amount}}",
+  "promo": {
+    "badge": "Independence Day Special Offer",
+    "title": "Independence Day Special Offer",
+    "saveLine": "Join before 25th August and save ₹{{savings}} on your enrollment.",
+    "exclusive": "Exclusively available for the first 12 students in each batch.",
+    "tagline": "Limited Seats. Limited-Time Offer. Unlimited Potential"
+  },
+  "cta": "ସବସ୍କ୍ରାଇବ୍ କରି ସକ୍ରିୟ କରନ୍ତୁ",
+  "ctaOnline": "ଅନଲାଇନ୍ ପେମେଣ୍ଟ କରି ସକ୍ରିୟ କରନ୍ତୁ",
+  "processing": "ପେମେଣ୍ଟ ପ୍ରକ୍ରିୟାରେ...",
+  "redirecting": "PayU ସୁରକ୍ଷିତ ଚେକଆଉଟ୍‌କୁ ପଠାଯାଉଛି...",
+  "success": "ସବସ୍କ୍ରିପ୍ସନ୍ ସକ୍ରିୟ। ସ୍ୱାଗତ!",
+  "paymentMode": {
+    "online": "ଅନଲାଇନ୍ ପେମେଣ୍ଟ",
+    "offline": "ଅଫଲାଇନ୍ ପେମେଣ୍ଟ"
+  },
+  "offline": {
+    "description": "ଅଫଲାଇନ୍ ପେମେଣ୍ଟ କରିବାକୁ ଚାହୁଁଛନ୍ତି? ଆମ ସେଲ୍ସ ଟିମ୍‌କୁ ଯୋଗାଯୋଗ କରନ୍ତୁ। ପେମେଣ୍ଟ ମିଳିଲେ ଆପଣଙ୍କ ଆକାଉଣ୍ଟ ସକ୍ରିୟ ହେବ।",
+    "note": "ଆମ ଟିମ୍ ପେମେଣ୍ଟ ନିଶ୍ଚିତ ନହେବା ପର୍ଯ୍ୟନ୍ତ ଡ୍ୟାସବୋର୍ଡ ଲକ୍ ରହିବ।"
+  },
+  "benefits": {
+    "title": "କ'ଣ ଅନ୍ତର୍ଭୁକ୍ତ",
+    "batch": "ସ୍ୱଚାଳିତ ବ୍ୟାଚ୍ (12 ଛାତ୍ର)",
+    "jobs": "ବ୍ୟବସ୍ଥିତ ଚାକିରି",
+    "coordinator": "ନିଯୁକ୍ତ କୋଅର୍ଡିନେଟର",
+    "dashboard": "ପୂର୍ଣ୍ଣ ଛାତ୍ର କମାଣ୍ଡ ସେଣ୍ଟର"
+  },
+  "secure": "{{provider}} ମାଧ୍ୟମରେ ସୁରକ୍ଷିତ ପେମେଣ୍ଟ",
+  "checkout": {
+    "name": "Shortlisted",
+    "description": "ପ୍ଲେସମେଣ୍ଟ ପ୍ରୋଗ୍ରାମ ସବସ୍କ୍ରିପ୍ସନ୍"
+  }
+}
