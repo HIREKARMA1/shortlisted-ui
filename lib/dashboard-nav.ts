@@ -19,11 +19,8 @@ import {
   Headphones,
   ListChecks,
   Mail,
-<<<<<<< HEAD
   MessagesSquare,
-=======
   CalendarDays,
->>>>>>> Calendry-intigration
 } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
