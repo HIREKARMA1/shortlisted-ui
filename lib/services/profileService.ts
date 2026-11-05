@@ -111,11 +111,34 @@ export type ProfileCompletionResponse = {
   can_apply_for_jobs?: boolean;
 };
 
+export type StudentUploadedResume = {
+  id: string;
+  file_url: string;
+  original_filename: string;
+  is_current: boolean;
+};
+
+export type StudentUploadedResumeList = {
+  resumes: StudentUploadedResume[];
+  current_resume_id?: string | null;
+};
+
+export type ResumeUploadResponse = {
+  success?: boolean;
+  file_url: string;
+  message?: string;
+  resume?: StudentUploadedResume;
+};
+
 export const profileService = {
   getProfile: () => api.getStudentProfile() as Promise<StudentProfile>,
   updateProfile: (data: ProfileUpdateData) => api.updateStudentProfile(data) as Promise<StudentProfile>,
   getProfileCompletion: () => api.getStudentProfileCompletion() as Promise<ProfileCompletionResponse>,
-  uploadResume: (file: File) => api.uploadStudentResume(file),
+  uploadResume: (file: File) => api.uploadStudentResume(file) as Promise<ResumeUploadResponse>,
+  getResumes: () => api.getStudentResumes() as Promise<StudentUploadedResumeList>,
+  setCurrentResume: (resumeId: string) =>
+    api.setCurrentStudentResume(resumeId) as Promise<StudentUploadedResume>,
+  deleteResume: (resumeId: string) => api.deleteStudentResume(resumeId) as Promise<void>,
   uploadProfilePicture: (file: File) => api.uploadStudentProfilePicture(file),
   uploadCertificate: (file: File, type: string) => api.uploadStudentCertificate(file, type),
 };

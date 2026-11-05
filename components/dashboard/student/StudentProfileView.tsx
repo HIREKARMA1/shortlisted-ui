@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  AlertCircle, Award, Briefcase, Check, ChevronRight, Code2, Cpu, Download,
-  FileText, GraduationCap, Pencil, Phone, Rocket, Target, UserRound, Mail, X,
+  AlertCircle, Award, Briefcase, Code2, Cpu,
+  FileText, GraduationCap, Loader2, Pencil, Phone, Rocket, Target, Upload, UserRound, Mail, X,
   Video,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/FileUpload';
 import { Input } from '@/components/ui/Input';
 import { LoadingState } from '@/components/ui/LoadingState';
+import { StudentResumeSection } from '@/components/dashboard/student/StudentResumeSection';
 
 function isProfileComplete(profile: StudentProfile): boolean {
   return Boolean(
@@ -50,6 +51,8 @@ export function StudentProfileView() {
   const [details, setDetails] = useState<Partial<StudentProfile>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [interviewCounts, setInterviewCounts] = useState<{ real: number | null; ai: number | null }>({ real: null, ai: null });
+  const [resumeReloadToken, setResumeReloadToken] = useState(0);
+  const heroResumeInputRef = useRef<HTMLInputElement>(null);
 
   const loadProfile = useCallback(async () => {
     try {
@@ -77,19 +80,17 @@ export function StudentProfileView() {
   useEffect(() => {
     let cancelled = false;
     const refreshCounts = async () => {
-      const [applicationsResult, assessmentsResult] = await Promise.allSettled([
-        api.getApplications(),
+      const [bookingsResult, assessmentsResult] = await Promise.allSettled([
+        api.get<{ status?: string }[]>('/interviews/bookings'),
         api.getStudentAssessments(),
       ]);
       if (cancelled) return;
-      const applications = applicationsResult.status === 'fulfilled' && Array.isArray(applicationsResult.value)
-        ? applicationsResult.value as Record<string, unknown>[] : null;
+      const bookings = bookingsResult.status === 'fulfilled' && Array.isArray(bookingsResult.value)
+        ? bookingsResult.value
+        : null;
       const assessments = assessmentsResult.status === 'fulfilled' && Array.isArray(assessmentsResult.value)
         ? assessmentsResult.value as Record<string, unknown>[] : null;
-      const real = applications?.filter((application) => {
-        const status = String(application.status || '').toLowerCase();
-        return status.includes('interviewed') || /interview[ _-]*(completed|complete|attended|passed|failed|done|conducted)/.test(status);
-      }).length;
+      const real = bookings?.filter((booking) => String(booking.status || '').toLowerCase() === 'completed').length;
       const ai = assessments?.filter((assessment) => {
         const label = `${String(assessment.assessment_name || '')} ${String(assessment.instructions || '')}`;
         const isAiInterview = /\b(ai|mock)\b.{0,40}\binterview\b|\binterview\b.{0,40}\b(ai|mock)\b/i.test(label);
@@ -210,10 +211,21 @@ export function StudentProfileView() {
   };
 
   const handleResumeUpload = async (file: File) => {
+    if (file.type !== 'application/pdf') {
+      toast.error('Please upload a PDF file only.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Resume must be less than 5MB.');
+      return;
+    }
     setUploadingResume(true);
     try {
-      await profileService.uploadResume(file);
-      await loadProfile();
+      const result = await profileService.uploadResume(file);
+      const url = result?.file_url || result?.resume?.file_url;
+      setProfile((current) => (current ? { ...current, resume: url || current.resume } : current));
+      setDetails((current) => ({ ...current, resume: url || current.resume }));
+      setResumeReloadToken((value) => value + 1);
       setErrors((prev) => {
         const next = { ...prev };
         delete next.resume;
@@ -229,6 +241,18 @@ export function StudentProfileView() {
       setUploadingResume(false);
     }
   };
+
+  const handleCurrentResumeChange = useCallback((resumeUrl: string | null) => {
+    setProfile((current) => (current ? { ...current, resume: resumeUrl || undefined } : current));
+    setDetails((current) => ({ ...current, resume: resumeUrl || undefined }));
+    if (resumeUrl) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.resume;
+        return next;
+      });
+    }
+  }, []);
 
   const handlePhotoUpload = async (file?: File) => {
     if (!file) return;
@@ -396,11 +420,35 @@ export function StudentProfileView() {
             <Button type="button" variant="accent" className="absolute right-0 top-0 !rounded-full !px-3 !py-2 text-xs sm:static sm:!rounded-md sm:!px-5 sm:!py-2.5 sm:text-sm" onClick={() => { setEditingSection(null); setEditing((value) => !value); }}>
               {editing ? <><X className="mr-1.5 h-3.5 w-3.5 sm:mr-2 sm:h-4 sm:w-4" /> Cancel</> : <><Pencil className="mr-1.5 h-3.5 w-3.5 sm:mr-2 sm:h-4 sm:w-4" /><span className="sm:hidden">Edit</span><span className="hidden sm:inline">Edit profile</span></>}
             </Button>
-            <div className="hidden w-full items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/90 px-3 py-2.5 sm:ml-auto sm:flex sm:w-auto sm:min-w-64 sm:max-w-[40%]">
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-700"><Check className="h-5 w-5" /></span>
-              <span className="min-w-0 flex-1"><span className="block text-sm font-semibold text-emerald-800">{profile.resume ? 'Resume uploaded' : 'Add your resume'}</span><span className="mt-0.5 block truncate text-xs text-slate-600">{profile.resume ? displayResumeName : 'Upload a resume to complete your profile'}</span></span>
-              <ChevronRight className="h-4 w-4 shrink-0 text-emerald-700" />
-            </div>
+            <input
+              ref={heroResumeInputRef}
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) void handleResumeUpload(file);
+                event.currentTarget.value = '';
+              }}
+            />
+            <button
+              type="button"
+              disabled={uploadingResume}
+              onClick={() => heroResumeInputRef.current?.click()}
+              className="hidden w-full items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/90 px-3 py-2.5 text-left transition hover:bg-emerald-50 disabled:opacity-60 sm:ml-auto sm:flex sm:w-auto sm:min-w-64 sm:max-w-[40%]"
+            >
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-700">
+                {uploadingResume ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-emerald-800">
+                  {uploadingResume ? 'Uploading…' : 'Upload resume'}
+                </span>
+                <span className="mt-0.5 block truncate text-xs text-slate-600">
+                  {profile.resume ? displayResumeName : 'PDF only, max 5MB'}
+                </span>
+              </span>
+            </button>
           </div>
         </div>
 
@@ -433,28 +481,9 @@ export function StudentProfileView() {
           <Section title="Career preferences" icon={Target} sectionKey="preferences">
             {preferences.length ? <ul className="space-y-2 text-sm text-slate-700">{profile.job_roles_of_interest && <li><span className="font-medium">Preferred roles:</span> {profile.job_roles_of_interest}</li>}{profile.preferred_industry && <li><span className="font-medium">Preferred domain:</span> {profile.preferred_industry}</li>}{profile.location_preferences && <li><span className="font-medium">Preferred location:</span> {profile.location_preferences}</li>}</ul> : <Empty>Set your preferred roles, domain and location.</Empty>}
           </Section>
-          <Section title="Resume details" icon={FileText} interactive={false}>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600"><Check className="h-5 w-5" /></div>
-              <div className="min-w-0 flex-1"><p className="break-all font-semibold text-slate-900">{profile.resume ? displayResumeName : 'No resume uploaded yet'}</p><p className="mt-1 text-sm text-slate-500">{profile.resume ? 'Resume uploaded' : 'Upload a resume to share your experience.'}</p></div>
-              {profile.resume ? <a href={profile.resume} target="_blank" rel="noreferrer" download={displayResumeName} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-blue-200 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"><Download className="h-4 w-4" /> Download resume</a> : <button type="button" onClick={() => { setEditing(true); window.setTimeout(() => document.getElementById('resume-upload')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100); }} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-blue-200 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"><Pencil className="h-4 w-4" /> Upload resume</button>}
-            </div>
-          </Section>
         </div>
 
         <div className="space-y-2 md:hidden">
-          <button type="button" onClick={() => {
-            if (profile.resume) window.open(profile.resume, '_blank', 'noopener,noreferrer');
-            else {
-              setEditing(true);
-              window.setTimeout(() => document.getElementById('resume-upload')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-            }
-          }} className="group flex w-full items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2.5 text-left shadow-sm transition hover:bg-emerald-50">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-700"><Check className="h-5 w-5" /></span>
-            <span className="min-w-0 flex-1"><span className="block text-sm font-semibold text-emerald-800">{profile.resume ? 'Resume Uploaded' : 'Upload Resume'}</span><span className="mt-0.5 block truncate text-xs text-slate-600">{profile.resume ? displayResumeName : 'Add a resume to complete your profile'}</span></span>
-            <span className="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800">{profile.resume ? 'Open' : 'Add'}</span>
-          </button>
-
           {[
             { title: 'Personal Details', icon: UserRound, summary: [profile.name, profile.email, profile.phone].filter(Boolean).join(', ') || 'Add your contact details', section: 'personal' as const },
             { title: 'Education', icon: GraduationCap, summary: [[profile.degree, profile.branch || profile.major].filter(Boolean).join(' in '), profile.institution].filter(Boolean).join(' · ') || 'Add your education details', section: 'education' as const },
@@ -463,7 +492,6 @@ export function StudentProfileView() {
             { title: 'Projects', icon: Rocket, summary: profile.project_details?.split('\n')[0] || 'Add your projects', section: 'projects' as const },
             { title: 'Certifications', icon: Award, summary: certifications.length ? `${certifications.slice(0, 2).join(', ')}${certifications.length > 2 ? ', …' : ''}` : 'Add your certifications', section: 'certifications' as const },
             { title: 'Career Preferences', icon: Target, summary: preferences.length ? preferences.join(', ') : 'Add your preferred roles, domain and location', section: 'preferences' as const },
-            { title: 'Resume Details', icon: FileText, summary: profile.resume ? 'Resume file and details' : 'Upload a resume', section: 'resume' as const },
           ].map(({ title, icon: Icon, summary, section }) => (
             <button key={title} type="button" onClick={() => openSection(section)} className="group flex min-h-[54px] w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 text-left shadow-[0_3px_12px_rgba(30,64,175,0.04)] transition hover:border-blue-200 hover:bg-blue-50/30">
               <Icon className="h-6 w-6 shrink-0 text-blue-600" />
@@ -471,9 +499,9 @@ export function StudentProfileView() {
               <span className="shrink-0 rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700 transition group-hover:bg-blue-100">View</span>
             </button>
           ))}
-
-          {profile.resume ? <a href={profile.resume} target="_blank" rel="noreferrer" download={displayResumeName} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"><Download className="h-5 w-5" /> Download Resume</a> : <button type="button" onClick={() => setEditing(true)} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"><Pencil className="h-5 w-5" /> Add Resume</button>}
         </div>
+
+        <StudentResumeSection reloadToken={resumeReloadToken} onCurrentChange={handleCurrentResumeChange} />
 
         {activeSection && <div className="fixed inset-0 z-[70] grid place-items-center overflow-y-auto bg-slate-950/45 p-3 backdrop-blur-[2px] sm:p-5">
           <button type="button" aria-label="Close section details" onClick={() => setActiveSection(null)} className="absolute inset-0 cursor-default" />
@@ -500,8 +528,7 @@ export function StudentProfileView() {
                 </dl>
               ) : <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-center"><p className="font-medium text-slate-700">No details added yet</p><p className="mt-1 text-sm text-slate-500">{sectionContent[activeSection].emptyText}</p></div>}
             </div>
-            <div className="flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50/70 px-5 py-3 sm:flex-row sm:justify-between sm:px-6">
-              {activeSection === 'resume' && profile.resume ? <a href={profile.resume} target="_blank" rel="noreferrer" download={displayResumeName} className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-50"><Download className="h-4 w-4" /> Download resume</a> : <span />}
+            <div className="flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50/70 px-5 py-3 sm:flex-row sm:justify-end sm:px-6">
               <Button type="button" variant="accent" onClick={() => openEditor(sectionContent[activeSection].targetId, activeSection)} className="w-full sm:w-auto">
                 <Pencil className="mr-2 h-4 w-4" />{sectionContent[activeSection].items.some((item) => item.value !== undefined && item.value !== null && String(item.value).trim()) ? 'Edit section' : 'Add details'}
               </Button>
@@ -595,14 +622,13 @@ export function StudentProfileView() {
             </>}
 
             {(!editingSection || editingSection === 'resume') && <>
-            <div
-              id="resume-upload"
-              className="scroll-mt-24 rounded-lg transition-shadow md:col-span-2 xl:col-span-3"
-            >
+            <div className="scroll-mt-24 rounded-lg transition-shadow md:col-span-2 xl:col-span-3">
               <p className="mb-2 text-sm font-medium text-ink-secondary">
                 {t('dashboard.profile.resume')} *
               </p>
-              <p className="mb-2 text-xs text-ink-muted">{t('dashboard.profile.resumeHint')}</p>
+              <p className="mb-3 text-xs text-ink-muted">
+                Uploading adds a new resume to your history and sets it as current. Previous resumes stay saved.
+              </p>
               <FileUpload
                 type="document"
                 currentFile={profile.resume}
@@ -611,6 +637,9 @@ export function StudentProfileView() {
                 placeholder={t('dashboard.profile.resumePlaceholder')}
               />
               {errors.resume && <p className="mt-2 text-xs text-brand-red">{errors.resume}</p>}
+              <p className="mt-3 text-xs text-slate-500">
+                Manage all resumes, set a current one, or remove older files from the Resume section on your profile.
+              </p>
             </div>
             </>}
               </div>

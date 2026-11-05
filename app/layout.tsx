@@ -23,6 +23,14 @@ const newsreader = Newsreader({
 export const metadata: Metadata = {
   title: 'Shortlisted - Your Dedicated Placement Cell',
   description: 'Subscription-based placement program by HireKarma. Curated batches, matched jobs, dedicated coordinators.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
