@@ -5,6 +5,9 @@ export { MinimalATSTemplate } from "./MinimalATS";
 export { CreativePremiumTemplate } from "./CreativePremium";
 export { ExecutiveProfessionalTemplate } from "./ExecutiveProfessional";
 export { ModernCreativeTemplate } from "./ModernCreative";
+export { ClassicATSProfessionalTemplate } from "./ClassicATSProfessional";
+export { ModernATSTechnicalTemplate } from "./ModernATSTechnical";
+export { ExecutiveATSProfessionalTemplate } from "./ExecutiveATSProfessional";
 export {
   TEMPLATES,
   TEMPLATE_SLUGS,
