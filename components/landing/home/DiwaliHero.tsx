@@ -405,7 +405,7 @@ export function DiwaliHero() {
     <section
       ref={heroRef}
       id="home"
-      className="diwali-hero-section relative flex min-h-[600px] w-full flex-col justify-between scroll-mt-[88px] bg-[linear-gradient(135deg,#0c2a5c_0%,#1b52a4_58%,#1479c4_100%)] py-[clamp(4px,1vh,16px)]"
+      className="diwali-hero-section relative flex min-h-[600px] w-full flex-col justify-between scroll-mt-[88px] bg-[linear-gradient(135deg,#0c2a5c_0%,#1b52a4_58%,#1479c4_100%)] pt-[clamp(4px,1vh,16px)]"
     >
       {/* Scoped CSS for Diwali Animations, Ambient Pausing & Reduced Motion */}
       <style jsx global>{`
@@ -496,9 +496,10 @@ export function DiwaliHero() {
         }
         @media (min-width: 1024px) and (max-height: 800px) {
           .diwali-hero-section {
-            padding-block: clamp(4px, 1vh, 8px) !important;
+            padding-top: clamp(4px, 1vh, 8px) !important;
           }
           .diwali-journey-strip { margin-block: clamp(8px, 1.5vh, 16px); padding-block: clamp(8px, 1.5vh, 12px); }
+          .diwali-stats-bar { padding-top: 10px !important; padding-bottom: 12px !important; }
           .diwali-headline {
             font-size: clamp(1.75rem, 5.2vh, 2.75rem) !important;
           }
@@ -749,8 +750,9 @@ export function DiwaliHero() {
             min-width: 0 !important;
             font-size: 14px !important;
           }
+          .diwali-stats-bar { padding-top: 12px !important; padding-bottom: 14px !important; }
           .diwali-stats-content { width: 100% !important; padding-inline: 4px !important; gap: 10px !important; }
-          .diwali-stats-content > div p { font-size: 11px !important; line-height: 1.25; }
+          .diwali-stats-content > div p { font-size: 12px !important; line-height: 1.3; }
         }
       `}</style>
 
@@ -974,47 +976,47 @@ export function DiwaliHero() {
           </div>
         </div>
         </div>
+      </div>
 
-        {/* Translucent stats bar:
-            High contrast WCAG AA background (bg-[#071936]/80), dividers, tabular numerals */}
+        {/* Stats bar sits outside overflow-hidden so labels are never clipped by the hero height. */}
         <div
-          className="relative z-10 w-full shrink-0 border-t border-white/20 bg-[#071936]/80 px-4 py-[clamp(8px,1.5vh,16px)] backdrop-blur-md sm:px-6"
+          className="diwali-stats-bar relative z-10 w-full shrink-0 border-t border-white/20 bg-[#071936]/80 px-4 pb-4 pt-3 backdrop-blur-md sm:px-6 sm:pb-5 sm:pt-3.5"
         >
-          <dl className="diwali-stats-content mx-auto grid w-[calc(100%-2rem)] max-w-[1200px] grid-cols-2 gap-4 px-6 sm:w-[calc(100%-3rem)] sm:gap-6 sm:px-10 lg:grid-cols-4">
+          <dl className="diwali-stats-content mx-auto grid w-[calc(100%-2rem)] max-w-[1200px] grid-cols-2 gap-x-4 gap-y-3 px-6 sm:w-[calc(100%-3rem)] sm:gap-6 sm:px-10 lg:grid-cols-4">
             {/* Stat 1: Students per batch */}
-            <div className="text-center sm:text-left">
+            <div className="min-w-0 text-center sm:text-left">
               <dt className="sr-only">Students per batch</dt>
               {batchLoading ? (
                 <div className="mx-auto h-7 w-[3ch] animate-pulse rounded bg-white/20 sm:mx-0" aria-label="Loading batch capacity" />
               ) : (
-                <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
+                <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-none tracking-tight text-white tabular-nums sm:text-left">
                   {batchCapacity ?? '—'}
                 </dd>
               )}
-              <p className="mt-0.5 text-[13px] font-medium text-white/95">Students per batch</p>
+              <p className="mt-1 text-[13px] font-medium leading-snug text-white/95">Students per batch</p>
             </div>
 
             {/* Stat 2: Seats open (Live availability sourced with skeleton & fallback states) */}
-            <div className="text-center sm:text-left even:border-l even:border-white/20 even:pl-3 lg:border-l lg:pl-6">
+            <div className="min-w-0 text-center sm:text-left even:border-l even:border-white/20 even:pl-3 lg:border-l lg:pl-6">
               <dt className="sr-only">Seats open</dt>
               {seatsAvailability.status === 'loading' ? (
                 <div className="flex flex-col items-center sm:items-start">
                   <div className="h-7 w-[3ch] animate-pulse rounded bg-white/20" />
-                  <p className="mt-1 text-[13px] font-medium text-white/95">Checking availability...</p>
+                  <p className="mt-1 text-[13px] font-medium leading-snug text-white/95">Checking availability...</p>
                 </div>
               ) : seatsAvailability.status === 'available' ? (
                 <>
-                  <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums sm:text-left">
+                  <dd className="inline-block min-w-[3ch] text-center text-[26px] font-extrabold leading-none tracking-tight text-white tabular-nums sm:text-left">
                     {availableSeatCount}
                   </dd>
-                  <p className="mt-0.5 text-[13px] font-medium text-white/95">Seats open</p>
+                  <p className="mt-1 text-[13px] font-medium leading-snug text-white/95">Seats open</p>
                 </>
               ) : (
                 <>
-                  <dd className="text-[22px] sm:text-[26px] font-extrabold leading-tight tracking-tight text-[#ffd36b]">
+                  <dd className="text-[22px] font-extrabold leading-none tracking-tight text-[#ffd36b] sm:text-[26px]">
                     Limited seats
                   </dd>
-                  <p className="mt-0.5 text-[13px] font-medium text-white/95">Seats open</p>
+                  <p className="mt-1 text-[13px] font-medium leading-snug text-white/95">Seats open</p>
                 </>
               )}
             </div>
@@ -1022,25 +1024,24 @@ export function DiwaliHero() {
             {/* Stat 3: 24/7 Virtual placement desk
                 NOTE: Replaced previous "60-day Placement journey" with "24/7 Virtual placement desk"
                 per Phase 1.6 requirement. Needs product confirmation if this differed from legacy production site. */}
-            <div className="border-t border-white/20 pt-4 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
+            <div className="min-w-0 border-t border-white/20 pt-3 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <dt className="sr-only">Virtual placement desk</dt>
-              <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
+              <dd className="text-[26px] font-extrabold leading-none tracking-tight text-white tabular-nums">
                 {virtualDeskValue}
               </dd>
-              <p className="mt-0.5 text-[13px] font-medium text-white/95">Virtual placement desk</p>
+              <p className="mt-1 text-[13px] font-medium leading-snug text-white/95">Virtual placement desk</p>
             </div>
 
             {/* Stat 4: Coordinator */}
-            <div className="border-t border-white/20 pt-4 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
+            <div className="min-w-0 border-t border-white/20 pt-3 text-center sm:text-left even:border-l even:pl-3 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <dt className="sr-only">Coordinator</dt>
-              <dd className="text-[26px] font-extrabold leading-tight tracking-tight text-white tabular-nums">
+              <dd className="text-[26px] font-extrabold leading-none tracking-tight text-white tabular-nums">
                 {coordinatorValue}
               </dd>
-              <p className="mt-0.5 text-[13px] font-medium text-white/95">Coordinator</p>
+              <p className="mt-1 text-[13px] font-medium leading-snug text-white/95">Coordinator</p>
             </div>
           </dl>
         </div>
-      </div>
     </section>
   );
 }
