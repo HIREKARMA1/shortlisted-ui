@@ -18,6 +18,9 @@ const newsreader = Newsreader({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-serif',
+  // Next 14.0.4 has no capsize metrics for Newsreader; without this, builds fail.
+  adjustFontFallback: false,
+  fallback: ['Iowan Old Style', 'Georgia', 'serif'],
 });
 
 export const metadata: Metadata = {
@@ -36,6 +39,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${dmSans.variable} ${newsreader.variable}`}>
+      <head>
+        {/* Loaded outside next/font/google — Vercel builds intermittently crash parsing Google Font URLs */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <AppProviders>{children}</AppProviders>
       </body>

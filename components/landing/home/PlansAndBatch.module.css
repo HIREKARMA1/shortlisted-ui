@@ -11,6 +11,8 @@
   --plans-muted: #5d6a8c;
   --plans-ok: #0f8a5f;
   --plans-cream: #fffaf0;
+  --font-plans-poppins: 'Poppins', system-ui, sans-serif;
+  --font-plans-playfair: 'Playfair Display', Georgia, serif;
   position: relative;
   z-index: 0;
   width: 100%;
