@@ -36,7 +36,9 @@ export function MockInterviewsManagementView({ role }: { role: DashboardRole }) 
     try {
       const [interviews, batchRows] = await Promise.all([
         api.getAdminMockInterviews(),
-        role === 'super_admin' ? api.listAllBatches() : api.listMyBatches(),
+        role === 'super_admin'
+          ? api.listAllBatches({ includeFreeTrial: true })
+          : api.listMyBatches({ includeFreeTrial: true }),
       ]);
       setRows(interviews as MockInterview[]);
       setBatches(batchRows as Record<string, unknown>[]);
@@ -123,9 +125,10 @@ export function MockInterviewsManagementView({ role }: { role: DashboardRole }) 
             <div className="max-h-36 space-y-2 overflow-y-auto border-t border-line-default pt-2">
               {batches.map((batch) => {
                 const id = String(batch.id);
+                const isFreeTrial = String(batch.batch_type || '') === 'free_trial' || Boolean(batch.is_unlimited);
                 return <label key={id} className="flex items-center gap-2 text-sm text-ink-secondary">
                   <input type="checkbox" checked={form.batch_ids.includes(id)} onChange={() => toggleBatch(id)} />
-                  {String(batch.name)}
+                  <span>{String(batch.name)}{isFreeTrial ? ' (Free Trial)' : ''}</span>
                 </label>;
               })}
               {!batches.length && <p className="text-xs text-ink-muted">No batches available.</p>}

@@ -16,9 +16,9 @@ export const config = {
     url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3003',
   },
   supabase: {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '',
+    url: process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '',
     publishableKey:
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || '',
+      process.env.SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '',
   },
   contact: {
     whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '',

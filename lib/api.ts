@@ -332,8 +332,10 @@ class ApiClient {
     return res.data;
   }
 
-  async listMyBatches() {
-    const res = await this.client.get('/admin/my-batches');
+  async listMyBatches(options?: { includeFreeTrial?: boolean }) {
+    const res = await this.client.get('/admin/my-batches', {
+      params: options?.includeFreeTrial ? { include_free_trial: true } : undefined,
+    });
     return res.data;
   }
 
@@ -373,8 +375,10 @@ class ApiClient {
     return res.data;
   }
 
-  async listAllBatches() {
-    const res = await this.client.get('/admin/batches');
+  async listAllBatches(options?: { includeFreeTrial?: boolean }) {
+    const res = await this.client.get('/admin/batches', {
+      params: options?.includeFreeTrial ? { include_free_trial: true } : undefined,
+    });
     return res.data;
   }
 
