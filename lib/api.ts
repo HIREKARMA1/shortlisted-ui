@@ -669,6 +669,13 @@ class ApiClient {
     return res.data;
   }
 
+  async assignMockInterviewBatches(interviewId: string, batchIds: string[]) {
+    const res = await this.client.put(`/admin/mock-interviews/${interviewId}/batches`, {
+      batch_ids: batchIds,
+    });
+    return res.data;
+  }
+
   async updateMockInterview(interviewId: string, data: Record<string, unknown>) {
     const res = await this.client.patch(`/admin/mock-interviews/${interviewId}`, data);
     return res.data;

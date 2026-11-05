@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { Mic, Volume2, VolumeX, X } from 'lucide-react';
 import { config } from '@/lib/config';
+import { InterviewAudioStateManager } from '@/lib/interview-audio-state';
 import { Button } from '@/components/ui/Button';
 
 type Caption = { role: 'interviewer' | 'candidate'; text: string };
@@ -23,6 +24,7 @@ type EventPayload = {
   utterance_end?: boolean;
   utterance_id?: string;
   question_progress?: QuestionProgress;
+  duplicate?: boolean;
 };
 
 type QueuedUtterance = {
@@ -99,13 +101,11 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const utteranceMapRef = useRef<Map<string, QueuedUtterance>>(new Map());
   const playingRef = useRef(false);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const playbackSafetyRef = useRef<number | null>(null);
   const startListeningRef = useRef<() => Promise<void>>(async () => undefined);
   const stopListeningRef = useRef<() => void>(() => undefined);
-  const thinkingAudioRef = useRef<{
-    ctx: AudioContext;
-    nodes: AudioNode[];
-    stop: () => void;
-  } | null>(null);
+  const audioStateRef = useRef(new InterviewAudioStateManager());
+  const activeTurnIdRef = useRef<string | null>(null);
   const transcriptEndRef = useRef<HTMLDivElement | null>(null);
   const transcriptScrollRef = useRef<HTMLDivElement | null>(null);
   const stickToBottomRef = useRef(true);
@@ -133,96 +133,44 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   }, []);
 
   const stopThinkingSound = useCallback(() => {
-    thinkingAudioRef.current?.stop();
-    thinkingAudioRef.current = null;
+    audioStateRef.current.stopAnalyzing();
   }, []);
 
   const startThinkingSound = useCallback(() => {
-    stopThinkingSound();
-    if (!ttsEnabledRef.current) return;
-    try {
-      const ctx = new AudioContext();
-      const master = ctx.createGain();
-      master.gain.value = 0.0001;
-      master.connect(ctx.destination);
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.value = 360;
-      filter.Q.value = 0.7;
-      filter.connect(master);
-
-      const oscA = ctx.createOscillator();
-      const oscB = ctx.createOscillator();
-      const gainA = ctx.createGain();
-      const gainB = ctx.createGain();
-      oscA.type = 'sine';
-      oscB.type = 'sine';
-      oscA.frequency.value = 174;
-      oscB.frequency.value = 220;
-      gainA.gain.value = 0.55;
-      gainB.gain.value = 0.35;
-      oscA.connect(gainA);
-      oscB.connect(gainB);
-      gainA.connect(filter);
-      gainB.connect(filter);
-      oscA.start();
-      oscB.start();
-
-      const now = ctx.currentTime;
-      // Quiet ambient pad — peak ~0.01
-      master.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-      // Slow gentle swell, then fade toward silence after ~4s so long waits are not fatiguing
-      master.gain.setValueAtTime(0.01, now + 0.6);
-      master.gain.linearRampToValueAtTime(0.008, now + 2.4);
-      master.gain.linearRampToValueAtTime(0.01, now + 3.2);
-      master.gain.exponentialRampToValueAtTime(0.0008, now + 4.2);
-
-      const fadeTimer = window.setTimeout(() => {
-        if (!thinkingAudioRef.current) return;
-        try {
-          const t = ctx.currentTime;
-          master.gain.cancelScheduledValues(t);
-          master.gain.setValueAtTime(Math.max(master.gain.value, 0.0008), t);
-          master.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
-        } catch {
-          /* ignore */
-        }
-      }, 4200);
-
-      thinkingAudioRef.current = {
-        ctx,
-        nodes: [oscA, oscB, gainA, gainB, filter, master],
-        stop: () => {
-          window.clearTimeout(fadeTimer);
-          try {
-            const t = ctx.currentTime;
-            master.gain.cancelScheduledValues(t);
-            master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), t);
-            master.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
-            oscA.stop(t + 0.35);
-            oscB.stop(t + 0.35);
-          } catch {
-            /* ignore */
-          }
-          void ctx.close().catch(() => undefined);
-        },
-      };
-    } catch {
-      /* Web Audio unavailable */
-    }
-  }, [stopThinkingSound]);
+    void audioStateRef.current.startAnalyzing();
+  }, []);
 
   const speakWithBrowser = useCallback((text: string, onEnded?: () => void) => {
-    if (!text || !ttsEnabledRef.current || !('speechSynthesis' in window)) {
+    let settled = false;
+    const done = () => {
+      if (settled) return;
+      settled = true;
       onEnded?.();
+    };
+    if (!text || !ttsEnabledRef.current || !('speechSynthesis' in window)) {
+      done();
       return;
     }
+    // Chrome/Edge on Windows often never fire speechSynthesis onend — hard-cap wait.
+    const safetyMs = Math.min(45_000, Math.max(3_500, text.length * 70));
+    const safetyTimer = window.setTimeout(done, safetyMs);
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-IN';
-    utterance.onend = () => onEnded?.();
-    utterance.onerror = () => onEnded?.();
-    window.speechSynthesis.speak(utterance);
+    utterance.onend = () => {
+      window.clearTimeout(safetyTimer);
+      done();
+    };
+    utterance.onerror = () => {
+      window.clearTimeout(safetyTimer);
+      done();
+    };
+    try {
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      window.clearTimeout(safetyTimer);
+      done();
+    }
   }, []);
 
   const playNextUtterance = useCallback(() => {
@@ -232,9 +180,15 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
     playingRef.current = true;
     stopThinkingSound();
     setRoomPhase('speaking');
+    submittingRef.current = false;
     stopListeningRef.current();
 
+    let finished = false;
     const finish = () => {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(playbackSafetyRef.current ?? undefined);
+      playbackSafetyRef.current = null;
       utteranceQueueRef.current.shift();
       utteranceMapRef.current.delete(next.id);
       playingRef.current = false;
@@ -246,6 +200,9 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       }
     };
 
+    // Absolute fallback so a hung TTS path can never block the microphone forever.
+    playbackSafetyRef.current = window.setTimeout(finish, 50_000);
+
     if (!ttsEnabledRef.current) {
       finish();
       return;
@@ -256,25 +213,33 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       return;
     }
 
-    const blob = new Blob(
-      next.chunks.map((chunk) => Uint8Array.from(window.atob(chunk), (c) => c.charCodeAt(0))),
-      { type: next.mimeType || 'audio/mpeg' },
-    );
-    const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
-    currentAudioRef.current = audio;
-    audio.onended = () => {
-      URL.revokeObjectURL(url);
-      finish();
-    };
-    audio.onerror = () => {
-      URL.revokeObjectURL(url);
+    try {
+      const blob = new Blob(
+        next.chunks.map((chunk) => Uint8Array.from(window.atob(chunk), (c) => c.charCodeAt(0))),
+        { type: next.mimeType || 'audio/mpeg' },
+      );
+      if (blob.size < 32) {
+        speakWithBrowser(next.textFallback, finish);
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      currentAudioRef.current = audio;
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        finish();
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(url);
+        speakWithBrowser(next.textFallback, finish);
+      };
+      audio.play().catch(() => {
+        URL.revokeObjectURL(url);
+        speakWithBrowser(next.textFallback, finish);
+      });
+    } catch {
       speakWithBrowser(next.textFallback, finish);
-    };
-    audio.play().catch(() => {
-      URL.revokeObjectURL(url);
-      speakWithBrowser(next.textFallback, finish);
-    });
+    }
   }, [setRoomPhase, speakWithBrowser, stopThinkingSound]);
 
   const enqueueUtteranceText = useCallback(
@@ -295,11 +260,18 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           const pending = utteranceMapRef.current.get(utteranceId);
           if (pending && !pending.complete) {
             pending.complete = true;
+            serverTtsAvailableRef.current = false;
             setServerTtsAvailable(false);
             playNextUtterance();
           }
         }, 8000);
       }
+      // If TTS never opens the mic (hung playback / cancelled speechSynthesis), force listen.
+      window.setTimeout(() => {
+        if (listeningRef.current || playingRef.current) return;
+        if (phaseRef.current === 'ended' || phaseRef.current === 'thinking') return;
+        void startListeningRef.current();
+      }, 12_000);
     },
     [playNextUtterance],
   );
@@ -326,9 +298,14 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const submitAnswer = useCallback(
     (text: string, { force = false }: { force?: boolean } = {}) => {
       const trimmed = text.trim();
-      if (!trimmed || submittingRef.current) return;
+      if (!trimmed || submittingRef.current || phaseRef.current === 'thinking') return;
       if (!force && !answerIsSubstantial(trimmed)) return;
       submittingRef.current = true;
+      const clientTurnId =
+        typeof crypto !== 'undefined' && 'randomUUID' in crypto
+          ? crypto.randomUUID()
+          : `turn-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      activeTurnIdRef.current = clientTurnId;
       stopListening();
       setLiveCaption('');
       setHasDraft(false);
@@ -336,10 +313,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       setCaptions((current) => [...current, { role: 'candidate', text: trimmed }]);
       setRoomPhase('thinking');
       startThinkingSound();
-      send({ type: 'candidate_answer', text: trimmed });
-      window.setTimeout(() => {
-        submittingRef.current = false;
-      }, 800);
+      send({ type: 'candidate_answer', text: trimmed, client_turn_id: clientTurnId });
     },
     [send, setRoomPhase, startThinkingSound, stopListening],
   );
@@ -377,8 +351,12 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       listeningRef.current = true;
       setRoomPhase('listening');
 
-      const audioContext = new AudioContext();
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const audioContext = new AudioCtx();
       audioContextRef.current = audioContext;
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
       const source = audioContext.createMediaStreamSource(stream);
       sourceRef.current = source;
       const processor = audioContext.createScriptProcessor(4096, 1, 1);
@@ -404,6 +382,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       processor.connect(mute);
       mute.connect(audioContext.destination);
     } catch {
+      listeningRef.current = false;
       toast.error('Microphone permission is required for this voice interview.');
       setRoomPhase('listening');
     }
@@ -416,8 +395,8 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
 
   useEffect(() => {
     ttsEnabledRef.current = ttsEnabled;
-    if (!ttsEnabled) stopThinkingSound();
-  }, [ttsEnabled, stopThinkingSound]);
+    // Mute only affects interviewer TTS — analysing pad stays managed separately.
+  }, [ttsEnabled]);
   useEffect(() => {
     serverTtsAvailableRef.current = serverTtsAvailable;
   }, [serverTtsAvailable]);
@@ -448,11 +427,14 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       }
 
       if (event.type === 'interviewer_message' && event.text) {
-        stopThinkingSound();
+        // Keep analysing pad until TTS actually starts in playNextUtterance.
         setCaptions((current) => [...current, { role: 'interviewer', text: event.text! }]);
         const utteranceId = event.utterance_id || `text-${Date.now()}`;
         enqueueUtteranceText(utteranceId, event.text);
-        setRoomPhase('speaking');
+        // Stay in thinking until playback begins so the pad keeps looping.
+        if (phaseRef.current !== 'thinking') setRoomPhase('speaking');
+        submittingRef.current = false;
+        activeTurnIdRef.current = null;
       }
 
       if (event.type === 'tts_audio_start' && event.utterance_id) {
@@ -469,6 +451,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           utteranceQueueRef.current.push(entry);
         }
         entry.mimeType = event.mime_type || entry.mimeType;
+        serverTtsAvailableRef.current = true;
         setServerTtsAvailable(true);
       }
 
@@ -507,7 +490,14 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
 
       if (event.type === 'evaluation') {
         setRoomPhase('thinking');
-        startThinkingSound();
+        audioStateRef.current.ensureAnalyzing();
+      }
+      if (event.type === 'ack' && event.duplicate) {
+        submittingRef.current = false;
+        activeTurnIdRef.current = null;
+        stopThinkingSound();
+        setRoomPhase('listening');
+        void startListeningRef.current();
       }
 
       if (event.type === 'transcript') {
@@ -535,6 +525,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       if (event.type === 'voice_status') {
         if (typeof event.available === 'boolean') setVoiceAvailable(event.available);
         if (typeof event.tts_available === 'boolean') {
+          serverTtsAvailableRef.current = event.tts_available;
           setServerTtsAvailable(event.tts_available);
           if (event.tts_available === false) {
             utteranceQueueRef.current.forEach((entry) => {
@@ -543,6 +534,9 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
             playNextUtterance();
             if (event.text) toast(event.text);
           }
+        }
+        if (event.text === 'Voice transcription is not configured.') {
+          toast.error('Voice transcription is not configured on the server.');
         }
       }
 
@@ -562,9 +556,16 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
     };
     return () => {
       socket.close();
-      stopThinkingSound();
+      audioStateRef.current.dispose();
       stopListening();
+      if (playbackSafetyRef.current) window.clearTimeout(playbackSafetyRef.current);
+      playbackSafetyRef.current = null;
+      playingRef.current = false;
+      submittingRef.current = false;
+      utteranceQueueRef.current = [];
+      utteranceMapRef.current.clear();
       currentAudioRef.current?.pause();
+      currentAudioRef.current = null;
       window.speechSynthesis?.cancel();
     };
   }, [
@@ -620,7 +621,6 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
               if (!next) {
                 currentAudioRef.current?.pause();
                 window.speechSynthesis?.cancel();
-                stopThinkingSound();
               }
               send({ type: 'voice_preferences', tts_enabled: next });
             }}

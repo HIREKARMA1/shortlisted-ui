@@ -1,7 +1,9 @@
 export type MockInterview = {
   id: string;
-  batch_id: string;
-  batch_name?: string;
+  batch_id?: string | null;
+  batch_name?: string | null;
+  batch_ids?: string[];
+  batch_names?: string[];
   title: string;
   topic: string;
   difficulty: string;
