@@ -8,6 +8,11 @@ import { resumeService, type ResumeData } from '@/services/resumeService'
 import toast from 'react-hot-toast'
 import { ResumePreview } from './ResumePreview'
 import { imageUrlToDataUrl, inlineImagesForPdf } from '@/lib/resumePdfImages'
+import {
+    newDownloadIdempotencyKey,
+    type ResumeUpgradeReason,
+    type ResumeUsage,
+} from '@/lib/resumeUsage'
 
 // Defer importing html2pdf to client runtime to avoid SSR issues
 let html2pdf: any
@@ -19,6 +24,10 @@ if (typeof window !== 'undefined') {
 interface ResumeBuilderDashboardProps {
     onNewResume: () => void
     onEditResume: (resumeId: string) => void
+    usage?: ResumeUsage | null
+    onUsageChange?: (usage: ResumeUsage) => void
+    onUpgradeRequest?: (reason: ResumeUpgradeReason) => void
+    onApiLimitError?: (error: unknown) => boolean
 }
 
 interface ResumePreview {
@@ -31,11 +40,19 @@ interface ResumePreview {
     experience: string
 }
 
-export function ResumeBuilderDashboard({ onNewResume, onEditResume }: ResumeBuilderDashboardProps) {
+export function ResumeBuilderDashboard({
+    onNewResume,
+    onEditResume,
+    usage = null,
+    onUsageChange,
+    onUpgradeRequest,
+    onApiLimitError,
+}: ResumeBuilderDashboardProps) {
     const [openMenu, setOpenMenu] = useState<string | null>(null)
     const [resumes, setResumes] = useState<ResumeData[]>([])
     const [loading, setLoading] = useState(true)
     const [downloadingResume, setDownloadingResume] = useState<ResumeData | null>(null)
+    const [downloadIdempotencyKey, setDownloadIdempotencyKey] = useState<string | null>(null)
     const [isDownloading, setIsDownloading] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
     const downloadPreviewRef = useRef<HTMLDivElement | null>(null)
@@ -126,7 +143,24 @@ export function ResumeBuilderDashboard({ onNewResume, onEditResume }: ResumeBuil
                     toast.error('Resume not found for download')
                     return
                 }
+                if (usage && !usage.can_download_pdf) {
+                    onUpgradeRequest?.('download_limit')
+                    return
+                }
                 void (async () => {
+                    try {
+                        await resumeService.authorizeDownload(resume.id)
+                    } catch (error) {
+                        if (onApiLimitError?.(error)) {
+                            return
+                        }
+                        toast.error('Unable to start resume download')
+                        return
+                    }
+
+                    const key = newDownloadIdempotencyKey()
+                    setDownloadIdempotencyKey(key)
+
                     const content = resume.content
                     const photo = content?.header?.profilePhoto || ''
                     if (photo && !photo.startsWith('data:') && !photo.startsWith('blob:')) {
@@ -195,13 +229,25 @@ export function ResumeBuilderDashboard({ onNewResume, onEditResume }: ResumeBuil
             await new Promise((resolve) => requestAnimationFrame(() => resolve(undefined)))
 
             await html2pdf().from(downloadPreviewRef.current).set(options).save()
+
+            if (downloadIdempotencyKey) {
+                const confirmed = await resumeService.confirmDownload(
+                    downloadingResume.id,
+                    downloadIdempotencyKey
+                )
+                onUsageChange?.(confirmed.usage)
+            }
             toast.success('Resume downloaded successfully!')
         } catch (error) {
             console.error('Error downloading resume:', error)
+            if (onApiLimitError?.(error)) {
+                return
+            }
             toast.error('Failed to download resume. Please try again.')
         } finally {
             setIsDownloading(false)
             setDownloadingResume(null)
+            setDownloadIdempotencyKey(null)
         }
     }
 
