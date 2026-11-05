@@ -44,6 +44,8 @@ const display = Plus_Jakarta_Sans({
   weight: ['500', '600', '700', '800'],
   variable: '--font-home-display',
   display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['system-ui', 'sans-serif'],
 });
 
 export default function Page() {

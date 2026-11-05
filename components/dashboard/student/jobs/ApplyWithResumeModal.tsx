@@ -5,8 +5,10 @@ import { Download, FileText, Loader2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { parseTrialError } from '@/lib/trial';
 import { useTranslation } from '@/lib/i18n/context';
-import { hasResume } from '@/lib/resumeRequiredToast';
-import { profileService, type StudentProfile } from '@/lib/services/profileService';
+import {
+  profileService,
+  type StudentUploadedResume,
+} from '@/lib/services/profileService';
 import type { StudentJob } from '@/lib/types/studentJobs';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
@@ -19,18 +21,15 @@ type ApplyWithResumeModalProps = {
   onConfirmApply: () => Promise<void>;
 };
 
-type ResumeChoice = 'existing' | 'new';
+type ResumeChoice =
+  | { type: 'existing'; resumeId: string }
+  | { type: 'new' };
 
-function resumeFileName(url: string | undefined | null): string {
-  if (!url) return 'Resume.pdf';
-  try {
-    const path = decodeURIComponent(new URL(url).pathname);
-    const name = path.split('/').filter(Boolean).pop();
-    if (name) return name.includes('.') ? name : `${name}.pdf`;
-  } catch {
-    // ignore
-  }
-  return 'Resume.pdf';
+function resumeDisplayName(resume: StudentUploadedResume): string {
+  const raw = (resume.original_filename || '').trim() || 'Resume.pdf';
+  const name = raw.split(/[\\/]/).pop() || raw;
+  if (/^[a-f0-9]{24,}(\.[a-z0-9]+)?$/i.test(name)) return 'Resume.pdf';
+  return name;
 }
 
 export function ApplyWithResumeModal({
@@ -43,33 +42,33 @@ export function ApplyWithResumeModal({
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
-  const [profile, setProfile] = useState<StudentProfile | null>(null);
-  const [choice, setChoice] = useState<ResumeChoice>('existing');
+  const [resumes, setResumes] = useState<StudentUploadedResume[]>([]);
+  const [choice, setChoice] = useState<ResumeChoice | null>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const company =
     job.company_name || job.corporate_name || t('dashboard.jobs.company');
-  const existingResume = profile?.resume?.trim() || '';
-  const hasExisting = Boolean(existingResume);
 
   useEffect(() => {
     if (!isOpen) return;
     let cancelled = false;
     setLoadingProfile(true);
     setPendingFile(null);
-    setChoice('existing');
+    setChoice(null);
     profileService
-      .getProfile()
+      .getResumes()
       .then((data) => {
         if (cancelled) return;
-        setProfile(data);
-        setChoice(hasResume(data) ? 'existing' : 'new');
+        const list = data.resumes || [];
+        setResumes(list);
+        const current = list.find((item) => item.is_current) || list[0];
+        setChoice(current ? { type: 'existing', resumeId: current.id } : { type: 'new' });
       })
       .catch(() => {
         if (cancelled) return;
-        setProfile(null);
-        setChoice('new');
+        setResumes([]);
+        setChoice({ type: 'new' });
         toast.error(t('common.errors.network'));
       })
       .finally(() => {
@@ -81,10 +80,10 @@ export function ApplyWithResumeModal({
   }, [isOpen, t]);
 
   const canSubmit = useMemo(() => {
-    if (loadingProfile || submitting || isApplying) return false;
-    if (choice === 'existing') return hasExisting;
+    if (loadingProfile || submitting || isApplying || !choice) return false;
+    if (choice.type === 'existing') return resumes.some((item) => item.id === choice.resumeId);
     return Boolean(pendingFile);
-  }, [loadingProfile, submitting, isApplying, choice, hasExisting, pendingFile]);
+  }, [loadingProfile, submitting, isApplying, choice, resumes, pendingFile]);
 
   const handleFilePick = (file: File | null) => {
     if (!file) return;
@@ -97,16 +96,21 @@ export function ApplyWithResumeModal({
       return;
     }
     setPendingFile(file);
-    setChoice('new');
+    setChoice({ type: 'new' });
   };
 
   const handleSubmit = async () => {
-    if (!canSubmit) return;
+    if (!canSubmit || !choice) return;
     setSubmitting(true);
     try {
-      if (choice === 'new' && pendingFile) {
+      if (choice.type === 'new' && pendingFile) {
         await profileService.uploadResume(pendingFile);
         toast.success(t('dashboard.jobs.applyModal.resumeUpdated'));
+      } else if (choice.type === 'existing') {
+        const selected = resumes.find((item) => item.id === choice.resumeId);
+        if (selected && !selected.is_current) {
+          await profileService.setCurrentResume(selected.id);
+        }
       }
       await onConfirmApply();
       onClose();
@@ -184,61 +188,74 @@ export function ApplyWithResumeModal({
             </div>
           ) : (
             <>
-              {hasExisting && (
-                <button
-                  type="button"
-                  onClick={() => setChoice('existing')}
-                  disabled={busy}
-                  className={cn(
-                    'flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition',
-                    choice === 'existing'
-                      ? 'border-brand-green bg-green-50/60 shadow-sm'
-                      : 'border-line-default bg-white hover:border-brand-blue/40'
-                  )}
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-red/10 text-xs font-bold text-brand-red">
-                    PDF
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="truncate text-sm font-medium text-ink-primary">
-                        {resumeFileName(existingResume)}
-                      </p>
-                      <a
-                        href={existingResume}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 rounded p-1 text-ink-muted hover:bg-white hover:text-brand-blue"
-                        onClick={(e) => e.stopPropagation()}
-                        aria-label={t('dashboard.jobs.applyModal.download')}
+              {resumes.length > 0 && (
+                <div className="space-y-2">
+                  {resumes.map((resume) => {
+                    const selected =
+                      choice?.type === 'existing' && choice.resumeId === resume.id;
+                    return (
+                      <button
+                        key={resume.id}
+                        type="button"
+                        onClick={() => setChoice({ type: 'existing', resumeId: resume.id })}
+                        disabled={busy}
+                        className={cn(
+                          'flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition',
+                          selected
+                            ? 'border-brand-green bg-green-50/60 shadow-sm'
+                            : 'border-line-default bg-white hover:border-brand-blue/40'
+                        )}
                       >
-                        <Download className="h-4 w-4" />
-                      </a>
-                    </div>
-                    <p className="text-xs text-ink-muted">{t('dashboard.jobs.applyModal.profileResume')}</p>
-                  </div>
-                  <span
-                    className={cn(
-                      'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                      choice === 'existing'
-                        ? 'border-brand-green bg-brand-green'
-                        : 'border-line-default bg-white'
-                    )}
-                    aria-hidden
-                  >
-                    {choice === 'existing' && <span className="h-2 w-2 rounded-full bg-white" />}
-                  </span>
-                </button>
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-red/10 text-xs font-bold text-brand-red">
+                          PDF
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="truncate text-sm font-medium text-ink-primary">
+                              {resumeDisplayName(resume)}
+                            </p>
+                            <a
+                              href={resume.file_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="shrink-0 rounded p-1 text-ink-muted hover:bg-white hover:text-brand-blue"
+                              onClick={(e) => e.stopPropagation()}
+                              aria-label={t('dashboard.jobs.applyModal.download')}
+                            >
+                              <Download className="h-4 w-4" />
+                            </a>
+                          </div>
+                          <p className="text-xs text-ink-muted">
+                            {resume.is_current
+                              ? t('dashboard.jobs.applyModal.profileResume')
+                              : 'Saved resume'}
+                          </p>
+                        </div>
+                        <span
+                          className={cn(
+                            'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
+                            selected
+                              ? 'border-brand-green bg-brand-green'
+                              : 'border-line-default bg-white'
+                          )}
+                          aria-hidden
+                        >
+                          {selected && <span className="h-2 w-2 rounded-full bg-white" />}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               )}
 
               {pendingFile && (
                 <button
                   type="button"
-                  onClick={() => setChoice('new')}
+                  onClick={() => setChoice({ type: 'new' })}
                   disabled={busy}
                   className={cn(
                     'flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition',
-                    choice === 'new'
+                    choice?.type === 'new'
                       ? 'border-brand-green bg-green-50/60 shadow-sm'
                       : 'border-line-default bg-white hover:border-brand-blue/40'
                   )}
@@ -256,13 +273,13 @@ export function ApplyWithResumeModal({
                   <span
                     className={cn(
                       'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                      choice === 'new'
+                      choice?.type === 'new'
                         ? 'border-brand-green bg-brand-green'
                         : 'border-line-default bg-white'
                     )}
                     aria-hidden
                   >
-                    {choice === 'new' && <span className="h-2 w-2 rounded-full bg-white" />}
+                    {choice?.type === 'new' && <span className="h-2 w-2 rounded-full bg-white" />}
                   </span>
                 </button>
               )}
