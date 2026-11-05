@@ -42,7 +42,7 @@ export function TemplatePicker({
       <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
         Choose Template
       </h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {templates.map((template) => (
           <button
             key={template.id}

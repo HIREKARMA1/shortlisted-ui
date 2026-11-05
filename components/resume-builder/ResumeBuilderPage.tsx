@@ -1,28 +1,36 @@
-"use client"
+'use client'
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FileText, Plus, Search, Filter } from 'lucide-react'
+import { FileText, Filter } from 'lucide-react'
 import { Button } from '@/components/resume-builder/ui/Button'
 import { ResumeBuilderDashboard } from './ResumeBuilderDashboard'
 import { TemplateSelection } from './TemplateSelection'
 import { ResumeBuilder } from './ResumeBuilder'
+import { ResumeUpgradeModal } from './ResumeUpgradeModal'
+import { ResumeUsageIndicator } from './ResumeUsageIndicator'
 import { useProfile } from '@/hooks/useProfile'
+import { useResumeUsage } from '@/hooks/useResumeUsage'
 
 type ResumeBuilderView = 'dashboard' | 'templates' | 'builder'
 
 export function ResumeBuilderPage() {
     const { profile, loading, error } = useProfile()
+    const resumeUsage = useResumeUsage()
     const [currentView, setCurrentView] = useState<ResumeBuilderView>('dashboard')
     const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
     const [selectedResume, setSelectedResume] = useState<string | null>(null)
 
-    // Debug logging
     useEffect(() => {
         console.log('ResumeBuilderPage - Profile loading:', loading)
         console.log('ResumeBuilderPage - Profile data:', profile)
         console.log('ResumeBuilderPage - Profile error:', error)
     }, [profile, loading, error])
+
+    const handleNewResume = () => {
+        if (!resumeUsage.guardCreate()) return
+        setCurrentView('templates')
+    }
 
     const handleTemplateSelect = (templateId: string) => {
         setSelectedTemplate(templateId)
@@ -38,14 +46,15 @@ export function ResumeBuilderPage() {
         setCurrentView('dashboard')
         setSelectedTemplate(null)
         setSelectedResume(null)
+        void resumeUsage.refresh()
     }
 
     const handleBackToTemplates = () => {
+        if (!resumeUsage.guardCreate()) return
         setCurrentView('templates')
         setSelectedTemplate(null)
     }
 
-    // Show loading state while profile is loading
     if (loading) {
         return (
             <div className="space-y-6">
@@ -56,7 +65,6 @@ export function ResumeBuilderPage() {
         )
     }
 
-    // Show error state if profile loading failed
     if (error) {
         return (
             <div className="space-y-6">
@@ -70,7 +78,6 @@ export function ResumeBuilderPage() {
         )
     }
 
-    // Show content once profile is loaded
     if (!profile) {
         return (
             <div className="space-y-6">
@@ -88,7 +95,6 @@ export function ResumeBuilderPage() {
 
     return (
         <div className="space-y-6">
-            {/* Header - Exact match to Video Search */}
             <div className="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-2xl p-6 border border-primary-200 dark:border-primary-700 mb-6">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-6">
                     <div className="flex-1 min-w-0">
@@ -98,16 +104,11 @@ export function ResumeBuilderPage() {
                         <p className="text-gray-600 dark:text-gray-300 text-lg mb-3">
                             Create professional resumes with our AI-powered builder ✨
                         </p>
-                        <div className="flex flex-wrap gap-2">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200">
-                                📅 {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-                            </span>
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
-                                📈 Career Growth
-                            </span>
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
-                                🚀 New Opportunities
-                            </span>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <ResumeUsageIndicator
+                                usage={resumeUsage.usage}
+                                loading={resumeUsage.loading}
+                            />
                         </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -121,7 +122,7 @@ export function ResumeBuilderPage() {
                                 <span>Dashboard</span>
                             </Button>
                         )}
-                        {currentView === 'builder' && (
+                        {currentView === 'builder' && !selectedResume && (
                             <Button
                                 variant="outline"
                                 onClick={handleBackToTemplates}
@@ -135,7 +136,6 @@ export function ResumeBuilderPage() {
                 </div>
             </div>
 
-            {/* Content */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -143,8 +143,12 @@ export function ResumeBuilderPage() {
             >
                 {currentView === 'dashboard' && (
                     <ResumeBuilderDashboard
-                        onNewResume={() => setCurrentView('templates')}
+                        onNewResume={handleNewResume}
                         onEditResume={handleResumeSelect}
+                        usage={resumeUsage.usage}
+                        onUsageChange={resumeUsage.applyUsage}
+                        onUpgradeRequest={resumeUsage.showUpgrade}
+                        onApiLimitError={resumeUsage.handleApiError}
                     />
                 )}
 
@@ -158,9 +162,19 @@ export function ResumeBuilderPage() {
                     <ResumeBuilder
                         templateId={selectedTemplate}
                         resumeId={selectedResume}
+                        usage={resumeUsage.usage}
+                        onUsageChange={resumeUsage.applyUsage}
+                        onUpgradeRequest={resumeUsage.showUpgrade}
+                        onApiLimitError={resumeUsage.handleApiError}
                     />
                 )}
             </motion.div>
+
+            <ResumeUpgradeModal
+                open={resumeUsage.upgradeOpen}
+                reason={resumeUsage.upgradeReason}
+                onClose={resumeUsage.closeUpgrade}
+            />
         </div>
     )
 }

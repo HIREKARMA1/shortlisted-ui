@@ -20,10 +20,19 @@ if (typeof window !== 'undefined') {
 import toast from 'react-hot-toast'
 import { imageUrlToDataUrl, inlineImagesForPdf } from '@/lib/resumePdfImages'
 import { buildAuthPath } from '@/lib/authLinks'
+import {
+    newDownloadIdempotencyKey,
+    type ResumeUpgradeReason,
+    type ResumeUsage,
+} from '@/lib/resumeUsage'
 
 interface ResumeBuilderProps {
     templateId: string | null
     resumeId: string | null
+    usage?: ResumeUsage | null
+    onUsageChange?: (usage: ResumeUsage) => void
+    onUpgradeRequest?: (reason: ResumeUpgradeReason) => void
+    onApiLimitError?: (error: unknown) => boolean
 }
 
 interface ResumeData {
@@ -140,7 +149,14 @@ const createDefaultResumeData = (profile: any): ResumeData => ({
     }] : []
 })
 
-export function ResumeBuilder({ templateId, resumeId }: ResumeBuilderProps) {
+export function ResumeBuilder({
+    templateId,
+    resumeId,
+    usage = null,
+    onUsageChange,
+    onUpgradeRequest,
+    onApiLimitError,
+}: ResumeBuilderProps) {
     const { profile, loading: profileLoading, error: profileError, isAuthenticated, refreshProfile } = useProfile()
     const [resumeData, setResumeData] = useState<ResumeData | null>(null)
     // Track a local resumeId so that a newly created resume is updated on subsequent saves
@@ -277,12 +293,21 @@ export function ResumeBuilder({ templateId, resumeId }: ResumeBuilderProps) {
                 // Remember the new resume id so subsequent saves perform updates
                 setLocalResumeId(created.id)
                 toast.success('Resume saved successfully!')
+                try {
+                    const nextUsage = await resumeService.getUsage()
+                    onUsageChange?.(nextUsage)
+                } catch {
+                    // Usage refresh is best-effort after save.
+                }
             }
 
             setSaved(true)
             setTimeout(() => setSaved(false), 3000)
         } catch (error) {
             console.error('Error saving resume:', error)
+            if (onApiLimitError?.(error)) {
+                return
+            }
             toast.error('Failed to save resume. Please try again.')
         } finally {
             setLoading(false)
@@ -295,8 +320,30 @@ export function ResumeBuilder({ templateId, resumeId }: ResumeBuilderProps) {
             return
         }
 
+        const currentId = localResumeId || resumeId
+        if (!currentId) {
+            toast.error('Save your resume before downloading a PDF.')
+            return
+        }
+
+        if (usage && !usage.can_download_pdf) {
+            onUpgradeRequest?.('download_limit')
+            return
+        }
+
+        const idempotencyKey = newDownloadIdempotencyKey()
+
         try {
             setLoading(true)
+
+            try {
+                await resumeService.authorizeDownload(currentId)
+            } catch (error) {
+                if (onApiLimitError?.(error)) {
+                    return
+                }
+                throw error
+            }
 
             // Configure PDF options with optimized settings for high-resolution vector-like quality
             const options = {
@@ -350,9 +397,16 @@ export function ResumeBuilder({ templateId, resumeId }: ResumeBuilderProps) {
                 .set(options)
                 .save()
 
+            // Only consume free download allowance after a successful client PDF save.
+            const confirmed = await resumeService.confirmDownload(currentId, idempotencyKey)
+            onUsageChange?.(confirmed.usage)
+            toast.success('Resume downloaded successfully!')
         } catch (error) {
             console.error('Error generating PDF:', error)
-            alert('Failed to generate PDF. Please try again.')
+            if (onApiLimitError?.(error)) {
+                return
+            }
+            toast.error('Failed to generate PDF. Please try again.')
         } finally {
             setLoading(false)
         }

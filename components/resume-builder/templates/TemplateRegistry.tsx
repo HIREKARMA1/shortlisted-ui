@@ -8,6 +8,9 @@ import { MinimalATSTemplate } from "./MinimalATS";
 import { CreativePremiumTemplate } from "./CreativePremium";
 import { ExecutiveProfessionalTemplate } from "./ExecutiveProfessional";
 import { ModernCreativeTemplate } from "./ModernCreative";
+import { ClassicATSProfessionalTemplate } from "./ClassicATSProfessional";
+import { ModernATSTechnicalTemplate } from "./ModernATSTechnical";
+import { ExecutiveATSProfessionalTemplate } from "./ExecutiveATSProfessional";
 import { ResumeData } from "./shared/types";
 
 export interface TemplateInfo {
@@ -30,10 +33,28 @@ export const TEMPLATE_SLUGS = [
   "minimal-ats",
   "executive-professional",
   "modern-creative",
+  "classic-ats-professional",
+  "modern-ats-technical",
+  "executive-ats-professional",
   "creative-premium",
 ] as const;
 
 export type TemplateSlug = (typeof TEMPLATE_SLUGS)[number];
+
+/**
+ * Selection page shows exactly these 8 templates (5 established + 3 new ATS).
+ * Other registered slugs remain resolvable for saved resumes.
+ */
+const SELECTABLE_TEMPLATE_SLUGS: TemplateSlug[] = [
+  "classic-ats",
+  "modern-professional",
+  "executive-corporate",
+  "minimal-ats",
+  "executive-professional",
+  "classic-ats-professional",
+  "modern-ats-technical",
+  "executive-ats-professional",
+];
 
 export const TEMPLATES: Record<TemplateSlug, TemplateInfo> = {
   "classic-ats": {
@@ -107,6 +128,42 @@ export const TEMPLATES: Record<TemplateSlug, TemplateInfo> = {
     sections: 9,
     accentColor: "#0d9488",
   },
+  "classic-ats-professional": {
+    id: "classic-ats-professional",
+    name: "Classic ATS Professional",
+    layout: "single-column",
+    font_family: "Arial",
+    font_size: "11pt",
+    description:
+      "Traditional Word-style ATS resume with black typography and thin divider lines",
+    category: "professional",
+    sections: 8,
+    accentColor: "#111111",
+  },
+  "modern-ats-technical": {
+    id: "modern-ats-technical",
+    name: "Modern ATS Technical",
+    layout: "single-column",
+    font_family: "Calibri",
+    font_size: "11pt",
+    description:
+      "Developer-focused ATS layout with categorized technical skills and project stacks",
+    category: "professional",
+    sections: 8,
+    accentColor: "#222222",
+  },
+  "executive-ats-professional": {
+    id: "executive-ats-professional",
+    name: "Executive ATS Professional",
+    layout: "single-column",
+    font_family: "Georgia",
+    font_size: "11pt",
+    description:
+      "Senior corporate ATS resume with clear hierarchy and achievement emphasis",
+    category: "executive",
+    sections: 9,
+    accentColor: "#111111",
+  },
   "creative-premium": {
     id: "creative-premium",
     name: "Creative Premium",
@@ -128,6 +185,9 @@ const TEMPLATE_NAME_MAP: Record<string, TemplateSlug> = {
   "minimal ats": "minimal-ats",
   "executive professional": "executive-professional",
   "modern creative": "modern-creative",
+  "classic ats professional": "classic-ats-professional",
+  "modern ats technical": "modern-ats-technical",
+  "executive ats professional": "executive-ats-professional",
   "creative premium": "creative-premium",
 };
 
@@ -136,9 +196,7 @@ function normalizeTemplateKey(id: string): string {
 }
 
 export function getTemplateList(): TemplateInfo[] {
-  return TEMPLATE_SLUGS
-    .filter((slug) => slug !== "creative-premium")
-    .map((slug) => TEMPLATES[slug]);
+  return SELECTABLE_TEMPLATE_SLUGS.map((slug) => TEMPLATES[slug]);
 }
 
 export function isTemplateSlug(id: string): id is TemplateSlug {
@@ -189,6 +247,12 @@ export function getTemplateComponent(
       return ExecutiveProfessionalTemplate;
     case "modern-creative":
       return ModernCreativeTemplate;
+    case "classic-ats-professional":
+      return ClassicATSProfessionalTemplate;
+    case "modern-ats-technical":
+      return ModernATSTechnicalTemplate;
+    case "executive-ats-professional":
+      return ExecutiveATSProfessionalTemplate;
     case "creative-premium":
       return CreativePremiumTemplate;
     default:
