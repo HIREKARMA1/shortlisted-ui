@@ -1,15 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { Poppins, Playfair_Display } from 'next/font/google';
+import { useEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 import { plans } from '@/lib/home/content';
 import { useHome } from './HomeProvider';
 import { OutlineLink, PrimaryLink } from './primitives';
 import styles from './PlansAndBatch.module.css';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-plans-poppins' });
-const playfair = Playfair_Display({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-plans-playfair' });
 const COUNTDOWN_END = new Date(2026, 10, 8, 23, 59, 59).getTime();
 const STRING_LIGHT_COLORS = ['#ffd45a', '#ff9a3c', '#fff1b8', '#ff7a45'];
 
@@ -158,7 +155,7 @@ export function PlansAndBatch() {
   return (
     <section
       id="plans"
-      className={`${styles.plansSection} ${poppins.variable} ${playfair.variable} scroll-mt-[88px]`}
+      className={`${styles.plansSection} scroll-mt-[88px]`}
       aria-label="Plans and pricing"
     >
       <EmberCanvas />

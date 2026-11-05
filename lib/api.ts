@@ -299,6 +299,20 @@ class ApiClient {
     return res.data;
   }
 
+  async getStudentResumes() {
+    const res = await this.client.get('/students/me/resumes');
+    return res.data;
+  }
+
+  async setCurrentStudentResume(resumeId: string) {
+    const res = await this.client.put(`/students/me/resumes/${resumeId}/set-current`);
+    return res.data;
+  }
+
+  async deleteStudentResume(resumeId: string) {
+    await this.client.delete(`/students/me/resumes/${resumeId}`);
+  }
+
   async uploadStudentProfilePicture(file: File) {
     const form = new FormData();
     form.append('profile_picture', file);
@@ -666,6 +680,13 @@ class ApiClient {
 
   async createMockInterview(data: Record<string, unknown>) {
     const res = await this.client.post('/admin/mock-interviews', data);
+    return res.data;
+  }
+
+  async assignMockInterviewBatches(interviewId: string, batchIds: string[]) {
+    const res = await this.client.put(`/admin/mock-interviews/${interviewId}/batches`, {
+      batch_ids: batchIds,
+    });
     return res.data;
   }
 
