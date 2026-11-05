@@ -2,15 +2,28 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Menu, Search, X } from 'lucide-react';
-import { useHome } from './HomeProvider';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
+import { getPostLoginPath } from '@/lib/auth/session';
+import { useSession } from '@/hooks/useSession';
+import { useTranslation } from '@/lib/i18n/context';
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
+import { navHeaderExploreClass, navHeaderLoginClass, navExploreClass, navLoginClass } from '@/components/ui/nav-cta';
 import { useShell } from './ShellContext';
 
+const SUCCESS_STORIES_URL = 'https://www.hirekarma.in/impact';
+const EXPLORE_US_URL = 'https://www.hirekarma.in/';
+
 export function Navbar() {
-  const { setPaletteOpen, mobileOpen, setMobileOpen, activeSection } = useShell();
-  const { ready, isLoggedIn, session, dashboardHref } = useHome();
+  const { mobileOpen, setMobileOpen, activeSection } = useShell();
+  const { ready, isLoggedIn, session } = useSession();
+  const { t } = useTranslation();
+  const pathname = usePathname() ?? '/';
+  const isHome = pathname === '/';
   const [scrolled, setScrolled] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  const dashboardHref = session ? getPostLoginPath(session) : '/auth/login';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -54,14 +67,14 @@ export function Navbar() {
   }, [mobileOpen, setMobileOpen]);
 
   const navLinks = [
-    { id: 'home', label: 'Home', href: '#home' },
-    { id: 'plans', label: 'Plans', href: '#plans' },
+    { id: 'home', label: 'Home', href: isHome ? '#home' : '/' },
+    { id: 'plans', label: 'Plans', href: isHome ? '#plans' : '/#plans' },
     { id: 'support', label: 'Support', href: '/support' },
-    { id: 'faq', label: 'FAQ', href: '#faq' },
   ];
 
   const handleLinkClick = (id: string, href: string) => {
     setMobileOpen(false);
+    if (!isHome) return;
     if (id === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (window.location.hash) {
@@ -76,6 +89,10 @@ export function Navbar() {
   };
 
   const isLinkActive = (id: string) => {
+    if (id === 'support') {
+      return pathname === '/support' || pathname.startsWith('/support/');
+    }
+    if (!isHome) return false;
     if (id === 'home') {
       return (
         !activeSection ||
@@ -89,84 +106,110 @@ export function Navbar() {
     return activeSection === id;
   };
 
+  const SuccessStoriesBtn = (
+    <a
+      href={SUCCESS_STORIES_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={navHeaderLoginClass}
+    >
+      {t('common.nav.successStories')}
+    </a>
+  );
+
+  const ExploreUsBtn = (
+    <a
+      href={EXPLORE_US_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={navHeaderExploreClass}
+    >
+      {t('common.nav.exploreUs')}
+    </a>
+  );
+
   return (
     <header
       className={`sticky top-0 z-40 w-full transition-all duration-200 border-b border-[#E5EAF2] ${
         scrolled ? 'bg-white/95 backdrop-blur-md shadow-[0_8px_24px_rgba(11,27,51,0.06)]' : 'bg-white'
       }`}
     >
-      <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between gap-3 px-4 sm:px-6">
         {/* Left: Shortlisted logo + Center/Left links */}
-        <div className="flex items-center gap-8 lg:gap-10">
-          <Link
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLinkClick('home', '#home');
-            }}
-            aria-label="Shortlisted home"
-            className="flex items-center shrink-0"
-          >
-            <img
-              src="/images/shortlisted-logo.png"
-              alt="Shortlisted"
-              width={216}
-              height={48}
-              className="h-12 w-auto object-contain"
-            />
-          </Link>
+        <div className="flex min-w-0 items-center gap-6 lg:gap-10">
+          {isHome ? (
+            <a
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick('home', '#home');
+              }}
+              aria-label="Shortlisted home"
+              className="flex items-center shrink-0"
+            >
+              <img
+                src="/images/shortlisted-logo.png"
+                alt="Shortlisted"
+                width={216}
+                height={48}
+                className="h-12 w-auto object-contain"
+              />
+            </a>
+          ) : (
+            <Link href="/" aria-label="Shortlisted home" className="flex items-center shrink-0">
+              <img
+                src="/images/shortlisted-logo.png"
+                alt="Shortlisted"
+                width={216}
+                height={48}
+                className="h-12 w-auto object-contain"
+              />
+            </Link>
+          )}
 
-          {/* Desktop Nav Links (min-[900px]:flex) - Exactly: Home, Plans, Support, FAQ */}
-          <nav className="hidden min-[900px]:flex items-center gap-8" aria-label="Main Navigation">
+          {/* Desktop Nav Links: Home, Plans, Support */}
+          <nav className="hidden min-[900px]:flex items-center gap-6 lg:gap-8" aria-label="Main Navigation">
             {navLinks.map((link) => {
               const active = isLinkActive(link.id);
-              return link.href.startsWith('#') ? (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleLinkClick(link.id, link.href);
-                  }}
-                  className={`relative py-6 text-[15px] font-medium transition-colors ${
-                    active ? 'text-[#1b52a4]' : 'text-[var(--ink)] hover:text-[#00a2e5]'
-                  }`}
-                >
+              const className = `relative py-6 text-[15px] font-medium transition-colors ${
+                active ? 'text-[#1b52a4]' : 'text-[var(--ink)] hover:text-[#00a2e5]'
+              }`;
+              const underline = active ? (
+                <span className="absolute bottom-0 inset-x-0 h-0.5 rounded-full bg-[#00a2e5]" aria-hidden />
+              ) : null;
+
+              if (link.href.startsWith('#') && isHome) {
+                return (
+                  <a
+                    key={link.id}
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick(link.id, link.href);
+                    }}
+                    className={className}
+                  >
+                    {link.label}
+                    {underline}
+                  </a>
+                );
+              }
+
+              return (
+                <Link key={link.id} href={link.href} className={className}>
                   {link.label}
-                  {active && (
-                    <span className="absolute bottom-0 inset-x-0 h-0.5 rounded-full bg-[#00a2e5]" aria-hidden />
-                  )}
-                </a>
-              ) : (
-                <Link
-                  key={link.id}
-                  href={link.href}
-                  className="relative py-6 text-[15px] font-medium text-[var(--ink)] hover:text-[#00a2e5] transition-colors"
-                >
-                  {link.label}
+                  {underline}
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        {/* Right Desktop Actions (min-[900px]:flex) */}
-        <div className="hidden min-[900px]:flex items-center gap-3">
-          {/* Compact Search Button */}
-          {ready && isLoggedIn && (
-            <button
-              type="button"
-              onClick={() => setPaletteOpen(true)}
-              className="flex items-center gap-2 rounded-full border border-[#E5EAF2] bg-[#F7F9FC] px-3.5 py-1.5 text-xs text-[#5B6B82] hover:border-[#00a2e5]/50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00a2e5]"
-              aria-label="Search"
-            >
-              <Search className="h-3.5 w-3.5 text-[#5B6B82]" />
-              <span className="font-medium text-[#5B6B82]">Search</span>
-              <kbd className="rounded bg-white border border-[#E5EAF2] px-1.5 py-0.5 text-[10px] font-semibold text-[#0B1B33]">
-                Ctrl K
-              </kbd>
-            </button>
-          )}
+        {/* Right Desktop Actions — search UI hidden; Ctrl/Cmd+K still opens CommandPalette via ShellProvider */}
+        <div className="hidden min-[900px]:flex items-center gap-2.5 lg:gap-3">
+          <LanguageSwitcher />
+          {SuccessStoriesBtn}
+          {ExploreUsBtn}
 
           {ready && isLoggedIn && session ? (
             <Link
@@ -198,19 +241,6 @@ export function Navbar() {
 
         {/* Mobile Controls (<900px) */}
         <div className="flex min-[900px]:hidden items-center gap-2">
-          {/* Mobile search icon-only button */}
-          {ready && isLoggedIn && (
-            <button
-              type="button"
-              onClick={() => setPaletteOpen(true)}
-              className="grid h-10 w-10 place-items-center rounded-xl border border-[#E5EAF2] text-[#5B6B82] hover:bg-[#F7F9FC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00a2e5]"
-              aria-label="Search"
-            >
-              <Search className="h-4 w-4" />
-            </button>
-          )}
-
-          {/* Mobile hamburger button */}
           <button
             type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -226,14 +256,12 @@ export function Navbar() {
       {/* Mobile Drawer (<900px) */}
       {mobileOpen && (
         <div className="fixed inset-0 top-[72px] z-50 min-[900px]:hidden">
-          {/* Outside Backdrop */}
           <div
             className="absolute inset-0 bg-[#0B1B33]/50 backdrop-blur-sm transition-opacity"
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
 
-          {/* Slide-down drawer content */}
           <div
             ref={drawerRef}
             className="relative w-full border-b border-[#E5EAF2] bg-white px-5 py-6 shadow-2xl animate-in slide-in-from-top-4 duration-200"
@@ -241,28 +269,34 @@ export function Navbar() {
             <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
               {navLinks.map((link) => {
                 const active = isLinkActive(link.id);
-                return link.href.startsWith('#') ? (
-                  <a
-                    key={link.id}
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLinkClick(link.id, link.href);
-                    }}
-                    className={`flex h-12 items-center px-4 rounded-xl text-base font-semibold transition-colors ${
-                      active
-                        ? 'bg-[#00a2e5]/10 text-[#1b52a4]'
-                        : 'text-[var(--ink)] hover:bg-[#F7F9FC] hover:text-[#00a2e5]'
-                    }`}
-                  >
-                    {link.label}
-                  </a>
-                ) : (
+                const className = `flex h-12 items-center px-4 rounded-xl text-base font-semibold transition-colors ${
+                  active
+                    ? 'bg-[#00a2e5]/10 text-[#1b52a4]'
+                    : 'text-[var(--ink)] hover:bg-[#F7F9FC] hover:text-[#00a2e5]'
+                }`;
+
+                if (link.href.startsWith('#') && isHome) {
+                  return (
+                    <a
+                      key={link.id}
+                      href={link.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleLinkClick(link.id, link.href);
+                      }}
+                      className={className}
+                    >
+                      {link.label}
+                    </a>
+                  );
+                }
+
+                return (
                   <Link
                     key={link.id}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="flex h-12 items-center px-4 rounded-xl text-base font-semibold text-[var(--ink)] hover:bg-[#F7F9FC] hover:text-[#00a2e5] transition-colors"
+                    className={className}
                   >
                     {link.label}
                   </Link>
@@ -270,7 +304,27 @@ export function Navbar() {
               })}
             </nav>
 
-            <div className="mt-5 border-t border-[#E5EAF2] pt-5">
+            <div className="mt-5 flex flex-col gap-2.5 border-t border-[#E5EAF2] pt-5">
+              <LanguageSwitcher variant="menu" />
+              <a
+                href={SUCCESS_STORIES_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className={`${navLoginClass} text-center`}
+              >
+                {t('common.nav.successStories')}
+              </a>
+              <a
+                href={EXPLORE_US_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className={`${navExploreClass} text-center`}
+              >
+                {t('common.nav.exploreUs')}
+              </a>
+
               {ready && isLoggedIn && session ? (
                 <Link
                   href={dashboardHref}
@@ -283,7 +337,7 @@ export function Navbar() {
                   Go to dashboard
                 </Link>
               ) : ready ? (
-                <div className="flex flex-col gap-2.5">
+                <>
                   <Link
                     href="/auth/login"
                     onClick={() => setMobileOpen(false)}
@@ -298,7 +352,7 @@ export function Navbar() {
                   >
                     Sign up
                   </Link>
-                </div>
+                </>
               ) : null}
             </div>
           </div>
@@ -307,4 +361,3 @@ export function Navbar() {
     </header>
   );
 }
-
