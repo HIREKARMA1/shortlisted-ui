@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api';
+import type { ResumeUsage } from '@/lib/resumeUsage';
 
 export interface ResumeContent {
   header: {
@@ -139,6 +140,30 @@ class ResumeService {
 
   async getTemplateById(templateId: string): Promise<unknown> {
     const response = await apiClient.client.get(`/resume/templates/${templateId}`);
+    return response.data;
+  }
+
+  async getUsage(): Promise<ResumeUsage> {
+    const response = await apiClient.client.get('/resume/usage');
+    return response.data;
+  }
+
+  async authorizeDownload(resumeId: string): Promise<{
+    authorized: boolean;
+    resume_id: string;
+    usage: ResumeUsage;
+  }> {
+    const response = await apiClient.client.post(`/resume/resumes/${resumeId}/authorize-download`);
+    return response.data;
+  }
+
+  async confirmDownload(
+    resumeId: string,
+    idempotencyKey: string
+  ): Promise<{ recorded: boolean; idempotent: boolean; usage: ResumeUsage }> {
+    const response = await apiClient.client.post(`/resume/resumes/${resumeId}/confirm-download`, {
+      idempotency_key: idempotencyKey,
+    });
     return response.data;
   }
 }
