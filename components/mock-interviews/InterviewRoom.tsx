@@ -106,9 +106,13 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const stopListeningRef = useRef<() => void>(() => undefined);
   const audioStateRef = useRef(new InterviewAudioStateManager());
   const activeTurnIdRef = useRef<string | null>(null);
+  const enqueueUtteranceTextRef = useRef<(id: string, text: string) => void>(() => undefined);
+  const playNextUtteranceRef = useRef<() => void>(() => undefined);
+  const scheduleAutoSubmitRef = useRef<() => void>(() => undefined);
   const transcriptEndRef = useRef<HTMLDivElement | null>(null);
   const transcriptScrollRef = useRef<HTMLDivElement | null>(null);
   const stickToBottomRef = useRef(true);
+  const readySentRef = useRef(false);
 
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [liveCaption, setLiveCaption] = useState('');
@@ -195,7 +199,12 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       currentAudioRef.current = null;
       if (utteranceQueueRef.current.length) {
         playNextUtterance();
-      } else if (phaseRef.current !== 'ended' && phaseRef.current !== 'thinking') {
+      } else if (
+        phaseRef.current !== 'ended' &&
+        phaseRef.current !== 'thinking' &&
+        utteranceQueueRef.current.length === 0
+      ) {
+        setRoomPhase('listening');
         void startListeningRef.current();
       }
     };
@@ -266,14 +275,16 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           }
         }, 8000);
       }
-      // If TTS never opens the mic (hung playback / cancelled speechSynthesis), force listen.
+      // Last-resort mic open if TTS never completes — only when idle with empty queue.
       window.setTimeout(() => {
         if (listeningRef.current || playingRef.current) return;
         if (phaseRef.current === 'ended' || phaseRef.current === 'thinking') return;
+        if (utteranceQueueRef.current.length > 0) return;
+        setRoomPhase('listening');
         void startListeningRef.current();
-      }, 12_000);
+      }, 20_000);
     },
-    [playNextUtterance],
+    [playNextUtterance, setRoomPhase],
   );
 
   const stopListening = useCallback(() => {
@@ -335,6 +346,9 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
 
   const startListening = useCallback(async () => {
     if (listeningRef.current || playingRef.current || phaseRef.current === 'ended') return;
+    // Never open the mic while interviewer audio is queued or still playing.
+    if (utteranceQueueRef.current.length > 0) return;
+    if (phaseRef.current === 'speaking' || phaseRef.current === 'thinking') return;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -394,6 +408,12 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   }, [startListening, stopListening]);
 
   useEffect(() => {
+    enqueueUtteranceTextRef.current = enqueueUtteranceText;
+    playNextUtteranceRef.current = playNextUtterance;
+    scheduleAutoSubmitRef.current = scheduleAutoSubmit;
+  }, [enqueueUtteranceText, playNextUtterance, scheduleAutoSubmit]);
+
+  useEffect(() => {
     ttsEnabledRef.current = ttsEnabled;
     // Mute only affects interviewer TTS — analysing pad stays managed separately.
   }, [ttsEnabled]);
@@ -406,18 +426,24 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
     transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [captions, liveCaption, phase]);
 
+  // Keep a single WebSocket for the session lifetime. Do NOT depend on callback identities —
+  // unstable deps were reconnecting in production, killing Deepgram + captions mid-interview.
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (!token) {
       router.replace('/auth/login/student');
       return;
     }
+    readySentRef.current = false;
     const socket = new WebSocket(`${wsBaseUrl()}/api/v1/ws/sessions/${sessionId}?token=${encodeURIComponent(token)}`);
     socketRef.current = socket;
     socket.onopen = () => {
       setConnected(true);
-      socket.send(JSON.stringify({ type: 'voice_preferences', tts_enabled: true }));
-      socket.send(JSON.stringify({ type: 'ready' }));
+      socket.send(JSON.stringify({ type: 'voice_preferences', tts_enabled: ttsEnabledRef.current }));
+      if (!readySentRef.current) {
+        readySentRef.current = true;
+        socket.send(JSON.stringify({ type: 'ready' }));
+      }
     };
     socket.onmessage = (raw) => {
       const event = JSON.parse(raw.data) as EventPayload;
@@ -430,7 +456,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
         // Keep analysing pad until TTS actually starts in playNextUtterance.
         setCaptions((current) => [...current, { role: 'interviewer', text: event.text! }]);
         const utteranceId = event.utterance_id || `text-${Date.now()}`;
-        enqueueUtteranceText(utteranceId, event.text);
+        enqueueUtteranceTextRef.current(utteranceId, event.text);
         // Stay in thinking until playback begins so the pad keeps looping.
         if (phaseRef.current !== 'thinking') setRoomPhase('speaking');
         submittingRef.current = false;
@@ -464,7 +490,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
         const entry = utteranceMapRef.current.get(event.utterance_id);
         if (entry) {
           entry.complete = true;
-          playNextUtterance();
+          playNextUtteranceRef.current();
         }
       }
 
@@ -485,7 +511,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
         entry.chunks = [event.data];
         entry.complete = true;
         setServerTtsAvailable(true);
-        playNextUtterance();
+        playNextUtteranceRef.current();
       }
 
       if (event.type === 'evaluation') {
@@ -495,15 +521,14 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       if (event.type === 'ack' && event.duplicate) {
         submittingRef.current = false;
         activeTurnIdRef.current = null;
-        stopThinkingSound();
+        audioStateRef.current.stopAnalyzing();
         setRoomPhase('listening');
         void startListeningRef.current();
       }
 
       if (event.type === 'transcript') {
         if (event.utterance_end) {
-          // Empty utterance-end only refreshes silence; do not force a short submit.
-          scheduleAutoSubmit();
+          scheduleAutoSubmitRef.current();
           return;
         }
         if (!event.text) return;
@@ -512,13 +537,13 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           finalTranscriptRef.current = `${finalTranscriptRef.current}${separator}${event.text}`;
           setLiveCaption(finalTranscriptRef.current);
           setHasDraft(Boolean(finalTranscriptRef.current.trim()));
-          scheduleAutoSubmit();
+          scheduleAutoSubmitRef.current();
         } else {
           const separator = finalTranscriptRef.current && !/\s$/.test(finalTranscriptRef.current) ? ' ' : '';
           const live = `${finalTranscriptRef.current}${separator}${event.text}`;
           setLiveCaption(live);
           setHasDraft(Boolean(live.trim()));
-          scheduleAutoSubmit();
+          scheduleAutoSubmitRef.current();
         }
       }
 
@@ -531,7 +556,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
             utteranceQueueRef.current.forEach((entry) => {
               entry.complete = true;
             });
-            playNextUtterance();
+            playNextUtteranceRef.current();
             if (event.text) toast(event.text);
           }
         }
@@ -542,22 +567,29 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
 
       if (event.type === 'error') toast.error(event.text || 'Interview error');
       if (event.type === 'end') {
-        stopThinkingSound();
+        audioStateRef.current.stopAnalyzing();
         setRoomPhase('ended');
-        stopListening();
+        stopListeningRef.current();
         router.replace(`/mock-interviews/report/${sessionId}`);
       }
     };
     socket.onerror = () => toast.error('The interview connection was lost.');
     socket.onclose = () => {
       setConnected(false);
-      stopThinkingSound();
-      stopListening();
+      audioStateRef.current.stopAnalyzing();
+      // Don't stopListening here on transient closes from React Strict Mode remount —
+      // cleanup below owns teardown for the intentional unmount path.
     };
     return () => {
-      socket.close();
+      readySentRef.current = false;
+      socketRef.current = null;
+      try {
+        socket.close();
+      } catch {
+        /* ignore */
+      }
       audioStateRef.current.dispose();
-      stopListening();
+      stopListeningRef.current();
       if (playbackSafetyRef.current) window.clearTimeout(playbackSafetyRef.current);
       playbackSafetyRef.current = null;
       playingRef.current = false;
@@ -568,17 +600,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       currentAudioRef.current = null;
       window.speechSynthesis?.cancel();
     };
-  }, [
-    enqueueUtteranceText,
-    playNextUtterance,
-    router,
-    scheduleAutoSubmit,
-    sessionId,
-    setRoomPhase,
-    startThinkingSound,
-    stopListening,
-    stopThinkingSound,
-  ]);
+  }, [router, sessionId, setRoomPhase]);
 
   useEffect(() => {
     if (!connected || secondsRemaining <= 0) return;
