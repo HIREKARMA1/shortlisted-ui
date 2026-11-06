@@ -112,6 +112,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const transcriptEndRef = useRef<HTMLDivElement | null>(null);
   const transcriptScrollRef = useRef<HTMLDivElement | null>(null);
   const stickToBottomRef = useRef(true);
+  const intentionalCloseRef = useRef(false);
   const readySentRef = useRef(false);
 
   const [captions, setCaptions] = useState<Caption[]>([]);
@@ -573,15 +574,22 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
         router.replace(`/mock-interviews/report/${sessionId}`);
       }
     };
-    socket.onerror = () => toast.error('The interview connection was lost.');
+    socket.onerror = () => {
+      if (intentionalCloseRef.current) return;
+      toast.error('The interview connection was lost.');
+    };
     socket.onclose = () => {
       setConnected(false);
       audioStateRef.current.stopAnalyzing();
-      // Don't stopListening here on transient closes from React Strict Mode remount —
-      // cleanup below owns teardown for the intentional unmount path.
+      if (intentionalCloseRef.current) return;
+      if (phaseRef.current === 'ended') return;
+      if (phaseRef.current === 'thinking' || phaseRef.current === 'speaking') {
+        setRoomPhase('connecting');
+        toast.error('The interview connection dropped before the next question. Refresh to continue.');
+      }
     };
     return () => {
-      readySentRef.current = false;
+      intentionalCloseRef.current = true;
       socketRef.current = null;
       try {
         socket.close();
