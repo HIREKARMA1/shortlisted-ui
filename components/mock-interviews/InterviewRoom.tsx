@@ -95,6 +95,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const listeningRef = useRef(false);
   const phaseRef = useRef<RoomPhase>('connecting');
   const finalTranscriptRef = useRef('');
+  const liveCaptionRef = useRef('');
   const submittingRef = useRef(false);
   const silenceTimerRef = useRef<number | null>(null);
   const utteranceQueueRef = useRef<QueuedUtterance[]>([]);
@@ -319,6 +320,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           : `turn-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       activeTurnIdRef.current = clientTurnId;
       stopListening();
+      liveCaptionRef.current = '';
       setLiveCaption('');
       setHasDraft(false);
       finalTranscriptRef.current = '';
@@ -361,6 +363,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       });
       audioStreamRef.current = stream;
       finalTranscriptRef.current = '';
+      liveCaptionRef.current = '';
       setLiveCaption('');
       setHasDraft(false);
       listeningRef.current = true;
@@ -536,12 +539,14 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
         if (event.is_final) {
           const separator = finalTranscriptRef.current && !/\s$/.test(finalTranscriptRef.current) ? ' ' : '';
           finalTranscriptRef.current = `${finalTranscriptRef.current}${separator}${event.text}`;
+          liveCaptionRef.current = finalTranscriptRef.current;
           setLiveCaption(finalTranscriptRef.current);
           setHasDraft(Boolean(finalTranscriptRef.current.trim()));
           scheduleAutoSubmitRef.current();
         } else {
           const separator = finalTranscriptRef.current && !/\s$/.test(finalTranscriptRef.current) ? ' ' : '';
           const live = `${finalTranscriptRef.current}${separator}${event.text}`;
+          liveCaptionRef.current = live;
           setLiveCaption(live);
           setHasDraft(Boolean(live.trim()));
           scheduleAutoSubmitRef.current();
@@ -706,7 +711,9 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           <Button
             className="mt-4"
             variant="accent"
-            onClick={() => submitAnswer(finalTranscriptRef.current, { force: true })}
+            onClick={() =>
+              submitAnswer((liveCaptionRef.current || finalTranscriptRef.current).trim(), { force: true })
+            }
           >
             I&apos;m done
           </Button>
