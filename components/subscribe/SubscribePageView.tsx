@@ -36,6 +36,12 @@ type PaymentConfig = {
 
 type PaymentMode = 'online' | 'offline';
 
+type OfflinePaymentStatus = {
+  status?: string | null;
+  rejection_reason?: string | null;
+  message?: string | null;
+};
+
 const benefitKeys = ['batch', 'jobs', 'coordinator', 'dashboard'] as const;
 
 export function SubscribePageView() {
@@ -44,15 +50,21 @@ export function SubscribePageView() {
   const { t } = useTranslation();
   const { logout } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [offlineLoading, setOfflineLoading] = useState(false);
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
   const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
   const [paymentMode, setPaymentMode] = useState<PaymentMode>('online');
+  const [offlineStatus, setOfflineStatus] = useState<OfflinePaymentStatus | null>(null);
   const { ready, session, accessStatus, plan, trialEndsAt } = useStudentSubscribeGate();
 
   useEffect(() => {
     if (!ready || !session || accessStatus === 'active') return;
     api.getActiveBatch().then(setBatchInfo).catch(() => setBatchInfo(null));
     api.getPaymentConfig().then(setPaymentConfig).catch(() => setPaymentConfig(null));
+    api
+      .getOfflinePaymentRequest()
+      .then(setOfflineStatus)
+      .catch(() => setOfflineStatus(null));
   }, [ready, session, accessStatus]);
 
   useEffect(() => {
@@ -82,6 +94,23 @@ export function SubscribePageView() {
       toast.error(msg);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleOfflineSubmit = async () => {
+    setOfflineLoading(true);
+    try {
+      const result = await api.submitOfflinePaymentRequest();
+      setOfflineStatus(result);
+      toast.success(result.message || t('subscribe.offline.submitSuccess'));
+      router.replace('/dashboard/student');
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { detail?: string } }; message?: string })?.response?.data
+          ?.detail || t('common.errors.generic');
+      toast.error(String(msg));
+    } finally {
+      setOfflineLoading(false);
     }
   };
 
@@ -223,36 +252,77 @@ export function SubscribePageView() {
           </>
         ) : (
           <div className="space-y-4 rounded-xl border border-brand-orange/20 bg-brand-orange/5 p-5">
-            <p className="text-sm text-ink-secondary">{t('subscribe.offline.description')}</p>
-            <ul className="space-y-2 text-sm text-ink-primary">
-              {paymentConfig?.sales_contact_phone && (
-                <li className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-brand-orange" />
-                  <a
-                    href={`tel:${paymentConfig.sales_contact_phone}`}
-                    className="font-medium link-brand"
-                  >
-                    {paymentConfig.sales_contact_phone}
-                  </a>
-                </li>
-              )}
-              {paymentConfig?.sales_contact_email && (
-                <li className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-brand-orange" />
-                  <a
-                    href={`mailto:${paymentConfig.sales_contact_email}`}
-                    className="font-medium link-brand"
-                  >
-                    {paymentConfig.sales_contact_email}
-                  </a>
-                </li>
-              )}
-            </ul>
-            <p className="text-xs text-ink-muted">
-              {plan === 'trial' || plan === 'expired'
-                ? t('subscribe.offline.trialNote')
-                : t('subscribe.offline.note')}
-            </p>
+            {offlineStatus?.status === 'pending' ? (
+              <div className="space-y-2">
+                <p className="text-sm font-semibold text-brand-orange">
+                  {t('subscribe.offline.pendingTitle')}
+                </p>
+                <p className="text-sm text-ink-secondary">
+                  {offlineStatus.message || t('subscribe.offline.pendingBody')}
+                </p>
+              </div>
+            ) : (
+              <>
+                {offlineStatus?.status === 'rejected' && (
+                  <div className="rounded-lg border border-brand-red/20 bg-white/70 p-3">
+                    <p className="text-sm font-semibold text-brand-red">
+                      {t('subscribe.offline.rejectedTitle')}
+                    </p>
+                    <p className="mt-1 text-sm text-ink-secondary">
+                      {t('subscribe.offline.rejectedBody')}
+                    </p>
+                    {offlineStatus.rejection_reason && (
+                      <p className="mt-1 text-xs text-ink-muted">
+                        {t('subscribe.offline.rejectedReason', {
+                          reason: offlineStatus.rejection_reason,
+                        })}
+                      </p>
+                    )}
+                  </div>
+                )}
+                <p className="text-sm text-ink-secondary">{t('subscribe.offline.description')}</p>
+                <ul className="space-y-2 text-sm text-ink-primary">
+                  {paymentConfig?.sales_contact_phone && (
+                    <li className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-brand-orange" />
+                      <a
+                        href={`tel:${paymentConfig.sales_contact_phone}`}
+                        className="font-medium link-brand"
+                      >
+                        {paymentConfig.sales_contact_phone}
+                      </a>
+                    </li>
+                  )}
+                  {paymentConfig?.sales_contact_email && (
+                    <li className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-brand-orange" />
+                      <a
+                        href={`mailto:${paymentConfig.sales_contact_email}`}
+                        className="font-medium link-brand"
+                      >
+                        {paymentConfig.sales_contact_email}
+                      </a>
+                    </li>
+                  )}
+                </ul>
+                <p className="text-xs text-ink-muted">
+                  {plan === 'trial' || plan === 'expired'
+                    ? t('subscribe.offline.trialNote')
+                    : t('subscribe.offline.note')}
+                </p>
+                <Button
+                  variant="accent"
+                  fullWidth
+                  onClick={handleOfflineSubmit}
+                  disabled={offlineLoading}
+                  className="py-3"
+                >
+                  {offlineLoading
+                    ? t('subscribe.offline.submitting')
+                    : t('subscribe.offline.ctaMark')}
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>
