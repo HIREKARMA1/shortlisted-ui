@@ -25,6 +25,7 @@ type EventPayload = {
   utterance_id?: string;
   question_progress?: QuestionProgress;
   duplicate?: boolean;
+  next_action?: string;
 };
 
 type QueuedUtterance = {
@@ -126,6 +127,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   const [phase, setPhase] = useState<RoomPhase>('connecting');
   const [voiceAvailable, setVoiceAvailable] = useState(false);
   const [hasDraft, setHasDraft] = useState(false);
+  const [thinkingStatus, setThinkingStatus] = useState('Analyzing your answer…');
 
   const setRoomPhase = useCallback((next: RoomPhase) => {
     phaseRef.current = next;
@@ -143,6 +145,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
   }, []);
 
   const startThinkingSound = useCallback(() => {
+    setThinkingStatus('Analyzing your answer…');
     void audioStateRef.current.startAnalyzing();
   }, []);
 
@@ -326,7 +329,10 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       finalTranscriptRef.current = '';
       setCaptions((current) => [...current, { role: 'candidate', text: trimmed }]);
       setRoomPhase('thinking');
-      startThinkingSound();
+      setThinkingStatus('Analyzing your answer…');
+      void audioStateRef.current.ensureContext().then(() => {
+        startThinkingSound();
+      });
       send({ type: 'candidate_answer', text: trimmed, client_turn_id: clientTurnId });
     },
     [send, setRoomPhase, startThinkingSound, stopListening],
@@ -375,6 +381,8 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
       if (audioContext.state === 'suspended') {
         await audioContext.resume();
       }
+      // Unlock the analysing pad context on the same user gesture as mic grant.
+      await audioStateRef.current.ensureContext();
       const source = audioContext.createMediaStreamSource(stream);
       sourceRef.current = source;
       const processor = audioContext.createScriptProcessor(4096, 1, 1);
@@ -518,9 +526,21 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
         playNextUtteranceRef.current();
       }
 
+      if (event.type === 'agent_progress') {
+        setRoomPhase('thinking');
+        audioStateRef.current.ensureAnalyzing();
+        if (event.text) setThinkingStatus(event.text);
+      }
       if (event.type === 'evaluation') {
         setRoomPhase('thinking');
         audioStateRef.current.ensureAnalyzing();
+        setThinkingStatus(
+          event.next_action === 'follow_up' || event.next_action === 'clarify'
+            ? 'Preparing a follow-up…'
+            : event.next_action === 'next_question' || event.next_action === 'skip'
+              ? 'Preparing the next question…'
+              : 'Preparing the reply…',
+        );
       }
       if (event.type === 'ack' && event.duplicate) {
         submittingRef.current = false;
@@ -629,7 +649,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           ? 'Listening… take your time'
           : 'Waiting for microphone…'
         : phase === 'thinking'
-          ? 'Analyzing your answer…'
+          ? thinkingStatus
           : phase === 'ended'
             ? 'Interview ended'
             : 'Connecting…';
@@ -729,7 +749,7 @@ export function InterviewRoom({ sessionId }: { sessionId: string }) {
           <div className="flex shrink-0 items-center justify-between border-b border-line-default px-4 py-2.5">
             <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Transcript</p>
             {phase === 'thinking' ? (
-              <p className="animate-pulse text-xs font-medium text-brand-blue">Analyzing your answer…</p>
+              <p className="animate-pulse text-xs font-medium text-brand-blue">{thinkingStatus}</p>
             ) : null}
           </div>
 

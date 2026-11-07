@@ -1,32 +1,62 @@
 /**
  * Single owner for the mock-interview analysing ambient pad.
  * Independent of interviewer TTS mute.
+ * Uses one shared AudioContext for the room lifetime so autoplay unlock sticks.
  */
 
-type ThinkingHandle = {
-  ctx: AudioContext;
-  stop: () => void;
+type PadNodes = {
+  master: GainNode;
+  oscA: OscillatorNode;
+  oscB: OscillatorNode;
+  lfo: OscillatorNode;
+  lfoGain: GainNode;
 };
 
 export class InterviewAudioStateManager {
-  private thinking: ThinkingHandle | null = null;
-  private loopTimer: number | null = null;
+  private sharedCtx: AudioContext | null = null;
+  private pad: PadNodes | null = null;
   private analyzing = false;
+  private envelopeTimer: number | null = null;
 
   get isAnalyzing() {
     return this.analyzing;
   }
 
+  /** Unlock / attach a shared context from a user gesture (mic open or submit). */
+  async ensureContext(existing?: AudioContext | null) {
+    try {
+      if (existing && existing.state !== 'closed') {
+        this.sharedCtx = existing;
+      }
+      if (!this.sharedCtx || this.sharedCtx.state === 'closed') {
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        this.sharedCtx = new AudioCtx();
+      }
+      if (this.sharedCtx.state === 'suspended') {
+        await this.sharedCtx.resume();
+      }
+      return this.sharedCtx;
+    } catch {
+      return null;
+    }
+  }
+
   async startAnalyzing() {
-    if (this.analyzing && this.thinking) return;
-    this.stopAnalyzing();
+    if (this.analyzing && this.pad) {
+      await this.resumeIfNeeded();
+      return;
+    }
     this.analyzing = true;
-    await this.spawnPad();
-    // Keep a soft loop alive for long LLM waits (restart envelope every 6s).
-    this.loopTimer = window.setInterval(() => {
-      if (!this.analyzing) return;
-      void this.spawnPad();
-    }, 6000);
+    await this.ensureContext();
+    await this.startPad();
+    // Soft gain pulse on the same oscillators — never tear down / recreate contexts.
+    this.envelopeTimer = window.setInterval(() => {
+      if (!this.analyzing || !this.pad || !this.sharedCtx) return;
+      void this.resumeIfNeeded();
+      this.pulseEnvelope();
+    }, 5000);
   }
 
   ensureAnalyzing() {
@@ -34,40 +64,71 @@ export class InterviewAudioStateManager {
       void this.startAnalyzing();
       return;
     }
-    if (!this.thinking) void this.spawnPad();
+    void this.resumeIfNeeded();
+    if (!this.pad) void this.startPad();
   }
 
   stopAnalyzing() {
     this.analyzing = false;
-    if (this.loopTimer != null) {
-      window.clearInterval(this.loopTimer);
-      this.loopTimer = null;
+    if (this.envelopeTimer != null) {
+      window.clearInterval(this.envelopeTimer);
+      this.envelopeTimer = null;
     }
-    this.thinking?.stop();
-    this.thinking = null;
+    this.stopPad();
   }
 
   dispose() {
     this.stopAnalyzing();
+    if (this.sharedCtx && this.sharedCtx.state !== 'closed') {
+      void this.sharedCtx.close().catch(() => undefined);
+    }
+    this.sharedCtx = null;
   }
 
-  private async spawnPad() {
-    try {
-      const AudioCtx =
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      const ctx = new AudioCtx();
-      if (ctx.state === 'suspended') {
+  private async resumeIfNeeded() {
+    const ctx = this.sharedCtx;
+    if (!ctx || ctx.state === 'closed') return;
+    if (ctx.state === 'suspended') {
+      try {
         await ctx.resume();
+      } catch {
+        /* ignore */
       }
+    }
+  }
+
+  private pulseEnvelope() {
+    if (!this.pad || !this.sharedCtx) return;
+    const { master } = this.pad;
+    const now = this.sharedCtx.currentTime;
+    try {
+      master.gain.cancelScheduledValues(now);
+      master.gain.setValueAtTime(Math.max(master.gain.value, 0.02), now);
+      master.gain.linearRampToValueAtTime(0.048, now + 0.4);
+      master.gain.linearRampToValueAtTime(0.038, now + 2.2);
+      master.gain.linearRampToValueAtTime(0.045, now + 4.5);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  private async startPad() {
+    try {
+      const ctx = await this.ensureContext();
+      if (!ctx || !this.analyzing) return;
+      if (this.pad) {
+        this.pulseEnvelope();
+        return;
+      }
+
       const master = ctx.createGain();
       master.gain.value = 0.0001;
       master.connect(ctx.destination);
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.value = 360;
-      filter.Q.value = 0.7;
+      filter.frequency.value = 520;
+      filter.Q.value = 0.6;
       filter.connect(master);
 
       const oscA = ctx.createOscillator();
@@ -84,36 +145,46 @@ export class InterviewAudioStateManager {
       oscB.connect(gainB);
       gainA.connect(filter);
       gainB.connect(filter);
+
+      // Slow tremolo so the pad stays noticeable during long waits.
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.35;
+      lfoGain.gain.value = 0.012;
+      lfo.connect(lfoGain);
+      lfoGain.connect(master.gain);
+
       oscA.start();
       oscB.start();
+      lfo.start();
 
       const now = ctx.currentTime;
-      master.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-      master.gain.setValueAtTime(0.01, now + 0.5);
-      master.gain.linearRampToValueAtTime(0.008, now + 2.5);
-      master.gain.linearRampToValueAtTime(0.01, now + 4);
-      master.gain.exponentialRampToValueAtTime(0.004, now + 5.5);
+      master.gain.exponentialRampToValueAtTime(0.045, now + 0.35);
+      master.gain.setValueAtTime(0.045, now + 0.35);
+      master.gain.linearRampToValueAtTime(0.038, now + 2.5);
+      master.gain.linearRampToValueAtTime(0.045, now + 4);
 
-      const previous = this.thinking;
-      this.thinking = {
-        ctx,
-        stop: () => {
-          try {
-            const t = ctx.currentTime;
-            master.gain.cancelScheduledValues(t);
-            master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), t);
-            master.gain.exponentialRampToValueAtTime(0.0001, t + 0.25);
-            oscA.stop(t + 0.3);
-            oscB.stop(t + 0.3);
-          } catch {
-            /* ignore */
-          }
-          void ctx.close().catch(() => undefined);
-        },
-      };
-      previous?.stop();
+      this.pad = { master, oscA, oscB, lfo, lfoGain };
     } catch {
-      /* Web Audio unavailable */
+      this.pad = null;
+    }
+  }
+
+  private stopPad() {
+    const pad = this.pad;
+    this.pad = null;
+    if (!pad || !this.sharedCtx) return;
+    try {
+      const t = this.sharedCtx.currentTime;
+      pad.master.gain.cancelScheduledValues(t);
+      pad.master.gain.setValueAtTime(Math.max(pad.master.gain.value, 0.0001), t);
+      pad.master.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+      pad.oscA.stop(t + 0.25);
+      pad.oscB.stop(t + 0.25);
+      pad.lfo.stop(t + 0.25);
+    } catch {
+      /* ignore */
     }
   }
 }
