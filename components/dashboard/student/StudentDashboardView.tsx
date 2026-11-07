@@ -68,17 +68,28 @@ export function StudentDashboardView() {
   const student = data.student as Record<string, unknown>;
   const batch = data.batch as Record<string, unknown> | null;
   const plan = String(student.plan || '');
+  const offlinePayment = (student.offline_payment || {}) as {
+    status?: string | null;
+    rejection_reason?: string | null;
+    message?: string | null;
+  };
+  const offlineStatus = String(offlinePayment.status || '');
   const accessLabel =
-    plan === 'trial'
-      ? t('dashboard.trial.planTrial')
-      : plan === 'expired'
-        ? t('dashboard.trial.planExpired')
-        : plan === 'premium'
-          ? t('dashboard.trial.planPremium')
-          : String(student.access_status || '');
+    offlineStatus === 'pending'
+      ? t('dashboard.trial.paymentPending')
+      : offlineStatus === 'rejected'
+        ? t('dashboard.trial.paymentRejected')
+        : plan === 'trial'
+          ? t('dashboard.trial.planTrial')
+          : plan === 'expired'
+            ? t('dashboard.trial.planExpired')
+            : plan === 'premium'
+              ? t('dashboard.trial.planPremium')
+              : String(student.access_status || '');
   const seatConfirmed = batch?.seat_confirmed !== false;
   const jobs = (data.recent_jobs as Record<string, unknown>[]) || [];
   const apps = (data.active_applications as Record<string, unknown>[]) || [];
+  const canActivate = plan !== 'premium' && offlineStatus !== 'pending';
 
   return (
     <DashboardLayout
@@ -87,6 +98,41 @@ export function StudentDashboardView() {
       subtitle={t('dashboard.student.welcome', { name: String(student.name) })}
       onLogout={logout}
     >
+      {(offlineStatus === 'pending' || offlineStatus === 'rejected') && (
+        <div
+          className={`mb-6 rounded-xl border p-4 ${
+            offlineStatus === 'pending'
+              ? 'border-brand-orange/30 bg-brand-orange/5'
+              : 'border-brand-red/30 bg-brand-red/5'
+          }`}
+        >
+          <p className="font-semibold text-ink-primary">
+            {offlineStatus === 'pending'
+              ? t('dashboard.trial.paymentPending')
+              : t('dashboard.trial.paymentRejected')}
+          </p>
+          <p className="mt-1 text-sm text-ink-secondary">
+            {offlineStatus === 'pending'
+              ? offlinePayment.message || t('dashboard.trial.paymentPendingBody')
+              : t('dashboard.trial.paymentRejectedBody')}
+          </p>
+          {offlineStatus === 'rejected' && offlinePayment.rejection_reason && (
+            <p className="mt-1 text-xs text-ink-muted">
+              {t('dashboard.trial.paymentRejectedReason', {
+                reason: offlinePayment.rejection_reason,
+              })}
+            </p>
+          )}
+          {offlineStatus === 'rejected' && (
+            <div className="mt-3">
+              <Link href="/subscribe">
+                <Button variant="accent">{t('dashboard.trial.activatePlacement')}</Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="mb-8 grid gap-4 md:grid-cols-3">
         <StatCard
           label={t('dashboard.student.stats.access')}
@@ -123,6 +169,11 @@ export function StudentDashboardView() {
           <p className="text-sm text-ink-muted">{t('dashboard.student.quickActions.subtitle')}</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {canActivate && (
+            <Link href="/subscribe">
+              <Button variant="accent">{t('dashboard.trial.activatePlacement')}</Button>
+            </Link>
+          )}
           <Link href="/dashboard/student/jobs">
             <Button variant="secondary">
               <Briefcase className="mr-2 h-4 w-4" />

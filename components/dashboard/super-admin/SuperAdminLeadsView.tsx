@@ -92,13 +92,20 @@ function LeadsModal({
   onSaved: () => void;
 }) {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState(defaultAmount);
+  const pendingAmountPaise = lead.pending_amount_paise != null ? Number(lead.pending_amount_paise) : null;
+  const pendingAmountInr =
+    pendingAmountPaise != null && Number.isFinite(pendingAmountPaise)
+      ? String(Math.round(pendingAmountPaise / 100))
+      : defaultAmount;
+  const [amount, setAmount] = useState(pendingAmountInr);
   const [paidAt, setPaidAt] = useState(toDatetimeLocalValue());
-  const [utr, setUtr] = useState('');
+  const [utr, setUtr] = useState(lead.pending_utr ? String(lead.pending_utr) : '');
   const [collectedBy, setCollectedBy] = useState('');
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState(lead.pending_note ? String(lead.pending_note) : '');
+  const [rejectReason, setRejectReason] = useState('');
   const [receipt, setReceipt] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
+  const [rejecting, setRejecting] = useState(false);
 
   const submit = async () => {
     const amountNum = Number(amount);
@@ -136,6 +143,28 @@ function LeadsModal({
     }
   };
 
+  const reject = async () => {
+    setRejecting(true);
+    try {
+      await api.rejectOfflinePayment({
+        student_id: String(lead.student_id),
+        reason: rejectReason.trim() || undefined,
+      });
+      toast.success(t('dashboard.superAdminLeads.paymentRejected'));
+      onSaved();
+      onClose();
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail ||
+        t('common.errors.generic');
+      toast.error(String(msg));
+    } finally {
+      setRejecting(false);
+    }
+  };
+
+  const busy = saving || rejecting;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6 shadow-elevated">
@@ -145,6 +174,13 @@ function LeadsModal({
             <p className="mt-1 text-sm text-ink-muted">
               {String(lead.name)} · {String(lead.email)}
             </p>
+            {lead.pending_submitted_at ? (
+              <p className="mt-1 text-xs text-brand-orange">
+                {t('dashboard.superAdminLeads.pendingRequestHint', {
+                  date: formatDate(lead.pending_submitted_at),
+                })}
+              </p>
+            ) : null}
           </div>
           <button type="button" onClick={onClose} className="rounded-lg p-2 hover:bg-surface-muted">
             <X className="h-5 w-5 text-ink-muted" />
@@ -193,13 +229,24 @@ function LeadsModal({
             value={note}
             onChange={(e) => setNote(e.target.value)}
           />
+          <Input
+            label={t('dashboard.superAdminLeads.rejectReason')}
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+            placeholder={t('dashboard.superAdminLeads.rejectReasonPlaceholder')}
+          />
         </div>
 
-        <div className="mt-6 flex justify-end gap-3">
-          <Button variant="secondary" onClick={onClose} disabled={saving}>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <Button variant="secondary" onClick={onClose} disabled={busy}>
             {t('common.actions.cancel')}
           </Button>
-          <Button variant="accent" onClick={submit} disabled={saving}>
+          <Button variant="secondary" onClick={reject} disabled={busy}>
+            {rejecting
+              ? t('dashboard.superAdminLeads.rejecting')
+              : t('dashboard.superAdminLeads.rejectPayment')}
+          </Button>
+          <Button variant="accent" onClick={submit} disabled={busy}>
             {saving ? t('dashboard.superAdminLeads.recording') : t('dashboard.superAdminLeads.markPaidOffline')}
           </Button>
         </div>
