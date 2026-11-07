@@ -22,11 +22,13 @@ export function TrialSidebarCard() {
   const { trial } = useTrialUi();
   if (!trial || (trial.plan !== 'trial' && trial.plan !== 'expired')) return null;
 
+  const paymentPending = trial.offlinePaymentStatus === 'pending';
   const tone = trialUrgency(trial.plan, trial.daysLeft);
   const remaining = trial.plan === 'expired' ? 0 : Math.min(7, Math.max(0, trial.daysLeft));
   const width = `${(remaining / 7) * 100}%`;
-  const daysLabel =
-    trial.plan === 'expired'
+  const daysLabel = paymentPending
+    ? t('dashboard.trial.paymentPending')
+    : trial.plan === 'expired'
       ? t('dashboard.trial.planExpired')
       : t('dashboard.trial.sidebarDays', { days: trial.daysLeft });
 
@@ -40,12 +42,14 @@ export function TrialSidebarCard() {
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-neutral-200 ring-1 ring-neutral-300" aria-hidden="true">
           <div className={cn('h-full rounded-full transition-[width] duration-500', barTone[tone])} style={{ width }} />
         </div>
-        <Link
-          href="/subscribe"
-          className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white transition hover:opacity-95"
-        >
-          {t('dashboard.trial.upgrade')}
-        </Link>
+        {!paymentPending && (
+          <Link
+            href="/subscribe"
+            className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white transition hover:opacity-95"
+          >
+            {t('dashboard.trial.upgrade')}
+          </Link>
+        )}
       </div>
     </div>
   );
