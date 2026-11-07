@@ -19,6 +19,7 @@ type TrialState = {
   plan: string;
   daysLeft: number;
   endsAt: string | null;
+  offlinePaymentStatus: string | null;
 };
 
 type TrialUiContextValue = {
@@ -77,11 +78,15 @@ export function StudentTrialProvider({ children }: { children: ReactNode }) {
           plan?: string;
           trial_days_left?: number;
           trial_ends_at?: string | null;
+          offline_payment?: { status?: string | null };
         };
         const plan = String(student?.plan || '');
         const daysLeft = Number(student?.trial_days_left || 0);
         const endsAt = student?.trial_ends_at || null;
-        setTrial({ plan, daysLeft, endsAt });
+        const offlinePaymentStatus = student?.offline_payment?.status
+          ? String(student.offline_payment.status)
+          : null;
+        setTrial({ plan, daysLeft, endsAt, offlinePaymentStatus });
 
         if (plan === 'trial' && !localStorage.getItem(WELCOME_KEY)) {
           localStorage.setItem(WELCOME_KEY, '1');
@@ -138,11 +143,13 @@ export function StudentTrialChrome() {
     );
   }
 
+  const paymentPending = trial.offlinePaymentStatus === 'pending';
   const tone = trialUrgency(trial.plan, trial.daysLeft);
   const remaining = trial.plan === 'expired' ? 0 : Math.min(7, Math.max(0, trial.daysLeft));
   const width = `${(remaining / 7) * 100}%`;
-  const title =
-    trial.plan === 'expired'
+  const title = paymentPending
+    ? t('dashboard.trial.paymentPending')
+    : trial.plan === 'expired'
       ? t('dashboard.trial.bannerExpired')
       : trial.daysLeft <= 1
         ? t('dashboard.trial.bannerLastDayTitle')
@@ -176,19 +183,25 @@ export function StudentTrialChrome() {
             </span>
             <div className="min-w-[12rem] flex-1">
               <p className="text-sm font-bold">{title}</p>
-              <p className="mt-0.5 text-sm font-medium text-ink-secondary">{t('dashboard.trial.bannerHint')}</p>
+              <p className="mt-0.5 text-sm font-medium text-ink-secondary">
+                {paymentPending
+                  ? t('dashboard.trial.paymentPendingBody')
+                  : t('dashboard.trial.bannerHint')}
+              </p>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-neutral-200 ring-1 ring-neutral-300" aria-hidden="true">
                 <div className={cn('h-full rounded-full transition-[width] duration-500', barTone[tone])} style={{ width }} />
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Link
-                href="/subscribe"
-                className="inline-flex items-center gap-1.5 rounded-md bg-brand-orange px-3 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-sm transition hover:opacity-95"
-              >
-                {t('dashboard.trial.upgrade')}
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-              </Link>
+              {!paymentPending && (
+                <Link
+                  href="/subscribe"
+                  className="inline-flex items-center gap-1.5 rounded-md bg-brand-orange px-3 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-sm transition hover:opacity-95"
+                >
+                  {t('dashboard.trial.upgrade')}
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={hideBanner}

@@ -245,6 +245,37 @@ class ApiClient {
     return res.data;
   }
 
+  async submitOfflinePaymentRequest(data?: { utr?: string; note?: string }) {
+    const res = await this.client.post('/payments/offline-request', data || {});
+    return res.data as {
+      status?: string | null;
+      payment_id?: string | null;
+      amount_paise?: number | null;
+      amount_inr?: number | null;
+      submitted_at?: string | null;
+      rejection_reason?: string | null;
+      message?: string | null;
+    };
+  }
+
+  async getOfflinePaymentRequest() {
+    const res = await this.client.get('/payments/offline-request/me');
+    return res.data as {
+      status?: string | null;
+      payment_id?: string | null;
+      amount_paise?: number | null;
+      amount_inr?: number | null;
+      submitted_at?: string | null;
+      rejection_reason?: string | null;
+      message?: string | null;
+    };
+  }
+
+  async rejectOfflinePayment(data: { student_id: string; reason?: string }) {
+    const res = await this.client.post('/payments/offline-reject', data);
+    return res.data;
+  }
+
   async verifyPayment(data: {
     order_id: string;
     payment_id: string;
