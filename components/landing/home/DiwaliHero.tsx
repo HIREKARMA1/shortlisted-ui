@@ -913,16 +913,6 @@ export function DiwaliHero() {
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </PrimaryLink>
               )}
-              <Link
-                href="#journey"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('journey')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/45 bg-[#071936]/40 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#071936]/60 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              >
-                See how it works
-              </Link>
             </div>
 
             {/* 5. Brand Trust Chips */}
