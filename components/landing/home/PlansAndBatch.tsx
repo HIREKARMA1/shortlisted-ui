@@ -7,7 +7,7 @@ import { useHome } from './HomeProvider';
 import { OutlineLink, PrimaryLink } from './primitives';
 import styles from './PlansAndBatch.module.css';
 
-const COUNTDOWN_END = new Date(2026, 10, 8, 23, 59, 59).getTime();
+const COUNTDOWN_END = new Date(2026, 10, 30, 23, 59, 59).getTime();
 const STRING_LIGHT_COLORS = ['#ffd45a', '#ff9a3c', '#fff1b8', '#ff7a45'];
 
 type Countdown = [number, number, number, number];
