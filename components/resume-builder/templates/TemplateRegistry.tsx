@@ -11,6 +11,13 @@ import { ModernCreativeTemplate } from "./ModernCreative";
 import { ClassicATSProfessionalTemplate } from "./ClassicATSProfessional";
 import { ModernATSTechnicalTemplate } from "./ModernATSTechnical";
 import { ExecutiveATSProfessionalTemplate } from "./ExecutiveATSProfessional";
+import { MinimalistClassicTemplate } from "./MinimalistClassic";
+import { HarvardProfessionalTemplate } from "./HarvardProfessional";
+import { SoftwareEngineerATSTemplate } from "./SoftwareEngineerATS";
+import { DataAnalystATSTemplate } from "./DataAnalystATS";
+import { ProjectManagerATSTemplate } from "./ProjectManagerATS";
+import { FinanceBusinessATSTemplate } from "./FinanceBusinessATS";
+import { SalesMarketingATSTemplate } from "./SalesMarketingATS";
 import { ResumeData } from "./shared/types";
 
 export interface TemplateInfo {
@@ -37,12 +44,19 @@ export const TEMPLATE_SLUGS = [
   "modern-ats-technical",
   "executive-ats-professional",
   "creative-premium",
+  "minimalist-classic",
+  "harvard-professional",
+  "software-engineer-ats",
+  "data-analyst-ats",
+  "project-manager-ats",
+  "finance-business-ats",
+  "sales-marketing-ats",
 ] as const;
 
 export type TemplateSlug = (typeof TEMPLATE_SLUGS)[number];
 
 /**
- * Selection page shows exactly these 8 templates (5 established + 3 new ATS).
+ * Selection page shows exactly these 15 templates (8 existing + 7 new ATS).
  * Other registered slugs remain resolvable for saved resumes.
  */
 const SELECTABLE_TEMPLATE_SLUGS: TemplateSlug[] = [
@@ -54,6 +68,13 @@ const SELECTABLE_TEMPLATE_SLUGS: TemplateSlug[] = [
   "classic-ats-professional",
   "modern-ats-technical",
   "executive-ats-professional",
+  "minimalist-classic",
+  "harvard-professional",
+  "software-engineer-ats",
+  "data-analyst-ats",
+  "project-manager-ats",
+  "finance-business-ats",
+  "sales-marketing-ats",
 ];
 
 export const TEMPLATES: Record<TemplateSlug, TemplateInfo> = {
@@ -176,6 +197,90 @@ export const TEMPLATES: Record<TemplateSlug, TemplateInfo> = {
     sections: 9,
     accentColor: "#0d9488",
   },
+  "minimalist-classic": {
+    id: "minimalist-classic",
+    name: "Minimalist Classic",
+    layout: "single-column",
+    font_family: "Calibri",
+    font_size: "10.5pt",
+    description:
+      "Clean single-column resume with simple typography for freshers and experienced professionals",
+    category: "minimalist",
+    sections: 9,
+    accentColor: "#222222",
+  },
+  "harvard-professional": {
+    id: "harvard-professional",
+    name: "Harvard Professional",
+    layout: "single-column",
+    font_family: "Georgia",
+    font_size: "11pt",
+    description:
+      "Traditional academic and corporate format with clear date alignment",
+    category: "professional",
+    sections: 9,
+    accentColor: "#000000",
+  },
+  "software-engineer-ats": {
+    id: "software-engineer-ats",
+    name: "Software Engineer",
+    layout: "single-column",
+    font_family: "Arial",
+    font_size: "11pt",
+    description:
+      "Developer-focused ATS resume emphasizing technologies, projects, and measurable outcomes",
+    category: "professional",
+    sections: 9,
+    accentColor: "#111111",
+  },
+  "data-analyst-ats": {
+    id: "data-analyst-ats",
+    name: "Data Analyst",
+    layout: "single-column",
+    font_family: "Segoe UI",
+    font_size: "11pt",
+    description:
+      "Analytics-focused resume highlighting SQL, BI tools, dashboards, and insights",
+    category: "professional",
+    sections: 9,
+    accentColor: "#1a1a1a",
+  },
+  "project-manager-ats": {
+    id: "project-manager-ats",
+    name: "Project Manager",
+    layout: "single-column",
+    font_family: "Georgia",
+    font_size: "11pt",
+    description:
+      "Delivery and leadership resume for Agile/Scrum, timelines, and stakeholder management",
+    category: "executive",
+    sections: 9,
+    accentColor: "#111111",
+  },
+  "finance-business-ats": {
+    id: "finance-business-ats",
+    name: "Finance & Business",
+    layout: "single-column",
+    font_family: "Calibri",
+    font_size: "11pt",
+    description:
+      "Finance and business resume for reporting, forecasting, budgeting, and analysis",
+    category: "professional",
+    sections: 9,
+    accentColor: "#111111",
+  },
+  "sales-marketing-ats": {
+    id: "sales-marketing-ats",
+    name: "Sales & Marketing",
+    layout: "single-column",
+    font_family: "Arial",
+    font_size: "11pt",
+    description:
+      "Sales and marketing resume emphasizing revenue growth, campaigns, and CRM tools",
+    category: "professional",
+    sections: 9,
+    accentColor: "#111111",
+  },
 };
 
 const TEMPLATE_NAME_MAP: Record<string, TemplateSlug> = {
@@ -189,6 +294,20 @@ const TEMPLATE_NAME_MAP: Record<string, TemplateSlug> = {
   "modern ats technical": "modern-ats-technical",
   "executive ats professional": "executive-ats-professional",
   "creative premium": "creative-premium",
+  "minimalist classic": "minimalist-classic",
+  "harvard professional": "harvard-professional",
+  "software engineer": "software-engineer-ats",
+  "software engineer ats": "software-engineer-ats",
+  "data analyst": "data-analyst-ats",
+  "data analyst ats": "data-analyst-ats",
+  "project manager": "project-manager-ats",
+  "project manager ats": "project-manager-ats",
+  "finance business": "finance-business-ats",
+  "finance & business": "finance-business-ats",
+  "finance and business": "finance-business-ats",
+  "sales marketing": "sales-marketing-ats",
+  "sales & marketing": "sales-marketing-ats",
+  "sales and marketing": "sales-marketing-ats",
 };
 
 function normalizeTemplateKey(id: string): string {
@@ -207,8 +326,15 @@ export function resolveTemplateSlug(
   templateId: string | null | undefined,
   settings?: Record<string, unknown>
 ): TemplateSlug {
-  if (settings?.templateSlug && isTemplateSlug(settings.templateSlug as string)) {
-    return settings.templateSlug as TemplateSlug;
+  if (settings?.templateSlug) {
+    const settingsSlug = String(settings.templateSlug);
+    if (isTemplateSlug(settingsSlug)) {
+      return settingsSlug;
+    }
+    const normalizedSettings = normalizeTemplateKey(settingsSlug);
+    if (isTemplateSlug(normalizedSettings)) {
+      return normalizedSettings;
+    }
   }
 
   if (templateId && isTemplateSlug(templateId)) {
@@ -222,6 +348,10 @@ export function resolveTemplateSlug(
     }
     if (TEMPLATE_NAME_MAP[normalized]) {
       return TEMPLATE_NAME_MAP[normalized];
+    }
+    const spaced = normalized.replace(/-/g, " ");
+    if (TEMPLATE_NAME_MAP[spaced]) {
+      return TEMPLATE_NAME_MAP[spaced];
     }
   }
 
@@ -255,6 +385,20 @@ export function getTemplateComponent(
       return ExecutiveATSProfessionalTemplate;
     case "creative-premium":
       return CreativePremiumTemplate;
+    case "minimalist-classic":
+      return MinimalistClassicTemplate;
+    case "harvard-professional":
+      return HarvardProfessionalTemplate;
+    case "software-engineer-ats":
+      return SoftwareEngineerATSTemplate;
+    case "data-analyst-ats":
+      return DataAnalystATSTemplate;
+    case "project-manager-ats":
+      return ProjectManagerATSTemplate;
+    case "finance-business-ats":
+      return FinanceBusinessATSTemplate;
+    case "sales-marketing-ats":
+      return SalesMarketingATSTemplate;
     default:
       return ClassicATSTemplate;
   }
