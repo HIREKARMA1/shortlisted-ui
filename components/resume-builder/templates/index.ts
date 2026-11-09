@@ -15,14 +15,25 @@ export { DataAnalystATSTemplate } from "./DataAnalystATS";
 export { ProjectManagerATSTemplate } from "./ProjectManagerATS";
 export { FinanceBusinessATSTemplate } from "./FinanceBusinessATS";
 export { SalesMarketingATSTemplate } from "./SalesMarketingATS";
+export { ExecutiveEliteTemplate } from "./ExecutiveElite";
+export { TechInnovatorTemplate } from "./TechInnovator";
+export { ModernLuxuryTemplate } from "./ModernLuxury";
+export { CreativePortfolioTemplate } from "./CreativePortfolio";
+export { CorporateSignatureTemplate } from "./CorporateSignature";
+export { MonochromePrestigeTemplate } from "./MonochromePrestige";
+export { FinanceExecutiveTemplate } from "./FinanceExecutive";
+export { RisingProfessionalTemplate } from "./RisingProfessional";
+export { MarketingImpactTemplate } from "./MarketingImpact";
+export { GlobalProfessionalTemplate } from "./GlobalProfessional";
 export {
   TEMPLATES,
   TEMPLATE_SLUGS,
   getTemplateList,
+  getTemplatesByTier,
   getTemplateComponent,
   getTemplateInfo,
   resolveTemplateSlug,
   isTemplateSlug,
 } from "./TemplateRegistry";
-export type { TemplateInfo, TemplateSlug } from "./TemplateRegistry";
+export type { TemplateInfo, TemplateSlug, TemplateTier } from "./TemplateRegistry";
 export type { ResumeData, ResumeTemplateProps } from "./shared/types";

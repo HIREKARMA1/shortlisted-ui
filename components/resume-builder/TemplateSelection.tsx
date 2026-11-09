@@ -7,6 +7,7 @@ import {
     getTemplateList,
     TemplateSlug,
     TEMPLATES,
+    TemplateTier,
 } from './templates/TemplateRegistry'
 import { TemplateMiniPreview } from './templates/TemplateMiniPreview'
 
@@ -21,25 +22,31 @@ export function TemplateSelection({ onTemplateSelect }: TemplateSelectionProps) 
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
 
+    const atsCount = templates.filter((t) => t.tier === 'ats').length
+    const premiumCount = templates.filter((t) => t.tier === 'premium').length
+
     const categories = [
         { id: 'all', name: 'All Templates', count: templates.length },
-        { id: 'professional', name: 'Professional', count: templates.filter(t => t.category === 'professional').length },
-        { id: 'creative', name: 'Creative', count: templates.filter(t => t.category === 'creative').length },
-        { id: 'minimalist', name: 'Minimalist', count: templates.filter(t => t.category === 'minimalist').length },
-        { id: 'executive', name: 'Executive', count: templates.filter(t => t.category === 'executive').length }
+        { id: 'ats', name: 'ATS-Friendly', count: atsCount },
+        { id: 'premium', name: 'Premium', count: premiumCount },
     ]
 
     useEffect(() => {
         let filtered = templates
 
-        if (selectedCategory !== 'all') {
-            filtered = filtered.filter(template => template.category === selectedCategory)
+        if (selectedCategory === 'ats' || selectedCategory === 'premium') {
+            filtered = filtered.filter(
+                (template) => template.tier === (selectedCategory as TemplateTier)
+            )
         }
 
         if (searchQuery) {
-            filtered = filtered.filter(template =>
-                template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                template.description.toLowerCase().includes(searchQuery.toLowerCase())
+            const q = searchQuery.toLowerCase()
+            filtered = filtered.filter(
+                (template) =>
+                    template.name.toLowerCase().includes(q) ||
+                    template.description.toLowerCase().includes(q) ||
+                    template.category.toLowerCase().includes(q)
             )
         }
 
@@ -53,19 +60,11 @@ export function TemplateSelection({ onTemplateSelect }: TemplateSelectionProps) 
         }, 300)
     }
 
-    const getCategoryColor = (category: string) => {
-        switch (category) {
-            case 'professional':
-                return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-            case 'creative':
-                return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-            case 'minimalist':
-                return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-            case 'executive':
-                return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-            default:
-                return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+    const getTierBadge = (tier: TemplateTier) => {
+        if (tier === 'premium') {
+            return 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200'
         }
+        return 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200'
     }
 
     const getTemplateCardColor = (templateId: TemplateSlug) => {
@@ -78,8 +77,6 @@ export function TemplateSelection({ onTemplateSelect }: TemplateSelectionProps) 
 
     return (
         <div className="space-y-4 sm:space-y-6">
-
-            {/* Search and Filters */}
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row gap-4">
                     <div className="w-full sm:flex-1 relative">
@@ -93,82 +90,74 @@ export function TemplateSelection({ onTemplateSelect }: TemplateSelectionProps) 
                         />
                     </div>
 
-                    <div className="w-full sm:w-auto flex items-center space-x-2">
-                        <select
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="flex-1 sm:flex-none px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent min-w-[150px] text-sm"
-                        >
-                            {categories.map(category => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name} ({category.count})
-                                </option>
-                            ))}
-                        </select>
+                    <div className="w-full sm:w-auto flex flex-wrap items-center gap-2">
+                        {categories.map((category) => (
+                            <button
+                                key={category.id}
+                                type="button"
+                                onClick={() => setSelectedCategory(category.id)}
+                                className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
+                                    selectedCategory === category.id
+                                        ? 'bg-primary-500 text-white border-primary-500'
+                                        : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:border-primary-400'
+                                }`}
+                            >
+                                {category.name} ({category.count})
+                            </button>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            {/* Templates Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
-                {filteredTemplates.map((template, index) => (
-                    <motion.div
-                        key={template.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`rounded-xl shadow-lg border transition-all duration-200 cursor-pointer hover:shadow-xl overflow-hidden ${selectedTemplate === template.id
-                            ? 'ring-4 ring-primary-500 ring-opacity-50'
-                            : 'hover:scale-[1.02]'
-                            }`}
-                        style={getTemplateCardColor(template.id as TemplateSlug)}
-                        onClick={() => handleTemplateSelect(template.id)}
-                    >
-                        <div className="p-4">
-                            <div className="relative">
-                                <TemplateMiniPreview
-                                    templateId={template.id as TemplateSlug}
-                                />
-                                {selectedTemplate === template.id && (
-                                    <div className="absolute top-3 right-3 bg-primary-500 text-white rounded-full p-2 shadow-lg z-10">
-                                        <Check className="w-4 h-4" />
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="mt-4 p-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg">
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
-                                        {template.name}
-                                    </h3>
-                                    <span className={`px-2 py-1 text-xs font-medium rounded-full w-fit ${getCategoryColor(template.category)}`}>
-                                        {template.category}
+            {selectedCategory === 'all' && (
+                <div className="space-y-8">
+                    {(['ats', 'premium'] as TemplateTier[]).map((tier) => {
+                        const tierTemplates = filteredTemplates.filter((t) => t.tier === tier)
+                        if (tierTemplates.length === 0) return null
+                        return (
+                            <section key={tier}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                        {tier === 'ats' ? 'ATS-Friendly Templates' : 'Premium Templates'}
+                                    </h2>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                                        {tierTemplates.length} templates
                                     </span>
                                 </div>
-
-                                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2 line-clamp-2">
-                                    {template.description}
-                                </p>
-
-                                <div className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
-                                    <div className="flex items-center space-x-2">
-                                        <span>Layout:</span>
-                                        <span className="font-medium">{template.layout}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <span>Font:</span>
-                                        <span className="font-medium">{template.font_family}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <span>Sections:</span>
-                                        <span className="font-medium">{template.sections}</span>
-                                    </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+                                    {tierTemplates.map((template, index) => (
+                                        <TemplateCard
+                                            key={template.id}
+                                            template={template}
+                                            index={index}
+                                            selected={selectedTemplate === template.id}
+                                            onSelect={handleTemplateSelect}
+                                            getTierBadge={getTierBadge}
+                                            getTemplateCardColor={getTemplateCardColor}
+                                        />
+                                    ))}
                                 </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+                            </section>
+                        )
+                    })}
+                </div>
+            )}
+
+            {selectedCategory !== 'all' && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+                    {filteredTemplates.map((template, index) => (
+                        <TemplateCard
+                            key={template.id}
+                            template={template}
+                            index={index}
+                            selected={selectedTemplate === template.id}
+                            onSelect={handleTemplateSelect}
+                            getTierBadge={getTierBadge}
+                            getTemplateCardColor={getTemplateCardColor}
+                        />
+                    ))}
+                </div>
+            )}
 
             {filteredTemplates.length === 0 && (
                 <div className="text-center py-12">
@@ -184,5 +173,75 @@ export function TemplateSelection({ onTemplateSelect }: TemplateSelectionProps) 
                 </div>
             )}
         </div>
+    )
+}
+
+function TemplateCard({
+    template,
+    index,
+    selected,
+    onSelect,
+    getTierBadge,
+    getTemplateCardColor,
+}: {
+    template: ReturnType<typeof getTemplateList>[number]
+    index: number
+    selected: boolean
+    onSelect: (id: string) => void
+    getTierBadge: (tier: TemplateTier) => string
+    getTemplateCardColor: (id: TemplateSlug) => { background: string; borderColor: string }
+}) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: Math.min(index * 0.05, 0.4) }}
+            className={`rounded-xl shadow-lg border transition-all duration-200 cursor-pointer hover:shadow-xl overflow-hidden ${
+                selected ? 'ring-4 ring-primary-500 ring-opacity-50' : 'hover:scale-[1.02]'
+            }`}
+            style={getTemplateCardColor(template.id as TemplateSlug)}
+            onClick={() => onSelect(template.id)}
+        >
+            <div className="p-4">
+                <div className="relative">
+                    <TemplateMiniPreview templateId={template.id as TemplateSlug} />
+                    {selected && (
+                        <div className="absolute top-3 right-3 bg-primary-500 text-white rounded-full p-2 shadow-lg z-10">
+                            <Check className="w-4 h-4" />
+                        </div>
+                    )}
+                </div>
+
+                <div className="mt-4 p-3 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
+                            {template.name}
+                        </h3>
+                        <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full w-fit ${getTierBadge(
+                                template.tier
+                            )}`}
+                        >
+                            {template.tier === 'premium' ? 'Premium' : 'ATS-Friendly'}
+                        </span>
+                    </div>
+
+                    <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-2 line-clamp-2">
+                        {template.description}
+                    </p>
+
+                    <div className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center space-x-2">
+                            <span>Layout:</span>
+                            <span className="font-medium">{template.layout}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <span>Font:</span>
+                            <span className="font-medium">{template.font_family}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
     )
 }
