@@ -120,13 +120,70 @@ export default function StudentExamEntryPage() {
     };
   }, [assessmentId, session, sessionReady]);
 
+  const mapStartError = (error: unknown): string => {
+    const axiosError = error as {
+      response?: { status?: number; data?: { detail?: string | { msg?: string }[] } };
+      code?: string;
+      message?: string;
+    };
+    const status = axiosError.response?.status;
+    const rawDetail = axiosError.response?.data?.detail;
+    const detail =
+      typeof rawDetail === 'string'
+        ? rawDetail
+        : Array.isArray(rawDetail)
+          ? rawDetail.map((item) => item?.msg).filter(Boolean).join(' ')
+          : '';
+
+    const trialCode = parseTrialError(detail);
+    if (trialCode) {
+      const message = detail.includes(':') ? detail.split(':').slice(1).join(':').trim() : detail;
+      return (
+        message ||
+        'Your free assessment attempt has been used. Upgrade to Premium to unlock unlimited assessment attempts.'
+      );
+    }
+    if (status === 404 || /not found/i.test(detail)) {
+      return 'Assessment could not be found.';
+    }
+    if (status === 403 || /not authorized|only available|subscription required|batch/i.test(detail)) {
+      return detail || 'You are not authorized to take this assessment.';
+    }
+    if (
+      status === 400 &&
+      /not open|not started|has ended|not currently available|window/i.test(detail)
+    ) {
+      return detail || 'Assessment is not currently available.';
+    }
+    if (status === 400 && /not ready|configuration|incomplete|sync/i.test(detail)) {
+      return detail || 'Assessment configuration is incomplete.';
+    }
+    if (status === 400 && /session|attempt|already taken|could not open/i.test(detail)) {
+      return detail || 'Exam session could not be created.';
+    }
+    if (status && status >= 500) {
+      return 'Temporary server error. Please try again.';
+    }
+    if (
+      !axiosError.response &&
+      (axiosError.code === 'ERR_NETWORK' || /network error/i.test(axiosError.message || ''))
+    ) {
+      return 'Temporary server error. Please try again.';
+    }
+    if (detail && detail !== 'Internal Server Error' && !/network error/i.test(detail)) {
+      return detail;
+    }
+    return 'Could not start the exam. Please try again.';
+  };
+
   const handleStartExam = async () => {
     if (
       !session ||
       session.userType !== 'student' ||
       !exam ||
       eligibility?.can_start === false ||
-      eligibility?.is_batch_member === false
+      eligibility?.is_batch_member === false ||
+      starting
     ) {
       return;
     }
@@ -142,15 +199,14 @@ export default function StudentExamEntryPage() {
         window.location.href = res.solviq_url as string;
         return;
       }
-      setStartError('Could not start the exam. Please try again.');
+      setStartError('Exam session could not be created. Please try again.');
     } catch (e: unknown) {
       const detail = (e as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
       if (parseTrialError(detail)) {
         setUpgradeMode(parseTrialError(detail) === 'TRIAL_EXPIRED' ? 'expired' : 'limit');
         return;
       }
-      const msg = detail || (e as Error)?.message || 'Could not start the exam.';
-      setStartError(typeof msg === 'string' ? msg : 'Could not start the exam.');
+      setStartError(mapStartError(e));
     } finally {
       setStarting(false);
     }

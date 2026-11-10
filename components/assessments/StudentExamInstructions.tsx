@@ -35,6 +35,14 @@ export interface StudentExamEligibility {
   percentage?: number | null
   total_score?: number | null
   submitted_at?: string | null
+  access_type?: string | null
+  upgrade_required?: boolean
+  assessments_allowed?: number | null
+  assessments_used?: number | null
+  unlimited_assessments?: boolean
+  reason?: string | null
+  message?: string | null
+  has_open_attempt?: boolean
 }
 
 export interface PublicExamBrief {
@@ -213,11 +221,22 @@ export function StudentExamInstructions({
 
   const hasCompleted = eligibility?.has_completed_attempt === true
   const batchBlocked = isStudent && eligibility?.is_batch_member === false
+  const upgradeRequired =
+    isStudent &&
+    !hasCompleted &&
+    !batchBlocked &&
+    eligibility?.upgrade_required === true &&
+    eligibility?.has_open_attempt !== true
+  const upgradeMessage =
+    eligibility?.message ||
+    'Your free assessment attempt has been used. Upgrade to Premium to unlock unlimited assessment attempts.'
 
   const canBegin =
     isStudent &&
     !hasCompleted &&
     !batchBlocked &&
+    !upgradeRequired &&
+    eligibility?.can_start !== false &&
     exam.is_within_time_window &&
     !exam.has_ended &&
     !exam.has_not_started
@@ -504,8 +523,41 @@ export function StudentExamInstructions({
               You must be assigned to{' '}
               <strong>{eligibility?.batch_name || 'the correct batch'}</strong> to take this assessment.
             </p>
+          ) : upgradeRequired ? (
+            <div className="mx-auto max-w-lg space-y-4 text-center">
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+                <p className="font-semibold text-amber-900">Upgrade to Premium</p>
+                <p className="mt-2 leading-relaxed">{upgradeMessage}</p>
+                {typeof eligibility?.assessments_used === 'number' &&
+                  typeof eligibility?.assessments_allowed === 'number' && (
+                    <p className="mt-2 text-xs text-amber-800">
+                      Free trial assessments used: {eligibility.assessments_used} /{' '}
+                      {eligibility.assessments_allowed}
+                    </p>
+                  )}
+              </div>
+              <Link
+                href="/subscribe"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-brand-orange px-5 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-sm hover:opacity-95"
+              >
+                Upgrade to Premium
+              </Link>
+              <p className="text-xs text-gray-500">
+                You can still review the instructions above. Your previous attempt remains available if you
+                already started one.
+              </p>
+            </div>
           ) : (
             <div className="space-y-6 max-w-2xl mx-auto">
+              {eligibility?.access_type === 'trial' &&
+                !eligibility.unlimited_assessments &&
+                typeof eligibility.assessments_used === 'number' &&
+                typeof eligibility.assessments_allowed === 'number' && (
+                  <p className="rounded-md border border-blue-100 bg-blue-50 px-3 py-2 text-center text-xs text-blue-900">
+                    Free trial: {eligibility.assessments_used} of {eligibility.assessments_allowed} assessment
+                    attempt{eligibility.assessments_allowed === 1 ? '' : 's'} used
+                  </p>
+                )}
               <Checkbox
                 id="exam-declaration"
                 checked={declared}
@@ -546,7 +598,7 @@ export function StudentExamInstructions({
                     )}
                   </span>
                 </Button>
-                {!canBegin && isStudent && !hasCompleted && !batchBlocked && (
+                {!canBegin && isStudent && !hasCompleted && !batchBlocked && !upgradeRequired && (
                   <p className="text-xs text-gray-500 text-center flex items-center gap-1">
                     <Clock className="h-3.5 w-3.5" />
                     The begin button is available only during the scheduled exam window.

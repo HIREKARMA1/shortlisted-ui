@@ -21,7 +21,8 @@ export function AssessmentEditPage({ role }: { role: DashboardRole }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [initialData, setInitialData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [batches, setBatches] = useState<Array<{ id: string; name: string }>>([]);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export function AssessmentEditPage({ role }: { role: DashboardRole }) {
       if (!id) return;
       try {
         setIsLoading(true);
+        setLoadError(null);
         const data = await api.getAssessment(id);
         const batchIds =
           data.batch_ids ||
@@ -71,7 +73,7 @@ export function AssessmentEditPage({ role }: { role: DashboardRole }) {
           },
         });
       } catch (err: any) {
-        setError(err.message || 'Failed to load assessment');
+        setLoadError(err.message || 'Failed to load assessment');
       } finally {
         setIsLoading(false);
       }
@@ -82,11 +84,11 @@ export function AssessmentEditPage({ role }: { role: DashboardRole }) {
   const handleSubmit = async (formData: any) => {
     try {
       setIsSubmitting(true);
-      setError(null);
+      setSubmitError(null);
       await api.updateAssessment(id, formData);
       router.push(basePath);
     } catch (err: any) {
-      setError(err.response?.data?.detail || err.message || 'Failed to update assessment');
+      setSubmitError(err.response?.data?.detail || err.message || 'Failed to update assessment');
     } finally {
       setIsSubmitting(false);
     }
@@ -102,12 +104,12 @@ export function AssessmentEditPage({ role }: { role: DashboardRole }) {
     );
   }
 
-  if (error) {
+  if (loadError) {
     return (
       <DashboardLayout role={role} title="Edit Assessment">
         <div className="flex h-[calc(100vh-200px)] items-center justify-center">
           <div className="max-w-md rounded-2xl border border-red-100 bg-red-50 p-8 text-center">
-            <p className="mb-4 font-medium text-red-600">{error}</p>
+            <p className="mb-4 font-medium text-red-600">{loadError}</p>
             <Button variant="secondary" onClick={() => router.push(basePath)}>
               Back to List
             </Button>
@@ -132,6 +134,12 @@ export function AssessmentEditPage({ role }: { role: DashboardRole }) {
             {initialData?.assessment_name || 'Edit Assessment'}
           </h1>
         </div>
+
+        {submitError ? (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+            {submitError}
+          </div>
+        ) : null}
 
         <AssessmentForm
           onSubmit={handleSubmit}
