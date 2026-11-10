@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Calendar, CheckCircle2, Clock, FileText } from 'lucide-react';
+import { BarChart3, Calendar, CheckCircle2, Clock, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import {
@@ -26,6 +26,8 @@ export type StudentAssessmentItem = {
   has_given?: boolean;
   listed_only?: boolean;
   percentage?: number | null;
+  results_published?: boolean;
+  result_status?: string | null;
 };
 
 interface StudentAssessmentCardProps {
@@ -52,6 +54,8 @@ export function StudentAssessmentCard({
 }: StudentAssessmentCardProps) {
   const cardColors = getAssessmentCardColorScheme(cardIndex);
   const examUrl = `/assessments/exam/${assessment.id}`;
+  const resultsUrl = `/dashboard/student/assessments/${assessment.id}/results`;
+  const showViewResults = Boolean(assessment.results_published);
 
   return (
     <motion.div
@@ -112,20 +116,37 @@ export function StudentAssessmentCard({
           {assessment.instructions?.trim() || 'No description provided.'}
         </p>
 
-        {assessment.has_completed && assessment.percentage != null ? (
-          <p className="mb-4 text-sm font-medium text-green-700">
-            Score: {assessment.percentage}%
+        {assessment.has_completed ? (
+          <p className="mb-4 text-sm font-medium text-slate-700">
+            {assessment.results_published && assessment.percentage != null
+              ? `Score: ${assessment.percentage}%`
+              : assessment.result_status === 'evaluation_pending'
+                ? 'Evaluation pending'
+                : 'Completed · Results not published yet'}
           </p>
         ) : null}
 
-        <div className="mt-auto pt-4">
+        <div className="mt-auto space-y-2 pt-4">
           {assessment.listed_only ? null : (
-            <Link href={examUrl} className="w-full">
-              <Button className="flex h-9 w-full items-center gap-2 bg-indigo-600 text-sm font-semibold normal-case tracking-normal hover:bg-indigo-700">
-                <FileText className="h-4 w-4" />
-                {assessment.has_completed ? 'View assessment' : 'View instructions'}
-              </Button>
-            </Link>
+            <>
+              <Link href={examUrl} className="block w-full">
+                <Button className="flex h-9 w-full items-center justify-center gap-2 bg-indigo-600 text-sm font-semibold normal-case tracking-normal hover:bg-indigo-700">
+                  <FileText className="h-4 w-4" />
+                  {assessment.has_completed ? 'View assessment' : 'View instructions'}
+                </Button>
+              </Link>
+              {showViewResults ? (
+                <Link href={resultsUrl} className="block w-full">
+                  <Button
+                    variant="secondary"
+                    className="flex h-9 w-full items-center justify-center gap-2 text-sm font-semibold normal-case tracking-normal"
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    View Results
+                  </Button>
+                </Link>
+              ) : null}
+            </>
           )}
         </div>
       </div>

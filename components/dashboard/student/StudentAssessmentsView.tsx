@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { ChevronDown, Filter } from 'lucide-react';
+import { ClipboardCheck } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAuth } from '@/hooks/useAuth';
 import { useStudentActiveGate } from '@/hooks/useStudentActiveGate';
+import { useTrialUi } from '@/components/dashboard/student/StudentTrialChrome';
 import { api } from '@/lib/api';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import {
@@ -14,19 +16,21 @@ import {
 } from '@/components/assessments/StudentAssessmentCard';
 import { cn } from '@/lib/utils';
 
-type AssessmentFilter = 'pending' | 'given';
-
-const FILTER_OPTIONS: AssessmentFilter[] = ['pending', 'given'];
-
 export function StudentAssessmentsView() {
   const { t } = useTranslation();
   const { logout } = useAuth();
   useStudentActiveGate();
+  const { trial } = useTrialUi();
   const [assessments, setAssessments] = useState<StudentAssessmentItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState<AssessmentFilter>('pending');
-  const [filterOpen, setFilterOpen] = useState(false);
-  const filterRef = useRef<HTMLDivElement>(null);
+
+  const assessmentLimit = trial?.limits?.assessments;
+  const showTrialQuota = trial?.plan === 'trial' || trial?.plan === 'expired';
+  const trialExhausted =
+    showTrialQuota &&
+    typeof assessmentLimit?.used === 'number' &&
+    typeof assessmentLimit?.limit === 'number' &&
+    assessmentLimit.used >= assessmentLimit.limit;
 
   useEffect(() => {
     setLoading(true);
@@ -38,27 +42,6 @@ export function StudentAssessmentsView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        setFilterOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const filteredAssessments = useMemo(() => {
-    return assessments.filter((row) =>
-      filter === 'given' ? row.has_given || row.has_completed : !(row.has_given || row.has_completed)
-    );
-  }, [assessments, filter]);
-
-  const filterLabel =
-    filter === 'given'
-      ? t('dashboard.studentAssessments.filterGiven')
-      : t('dashboard.studentAssessments.filterPending');
-
   return (
     <DashboardLayout
       role="student"
@@ -66,45 +49,36 @@ export function StudentAssessmentsView() {
       subtitle={t('dashboard.studentAssessments.subtitle')}
       onLogout={logout}
     >
-      <div className="mb-6 flex justify-end">
-        <div className="relative" ref={filterRef}>
-          <button
-            type="button"
-            onClick={() => setFilterOpen((open) => !open)}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:border-gray-300"
-          >
-            <Filter className="h-4 w-4" />
-            {t('dashboard.studentAssessments.filter')}
-            <span className="text-brand-blue">{filterLabel}</span>
-            <ChevronDown className={cn('h-4 w-4 transition-transform', filterOpen && 'rotate-180')} />
-          </button>
-
-          {filterOpen && (
-            <div className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-              {FILTER_OPTIONS.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => {
-                    setFilter(option);
-                    setFilterOpen(false);
-                  }}
-                  className={cn(
-                    'w-full px-4 py-2.5 text-left text-sm transition-colors',
-                    filter === option
-                      ? 'bg-blue-50 font-semibold text-brand-blue'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  )}
-                >
-                  {option === 'given'
-                    ? t('dashboard.studentAssessments.filterGiven')
-                    : t('dashboard.studentAssessments.filterPending')}
-                </button>
-              ))}
-            </div>
+      {showTrialQuota && assessmentLimit ? (
+        <div
+          className={cn(
+            'mb-6 rounded-xl border px-4 py-3 text-sm',
+            trialExhausted
+              ? 'border-amber-200 bg-amber-50 text-amber-950'
+              : 'border-blue-100 bg-blue-50 text-blue-950'
           )}
+        >
+          <p className="font-medium">
+            {t('dashboard.studentAssessments.trialQuota', {
+              used: String(assessmentLimit.used ?? 0),
+              limit: String(assessmentLimit.limit ?? 1),
+            })}
+          </p>
+          {trialExhausted ? (
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm leading-relaxed">
+                {t('dashboard.studentAssessments.trialQuotaExhausted')}
+              </p>
+              <Link
+                href="/subscribe"
+                className="inline-flex shrink-0 items-center justify-center rounded-md bg-brand-orange px-4 py-2 text-xs font-bold uppercase tracking-wide text-white"
+              >
+                {t('dashboard.studentAssessments.upgradePremium')}
+              </Link>
+            </div>
+          ) : null}
         </div>
-      </div>
+      ) : null}
 
       {loading ? (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -115,15 +89,13 @@ export function StudentAssessmentsView() {
             />
           ))}
         </div>
-      ) : filteredAssessments.length === 0 ? (
+      ) : assessments.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50/50 px-4 py-24 text-center">
           <div className="mb-4 rounded-full bg-white p-4 shadow-sm">
-            <Filter className="h-8 w-8 text-gray-400" />
+            <ClipboardCheck className="h-8 w-8 text-gray-400" />
           </div>
           <h3 className="mb-1 text-lg font-semibold text-gray-900">
-            {filter === 'given'
-              ? t('dashboard.studentAssessments.emptyGiven')
-              : t('dashboard.studentAssessments.empty')}
+            {t('dashboard.studentAssessments.empty')}
           </h3>
           <p className="mx-auto max-w-sm text-gray-500">
             {t('dashboard.studentAssessments.solviqNote')}
@@ -131,7 +103,7 @@ export function StudentAssessmentsView() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 pb-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredAssessments.map((row, index) => (
+          {assessments.map((row, index) => (
             <StudentAssessmentCard
               key={row.id}
               assessment={row}

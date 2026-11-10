@@ -1,5 +1,5 @@
-import { AssessmentDetailPage } from '@/components/dashboard/assessments/AssessmentDetailPage';
+import { AssessmentManagementDetailPage } from '@/components/dashboard/assessments/AssessmentManagementDetailPage';
 
 export default function SuperAdminAssessmentDetailPage() {
-  return <AssessmentDetailPage role="super_admin" />;
+  return <AssessmentManagementDetailPage role="super_admin" />;
 }
