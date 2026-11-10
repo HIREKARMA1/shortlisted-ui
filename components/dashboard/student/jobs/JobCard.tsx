@@ -6,6 +6,7 @@ import {
   Briefcase,
   CheckCircle,
   Clock,
+  Eye,
   MapPin,
   Users,
   X,
@@ -88,20 +89,21 @@ export function JobCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-line-default/70 bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-elevated"
+      className="relative flex h-full flex-col rounded-2xl border border-line-default/80 bg-white p-5 shadow-card transition-shadow duration-200 hover:shadow-elevated"
+      style={{ backgroundColor: scheme.cardBg }}
     >
-      <div className="relative mb-3 flex items-start justify-between gap-3">
+      <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5">
           {job.company_logo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={job.company_logo}
               alt={company}
-              className="h-9 w-9 shrink-0 rounded-lg object-cover ring-1 ring-line-default/70"
+              className="h-9 w-9 shrink-0 rounded-full object-cover ring-2 ring-white/80"
             />
           ) : (
             <div
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ring-2 ring-white/80"
               style={{ backgroundColor: scheme.accent }}
             >
               {companyInitial}
@@ -113,26 +115,26 @@ export function JobCard({
         </div>
 
         {job.job_type && (
-          <span
-            className="shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold"
-            style={{ backgroundColor: scheme.badgeBg, color: scheme.accent }}
-          >
+          <span className="shrink-0 text-xs font-medium" style={{ color: scheme.muted }}>
             {typeLabel}
           </span>
         )}
       </div>
 
-      <h3 className="relative mb-3 line-clamp-2 text-lg font-bold leading-snug text-ink-primary">
+      <h3
+        className="mb-3 line-clamp-2 text-xl font-bold leading-snug"
+        style={{ color: scheme.accent }}
+      >
         {job.title}
       </h3>
 
       <div
-        className="relative mb-4 rounded-xl px-3.5 py-3"
+        className="mb-4 rounded-xl border border-slate-200/80 px-3.5 py-3"
         style={{ backgroundColor: scheme.softBg }}
       >
         <p
           className="text-[10px] font-semibold uppercase tracking-wider"
-          style={{ color: scheme.accent }}
+          style={{ color: scheme.muted }}
         >
           {payLabel}
         </p>
@@ -163,14 +165,13 @@ export function JobCard({
           {job.skills_required.slice(0, 3).map((skill) => (
             <span
               key={skill}
-              className="rounded-full border border-line-default bg-white px-2.5 py-1 text-xs font-medium"
-              style={{ color: scheme.accent }}
+              className="rounded-full border border-slate-200 bg-soft px-2.5 py-1 text-xs font-medium text-ink-secondary"
             >
               {skill}
             </span>
           ))}
           {job.skills_required.length > 3 && (
-            <span className="rounded-full border border-line-default bg-white px-2.5 py-1 text-xs font-medium text-ink-muted">
+            <span className="rounded-full border border-slate-200 bg-soft px-2.5 py-1 text-xs font-medium text-ink-muted">
               +{job.skills_required.length - 3}
             </span>
           )}
@@ -181,14 +182,12 @@ export function JobCard({
         <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-ink-muted">{job.description}</p>
       )}
 
-      <div className="mb-4 mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-line-default/70 pt-3 text-xs text-ink-muted">
+      <div className="mb-4 mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-slate-300/60 pt-3 text-xs text-ink-muted">
         {closesLabel ? (
           <div className="flex items-center gap-1.5">
             <span
-              className={cn(
-                'h-2 w-2 shrink-0 rounded-full',
-                expired ? 'bg-brand-red' : 'bg-brand-orange'
-              )}
+              className={cn('h-2 w-2 shrink-0 rounded-full')}
+              style={{ backgroundColor: expired ? '#d64246' : scheme.accent }}
             />
             <span className={cn(expired && 'text-brand-red')}>{closesLabel}</span>
           </div>
@@ -203,7 +202,7 @@ export function JobCard({
       </div>
 
       {status && status !== 'none' && (
-        <div className="mb-3 text-center text-xs font-medium text-brand-blue">
+        <div className="mb-3 text-center text-xs font-medium" style={{ color: scheme.accent }}>
           {status === 'applied' && (
             <span className="inline-flex items-center gap-1">
               <CheckCircle className="h-3.5 w-3.5" />
@@ -237,20 +236,21 @@ export function JobCard({
         </div>
       )}
 
-      <div className="relative flex gap-2">
+      <div className="flex gap-2">
         <button
           type="button"
           onClick={onViewDescription}
-          className="inline-flex min-w-0 flex-1 items-center justify-center rounded-xl border border-line-default bg-white px-3 py-2.5 text-xs font-semibold text-ink-primary transition hover:border-ink-primary/30 hover:bg-soft"
+          className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-semibold text-ink-primary transition hover:bg-soft"
         >
-          {t('dashboard.jobs.viewJd')}
+          <Eye className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate">{t('dashboard.jobs.exploreDetails')}</span>
         </button>
         {!placed && (
           <button
             type="button"
             onClick={onApply}
             disabled={applyDisabled}
-            className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-bold text-white shadow-sm transition enabled:hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-55"
+            className="inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-bold text-white shadow-sm transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-55"
             style={{ backgroundColor: applyDisabled ? '#94a3b8' : scheme.accent }}
           >
             <span className="truncate">{applyLabel}</span>

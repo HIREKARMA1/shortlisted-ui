@@ -2,22 +2,24 @@ import type { StudentApplication, StudentJob } from '@/lib/types/studentJobs';
 
 export type JobCardScheme = {
   /** Hex colors used via inline styles so Tailwind purge cannot drop them */
+  cardBg: string;
   accent: string;
   softBg: string;
-  badgeBg: string;
+  muted: string;
 };
 
-/** Rotating white-card accent themes */
+/** Shared cool-blue accent on white cards */
 export const JOB_CARD_SCHEMES: JobCardScheme[] = [
-  { accent: '#2563eb', softBg: '#eff6ff', badgeBg: '#dbeafe' },
-  { accent: '#059669', softBg: '#ecfdf5', badgeBg: '#d1fae5' },
-  { accent: '#7c3aed', softBg: '#f5f3ff', badgeBg: '#ede9fe' },
-  { accent: '#0891b2', softBg: '#ecfeff', badgeBg: '#cffafe' },
-  { accent: '#d97706', softBg: '#fffbeb', badgeBg: '#fef3c7' },
+  {
+    cardBg: '#ffffff',
+    accent: '#123a7a',
+    softBg: '#eff4fb',
+    muted: '#64748b',
+  },
 ];
 
-export function getJobCardScheme(index: number): JobCardScheme {
-  return JOB_CARD_SCHEMES[index % JOB_CARD_SCHEMES.length];
+export function getJobCardScheme(_index?: number): JobCardScheme {
+  return JOB_CARD_SCHEMES[0];
 }
 
 export function normalizeJob(raw: Record<string, unknown>, applicationStatus?: string): StudentJob {
