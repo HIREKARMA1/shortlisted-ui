@@ -1,5 +1,5 @@
-import { AssessmentsListPage } from '@/components/dashboard/assessments/AssessmentsListPage';
+import { AssessmentManagementPage } from '@/components/dashboard/assessments/AssessmentManagementPage';
 
 export default function AdminAssessmentsPage() {
-  return <AssessmentsListPage role="admin" />;
+  return <AssessmentManagementPage role="admin" />;
 }

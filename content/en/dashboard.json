@@ -54,7 +54,7 @@
       "classTitle": "You've used your free class",
       "classBody": "Your 7-day free trial includes 1 class. Upgrade to join every class in your batch.",
       "assessmentTitle": "You've used your free assessment",
-      "assessmentBody": "Your 7-day free trial includes 1 assessment. Upgrade to take every assessment.",
+      "assessmentBody": "Your free assessment attempt has been used. Upgrade to Premium to unlock unlimited assessment attempts.",
       "mockInterviewTitle": "You've used your free mock interview",
       "mockInterviewBody": "Your 7-day free trial includes 1 mock interview. Upgrade to practise every mock interview."
     },
@@ -402,7 +402,7 @@
     "deleteSuccess": "Assessment deleted."
   },
   "studentAssessments": {
-    "title": "My assessments",
+    "title": "Assessments",
     "subtitle": "Take batch assessments powered by Disha",
     "empty": "No assessments for your batch right now.",
     "start": "Start assessment",
@@ -411,6 +411,9 @@
     "completed": "Completed",
     "score": "Score: {{score}}%",
     "solviqNote": "Assessments open in Solviq when you click Start.",
+    "trialQuota": "Free trial assessment attempts: {{used}} / {{limit}} used",
+    "trialQuotaExhausted": "Your free assessment attempt has been used. Upgrade to Premium to unlock unlimited assessment attempts.",
+    "upgradePremium": "Upgrade to Premium",
     "status": {
       "upcoming": "Upcoming",
       "live": "Live now",

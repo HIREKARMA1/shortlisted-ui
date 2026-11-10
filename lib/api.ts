@@ -791,6 +791,56 @@ class ApiClient {
     return res.data;
   }
 
+  async getAssessmentManagement(params?: {
+    search?: string;
+    source?: string;
+    visibility?: string;
+    results_status?: string;
+    include_removed?: boolean;
+    skip?: number;
+    limit?: number;
+  }) {
+    const res = await this.client.get('/admin/assessments/management', { params });
+    return res.data as {
+      items: Record<string, unknown>[];
+      total: number;
+      skip: number;
+      limit: number;
+    };
+  }
+
+  async getAssessmentManagementDetail(assessmentId: string) {
+    const res = await this.client.get(`/admin/assessments/management/${assessmentId}`);
+    return res.data;
+  }
+
+  async setAssessmentVisibility(assessmentId: string, isVisible: boolean) {
+    const res = await this.client.patch(`/admin/assessments/management/${assessmentId}/visibility`, {
+      is_visible: isVisible,
+    });
+    return res.data;
+  }
+
+  async softRemoveAssessment(assessmentId: string) {
+    const res = await this.client.delete(`/admin/assessments/management/${assessmentId}`);
+    return res.data;
+  }
+
+  async getAssessmentManagementResults(assessmentId: string) {
+    const res = await this.client.get(`/admin/assessments/management/${assessmentId}/results`);
+    return res.data;
+  }
+
+  async publishAssessmentResults(assessmentId: string) {
+    const res = await this.client.post(`/admin/assessments/management/${assessmentId}/publish-results`);
+    return res.data;
+  }
+
+  async unpublishAssessmentResults(assessmentId: string) {
+    const res = await this.client.post(`/admin/assessments/management/${assessmentId}/unpublish-results`);
+    return res.data;
+  }
+
   async createAssessment(data: Record<string, unknown>) {
     const res = await this.client.post('/admin/assessments/create', data);
     return res.data;
@@ -840,6 +890,11 @@ class ApiClient {
     return res.data;
   }
 
+  async getStudentAssessmentResult(assessmentId: string) {
+    const res = await this.client.get(`/students/me/assessments/${assessmentId}/result`);
+    return res.data;
+  }
+
   async getStudentExam(assessmentId: string) {
     const res = await this.client.get(`/students/me/assessments/${assessmentId}/exam`);
     return res.data;
@@ -862,8 +917,14 @@ class ApiClient {
     try {
       const res = await this.client.post(`/assessments/${assessmentId}/token`, body || {});
       return res.data;
-    } catch {
-      return this.startAssessment(assessmentId);
+    } catch (tokenError) {
+      // Compatibility fallback for older backends that only expose /start.
+      // Prefer the fallback error when both fail so the UI can map status/detail.
+      try {
+        return await this.startAssessment(assessmentId);
+      } catch (startError) {
+        throw startError || tokenError;
+      }
     }
   }
 

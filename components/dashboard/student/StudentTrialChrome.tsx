@@ -15,11 +15,19 @@ const WELCOME_KEY = 'shortlisted_trial_welcome';
 const LAST_DAY_KEY = 'shortlisted_trial_lastday';
 const EXPIRED_KEY = 'shortlisted_trial_expired_notice';
 
+type TrialLimit = { used: number; limit: number };
+
 type TrialState = {
   plan: string;
   daysLeft: number;
   endsAt: string | null;
   offlinePaymentStatus: string | null;
+  limits?: {
+    applications?: TrialLimit;
+    classes?: TrialLimit;
+    assessments?: TrialLimit;
+    mock_interviews?: TrialLimit;
+  };
 };
 
 type TrialUiContextValue = {
@@ -79,6 +87,7 @@ export function StudentTrialProvider({ children }: { children: ReactNode }) {
           trial_days_left?: number;
           trial_ends_at?: string | null;
           offline_payment?: { status?: string | null };
+          limits?: TrialState['limits'];
         };
         const plan = String(student?.plan || '');
         const daysLeft = Number(student?.trial_days_left || 0);
@@ -86,7 +95,7 @@ export function StudentTrialProvider({ children }: { children: ReactNode }) {
         const offlinePaymentStatus = student?.offline_payment?.status
           ? String(student.offline_payment.status)
           : null;
-        setTrial({ plan, daysLeft, endsAt, offlinePaymentStatus });
+        setTrial({ plan, daysLeft, endsAt, offlinePaymentStatus, limits: student?.limits });
 
         if (plan === 'trial' && !localStorage.getItem(WELCOME_KEY)) {
           localStorage.setItem(WELCOME_KEY, '1');
