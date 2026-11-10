@@ -323,7 +323,7 @@ export function AssessmentManagementPage({ role }: { role: DashboardRole }) {
               </span>
               <div className="flex items-center gap-2">
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   disabled={page <= 0}
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   className="h-8 normal-case tracking-normal"
@@ -334,7 +334,7 @@ export function AssessmentManagementPage({ role }: { role: DashboardRole }) {
                   Page {page + 1} / {pageCount}
                 </span>
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   disabled={page + 1 >= pageCount}
                   onClick={() => setPage((p) => p + 1)}
                   className="h-8 normal-case tracking-normal"

@@ -890,6 +890,11 @@ class ApiClient {
     return res.data;
   }
 
+  async getStudentAssessmentResult(assessmentId: string) {
+    const res = await this.client.get(`/students/me/assessments/${assessmentId}/result`);
+    return res.data;
+  }
+
   async getStudentEvents(params?: {
     page?: number;
     limit?: number;
