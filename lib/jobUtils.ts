@@ -1,19 +1,19 @@
 import type { StudentApplication, StudentJob } from '@/lib/types/studentJobs';
 
 export type JobCardScheme = {
-  bg: string;
-  border: string;
-  hover: string;
+  /** Hex colors used via inline styles so Tailwind purge cannot drop them */
+  accent: string;
+  softBg: string;
+  badgeBg: string;
 };
 
-/** Rotating card backgrounds using Shortlisted brand palette */
+/** Rotating white-card accent themes */
 export const JOB_CARD_SCHEMES: JobCardScheme[] = [
-  { bg: 'bg-primary-50', border: 'border-primary-100', hover: 'hover:border-brand-blue' },
-  { bg: 'bg-secondary-50', border: 'border-secondary-100', hover: 'hover:border-brand-sky' },
-  { bg: 'bg-orange-50', border: 'border-orange-200', hover: 'hover:border-brand-orange' },
-  { bg: 'bg-green-50', border: 'border-green-200', hover: 'hover:border-brand-green' },
-  { bg: 'bg-yellow-50', border: 'border-yellow-200', hover: 'hover:border-brand-yellow' },
-  { bg: 'bg-primary-50', border: 'border-primary-200', hover: 'hover:border-brand-blue' },
+  { accent: '#2563eb', softBg: '#eff6ff', badgeBg: '#dbeafe' },
+  { accent: '#059669', softBg: '#ecfdf5', badgeBg: '#d1fae5' },
+  { accent: '#7c3aed', softBg: '#f5f3ff', badgeBg: '#ede9fe' },
+  { accent: '#0891b2', softBg: '#ecfeff', badgeBg: '#cffafe' },
+  { accent: '#d97706', softBg: '#fffbeb', badgeBg: '#fef3c7' },
 ];
 
 export function getJobCardScheme(index: number): JobCardScheme {
@@ -117,9 +117,10 @@ export function formatSalaryRange(
 ): string {
   if (min == null && max == null) return notSpecified;
   const fmt = (n: number) => n.toLocaleString('en-IN');
-  if (min != null && max != null) return `${currency} ${fmt(min)} – ${fmt(max)}`;
-  if (min != null) return `${currency} ${fmt(min)}+`;
-  if (max != null) return `${currency} up to ${fmt(max)}`;
+  const prefix = currency === 'INR' ? '₹' : `${currency} `;
+  if (min != null && max != null) return `${prefix}${fmt(min)} – ${fmt(max)}`;
+  if (min != null) return `${prefix}${fmt(min)}+`;
+  if (max != null) return `${prefix}up to ${fmt(max)}`;
   return notSpecified;
 }
 
@@ -129,7 +130,7 @@ export function formatExperienceRange(
   notSpecified = 'Not specified'
 ): string {
   if (min == null && max == null) return notSpecified;
-  if (min != null && max != null) return `${min}–${max} years`;
+  if (min != null && max != null) return `${min} – ${max} years`;
   if (min != null) return `${min}+ years`;
   if (max != null) return `Up to ${max} years`;
   return notSpecified;
@@ -140,6 +141,20 @@ export function formatJobDate(value?: string | null): string {
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return '-';
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+export function formatJobDateShort(value?: string | null): string {
+  if (!value) return '-';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '-';
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+export function getDaysUntilDeadline(deadline?: string | null): number | null {
+  if (!deadline) return null;
+  const d = new Date(deadline);
+  if (Number.isNaN(d.getTime())) return null;
+  return Math.ceil((d.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 }
 
 export function isDeadlineExpired(deadline?: string | null): boolean {
