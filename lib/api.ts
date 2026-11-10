@@ -890,8 +890,34 @@ class ApiClient {
     return res.data;
   }
 
-  async getStudentAssessmentResult(assessmentId: string) {
-    const res = await this.client.get(`/students/me/assessments/${assessmentId}/result`);
+  async getStudentEvents(params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+    category?: string;
+  }) {
+    const res = await this.client.get('/students/me/events', {
+      params: {
+        page: params?.page,
+        limit: params?.limit,
+        search: params?.search || undefined,
+        status: params?.status || undefined,
+        category: params?.category || undefined,
+      },
+    });
+    return res.data;
+  }
+
+  async getStudentUpcomingEvents(limit = 5) {
+    const res = await this.client.get('/students/me/events/upcoming', {
+      params: { limit },
+    });
+    return res.data;
+  }
+
+  async getStudentEvent(slug: string) {
+    const res = await this.client.get(`/students/me/events/${encodeURIComponent(slug)}`);
     return res.data;
   }
 

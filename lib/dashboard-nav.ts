@@ -21,6 +21,7 @@ import {
   Mail,
   MessagesSquare,
   CalendarDays,
+  Calendar,
 } from 'lucide-react';
 
 export type DashboardRole = 'student' | 'admin' | 'super_admin';
@@ -39,6 +40,7 @@ export const studentNav: NavItem[] = [
   { href: '/dashboard/student/jobs', labelKey: 'common.nav.jobs', icon: Briefcase },
   { href: '/dashboard/student/applications', labelKey: 'common.nav.applications', icon: ClipboardList },
   { href: '/dashboard/student/classes', labelKey: 'common.nav.classes', icon: Video },
+  { href: '/dashboard/student/events', labelKey: 'common.nav.events', icon: Calendar },
   { href: '/dashboard/student/interviews', labelKey: 'common.nav.interviews', icon: CalendarDays },
   { href: '/dashboard/student/assessments', labelKey: 'common.nav.assessments', icon: ClipboardCheck },
   { href: '/dashboard/student/mock-interviews', labelKey: 'common.nav.mockInterviews', icon: MessagesSquare },

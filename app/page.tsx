@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
 import { HomePage } from '@/components/landing/home/HomePage';
 
 export const metadata: Metadata = {
@@ -39,18 +38,10 @@ export const metadata: Metadata = {
   },
 };
 
-const display = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-home-display',
-  display: 'swap',
-  adjustFontFallback: false,
-  fallback: ['system-ui', 'sans-serif'],
-});
-
 export default function Page() {
+  // Loaded via layout <link> — next/font/google intermittently crashes parsing Google CSS (Next 14.0.4).
   return (
-    <div className={display.variable}>
+    <div style={{ ['--font-home-display' as string]: "'Plus Jakarta Sans'" }}>
       <HomePage />
     </div>
   );
