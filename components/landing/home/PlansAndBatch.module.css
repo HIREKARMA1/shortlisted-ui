@@ -308,6 +308,13 @@
   line-height: 1.6;
 }
 
+.noteLink {
+  color: var(--plans-saffron);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .button {
   display: block;
   margin-top: auto;
