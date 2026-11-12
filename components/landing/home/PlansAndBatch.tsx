@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { plans } from '@/lib/home/content';
+import { TERMS_URL } from '@/lib/legal-links';
 import { useHome } from './HomeProvider';
 import { OutlineLink, PrimaryLink } from './primitives';
 import styles from './PlansAndBatch.module.css';
@@ -209,7 +211,6 @@ export function PlansAndBatch() {
               <div className={styles.price}>
                 {showOffer && <span className={styles.oldPrice}>₹{regularAmount!.toLocaleString('en-IN')}</span>}
                 <span className={styles.priceBig}>{amount != null ? `₹${amount.toLocaleString('en-IN')}` : 'At checkout'}</span>
-                <small>ONE-TIME</small>
               </div>
               {showOffer && <span className={styles.save}>You save ₹{savings.toLocaleString('en-IN')} with this offer</span>}
               <ul className={styles.featureList}>
@@ -220,7 +221,13 @@ export function PlansAndBatch() {
                   </li>
                 ))}
               </ul>
-              <p className={styles.note}>Terms shown at checkout. Dedicated support available before and after you subscribe.</p>
+              <p className={styles.note}>
+                Split-fee enrollment applies. Remaining program fee is payable upon confirmed placement.{' '}
+                <Link href={TERMS_URL} className={styles.noteLink}>
+                  Read our Terms &amp; Conditions
+                </Link>{' '}
+                before you subscribe.
+              </p>
               <PrimaryLink href={hideTrialPromos ? dashboardHref : subscribeHref} className={`${styles.button} ${styles.primaryButton}`}>
                 {hideTrialPromos ? 'Go to dashboard' : 'Claim Your Seat'}
               </PrimaryLink>
