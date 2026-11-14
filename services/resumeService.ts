@@ -131,7 +131,11 @@ class ResumeService {
   }
 
   async getTemplates(): Promise<{
-    templates: Array<{ id: string; name: string; structure?: { slug?: string } }>;
+    templates: Array<{
+      id: string;
+      name: string;
+      structure?: { slug?: string; identifier?: string; layout?: string };
+    }>;
     total: number;
   }> {
     const response = await apiClient.client.get('/resume/templates');

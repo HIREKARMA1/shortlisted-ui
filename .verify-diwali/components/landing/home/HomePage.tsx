@@ -34,11 +34,9 @@ export function HomePage() {
     <HomeProvider>
       <div className="sl-home min-h-screen bg-[var(--bg)] text-[var(--ink)]" style={homeTokenVars as CSSProperties}>
         <AppShell>
-          {/* Seasonal hero switch:
-              Renders DiwaliHero when enabled and current IST timestamp is within window
-              (DIWALI_THEME_START: 2026-11-02T00:00:00+05:30 to DIWALI_THEME_END: 2026-11-12T23:59:59+05:30).
-              Supports QA override: ?theme=diwali or ?theme=default.
-              To turn it off permanently: set `seasonalHero.enabled = false` in `lib/home/content.ts`.
+          {/* Seasonal hero: Diwali when `seasonalHero.enabled` is true (and optional date window if useDateWindow).
+              Turn off: set `seasonalHero.enabled = false` in `lib/home/content.ts`.
+              QA: ?theme=diwali or ?theme=default (production needs NEXT_PUBLIC_DIWALI_THEME_QA=true).
           */}
           {seasonalActive ? <DiwaliHero /> : <Hero />}
           <PlacementJourneySection />

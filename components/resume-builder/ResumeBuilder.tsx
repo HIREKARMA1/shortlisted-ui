@@ -274,9 +274,18 @@ export function ResumeBuilder({
             } else {
                 // Create new resume — DB template_id is FK; visual design uses settings.templateSlug
                 const templates = await resumeService.getTemplates()
-                const matched = templates.templates.find(
-                    (t) => t.structure?.slug === selectedTemplateSlug || t.name.toLowerCase().includes(selectedTemplateSlug.replace(/-/g, ' '))
-                )
+                const matched = templates.templates.find((t) => {
+                    const slug = t.structure?.slug
+                    const identifier = (t.structure as { identifier?: string } | undefined)?.identifier
+                    const normalizedSlug = slug?.replace(/_/g, '-')
+                    const normalizedId = identifier?.replace(/_/g, '-')
+                    return (
+                        slug === selectedTemplateSlug ||
+                        normalizedSlug === selectedTemplateSlug ||
+                        normalizedId === selectedTemplateSlug ||
+                        t.name.toLowerCase().includes(selectedTemplateSlug.replace(/-/g, ' '))
+                    )
+                })
                 const defaultTemplateId = matched?.id || templates.templates[0]?.id
                 if (!defaultTemplateId) {
                     throw new Error('No resume templates available')

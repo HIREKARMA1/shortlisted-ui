@@ -45,16 +45,19 @@ export type HomeFeature = {
 export const ctaLabel = 'Start free trial';
 
 /**
- * Seasonal Diwali Hero Window (IST / Asia/Kolkata timezone)
+ * Optional Diwali calendar window (IST). Used only when `seasonalHero.useDateWindow` is true.
  * Start: 2026-11-02T00:00:00+05:30
- * End: 2026-11-12T23:59:59+05:30 (Diwali 2026 is on 8 November)
+ * End: 2026-11-12T23:59:59+05:30
  */
 export const DIWALI_THEME_START = '2026-11-02T00:00:00+05:30';
 export const DIWALI_THEME_END = '2026-11-12T23:59:59+05:30';
 
 export const seasonalHero = {
   id: 'diwali-2026',
-  enabled: true, // Master switch: set to false to disable Diwali hero and show normal hero
+  /** Set to false when replacing the Diwali UI with the default hero. */
+  enabled: true,
+  /** When false, Diwali hero stays on until `enabled` is false (dates below are ignored). */
+  useDateWindow: false,
   startDate: '2026-11-02',
   endDate: '2026-11-12',
   startIso: DIWALI_THEME_START,
@@ -62,15 +65,15 @@ export const seasonalHero = {
 };
 
 /**
- * Checks whether the Diwali seasonal hero should be rendered.
- * Evaluates against the exact ISO timestamp in IST (+05:30).
- * Supports QA query override: ?theme=diwali or ?theme=default (or ?theme=normal).
+ * Whether the Diwali seasonal hero should render.
+ * QA override: ?theme=diwali or ?theme=default (or ?theme=normal).
  */
 export function isSeasonalHeroActive(queryTheme?: string | null): boolean {
   if (queryTheme === 'diwali') return true;
   if (queryTheme === 'default' || queryTheme === 'normal') return false;
 
   if (!seasonalHero.enabled) return false;
+  if (!seasonalHero.useDateWindow) return true;
 
   const nowMs = Date.now();
   const startMs = Date.parse(DIWALI_THEME_START);
