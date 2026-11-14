@@ -90,6 +90,7 @@ export function StudentJobsView() {
         setUpgradeMode('expired');
         return;
       }
+      setSelectedJob(null);
       setApplyJobTarget(job);
     },
     [isPlaced],
@@ -153,16 +154,17 @@ export function StudentJobsView() {
       setUpgradeMode('expired');
       return;
     }
-    setSelectedJob(job);
-    if (
+    const shouldApply =
       searchParams.get('apply') === '1' &&
       !isPlaced &&
       !appStatusByJob[jobId] &&
-      !autoApplyAttempted.current
-    ) {
+      !autoApplyAttempted.current;
+    if (shouldApply) {
       autoApplyAttempted.current = true;
       openApplyModal(job);
+      return;
     }
+    setSelectedJob(job);
   }, [ready, jobs, searchParams, appStatusByJob, openApplyModal, isPlaced]);
 
   useEffect(() => {
