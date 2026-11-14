@@ -83,6 +83,7 @@ export function StudentJobsView() {
   const openApplyModal = useCallback(
     (job: StudentJob) => {
       if (isPlaced) return;
+      setSelectedJob(null);
       setApplyJobTarget(job);
     },
     [isPlaced],
@@ -137,16 +138,17 @@ export function StudentJobsView() {
     if (!jobId) return;
     const job = jobs.find((item) => item.id === jobId);
     if (!job) return;
-    setSelectedJob(job);
-    if (
+    const shouldApply =
       searchParams.get('apply') === '1' &&
       !isPlaced &&
       !appStatusByJob[jobId] &&
-      !autoApplyAttempted.current
-    ) {
+      !autoApplyAttempted.current;
+    if (shouldApply) {
       autoApplyAttempted.current = true;
       openApplyModal(job);
+      return;
     }
+    setSelectedJob(job);
   }, [ready, jobs, searchParams, appStatusByJob, openApplyModal, isPlaced]);
 
   useEffect(() => {
