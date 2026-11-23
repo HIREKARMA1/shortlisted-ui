@@ -8,7 +8,7 @@ import { DiwaliHero } from './DiwaliHero';
 import { FaqAndContact } from './FaqAndContact';
 import { Hero } from './Hero';
 import { HomeProvider } from './HomeProvider';
-import { MeetTrainersSection } from './MeetTrainersSection';
+// import { MeetTrainersSection } from './MeetTrainersSection';
 import { PlacementDeskSection } from './PlacementDeskSection';
 // import { PlacementJourneySection } from './PlacementJourneySection';
 import { PlansAndBatch } from './PlansAndBatch';
@@ -52,7 +52,7 @@ export function HomePage() {
           {seasonalActive ? <DiwaliHero /> : <Hero />}
           {/* <PlacementJourneySection /> */}
           <PlacementDeskSection />
-          <MeetTrainersSection />
+          {/* <MeetTrainersSection /> */}
           <Stories />
           <PlansAndBatch />
           <FaqAndContact />
